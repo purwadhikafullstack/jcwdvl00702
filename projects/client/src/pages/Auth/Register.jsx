@@ -123,25 +123,6 @@ class Register extends React.Component {
 
           <div className='"sign-in-form-forgot'>*</div>
         </div>
-
-        {/* <div className="sign-in-social">
-          <div className="sign-in-social-1">or continue with</div>
-          <div classname="sign-in-social-2" style={{ display: 'flex' }}>
-            <div classname="sign-in-social-2-fb">
-              <FacebookLoginButton onClick={() => alert('Hello')} />
-            </div>
-            <div classname="sign-in-social-2-g">
-              <GoogleLoginButton onClick={() => alert('Hello')} />
-            </div>
-            <div classname="sign-in-social-2-a">
-              <AppleLoginButton onClick={() => alert('Hello')} />
-            </div>
-          </div>
-        </div> */}
-        {/* <div className="sign-in-register">
-          <div className="sign-in-register-1">Don't have an account? </div>
-          <div className="sign-in-register-2"> Sign up</div>
-        </div> */}
       </div>
     );
   }
