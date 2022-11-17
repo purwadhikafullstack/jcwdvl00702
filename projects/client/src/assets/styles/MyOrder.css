@@ -1,0 +1,13 @@
+.my-order-main {
+  max-width: 320px;
+  position: relative;
+  margin: auto;
+  /* background-color: lightgray; */
+  border: 1px solid salmon;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+}
