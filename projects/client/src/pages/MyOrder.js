@@ -47,6 +47,8 @@ class MyOrder extends React.Component {
     );
   };
 
+=======
+>>>>>>> 29d329a6 (Feature MWA-45)
   render() {
     return (
       <div className="my-order-main">
