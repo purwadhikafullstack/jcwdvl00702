@@ -34,13 +34,13 @@ class SignInSocial extends React.Component {
           <div className="sign-in-social-1">or</div>
           <div classname="sign-in-social-2-2" style={{ flexDirection: 'column', alignContent: 'center' }}>
             <div classname="sign-in-social-2-fb">
-              <FacebookLoginButton onClick={() => alert('Hello')} />
+              <FacebookLoginButton style={{ fontSize: '16px' }} onClick={() => alert('Hello')} />
             </div>
             <div classname="sign-in-social-2-g">
-              <GoogleLoginButton onClick={() => alert('Hello')} />
+              <GoogleLoginButton style={{ fontSize: '16px' }} onClick={() => alert('Hello')} />
             </div>
             <div classname="sign-in-social-2-a">
-              <TwitterLoginButton onClick={() => alert('Hello')} />
+              <TwitterLoginButton style={{ fontSize: '16px' }} onClick={() => alert('Hello')} />
             </div>
           </div>
         </div>

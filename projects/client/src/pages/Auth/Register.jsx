@@ -62,7 +62,7 @@ class Register extends React.Component {
               onChange={this.inputHandler}
               value={this.state.password}
               id="input-with-icon-adornment"
-              sx={{ padding: '12px' }}
+              sx={{ padding: '7px' }}
               type={this.state.showPassword ? 'text' : 'password'}
               startAdornment={
                 <InputAdornment position="start">
@@ -90,7 +90,7 @@ class Register extends React.Component {
               onChange={this.inputHandler}
               value={this.state.repassword}
               id="input-with-icon-adornment"
-              sx={{ padding: '12px' }}
+              sx={{ padding: '7px' }}
               type={this.state.showRepassword ? 'text' : 'password'}
               startAdornment={
                 <InputAdornment position="start">

@@ -54,7 +54,7 @@ class SignIn extends React.Component {
               onChange={this.inputHandler}
               value={this.state.email}
               id="input-with-icon-adornment"
-              sx={{ padding: '12px' }}
+              sx={{ padding: '7px' }}
               startAdornment={
                 <InputAdornment position="start">
                   <Email />
@@ -70,7 +70,7 @@ class SignIn extends React.Component {
               onChange={this.inputHandler}
               value={this.state.password}
               id="input-with-icon-adornment"
-              sx={{ padding: '12px' }}
+              sx={{ padding: '7px' }}
               type={this.state.showPassword ? 'text' : 'password'}
               startAdornment={
                 <InputAdornment position="start">
@@ -105,15 +105,15 @@ class SignIn extends React.Component {
         </div>
         <div className="sign-in-social">
           <div className="sign-in-social-1">or continue with</div>
-          <div classname="sign-in-social-2" style={{ display: 'flex' }}>
+          <div classname="sign-in-social-2" style={{ display: 'flex', flexDirection: 'row' }}>
             <div classname="sign-in-social-2-fb">
-              <FacebookLoginButton onClick={() => alert('Hello')} />
+              <FacebookLoginButton style={{ fontSize: '12px' }} onClick={() => alert('Hello')} />
             </div>
             <div classname="sign-in-social-2-g">
-              <GoogleLoginButton onClick={() => alert('Hello')} />
+              <GoogleLoginButton style={{ fontSize: '12px' }} onClick={() => alert('Hello')} />
             </div>
             <div classname="sign-in-social-2-a">
-              <TwitterLoginButton onClick={() => alert('Hello')} />
+              <TwitterLoginButton style={{ fontSize: '12px' }} onClick={() => alert('Hello')} />
             </div>
           </div>
         </div>
