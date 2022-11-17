@@ -23,7 +23,7 @@ export default function ResetPassword(){
             <div className="changepass-topside">
                 <div className="changepass-title">
                     <div>
-                        <Link to ="/">
+                        <Link to ="/change-password">
                             <button className="arrowback"><ArrowBack/></button>
                         </Link>
                     </div>
