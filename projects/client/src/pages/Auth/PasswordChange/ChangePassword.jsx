@@ -9,7 +9,11 @@ export default function ChangePassword(){
         <div className="changepass-wrapper">
             <div className="changepass-topside">
                 <div className="changepass-title">
-                    <div><ArrowBack/></div>
+                    <div>
+                        <Link to ="/">
+                            <button className="arrowback"><ArrowBack/></button>
+                        </Link>
+                    </div>
                     <div className="changepass-text">Change Password</div>
                 </div>
                 <div className="changepass-img-container">

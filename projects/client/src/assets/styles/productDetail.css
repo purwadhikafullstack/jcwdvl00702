@@ -1,10 +1,18 @@
 .product-wrapper{
-    padding-right: 500px;
-    padding-left: 500px;
+    max-width: 320px;
+    position: relative;
+    margin: auto;
+    border: 1px solid salmon;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .product-img{
-    padding: 10px 40px;
+    padding: 10px;
 }
 .detail-img{
     max-height: 500px;
@@ -26,6 +34,7 @@
 .desc-name{
     font-weight: 600;
     font-size: 30px;
+    margin-top: 20px;
 }
 
 .desc-icon{
