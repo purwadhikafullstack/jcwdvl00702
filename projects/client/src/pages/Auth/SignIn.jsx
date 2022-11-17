@@ -14,7 +14,6 @@ import {
   FilledInput,
 } from '@mui/material';
 import { Email, Lock, Visibility, Facebook, Google, Apple, AccountCircle, VisibilityOff } from '@mui/icons-material';
-// import { AccountCircle, Visibility, VisibilityOff } from '@mui/icons-material';
 import { FacebookLoginButton, TwitterLoginButton, GoogleLoginButton } from 'react-social-login-buttons';
 
 import '../../assets/styles/SignIn.css';

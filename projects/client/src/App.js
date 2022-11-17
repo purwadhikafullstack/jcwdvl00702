@@ -5,6 +5,7 @@ import SignIn from './pages/Auth/SignIn';
 import SignInSocial from './pages/Auth/SignInSocial';
 import SignUp from './pages/Auth/SignUp';
 import Register from './pages/Auth/Register';
+import MyOrder from './pages/MyOrder.jsx';
 
 class App extends React.Component {
   render() {
@@ -14,6 +15,7 @@ class App extends React.Component {
         <Route component={SignInSocial} path="/sign-in-social" />
         <Route component={SignUp} path="/sign-up" />
         <Route component={Register} path="/register" />
+        <Route component={MyOrder} path="/my-order" />
       </BrowserRouter>
     );
   }
