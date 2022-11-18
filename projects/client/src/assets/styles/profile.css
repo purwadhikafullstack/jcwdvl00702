@@ -1,0 +1,112 @@
+.page{
+    display: flex;
+    justify-content: center;
+}
+
+.widhtPage{
+    background-color: white;
+    width: 360px;
+    height: 100%;
+    color: black;
+}
+
+.pageTitle{
+  display: flex;
+  flex-direction: row;
+  padding: 15px 15px 10px 0px;
+}
+
+.pageName{
+  margin-left: 15px;
+}
+
+.profileUserImgA{
+  margin-bottom: 10px;
+}
+
+.profilebar {
+    flex: 3;
+    position: sticky;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+    box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+  }
+  
+
+  
+  .profileWrapper {
+    padding: 20px;
+  }
+  
+  .profileList {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  
+  .profileListItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .profileIcon {
+    margin-right: 15px;
+  }
+  
+  .profileButton {
+    width: 150px;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+  }
+  
+  .profileIcon {
+    margin-right: 15px;
+  }
+
+  .shareHr {
+    margin: 20px;
+  }
+
+  .editOption{
+    display: flex;
+    flex-direction: column;    
+  }
+
+  .editProfile{
+    width: 100%;
+    height: 60px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+    box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+    margin-top: 10px;
+}
+
+.editContent{
+  padding-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.logo{
+  width: 30%;
+  height: 100%;
+  padding-top: 5px;
+}
+
+.description{
+    width: 50%;
+    height: 100%;
+    padding-top: 10px;
+}
+
+.editDirection{
+    width: 20%;
+    height: 100%;
+    padding-top: 10px;
+}

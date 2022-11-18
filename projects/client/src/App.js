@@ -9,6 +9,8 @@ import MyOrder from './pages/MyOrder.jsx';
 import ProductDetail from './pages/ProductDetail';
 import ChangePassword from './pages/Auth/PasswordChange/ChangePassword';
 import ResetPassword from './pages/Auth/PasswordChange/ResetPassword';
+import Profile from './Pages/Profile'
+import EditProfile from './Pages/EditProfile';
 
 class App extends React.Component {
   render() {
@@ -22,6 +24,8 @@ class App extends React.Component {
         <Route component={ProductDetail} path="/product-detail" />
         <Route component={ChangePassword} path="/change-password" />
         <Route component={ResetPassword} path="/reset-password" />
+        <Route component={Profile} path="/profile" />
+        <Route component={EditProfile} path="/edit-profile" />
       </BrowserRouter>
     );
   }
