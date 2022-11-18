@@ -1,13 +1,139 @@
 .my-order-main {
-  max-width: 320px;
+  max-width: 340px;
   position: relative;
   margin: auto;
   /* background-color: lightgray; */
   border: 1px solid salmon;
-  height: 100vh;
+  /* height: 100vh; */
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 8px;
+  padding-right: 10px;
+}
+
+.my-order-banner {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-top: 15px;
+}
+
+.my-order-banner-text {
+  font-size: 25px;
+  padding-top: 5px;
+  margin-left: 5px;
+}
+
+.my-order-banner-search {
+  margin-left: 100px;
+}
+
+.my-order-tab {
+  margin-top: 20px;
+}
+
+.my-order-og {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.my-order-og-logo {
+  height: 180px;
+  margin-top: 100px;
+}
+
+.my-order-og-text-1 {
+  font-size: larger;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 25px;
+}
+
+.my-order-og-text-2 {
+  font-size: medium;
+  text-align: center;
+  color: grey;
+  margin-top: 15px;
+}
+
+.my-order-c {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.moc-main {
+  width: 100%;
+  height: 150px;
+  border: 1px darkgray solid;
+  margin-bottom: 13px;
+  border-radius: 10px;
+  padding-left: 3px;
+  padding-top: 5px;
+  padding-right: 5px;
+  display: flex;
+  flex-direction: row;
+}
+
+.moc-image {
+  height: 140px;
+  border-radius: 10px;
+}
+
+.moc-product {
+  height: 140px;
+  border-radius: 10px;
+  border: 1px darkgray solid;
+}
+
+.moc-detail {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.moc-detail.name {
+  height: 40%;
+  font-size: 12px;
+  font-weight: bolder;
+}
+
+.moc-detail-subname {
+  height: 15%;
+  font-size: 10px;
+  color: grey;
+}
+
+.moc-detail-status {
+  margin-top: 3px;
+  height: 15%;
+  font-size: 8px;
+  padding: 5px;
+  width: fit-content;
+}
+
+.moc-detail-bottom {
+  margin-top: 6px;
+  height: 30%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 10px;
+}
+
+.moc-detail-bottom-price {
+  margin-top: 9px;
+  font-size: 12px;
+}
+
+.moc-detail-bottom-track {
+  height: 80%;
+  width: 55px;
+  font-size: 8px;
+  padding: 6px;
 }
