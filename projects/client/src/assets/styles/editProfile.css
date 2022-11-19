@@ -1,27 +1,26 @@
-.page{
+.editProfilePage{
+    max-width: 320px;
+    position: relative;
+    margin: auto;
+    height: 100vh;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
-.widhtPage{
-    background-color: white;
-    width: 360px;
-    height: 100%;
-    color: black;
-}
+.backPage{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 30px;
+    font-weight: 400;
+    padding-top: 30px;
+    height: 15%;
+    align-self: flex-start;
+  }
 
-.pageTitle{
-  display: flex;
-  flex-direction: row;
-  padding: 20px 10px 0px 10px;
-}
-
-.pageName{
-    margin-left: 0px;
-}
-
-.profileUserEdit{
-    margin-bottom: 30px;
+.profilePic{
+    display: flex;
 }
 
 .profileUserImg{
@@ -31,48 +30,53 @@
     object-fit: cover;
     left: 0;
     right: 0;
-    margin: auto;
-    top: 150px;
+    top: 50px;
     border: 3px solid white;
     z-index: 1;
 }
 
-.profileUserEditIcon{
+.editPicBtn{
+    position: absolute;
+    height: 30px;
+    border: 1px solid transparent;
+    background-color: black;
+    border-radius: 50px;
+    padding: 1px 1px;
+    color: white;
+    transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
     z-index: 2;
-    margin-top: -30px;
-    margin-left: 75px;
 }
 
-.formEdit{
+.editPicBtn:hover{
+    cursor: pointer;
+    background-color: rgb(29, 27, 27);
+}
+
+.editPicBtn:active{
+    cursor: pointer;
+    color: black;
+    background-color: transparent;
+    margin: 1px solid black;
+}
+
+.editForm{
+    width: 100%;
+    align-items: center;
     display: flex;
     flex-direction: column;
-    margin-left: 5%;
+    margin-top: 30px;
+    height: 30%;
+    justify-content: space-evenly;
 }
 
-.inputData{
-    margin-bottom: 20px;
-    width: 90%;
-    height: 50px;
-    padding: 6px 12px;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #212529;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    appearance: none;
-    border-radius: 4px;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+.editFormInput{
+    margin-bottom: 15px;
+    width: 100%;
+    background-color: rgba(224, 219, 219, 0.251);
+    border-radius: 5px;
+    padding: 40px;
 }
 
-.inputData:focus{
-    color: #212529;
-    background-color: #fff;
-    border-color: #86b7fe;
-    outline: 0;
-    box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%)
-}
 
 .saveButton{
     margin-top: 30px;
