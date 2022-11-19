@@ -22,6 +22,7 @@ class SignIn extends React.Component {
   state = {
     email: '',
     password: '',
+    withPassword: false,
     showPassword: false,
   };
 
@@ -42,80 +43,124 @@ class SignIn extends React.Component {
     event.preventDefault();
   };
 
+  handleChange = (event, value) => {
+    this.setState({ ...this.state, withPassword: true });
+  };
+
   render() {
     return (
       <div className="sign-in-main">
-        <div className="sign-in-label">Login to Your Account</div>
-        <div className="sign-in-form">
-          <FormControl variant="standard" className="sign-in-form-input">
-            <Input
-              name="email"
-              onChange={this.inputHandler}
-              value={this.state.email}
-              id="input-with-icon-adornment"
-              sx={{ padding: '7px' }}
-              startAdornment={
-                <InputAdornment position="start">
-                  <Email />
-                </InputAdornment>
-              }
-              placeholder="Email"
-            />
-          </FormControl>
+        {this.state.withPassword ? (
+          <div className="sign-in-submain">
+            <div className="sign-in-label">Login to Your Account</div>
+            <div className="sign-in-form">
+              <FormControl variant="standard" className="sign-in-form-input">
+                <Input
+                  name="email"
+                  onChange={this.inputHandler}
+                  value={this.state.email}
+                  id="input-with-icon-adornment"
+                  sx={{ padding: '7px' }}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <Email />
+                    </InputAdornment>
+                  }
+                  placeholder="Email"
+                />
+              </FormControl>
 
-          <FormControl variant="standard" className="sign-in-form-input">
-            <Input
-              name="password"
-              onChange={this.inputHandler}
-              value={this.state.password}
-              id="input-with-icon-adornment"
-              sx={{ padding: '7px' }}
-              type={this.state.showPassword ? 'text' : 'password'}
-              startAdornment={
-                <InputAdornment position="start">
-                  <Lock />
-                </InputAdornment>
-              }
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={this.handleClickShowPassword}
-                    onMouseDown={this.handleMouseDownPassword}
-                    edge="end">
-                    {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              placeholder="Password"
-            />
-          </FormControl>
+              <FormControl variant="standard" className="sign-in-form-input">
+                <Input
+                  name="password"
+                  onChange={this.inputHandler}
+                  value={this.state.password}
+                  id="input-with-icon-adornment"
+                  sx={{ padding: '7px' }}
+                  type={this.state.showPassword ? 'text' : 'password'}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <Lock />
+                    </InputAdornment>
+                  }
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={this.handleClickShowPassword}
+                        onMouseDown={this.handleMouseDownPassword}
+                        edge="end">
+                        {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  placeholder="Password"
+                />
+              </FormControl>
 
-          <FormControlLabel control={<Checkbox />} label="Remember Me" className="sign-in-form-check" />
+              <FormControlLabel control={<Checkbox />} label="Remember Me" className="sign-in-form-check" />
 
-          <Button
-            sx={{ borderRadius: '20px', backgroundColor: 'black' }}
-            variant="contained"
-            className="sign-in-form-button">
-            Sign in
-          </Button>
+              <Button
+                sx={{ borderRadius: '20px', backgroundColor: 'black' }}
+                variant="contained"
+                className="sign-in-form-button">
+                Sign in
+              </Button>
 
-          <div className='"sign-in-form-forgot'>Forgot the password ?</div>
-        </div>
-        <div className="sign-in-social">
-          <div className="sign-in-social-1">or continue with</div>
-          <div classname="sign-in-social-2" style={{ display: 'flex', flexDirection: 'row' }}>
-            <div classname="sign-in-social-2-fb">
-              <FacebookLoginButton style={{ fontSize: '12px' }} onClick={() => alert('Hello')} />
+              <div className='"sign-in-form-forgot'>Forgot the password ?</div>
             </div>
-            <div classname="sign-in-social-2-g">
-              <GoogleLoginButton style={{ fontSize: '12px' }} onClick={() => alert('Hello')} />
-            </div>
-            <div classname="sign-in-social-2-a">
-              <TwitterLoginButton style={{ fontSize: '12px' }} onClick={() => alert('Hello')} />
+            <div className="sign-in-social">
+              <div className="sign-in-social-1">or continue with</div>
+              <div classname="sign-in-social-2" style={{ display: 'flex', flexDirection: 'row' }}>
+                <div classname="sign-in-social-2-fb">
+                  <FacebookLoginButton style={{ fontSize: '12px' }} onClick={() => alert('Hello')} />
+                </div>
+                <div classname="sign-in-social-2-g">
+                  <GoogleLoginButton style={{ fontSize: '12px' }} onClick={() => alert('Hello')} />
+                </div>
+                <div classname="sign-in-social-2-a">
+                  <TwitterLoginButton style={{ fontSize: '12px' }} onClick={() => alert('Hello')} />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="sign-in-submain">
+            <img
+              src="https://i.pinimg.com/originals/6f/df/bc/6fdfbc41d6a8e26d4b9073bc1afd899f.jpg"
+              className="sign-in-picture"
+              alt="Logo"
+            />
+
+            <div className="sign-in-label">Let's you in</div>
+
+            <div className="sign-in-social-social">
+              <div className="sign-in-social-1">or</div>
+              <div classname="sign-in-social-2-2" style={{ flexDirection: 'column', alignContent: 'center' }}>
+                <div classname="sign-in-social-2-fb">
+                  <FacebookLoginButton style={{ fontSize: '16px' }} onClick={() => alert('Hello')} />
+                </div>
+                <div classname="sign-in-social-2-g">
+                  <GoogleLoginButton style={{ fontSize: '16px' }} onClick={() => alert('Hello')} />
+                </div>
+                <div classname="sign-in-social-2-a">
+                  <TwitterLoginButton style={{ fontSize: '16px' }} onClick={() => alert('Hello')} />
+                </div>
+              </div>
+            </div>
+
+            <div className="sign-in-social-form">
+              <Button
+                sx={{ borderRadius: '20px', backgroundColor: 'black' }}
+                variant="contained"
+                className="sign-in-form-button"
+                onClick={this.handleChange}>
+                Sign in with password
+              </Button>
+            </div>
+          </div>
+        )}
+
         <div className="sign-in-register">
           <div className="sign-in-register-1">Don't have an account? </div>
           <div className="sign-in-register-2"> Sign up</div>

@@ -12,8 +12,13 @@
   padding-right: 20px;
 }
 
+.sign-in-submain {
+  height: 90%;
+}
+
 .sign-in-picture {
   height: 30%;
+  margin-left: 35px;
 }
 
 .sign-in-label {

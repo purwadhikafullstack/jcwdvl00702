@@ -19,7 +19,7 @@ import { FacebookLoginButton, AppleLoginButton, GoogleLoginButton } from 'react-
 
 import '../../assets/styles/SignIn.css';
 
-class Register extends React.Component {
+class CreatePassword extends React.Component {
   state = {
     password: '',
     repassword: '',
@@ -128,4 +128,4 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+export default CreatePassword;
