@@ -15,7 +15,7 @@ class EditProfile extends React.Component {
     render(){
         return(
            <Container maxWidth="xs">
-             <div className="editProfilePage">
+            <div className="editProfilePage">
                 <div className="backPage"><ArrowBackIcon/>   Profile</div>
                 <div className="profilePic">
                     <img

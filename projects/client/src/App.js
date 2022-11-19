@@ -17,6 +17,8 @@ import ChooseShipping from "./pages/ChooseShipping";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import AddressList from "./pages/AddressList";
 import NewAddress from "./pages/NewAddress";
+import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
 
 class App extends React.Component {
   render() {
@@ -37,6 +39,8 @@ class App extends React.Component {
           <Route component={Profile} path="/profile" />
           <Route component={EditProfile} path="/edit-profile" />
           <Route component={ChooseShipping} path="/choose-shipping" />
+          <Route component={Cart} path="/cart" />
+          <Route component={Checkout} path="/checkout" />
           <Route component={HomePage} path="/" />
         </Switch>
         <Footer />
