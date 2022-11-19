@@ -8,8 +8,8 @@ import MyOrder from './pages/MyOrder';
 import ProductDetail from './pages/ProductDetail';
 import ChangePassword from './pages/Auth/PasswordChange/ChangePassword';
 import ResetPassword from './pages/Auth/PasswordChange/ResetPassword';
-import Profile from './Pages/Profile'
-import EditProfile from './Pages/EditProfile';
+import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile';
 
 class App extends React.Component {
   render() {
