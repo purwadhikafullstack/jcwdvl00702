@@ -13,8 +13,7 @@ import {
   InputLabel,
   FilledInput,
 } from '@mui/material';
-import { Email, Lock, Visibility, Person } from '@mui/icons-material';
-import AccountCircle from '@mui/icons-material/AccountCircle';
+import { Email, Lock, Visibility, Person, AccountCircle } from '@mui/icons-material';
 import { FacebookLoginButton, TwitterLoginButton, GoogleLoginButton } from 'react-social-login-buttons';
 
 import '../../assets/styles/SignIn.css';
