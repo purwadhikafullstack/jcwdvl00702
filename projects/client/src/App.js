@@ -1,18 +1,19 @@
 import React from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
-import SignIn from './pages/Auth/SignIn';
-import SignUp from './pages/Auth/SignUp';
-import CreatePassword from './pages/Auth/CreatePassword';
-import MyOrder from './pages/MyOrder';
-import ProductDetail from './pages/ProductDetail';
-import ChangePassword from './pages/Auth/PasswordChange/ChangePassword';
-import ResetPassword from './pages/Auth/PasswordChange/ResetPassword';
-import Profile from './pages/Profile'
-import EditProfile from './pages/EditProfile';
+import SignIn from './Pages/Auth/SignIn';
+import SignUp from './Pages/Auth/SignUp';
+import CreatePassword from './Pages/Auth/CreatePassword';
+import MyOrder from './Pages/MyOrder';
+import ProductDetail from './Pages/ProductDetail';
+import ChangePassword from './Pages/Auth/PasswordChange/ChangePassword';
+import ResetPassword from './Pages/Auth/PasswordChange/ResetPassword';
+import Profile from './Pages/Profile'
+import EditProfile from './Pages/EditProfile';
 import Footer from "./components/Footer"
-import HomePage from "./pages/HomePage"
-import ProductLists from "./pages/ProductLists"
+import HomePage from "./Pages/HomePage"
+import ProductLists from "./Pages/ProductLists"
+import ChooseShipping from './Pages/ChooseShipping';
 
 class App extends React.Component {
   render() {
@@ -29,7 +30,9 @@ class App extends React.Component {
           <Route component={ResetPassword} path="/reset-password" />
           <Route component={Profile} path="/profile" />
           <Route component={EditProfile} path="/edit-profile" />
+          <Route component={ChooseShipping} path="/choose-shipping" />
           <Route component={HomePage} path="/" />
+
         </Switch>
         <Footer />
       </BrowserRouter>

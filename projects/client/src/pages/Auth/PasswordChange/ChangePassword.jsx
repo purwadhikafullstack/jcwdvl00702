@@ -21,14 +21,13 @@ export default function ChangePassword(){
                 </div>
             </div>
             <div className="changepass-botside">
-                <div className="changepass-email-text">Please enter your email below</div>
-                <div className="email-wrapper">
-                    <div className="email-icon"><Email/></div>
-                    <div className="email-input"><input type="email" className="changepass-email"/></div>
+                <div className="changepass-email-text">Please Enter Your Email Below</div>
+                <div className="password-input">
+                        <Email style={{fill: "gray",marginLeft:"5px"}}/>
+                        <input placeholder="Email" className="reset-input"/>
                 </div>
-                <div className="divider"><hr className="changepass-line" /></div>
                 <div className="changepass-button">
-                    <Link to='/resetpass'>
+                    <Link to='/reset-password'>
                         <button className="changepass-continue">Send</button>
                     </Link>
                 </div>

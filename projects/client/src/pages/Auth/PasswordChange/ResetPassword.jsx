@@ -1,7 +1,7 @@
 import axios from "axios"
 import "../../../assets/styles/passwordChange.css"
 import {useState,useEffect,useContext,useRef} from "react"
-import {ArrowBack,Visibility} from "@mui/icons-material"
+import {ArrowBack,Visibility,Lock} from "@mui/icons-material"
 import {Link} from 'react-router-dom'
 
 export default function ResetPassword(){
@@ -37,14 +37,15 @@ export default function ResetPassword(){
                 <div className="changepass-email-text">Create Your New Password</div>
                 <div className="reset-container">
                     <div className="password-input">
+                        <Lock style={{fill: "gray",marginLeft:"5px"}}/>
                         <input type={passwordShown ? "text" : "password"} placeholder="Enter New Password" className="reset-input" required ref={password} minLength={8}/>
-                        <button onClick={togglePassword} className="toggle-vis"><Visibility/></button>
+                        <button onClick={togglePassword} className="toggle-vis"><Visibility style={{fill: "gray"}}/></button>
                     </div>
                     <div className="password-input">
+                        <Lock style={{fill: "gray",marginLeft:"5px"}}/>
                         <input type={passwordShown2 ? "text" : "password"} placeholder="Confirm New Password" className="reset-input" required ref={passwordAgain} minLength={8} />
-                        <button onClick={togglePassword2} className="toggle-vis"><Visibility/></button>
+                        <button onClick={togglePassword2} className="toggle-vis"><Visibility style={{fill: "gray"}}/></button>
                     </div>
-                    
                 </div>
                 <div className="changepass-button"><button className="changepass-continue">Confirm</button></div>
             </div>
