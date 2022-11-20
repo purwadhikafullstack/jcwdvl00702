@@ -8,12 +8,14 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
+import Container from '@mui/material/Container'
 
 
 class Profile extends React.Component {
     render(){
         return(
-           <div className="profilePage">
+          <Container maxWidth="xs">
+             <div className="profilePage">
             <div className="backPage"><ArrowBackIcon/>  Homepage</div>
             <div className="profilePic">
                     <img
@@ -59,6 +61,7 @@ class Profile extends React.Component {
               </button>
               </div>
            </div>
+          </Container>
         )
     }
 }
