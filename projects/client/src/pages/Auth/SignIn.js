@@ -24,7 +24,7 @@ class SignIn extends React.Component {
   state = {
     email: '',
     password: '',
-    withPassword: true,
+    withPassword: false,
     showPassword: false,
   };
 
