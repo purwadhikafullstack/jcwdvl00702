@@ -1,4 +1,4 @@
-.product-wrapper{
+/* .product-wrapper{
     max-width: 320px;
     position: relative;
     margin: auto;
@@ -9,6 +9,16 @@
     align-items: center;
     padding-left: 20px;
     padding-right: 20px;
+} */
+
+.pd-wrap{
+    background-color: whitesmoke;
+}
+
+.container-product-detail{
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: white;
 }
 
 .product-img{

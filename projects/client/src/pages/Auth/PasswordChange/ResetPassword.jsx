@@ -3,6 +3,7 @@ import "../../../assets/styles/passwordChange.css"
 import {useState,useEffect,useContext,useRef} from "react"
 import {ArrowBack,Visibility,Lock} from "@mui/icons-material"
 import {Link} from 'react-router-dom'
+import {Container} from '@mui/material'
 
 export default function ResetPassword(){
     const password = useRef();
@@ -19,7 +20,7 @@ export default function ResetPassword(){
     }
 
     return(
-        <div className="changepass-wrapper">
+        <Container maxWidth="xs" className="container-resetpass">
             <div className="changepass-topside">
                 <div className="changepass-title">
                     <div>
@@ -49,6 +50,6 @@ export default function ResetPassword(){
                 </div>
                 <div className="changepass-button"><button className="changepass-continue">Confirm</button></div>
             </div>
-        </div>
+        </Container>
     )
 }
