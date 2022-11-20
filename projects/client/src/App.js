@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Redirect, Route } from 'react-router-dom';
 
 import SignIn from './pages/Auth/SignIn';
+import ForgotPassword from './pages/Auth/ForgotPassword';
 import SignUp from './pages/Auth/SignUp';
 import CreatePassword from './pages/Auth/CreatePassword';
 import MyOrder from './pages/MyOrder';
@@ -16,6 +17,7 @@ class App extends React.Component {
     return (
       <BrowserRouter>
         <Route component={SignIn} path="/sign-in" />
+        <Route component={ForgotPassword} path="/forgot-password" />
         <Route component={SignUp} path="/sign-up" />
         <Route component={CreatePassword} path="/create-password" />
         <Route component={MyOrder} path="/my-order" />
