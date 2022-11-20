@@ -1,21 +1,15 @@
 import React from 'react';
 import {
-  TextField,
   Checkbox,
-  FormGroup,
   FormControlLabel,
   Button,
   InputAdornment,
   Input,
-  Box,
   FormControl,
   IconButton,
-  InputLabel,
-  FilledInput,
   Container,
 } from '@mui/material';
-import { Email, Lock, Visibility, Person, AccountCircle } from '@mui/icons-material';
-import { FacebookLoginButton, TwitterLoginButton, GoogleLoginButton } from 'react-social-login-buttons';
+import { Email, Person } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
 import '../../assets/styles/SignIn.css';
