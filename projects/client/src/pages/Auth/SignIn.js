@@ -1,20 +1,15 @@
 import React from 'react';
 import {
-  TextField,
   Checkbox,
-  FormGroup,
   FormControlLabel,
   Button,
   InputAdornment,
   Input,
-  Box,
   FormControl,
   IconButton,
-  InputLabel,
-  FilledInput,
   Container,
 } from '@mui/material';
-import { Email, Lock, Visibility, Facebook, Google, Apple, AccountCircle, VisibilityOff } from '@mui/icons-material';
+import { Email, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
 import { FacebookLoginButton, TwitterLoginButton, GoogleLoginButton } from 'react-social-login-buttons';
 import { Link } from 'react-router-dom';
 
