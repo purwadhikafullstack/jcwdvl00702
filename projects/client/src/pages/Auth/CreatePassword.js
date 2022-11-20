@@ -13,13 +13,12 @@ import {
   InputLabel,
   FilledInput,
 } from '@mui/material';
-import { Email, Lock, Visibility, Facebook, Google, Apple, VisibilityOff } from '@mui/icons-material';
-import AccountCircle from '@mui/icons-material/AccountCircle';
+import { Email, Lock, Visibility, VisibilityOff, AccountCircle } from '@mui/icons-material';
 import { FacebookLoginButton, AppleLoginButton, GoogleLoginButton } from 'react-social-login-buttons';
 
 import '../../assets/styles/SignIn.css';
 
-class Register extends React.Component {
+class CreatePassword extends React.Component {
   state = {
     password: '',
     repassword: '',
@@ -128,4 +127,4 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+export default CreatePassword;

@@ -30,13 +30,13 @@ class MyOrder extends React.Component {
         <div className="moc-detail">
           <div className="moc-detail-name">Kocheng Kochengan Lucu Aja</div>
           <div className="moc-detail-subname">Si Belang | Cat | Male</div>
-          <Button className="moc-detail-status" variant="contained" disabled>
+          <Button className="moc-detail-status" sx={{ fontSize: '8px' }} variant="contained" disabled>
             In delivery
           </Button>
           <div className="moc-detail-bottom">
             <div className="moc-detail-bottom-price">Rp. 7.250.000 ,-</div>
             <Button
-              sx={{ borderRadius: '20px', backgroundColor: 'black' }}
+              sx={{ borderRadius: '20px', backgroundColor: 'black', fontSize: '8px' }}
               variant="contained"
               className="moc-detail-bottom-track">
               Track Order
