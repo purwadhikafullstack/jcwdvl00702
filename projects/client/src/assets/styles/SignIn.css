@@ -7,7 +7,8 @@ body {
 .sign-in-main {
   position: relative;
   margin: auto;
-  height: 100vh;
+  /* height: 100vh; */
+  height: 82.1vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,15 +20,29 @@ body {
   height: 90%;
 }
 
+.sign-in-social-submain {
+  height: 90%;
+  width: 100%;
+}
+
 .sign-in-picture {
   height: 30%;
-  margin-left: 35px;
+  margin-left: 105px;
+  margin-top: 30px;
 }
 
 .sign-in-label {
   font-size: 45px;
   padding-top: 30px;
   height: 15%;
+}
+
+.sign-in-social-label {
+  font-size: 45px;
+  /* padding-top: 30px; */
+  height: 15%;
+  width: 100%;
+  text-align: center;
 }
 
 .sign-in-social-form {

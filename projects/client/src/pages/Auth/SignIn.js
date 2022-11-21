@@ -174,14 +174,14 @@ class SignIn extends React.Component {
               </div>
             </div>
           ) : (
-            <div className="sign-in-submain">
+            <div className="sign-in-social-submain">
               <img
                 src="https://i.pinimg.com/originals/6f/df/bc/6fdfbc41d6a8e26d4b9073bc1afd899f.jpg"
                 className="sign-in-picture"
                 alt="Logo"
               />
 
-              <div className="sign-in-label">Let's you in</div>
+              <div className="sign-in-social-label">Let's you in</div>
 
               <div className="sign-in-social-social">
                 <div className="sign-in-social-1">or</div>
