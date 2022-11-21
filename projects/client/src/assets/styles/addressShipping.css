@@ -1,0 +1,135 @@
+.ship-wrapper{
+    background-color: white;
+}
+
+.ship-container{
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: white;
+    height: 100vh;
+}
+
+.ship-subwrap{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ship-topside{
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.ship-arrowwrap{
+    padding-left: 40px;
+}
+
+.ship-arrowback{
+    background-color: transparent;
+    border: none;
+    margin-left: -20px;
+}
+
+.ship-arrowback:hover{
+    cursor: pointer;
+}
+
+.ship-title{
+    font-size: 21px;
+    
+    margin-top: -6px;
+    font-weight: 500;
+}
+
+.ship-select{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ship-choice{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 300px;
+    height: 70px;
+    background-color: rgb(234, 234, 234);
+    margin-top: 10px;
+    margin-bottom: 30px;
+    border-radius: 20px;
+}
+
+.ship-method{
+    margin-left: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.ship-choice-text{
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+}
+
+.ship-choice-title{
+    font-weight: 500;
+}
+
+.ship-choice-spec{
+    font-size: 12px;
+}
+
+.ship-select-dot{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+    margin-right: 5px;
+}
+
+.ship-fee{
+    margin-right: 10px;
+    font-weight: 500;
+}
+
+.ship-radio{
+  width: 20px;
+  height: 20px;
+  accent-color: black;
+  margin-left: auto;
+  margin-top: 6px;
+}
+
+.ship-radio:hover{
+    cursor: pointer;
+}
+
+.ship-radio:checked{
+    background-color: black;
+}
+
+.ship-continue{
+    margin-top: 30px;
+}
+
+.ship-button{
+    width: 300px;
+    height: 50px;
+    border-radius: 50px;
+    background-color: black;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+}
+
+.ship-button:hover{
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    font-weight: 500;
+}
+
