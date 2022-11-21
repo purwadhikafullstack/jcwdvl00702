@@ -186,6 +186,16 @@ function SignUp(){
         });
     }
 
+        Axios.post('http://localhost:3300/api/customer/register-social', data)
+          .then(() => {
+            history.push('/');
+          })
+          .catch((error) => {
+            console.log(error);
+            alert(error);
+          });
+      });
+  };
 
 
     return(
