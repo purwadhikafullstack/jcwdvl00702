@@ -125,7 +125,7 @@ class MyOrder extends React.Component {
               <>
                 <ClickAwayListener onClickAway={this.isSearchHandleClose}>
                   <InputBase
-                    sx={{ ml: 1, flex: 1 }}
+                    sx={{ ml: 1, flex: 1, fontFamily: 'Lora' }}
                     placeholder="Search"
                     inputProps={{ 'aria-label': 'Search' }}
                     className="my-order-search"
@@ -160,11 +160,11 @@ class MyOrder extends React.Component {
                       </IconButton>
                     </button>
                     <Menu {...bindMenu(popupState)}>
-                      <MenuItem onClick={popupState.close}>
+                      <MenuItem onClick={popupState.close} sx={{ fontFamily: 'Lora' }}>
                         <img src="https://img.icons8.com/fluency-systems-filled/22/null/sort-numeric-up.png" />
                         Oldest
                       </MenuItem>
-                      <MenuItem onClick={popupState.close}>
+                      <MenuItem onClick={popupState.close} sx={{ fontFamily: 'Lora' }}>
                         <img src="https://img.icons8.com/windows/24/null/sort-numeric-up-reversed.png" />
                         Recent
                       </MenuItem>
@@ -195,7 +195,7 @@ class MyOrder extends React.Component {
                       {this.myOrderCard('5')}
                       {this.myOrderCard('6')} */}
 
-                      <Stack spacing={1} sx={{ width: '110%' }}>
+                      <Stack spacing={1} sx={{ width: '110%', fontFamily: 'Lora' }}>
                         <Pagination count={10} />
                       </Stack>
                     </TabPanel>
@@ -224,7 +224,7 @@ class MyOrder extends React.Component {
                       {this.myOrderCard('5')}
                       {this.myOrderCard('6')}
 
-                      <Stack spacing={1} sx={{ width: '110%' }}>
+                      <Stack spacing={1} sx={{ width: '110%', fontFamily: 'Lora' }}>
                         <Pagination count={10} />
                       </Stack>
                     </TabPanel>
