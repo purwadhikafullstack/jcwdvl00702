@@ -3,31 +3,17 @@ import {
   IconButton,
   Box,
   Tab,
-  Tabs,
   Button,
   Container,
-  Tooltip,
   Menu,
   MenuItem,
-  Avatar,
-  Popover,
-  Typography,
   InputBase,
   InputAdornment,
   ClickAwayListener,
   Pagination,
   Stack,
 } from '@mui/material';
-import {
-  PendingOutlined,
-  ReceiptLong,
-  Search,
-  SortTwoTone,
-  AccountBox,
-  Logout,
-  LocalShipping,
-  Redeem,
-} from '@mui/icons-material';
+import { ReceiptLong, Search, SortTwoTone } from '@mui/icons-material';
 import { TabPanel, TabList, TabContext } from '@mui/lab';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 

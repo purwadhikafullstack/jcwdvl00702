@@ -9,13 +9,6 @@ import MyOrder from './pages/MyOrder';
 import ProductDetail from './pages/ProductDetail';
 import ChangePassword from './pages/Auth/PasswordChange/ChangePassword';
 import ResetPassword from './pages/Auth/PasswordChange/ResetPassword';
-<<<<<<< HEAD
-import Profile from './pages/Profile'
-import EditProfile from './pages/EditProfile';
-import Footer from "./components/Footer"
-import HomePage from "./pages/HomePage"
-import ProductLists from "./pages/ProductLists"
-=======
 import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
 import Footer from './components/Footer';
