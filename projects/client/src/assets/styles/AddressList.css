@@ -1,0 +1,76 @@
+.mobile {
+    padding: 20px;
+}
+
+.address-page {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.address-arrow-detail {
+    display: flex;
+    flex-direction: row;
+}
+
+.address-arrow-detail > div {
+    font-weight: bold;
+}
+
+.address-list {
+    margin: auto;
+}
+
+.address {
+    display: flex;
+    flex-direction: row;
+    border: none;
+    border-radius: 25px;
+    padding: 10px;
+    background-color: rgb(234, 234, 234);
+    width: 300px;
+    height: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    align-items: center;
+}
+
+.address-info {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.address-type {
+    font-weight: bold;
+}
+
+.address-detail {
+    font-size: 12px;
+}
+
+.radio-css {
+    width: 20px;
+    height: 20px;
+    accent-color: black;
+    margin-left: auto;
+}
+
+.button-new-address {
+    border: none;
+    border-radius: 20px;
+    height: 40px;
+    margin-bottom: 20px;
+    color: rgb(98, 98, 98);
+    font-weight: bold;
+}
+
+.button-confirm {
+    border: none;
+    border-radius: 20px;
+    background-color: black;
+    height: 40px;
+    margin-bottom: 20px;
+    color: white;
+    font-weight: bold;
+}
