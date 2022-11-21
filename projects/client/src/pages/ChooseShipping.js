@@ -27,7 +27,7 @@ export default function ChooseShipping(){
         <div className="ship-wrapper">
             <Container className="ship-container" maxWidth="xs">
                 <div className="ship-topside">
-                    <div>
+                    <div className="ship-arrowwrap">
                         <Link to ="/">
                             <button className="ship-arrowback"><ArrowBack/></button>
                         </Link>

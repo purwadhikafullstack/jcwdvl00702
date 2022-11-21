@@ -1,11 +1,12 @@
 .ship-wrapper{
-    background-color: whitesmoke;
+    background-color: white;
 }
 
 .ship-container{
     padding-left: 20px;
     padding-right: 20px;
     background-color: white;
+    height: 100vh;
 }
 
 .ship-subwrap{
@@ -19,6 +20,10 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+.ship-arrowwrap{
+    padding-left: 40px;
 }
 
 .ship-arrowback{

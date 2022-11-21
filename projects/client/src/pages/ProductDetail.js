@@ -10,8 +10,7 @@ export default function ProductDetail(){
         <div className="pd-wrap">
         <Container maxWidth="xs" className="container-product-detail">
             <div className="product-img">
-                {/* <Link><ArrowBack/></Link> */}
-                <ArrowBack/>
+                <Link to="/"><ArrowBack/></Link>
                 <img className="detail-img" src="https://www.freepnglogos.com/uploads/shoes-png/mens-shoes-png-transparent-images-images-11.png" />
             </div>
             <div className="product-spec">
