@@ -15,6 +15,8 @@ import HomePage from "./Pages/HomePage"
 import ProductLists from "./Pages/ProductLists"
 import ChooseShipping from "./Pages/ChooseShipping"
 import ForgotPassword from "./Pages/Auth/ForgotPassword"
+import AddressList from "./Pages/AddressList";
+import NewAddress from "./Pages/NewAddress";
 
 class App extends React.Component {
   render() {
@@ -28,13 +30,14 @@ class App extends React.Component {
           <Route component={MyOrder} path="/my-order" />
           <Route component={ProductDetail} path="/product-detail" />
           <Route component={ProductLists} path="/product-list" />
+          <Route component={AddressList} path="/address-list" />
+          <Route component={NewAddress} path="/add-address" />
           <Route component={ChangePassword} path="/change-password" />
           <Route component={ResetPassword} path="/reset-password" />
           <Route component={Profile} path="/profile" />
           <Route component={EditProfile} path="/edit-profile" />
           <Route component={ChooseShipping} path="/choose-shipping" />
           <Route component={HomePage} path="/" />
-
         </Switch>
         <Footer />
       </BrowserRouter>

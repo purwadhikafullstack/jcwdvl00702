@@ -4,6 +4,7 @@ import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import "../assets/styles/ProductLists.css"
+import { Container } from "@mui/material";
 
 class ProductLists extends React.Component {
     render() {
@@ -53,7 +54,7 @@ class ProductLists extends React.Component {
         ];
         return (
           <>
-            <div className="mobile">
+            <Container maxWidth="xs" className="mobile">
               <div className="product-page">
                 <div className="product-arrow-search">
                   <ArrowBackIcon />
@@ -77,8 +78,10 @@ class ProductLists extends React.Component {
                 <div className="product-card">
                   {ListProducts.map((ListProduct, index) => (
                     <div>
-                      <div className="
-                      product-list">
+                      <div
+                        className="
+                      product-list"
+                      >
                         <img src={ListProduct.image} alt="" />
                         <div>{ListProduct.description}</div>
                         <div>{ListProduct.price}</div>
@@ -87,7 +90,7 @@ class ProductLists extends React.Component {
                   ))}
                 </div>
               </div>
-            </div>
+            </Container>
           </>
         );
     }

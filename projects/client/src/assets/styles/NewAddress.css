@@ -1,0 +1,38 @@
+.mobile {
+    padding: 20px;
+}
+
+.new-address-page {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.margin-size {
+    padding-top: 20px;
+    font-weight: bold;
+}
+
+
+.new-address-detail {
+    display: flex;
+    flex-direction: row;
+}
+
+.new-address-detail > div {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.address-type-form-input {
+  width: 100%;
+  background-color: rgba(224, 219, 219, 0.251);
+  border-radius: 5px;
+  padding: 12px;
+  /* height: 30%; */
+  /* border: 1px solid white; */
+}
+
+.add-address-button {
+    width: 100%;
+}

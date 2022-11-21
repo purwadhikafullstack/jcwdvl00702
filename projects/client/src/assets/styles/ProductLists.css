@@ -1,8 +1,8 @@
 .mobile {
-    width: 360px;
     height: auto;
     margin: auto;
     border: none;
+    padding: 20px;
 }
 
 .product-page {
