@@ -1,5 +1,4 @@
 import React from "react";
-import "../assets/styles/checkout.css"
 import { Container } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit"
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
