@@ -19,6 +19,8 @@ import AddressList from "./pages/AddressList";
 import NewAddress from "./pages/NewAddress";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import Profile from './Pages/Profile'
+import EditProfile from './Pages/EditProfile';
 
 class App extends React.Component {
   render() {
