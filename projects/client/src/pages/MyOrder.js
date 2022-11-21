@@ -112,8 +112,6 @@ class MyOrder extends React.Component {
     );
   };
 
-=======
->>>>>>> 29d329a6 (Feature MWA-45)
   render() {
     return (
       <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
