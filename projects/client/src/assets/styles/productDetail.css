@@ -1,16 +1,3 @@
-/* .product-wrapper{
-    max-width: 320px;
-    position: relative;
-    margin: auto;
-    border: 1px solid salmon;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-left: 20px;
-    padding-right: 20px;
-} */
-
 .pd-wrap{
     background-color: whitesmoke;
 }
