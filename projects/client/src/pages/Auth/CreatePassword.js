@@ -1,20 +1,6 @@
 import React from 'react';
-import {
-  TextField,
-  Checkbox,
-  FormGroup,
-  FormControlLabel,
-  Button,
-  InputAdornment,
-  Input,
-  Box,
-  FormControl,
-  IconButton,
-  InputLabel,
-  FilledInput,
-} from '@mui/material';
-import { Email, Lock, Visibility, VisibilityOff, AccountCircle } from '@mui/icons-material';
-import { FacebookLoginButton, AppleLoginButton, GoogleLoginButton } from 'react-social-login-buttons';
+import { Button, InputAdornment, Input, FormControl, IconButton, Container } from '@mui/material';
+import { Lock, Visibility, VisibilityOff } from '@mui/icons-material';
 
 import '../../assets/styles/SignIn.css';
 
@@ -52,77 +38,74 @@ class CreatePassword extends React.Component {
 
   render() {
     return (
-      <div className="sign-in-main">
-        <div className="sign-in-label">Create Your Account</div>
-        <div className="sign-in-form">
-          <FormControl variant="standard" className="sign-in-form-input">
-            <Input
-              name="password"
-              onChange={this.inputHandler}
-              value={this.state.password}
-              id="input-with-icon-adornment"
-              sx={{ padding: '7px' }}
-              type={this.state.showPassword ? 'text' : 'password'}
-              startAdornment={
-                <InputAdornment position="start">
-                  <Lock />
-                </InputAdornment>
-              }
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={this.handleClickShowPassword}
-                    onMouseDown={this.handleMouseDownPassword}
-                    edge="end">
-                    {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              placeholder="Password"
-            />
-          </FormControl>
+      <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
+        <div className="sign-in-main">
+          <div className="sign-in-label">Create Your Account</div>
+          <div className="create-pass-form">
+            <FormControl variant="standard" className="sign-in-form-input">
+              <Input
+                name="password"
+                onChange={this.inputHandler}
+                value={this.state.password}
+                id="input-with-icon-adornment"
+                sx={{ padding: '7px' }}
+                type={this.state.showPassword ? 'text' : 'password'}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <Lock />
+                  </InputAdornment>
+                }
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={this.handleClickShowPassword}
+                      onMouseDown={this.handleMouseDownPassword}
+                      edge="end">
+                      {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                placeholder="Password"
+              />
+            </FormControl>
 
-          <FormControl variant="standard" className="sign-in-form-input">
-            <Input
-              name="repassword"
-              onChange={this.inputHandler}
-              value={this.state.repassword}
-              id="input-with-icon-adornment"
-              sx={{ padding: '7px' }}
-              type={this.state.showRepassword ? 'text' : 'password'}
-              startAdornment={
-                <InputAdornment position="start">
-                  <Lock />
-                </InputAdornment>
-              }
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={this.handleClickShowRepassword}
-                    onMouseDown={this.handleMouseDownPassword}
-                    edge="end">
-                    {this.state.showRepassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              placeholder="Re-enter Password"
-            />
-          </FormControl>
-
-          <FormControlLabel control={<Checkbox />} label="Agree to Terms & Conditions" className="sign-in-form-check" />
-
+            <FormControl variant="standard" className="sign-in-form-input">
+              <Input
+                name="repassword"
+                onChange={this.inputHandler}
+                value={this.state.repassword}
+                id="input-with-icon-adornment"
+                sx={{ padding: '7px' }}
+                type={this.state.showRepassword ? 'text' : 'password'}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <Lock />
+                  </InputAdornment>
+                }
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={this.handleClickShowRepassword}
+                      onMouseDown={this.handleMouseDownPassword}
+                      edge="end">
+                      {this.state.showRepassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                placeholder="Re-enter Password"
+              />
+            </FormControl>
+          </div>
           <Button
-            sx={{ borderRadius: '20px', backgroundColor: 'black' }}
+            sx={{ borderRadius: '20px', backgroundColor: 'black', marginTop: '45px' }}
             variant="contained"
             className="sign-in-form-button">
-            Sign up
+            Create Password
           </Button>
-
-          <div className='"sign-in-form-forgot'>*</div>
         </div>
-      </div>
+      </Container>
     );
   }
 }
