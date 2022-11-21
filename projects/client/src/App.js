@@ -50,6 +50,7 @@ class App extends React.Component {
         <Footer />
 =======
         <Route component={SignIn} path="/sign-in" />
+        <Route component={ForgotPassword} path="/forgot-password" />
         <Route component={SignUp} path="/sign-up" />
         <Route component={CreatePassword} path="/create-password" />
         <Route component={MyOrder} path="/my-order" />

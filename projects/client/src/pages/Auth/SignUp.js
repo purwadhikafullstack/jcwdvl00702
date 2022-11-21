@@ -7,9 +7,18 @@ import {
   Input,
   FormControl,
   IconButton,
+<<<<<<< HEAD
   Container,
 } from '@mui/material';
 import { Email, Person } from '@mui/icons-material';
+=======
+  InputLabel,
+  FilledInput,
+  Container,
+} from '@mui/material';
+import { Email, Lock, Visibility, Person, AccountCircle } from '@mui/icons-material';
+import { FacebookLoginButton, TwitterLoginButton, GoogleLoginButton } from 'react-social-login-buttons';
+>>>>>>> f2d24fa3 (Feature MWA-41: Rev.2)
 import { Link } from 'react-router-dom';
 
 import '../../assets/styles/SignIn.css';
