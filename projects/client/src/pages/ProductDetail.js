@@ -3,10 +3,12 @@ import "../assets/styles/productDetail.css"
 import {useState,useEffect,useContext} from "react"
 import {ArrowBack,FavoriteBorder,StarHalf} from "@mui/icons-material"
 import {Link} from "react-router-dom"
+import {Container} from '@mui/material'
 
 export default function ProductDetail(){
     return(
-        <div className="product-wrapper">
+        <div className="pd-wrap">
+        <Container maxWidth="xs" className="container-product-detail">
             <div className="product-img">
                 {/* <Link><ArrowBack/></Link> */}
                 <ArrowBack/>
@@ -69,6 +71,7 @@ export default function ProductDetail(){
                     </div>
                 </div>
             </div>
+        </Container>
         </div>
     )
 }
