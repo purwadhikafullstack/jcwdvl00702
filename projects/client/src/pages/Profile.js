@@ -8,25 +8,23 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
+import Container from '@mui/material/Container'
 
 
 class Profile extends React.Component {
     render(){
         return(
-            <div className="page">
-                <div className="widhtPage">
-                <div className="pageTitle"> 
-                 <h3 className="pageName"><ArrowBackIcon/> Back to Home Page</h3>
-               </div>
-               <hr className="shareHr"/>
-                  <div className="profileUserImgA">
+          <Container maxWidth="xs">
+             <div className="profilePage">
+            <div className="backPage"><ArrowBackIcon/>  Homepage</div>
+            <div className="profilePic">
                     <img
                     className="profileUserImg"
                     src="https://media.istockphoto.com/id/1309328823/photo/headshot-portrait-of-smiling-male-employee-in-office.jpg?b=1&s=170667a&w=0&k=20&c=MRMqc79PuLmQfxJ99fTfGqHL07EDHqHLWg0Tb4rPXQc="
                     alt=""
                     />
-                 </div>
-                 <div className="profilebar">
+            </div>
+            <div className="profilebar">
       <div className="profileWrapper">
         <ul className="profileList">
           <li className="profileListItem">
@@ -40,65 +38,30 @@ class Profile extends React.Component {
         </ul>
       </div>
     </div>
-    <hr className="shareHr"/>
-
-    <div className="editOption">
-    <div className="editProfile">
-            <div className="editContent">
-              <div className="logo">
-              <EditIcon  />
+            <div className="profileOption">
+              <button className="optionBtn">
+                <EditIcon/>
+                <span className="optionBtnText">Edit Profile</span>
+                <ArrowForwardIosIcon/>
+              </button>
+              <button className="optionBtn">
+              <EditIcon/>
+                <span className="optionBtnText">Edit Password</span>
+              <ArrowForwardIosIcon/>
+              </button>
+              <button className="optionBtn">
+              <ShoppingCartIcon/>
+                <span className="optionBtnText">Your Cart</span>
+              <ArrowForwardIosIcon/>
+              </button>
+              <button className="optionBtn">
+              <LocationOnIcon/>
+                <span className="optionBtnText">address List</span>
+              <ArrowForwardIosIcon/>
+              </button>
               </div>
-              <div className="description">
-                 <h6>Edit Profile</h6>
-             </div>
-              <div className="editDirection">
-               <ArrowForwardIosIcon/>
-              </div>
-            </div>
-    </div>
-    <div className="editProfile">
-            <div className="editContent">
-              <div className="logo">
-              <EditIcon  />
-              </div>
-              <div className="description">
-                 <h6>Edit Password</h6>
-             </div>
-              <div className="editDirection">
-               <ArrowForwardIosIcon/>
-              </div>
-            </div>
-    </div>
-    </div>
-           <hr className="shareHr"/>
-           <div className="editProfile">
-            <div className="editContent">
-              <div className="logo">
-              <ShoppingCartIcon  />
-              </div>
-              <div className="description">
-                 <h6>Your Cart</h6>
-             </div>
-              <div className="editDirection">
-               <ArrowForwardIosIcon/>
-              </div>
-            </div>
            </div>
-           <div className="editProfile">
-            <div className="editContent">
-              <div className="logo">
-              <LocationOnIcon  />
-              </div>
-              <div className="description">
-                 <h6>Address List</h6>
-             </div>
-              <div className="editDirection">
-               <ArrowForwardIosIcon/>
-              </div>
-            </div>
-           </div>
-                </div>
-            </div>
+          </Container>
         )
     }
 }
