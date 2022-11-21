@@ -1,22 +1,22 @@
-import React from 'react';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 
-import SignIn from './Pages/Auth/SignIn';
-import SignUp from './Pages/Auth/SignUp';
-import CreatePassword from './Pages/Auth/CreatePassword';
-import MyOrder from './Pages/MyOrder';
-import ProductDetail from './Pages/ProductDetail';
-import ChangePassword from './Pages/Auth/PasswordChange/ChangePassword';
-import ResetPassword from './Pages/Auth/PasswordChange/ResetPassword';
-import Profile from './Pages/Profile'
-import EditProfile from './Pages/EditProfile';
-import Footer from "./components/Footer"
-import HomePage from "./Pages/HomePage"
-import ProductLists from "./Pages/ProductLists"
-import ChooseShipping from "./Pages/ChooseShipping"
-import ForgotPassword from "./Pages/Auth/ForgotPassword"
-import AddressList from "./Pages/AddressList";
-import NewAddress from "./Pages/NewAddress";
+import SignIn from "./pages/Auth/SignIn";
+import SignUp from "./pages/Auth/SignUp";
+import CreatePassword from "./pages/Auth/CreatePassword";
+import MyOrder from "./pages/MyOrder";
+import ProductDetail from "./pages/ProductDetail";
+import ChangePassword from "./pages/Auth/PasswordChange/ChangePassword";
+import ResetPassword from "./pages/Auth/PasswordChange/ResetPassword";
+import Profile from "./pages/Profile";
+import EditProfile from "./pages/EditProfile";
+import Footer from "./components/Footer";
+import HomePage from "./pages/HomePage";
+import ProductLists from "./pages/ProductLists";
+import ChooseShipping from "./pages/ChooseShipping";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
+import AddressList from "./pages/AddressList";
+import NewAddress from "./pages/NewAddress";
 
 class App extends React.Component {
   render() {
