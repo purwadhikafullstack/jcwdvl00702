@@ -1,5 +1,5 @@
 .profilePage{
-  /* max-width: 320px; */
+  max-width: 320px;
   position: relative;
   margin: auto;
   height: 100vh;
@@ -17,7 +17,6 @@
   padding-top: 30px;
   height: 15%;
   align-self: flex-start;
-  /* margin-bottom: 50px; */
 }
 
 
