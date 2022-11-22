@@ -4,6 +4,7 @@ import {Button, ButtonGroup} from "@mui/material"
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
+import "../assets/styles/cart.css"
 
 
 class Cart extends React.Component{
