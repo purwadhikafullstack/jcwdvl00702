@@ -46,37 +46,37 @@ class MyOrder extends React.Component {
     if (status === '1') {
       return (
         <Box className="moc-detail-status-1" sx={{ backgroundColor: 'rgb(255,165,0,0.4)' }}>
-          Menunggu pembayaran
+          Waiting for payment
         </Box>
       );
     } else if (status === '2') {
       return (
         <Box className="moc-detail-status-2" sx={{ backgroundColor: 'rgb(255,215,0,0.4)' }}>
-          Menunggu konfirmasi
+          Payment confirmation
         </Box>
       );
     } else if (status === '3') {
       return (
         <Box className="moc-detail-status-3" sx={{ backgroundColor: 'rgb(152,251,152,0.4)' }}>
-          Dalam proses
+          In process
         </Box>
       );
     } else if (status === '4') {
       return (
         <Box className="moc-detail-status-4" sx={{ backgroundColor: 'rgba(127, 255, 212, 0.4)' }}>
-          Dalam pengiriman
+          In delivery
         </Box>
       );
     } else if (status === '5') {
       return (
         <Box className="moc-detail-status-5" sx={{ backgroundColor: 'rgb(72,209,204,0.4)' }}>
-          Pesanan diterima
+          Received
         </Box>
       );
     } else {
       return (
         <Box className="moc-detail-status-6" sx={{ backgroundColor: 'rgb(220,20,60,0.4)' }}>
-          Pesanan dibatalkan
+          Canceled
         </Box>
       );
     }
@@ -94,7 +94,8 @@ class MyOrder extends React.Component {
         </div>
         <div className="moc-detail">
           <div className="moc-detail-name">Kocheng Kochengan Lucu Aja</div>
-          <div className="moc-detail-subname">Si Belang | Cat | Male | 29 ekor</div>
+          <div className="moc-detail-subname">+ 12 other items</div>
+          <div className="moc-detail-subname">Purchase date : 21-11-2022</div>
           {this.mocDetailStatus(status)}
           <div className="moc-detail-bottom">
             <div className="moc-detail-bottom-price">Rp. 7.250.000 ,-</div>
@@ -191,11 +192,9 @@ class MyOrder extends React.Component {
                       {this.myOrderCard('1')}
                       {this.myOrderCard('2')}
                       {this.myOrderCard('3')}
-                      {/* {this.myOrderCard('4')}
-                      {this.myOrderCard('5')}
-                      {this.myOrderCard('6')} */}
+                      {this.myOrderCard('4')}
 
-                      <Stack spacing={1} sx={{ width: '110%', fontFamily: 'Lora' }}>
+                      <Stack spacing={1} sx={{ position: 'fixed', top: '80%', width: '110%', fontFamily: 'Lora' }}>
                         <Pagination count={10} />
                       </Stack>
                     </TabPanel>
@@ -217,14 +216,10 @@ class MyOrder extends React.Component {
                 {this.state.isOrderComplete ? (
                   <>
                     <TabPanel value="2">
-                      {/* {this.myOrderCard('1')}
-                      {this.myOrderCard('2')}
-                      {this.myOrderCard('3')} */}
-                      {this.myOrderCard('4')}
                       {this.myOrderCard('5')}
                       {this.myOrderCard('6')}
 
-                      <Stack spacing={1} sx={{ width: '110%', fontFamily: 'Lora' }}>
+                      <Stack spacing={1} sx={{ position: 'fixed', top: '80%', width: '110%', fontFamily: 'Lora' }}>
                         <Pagination count={10} />
                       </Stack>
                     </TabPanel>
