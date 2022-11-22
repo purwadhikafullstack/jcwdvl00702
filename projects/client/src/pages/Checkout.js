@@ -1,10 +1,12 @@
 import React from "react";
+import "../assets/styles/checkout.css"
 import { Container } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit"
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+
 
 
 class Checkout extends React.Component{

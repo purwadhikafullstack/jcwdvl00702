@@ -1,4 +1,5 @@
 import React from "react";
+import "../assets/styles/cart.css"
 import { Container } from "@mui/material";
 import {Button, ButtonGroup} from "@mui/material"
 import IconButton from '@mui/material/IconButton';
