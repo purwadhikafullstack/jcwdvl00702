@@ -5,6 +5,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import "../assets/styles/checkout.css"
 
 
 class Checkout extends React.Component{
