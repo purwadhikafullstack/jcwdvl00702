@@ -13,5 +13,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
+  Shipping.associate = (models) => {
+    Shipping.hasOne(models.Order, { foreignKey: "shipping_id" });
+  };
   return Shipping;
 };

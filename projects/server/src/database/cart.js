@@ -17,8 +17,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  // Cart.associate = (models) => {
-  //   Cart.hasOne(models.Order, { foreignKey: "cart_id" });
-  // };
+  Cart.associate = (models) => {
+    Cart.hasOne(models.Order, { foreignKey: "cart_id" });
+    Cart.hasMany(models.Product, { foreignKey: "cart_id" });
+  };
   return Cart;
 };

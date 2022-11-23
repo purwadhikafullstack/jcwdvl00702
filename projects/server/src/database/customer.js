@@ -41,10 +41,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  // Customer.associate = (models) => {
-  //   Customer.hasOne(models.Address, { foreignKey: "user_id" });
-  //   Customer.hasOne(models.Cart, { foreignKey: "user_id" });
-  //   Customer.hasOne(models.Order, { foreignKey: "user_id" });
-  // };
+  Customer.associate = (models) => {
+    Customer.hasMany(models.Address, { foreignKey: "user_id" });
+    Customer.hasOne(models.Cart, { foreignKey: "user_id" });
+    Customer.hasOne(models.Order, { foreignKey: "user_id" });
+  };
   return Customer; //user
 };

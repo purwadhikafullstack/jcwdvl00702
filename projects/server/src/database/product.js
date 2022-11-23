@@ -34,8 +34,23 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
+      cart_id: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      orderitem_id: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      history_id: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
     },
     {}
   );
+  Product.associate = (models) => {
+    Product.hasMany(models.Warehouse, { foreignKey: "product_id" });
+  };
   return Product;
 };

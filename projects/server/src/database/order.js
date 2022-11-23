@@ -33,9 +33,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  // Order.associate = (models) => {
-  //   Order.hasOne(models.Sales, { foreignKey: "order_id" });
-  //   Order.hasOne(models.Order2, { foreignKey: "order_id" });
-  // };
+  Order.associate = (models) => {
+    Order.hasOne(models.Sales, { foreignKey: "order_id" });
+    Order.hasOne(models.Orderitem, { foreignKey: "order_id" });
+    Order.hasOne(models.History, { foreignKey: "order_id" });
+  };
   return Order;
 };

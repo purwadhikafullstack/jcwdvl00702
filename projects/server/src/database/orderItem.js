@@ -21,5 +21,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
+  Orderitem.associate = (models) => {
+    Orderitem.hasOne(models.Transaction, { foreignKey: "orderitem_id" });
+    Orderitem.hasMany(models.Product, { foreignKey: "orderitem_id" });
+  };
   return Orderitem;
 };
