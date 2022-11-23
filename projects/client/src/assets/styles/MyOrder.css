@@ -8,13 +8,13 @@ div {
 .my-order-main {
   position: relative;
   margin: auto;
-  /* height: 82.1vh; */
-  height: 86vh;
+  height: 83vh;
+  /* height: 87vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-left: 10px;
-  padding-right: 10px;
+  /* padding-left: 10px; */
+  /* padding-right: 10px; */
 }
 
 .my-order-banner {
@@ -31,7 +31,7 @@ div {
 }
 
 .my-order-banner-search {
-  margin-left: 135px;
+  margin-left: 155px;
 }
 
 .my-order-search {

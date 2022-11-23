@@ -5,6 +5,7 @@ import SignIn from './pages/Auth/SignIn';
 import SignUp from './pages/Auth/SignUp';
 import CreatePassword from './pages/Auth/CreatePassword';
 import MyOrder from './pages/MyOrder';
+import Dashboard from './pages/Admin/Dashboard';
 import ProductDetail from './pages/ProductDetail';
 import ChangePassword from './pages/Auth/PasswordChange/ChangePassword';
 import ResetPassword from './pages/Auth/PasswordChange/ResetPassword';
@@ -14,7 +15,6 @@ import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import ProductLists from './pages/ProductLists';
 import ChooseShipping from './pages/ChooseShipping';
-import ForgotPassword from './pages/Auth/ForgotPassword';
 import AddressList from './pages/AddressList';
 import NewAddress from './pages/NewAddress';
 import Cart from './pages/Cart';
@@ -29,6 +29,8 @@ class App extends React.Component {
           <Route component={SignUp} path="/sign-up" />
           <Route component={CreatePassword} path="/create-password" />
           <Route component={MyOrder} path="/my-order" />
+          <Route component={Dashboard} path="/dashboard" />
+
           <Route component={ProductDetail} path="/product-detail" />
           <Route component={ProductLists} path="/product-list" />
           <Route component={AddressList} path="/address-list" />

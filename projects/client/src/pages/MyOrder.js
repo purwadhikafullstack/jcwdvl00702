@@ -194,7 +194,7 @@ class MyOrder extends React.Component {
                       {this.myOrderCard('3')}
                       {this.myOrderCard('4')}
 
-                      <Stack spacing={1} sx={{ position: 'fixed', top: '80%', width: '110%', fontFamily: 'Lora' }}>
+                      <Stack spacing={1} sx={{ position: 'fixed', top: '78%', width: '110%', fontFamily: 'Lora' }}>
                         <Pagination count={10} />
                       </Stack>
                     </TabPanel>
@@ -219,7 +219,7 @@ class MyOrder extends React.Component {
                       {this.myOrderCard('5')}
                       {this.myOrderCard('6')}
 
-                      <Stack spacing={1} sx={{ position: 'fixed', top: '80%', width: '110%', fontFamily: 'Lora' }}>
+                      <Stack spacing={1} sx={{ position: 'fixed', top: '78%', width: '110%', fontFamily: 'Lora' }}>
                         <Pagination count={10} />
                       </Stack>
                     </TabPanel>
