@@ -1,6 +1,20 @@
 import React from 'react';
-import { Button, InputAdornment, Input, FormControl, Container } from '@mui/material';
-import { Email } from '@mui/icons-material';
+import {
+  TextField,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
+  Button,
+  InputAdornment,
+  Input,
+  Box,
+  FormControl,
+  IconButton,
+  InputLabel,
+  FilledInput,
+  Container,
+} from '@mui/material';
+import { Email, Lock, Visibility, Person, AccountCircle } from '@mui/icons-material';
 
 import '../../assets/styles/SignIn.css';
 
