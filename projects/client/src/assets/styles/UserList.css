@@ -1,11 +1,10 @@
 @import url(https://fonts.googleapis.com/css?family=Lora);
 
-body,
-div {
+body {
   font-family: 'Lora', serif;
 }
 
-.my-order-main {
+.userlist-main {
   position: relative;
   margin: auto;
   height: 83vh;
@@ -15,24 +14,33 @@ div {
   align-items: center;
 }
 
-.my-order-banner {
+.userlist-banner {
   width: 100%;
   display: flex;
   flex-direction: row;
+  align-items: center;
   margin-top: 15px;
 }
 
-.my-order-banner-text {
+.userlist-banner-text {
   font-size: 20px;
-  padding-top: 6px;
+  padding-top: 2px;
   margin-left: 5px;
 }
 
-.my-order-banner-search {
-  margin-left: 155px;
+.userlist-banner-search {
+  margin-left: 135px;
 }
 
-.my-order-search {
+.userlist-banner-add {
+}
+
+.userlist-banner-menu-link {
+  color: black;
+  text-decoration: none;
+}
+
+.userlist-search {
   display: flex;
   flex-direction: row;
   height: 33px;
@@ -42,45 +50,12 @@ div {
   background-color: rgb(234, 234, 234);
 }
 
-.my-order-tab {
-  margin-top: 0px;
+.userlist-content {
+  margin-top: 20px;
 }
 
-.my-order-og {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-
-.my-order-og-logo {
-  height: 180px;
-  margin-top: 100px;
-}
-
-.my-order-og-text-1 {
-  font-size: larger;
-  text-align: center;
-  font-weight: bold;
-  margin-top: 25px;
-}
-
-.my-order-og-text-2 {
-  font-size: medium;
-  text-align: center;
-  color: grey;
-  margin-top: 15px;
-}
-
-.my-order-c {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-
-.moc-main {
-  width: 100%;
+.ulc-main {
+  width: 350px;
   height: 150px;
   /* border: 1px darkgray solid; */
   background-color: rgba(211, 211, 211, 0.19);
@@ -93,41 +68,43 @@ div {
   flex-direction: row;
 }
 
-.moc-image {
+.ulc-image {
   height: 140px;
   border-radius: 10px;
   margin-top: 2.5px;
+  width: 110px;
 }
 
-.moc-product {
+.ulc-product {
   height: 140px;
   border-radius: 10px;
 }
 
-.moc-detail {
+.ulc-detail {
   margin-left: 10px;
   display: flex;
   flex-direction: column;
+  width: 240px;
 }
 
-.moc-detail.name {
+.ulc-detail.name {
   height: 40%;
   font-size: 12px;
   font-weight: bolder;
 }
 
-.moc-detail-subname {
+.ulc-detail-subname {
   height: 15%;
   font-size: 10px;
   color: grey;
 }
 
-.moc-detail-status-1,
-.moc-detail-status-2,
-.moc-detail-status-3,
-.moc-detail-status-4,
-.moc-detail-status-5,
-.moc-detail-status-6 {
+.ulc-detail-status-1,
+.ulc-detail-status-2,
+.ulc-detail-status-3,
+.ulc-detail-status-4,
+.ulc-detail-status-5,
+.ulc-detail-status-6 {
   margin-top: 3px;
   font-size: 8px;
   text-align: center;
@@ -137,20 +114,18 @@ div {
   border-radius: 20px;
 }
 
-.moc-detail-bottom {
+.ulc-detail-bottom {
   height: 30%;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-evenly;
   font-size: 10px;
+  margin-top: 5px;
 }
 
-.moc-detail-bottom-price {
-  margin-top: 9px;
-  font-size: 12px;
-}
-
-.moc-detail-bottom-track {
+.ulc-detail-bottom-delete,
+.ulc-detail-bottom-edit,
+.ulc-detail-bottom-detail {
   height: 80%;
   width: 65px;
   font-size: 8px;

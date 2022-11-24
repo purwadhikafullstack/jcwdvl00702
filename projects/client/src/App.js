@@ -6,6 +6,9 @@ import SignUp from './pages/Auth/SignUp';
 import CreatePassword from './pages/Auth/CreatePassword';
 import MyOrder from './pages/MyOrder';
 import Dashboard from './pages/Admin/Dashboard';
+import UserList from './pages/Admin/UserList';
+import DetailUser from './pages/Admin/DetailUser';
+
 import ProductDetail from './pages/ProductDetail';
 import ChangePassword from './pages/Auth/PasswordChange/ChangePassword';
 import ResetPassword from './pages/Auth/PasswordChange/ResetPassword';
@@ -30,6 +33,8 @@ class App extends React.Component {
           <Route component={CreatePassword} path="/create-password" />
           <Route component={MyOrder} path="/my-order" />
           <Route component={Dashboard} path="/dashboard" />
+          <Route component={UserList} path="/user-list" />
+          <Route component={DetailUser} path="/detail-user" />
 
           <Route component={ProductDetail} path="/product-detail" />
           <Route component={ProductLists} path="/product-list" />

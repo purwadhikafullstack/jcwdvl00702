@@ -7,7 +7,7 @@ body {
 .dashboard-main {
   display: flex;
   flex-direction: column;
-  height: 82.1vh;
+  height: 83vh;
   /* width: 110%; */
 }
 
@@ -15,6 +15,7 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-top: 8px;
 }
 
 .dashboard-top-avatar {
