@@ -1,17 +1,5 @@
 import React from 'react';
-import {
-  Checkbox,
-  FormControlLabel,
-  Button,
-  InputAdornment,
-  Input,
-  FormControl,
-  IconButton,
-  Container,
-  Avatar,
-  Menu,
-  MenuItem,
-} from '@mui/material';
+import { IconButton, Container, Avatar, Menu, MenuItem } from '@mui/material';
 import {
   AccountBox,
   Logout,
@@ -25,6 +13,7 @@ import {
   ReceiptLong,
   ManageSearch,
   Work,
+  Sell,
 } from '@mui/icons-material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
@@ -64,8 +53,13 @@ class Dashboard extends React.Component {
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/products-management" className="userlist-banner-menu-link">
-                  Products Mng.
+                <Link to="/admin-product-list" className="userlist-banner-menu-link">
+                  Product List
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                <Link to="/admin-product-category" className="userlist-banner-menu-link">
+                  Product Category
                 </Link>
               </MenuItem>
               <MenuItem>
@@ -169,7 +163,15 @@ class Dashboard extends React.Component {
                 <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
                   <Ballot />
                 </IconButton>
-                <div className="d-b-icon-text">Products Management</div>
+                <div className="d-b-icon-text">Product List</div>
+              </div>
+              <div classname="d-b-icon" style={{ margin: '10px' }}>
+                <Link to="/admin-product-category">
+                  <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
+                    <Sell />
+                  </IconButton>
+                </Link>
+                <div className="d-b-icon-text">Product Category</div>
               </div>
               <div classname="d-b-icon" style={{ margin: '10px' }}>
                 <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>

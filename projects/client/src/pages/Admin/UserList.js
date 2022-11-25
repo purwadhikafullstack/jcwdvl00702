@@ -1,14 +1,9 @@
 import React from 'react';
 import {
-  Checkbox,
-  FormControlLabel,
   Button,
   InputAdornment,
-  Input,
-  FormControl,
   IconButton,
   Container,
-  Avatar,
   Menu,
   MenuItem,
   ClickAwayListener,
@@ -16,22 +11,7 @@ import {
   Stack,
   Pagination,
 } from '@mui/material';
-import {
-  AccountBox,
-  Logout,
-  NotificationsOutlined,
-  MoreHoriz,
-  People,
-  Warehouse,
-  Ballot,
-  Inventory,
-  ContentPaste,
-  ReceiptLong,
-  ManageSearch,
-  Work,
-  Search,
-  PersonAdd,
-} from '@mui/icons-material';
+import { MoreHoriz, People, Search, PersonAdd } from '@mui/icons-material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
 import { Link } from 'react-router-dom';
@@ -78,8 +58,13 @@ class UserList extends React.Component {
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/products-management" className="userlist-banner-menu-link">
-                  Products Mng.
+                <Link to="/admin-product-list" className="userlist-banner-menu-link">
+                  Product List
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                <Link to="/admin-product-category" className="userlist-banner-menu-link">
+                  Product Category
                 </Link>
               </MenuItem>
               <MenuItem>

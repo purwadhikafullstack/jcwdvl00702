@@ -1,36 +1,6 @@
 import React from 'react';
+import { Button, IconButton, Container } from '@mui/material';
 import {
-  Checkbox,
-  FormControlLabel,
-  Button,
-  InputAdornment,
-  Input,
-  FormControl,
-  IconButton,
-  Container,
-  Avatar,
-  Menu,
-  MenuItem,
-  ClickAwayListener,
-  InputBase,
-  Stack,
-  Pagination,
-} from '@mui/material';
-import {
-  AccountBox,
-  Logout,
-  NotificationsOutlined,
-  MoreHoriz,
-  People,
-  Warehouse,
-  Ballot,
-  Inventory,
-  ContentPaste,
-  ReceiptLong,
-  ManageSearch,
-  Work,
-  Search,
-  PersonAdd,
   ArrowBack,
   Person,
   Email,
@@ -41,23 +11,24 @@ import {
   VerifiedUser,
   Lock,
 } from '@mui/icons-material';
-import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
 import { Link } from 'react-router-dom';
 
 import '../../assets/styles/DetailUser.css';
 
 class DetailUser extends React.Component {
+  goBack = () => {
+    this.props.history.goBack();
+  };
+
   render() {
     return (
       <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
         <div className="detailuser-main">
           <div className="detailuser-banner">
-            <Link to="/user-list">
-              <IconButton>
-                <ArrowBack />
-              </IconButton>
-            </Link>
+            <IconButton onClick={this.goBack}>
+              <ArrowBack />
+            </IconButton>
             <div className="detailuser-banner-text">User Detail</div>
             <Button
               sx={{

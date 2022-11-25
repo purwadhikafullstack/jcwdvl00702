@@ -8,6 +8,7 @@ import MyOrder from './pages/MyOrder';
 import Dashboard from './pages/Admin/Dashboard';
 import UserList from './pages/Admin/UserList';
 import DetailUser from './pages/Admin/DetailUser';
+import AddUser from './pages/Admin/AddUser';
 
 import ProductDetail from './pages/ProductDetail';
 import ChangePassword from './pages/Auth/PasswordChange/ChangePassword';
@@ -22,6 +23,7 @@ import AddressList from './pages/AddressList';
 import NewAddress from './pages/NewAddress';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
+import AdminProductCategory from './pages/Admin/AdminProductCategory';
 
 class App extends React.Component {
   render() {
@@ -35,6 +37,8 @@ class App extends React.Component {
           <Route component={Dashboard} path="/dashboard" />
           <Route component={UserList} path="/user-list" />
           <Route component={DetailUser} path="/detail-user" />
+          <Route component={AddUser} path="/add-user" />
+          <Route component={AdminProductCategory} path="/admin-product-category" />
 
           <Route component={ProductDetail} path="/product-detail" />
           <Route component={ProductLists} path="/product-list" />
