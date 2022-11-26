@@ -53,12 +53,12 @@ class Dashboard extends React.Component {
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/admin-product-list" className="userlist-banner-menu-link">
+                <Link to="/products-management-list" className="userlist-banner-menu-link">
                   Product List
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/admin-product-category" className="userlist-banner-menu-link">
+                <Link to="/products-management-category" className="userlist-banner-menu-link">
                   Product Category
                 </Link>
               </MenuItem>
@@ -160,13 +160,15 @@ class Dashboard extends React.Component {
                 <div className="d-b-icon-text">Warehouse Management</div>
               </div>
               <div classname="d-b-icon" style={{ margin: '10px' }}>
-                <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
-                  <Ballot />
-                </IconButton>
+                <Link to="/products-management-list">
+                  <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
+                    <Ballot />
+                  </IconButton>
+                </Link>
                 <div className="d-b-icon-text">Product List</div>
               </div>
               <div classname="d-b-icon" style={{ margin: '10px' }}>
-                <Link to="/admin-product-category">
+                <Link to="/products-management-category">
                   <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
                     <Sell />
                   </IconButton>

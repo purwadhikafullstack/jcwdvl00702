@@ -4,7 +4,7 @@ body {
   font-family: 'Lora', serif;
 }
 
-.userlist-main {
+.pladmin-main {
   position: relative;
   margin: auto;
   height: 83vh;
@@ -14,7 +14,7 @@ body {
   align-items: center;
 }
 
-.userlist-banner {
+.pladmin-banner {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -22,25 +22,25 @@ body {
   margin-top: 15px;
 }
 
-.userlist-banner-text {
+.pladmin-banner-text {
   font-size: 20px;
   padding-top: 2px;
   margin-left: 5px;
 }
 
-.userlist-banner-search {
+.pladmin-banner-search {
   margin-left: 135px;
 }
 
-.userlist-banner-add {
+.pladmin-banner-add {
 }
 
-.userlist-banner-menu-link {
+.pladmin-banner-menu-link {
   color: black;
   text-decoration: none;
 }
 
-.userlist-search {
+.pladmin-search {
   display: flex;
   flex-direction: row;
   height: 33px;
@@ -50,11 +50,11 @@ body {
   background-color: rgb(234, 234, 234);
 }
 
-.userlist-content {
+.pladmin-content {
   margin-top: 20px;
 }
 
-.ulc-main {
+.plc-main {
   width: 350px;
   height: 150px;
   /* border: 1px darkgray solid; */
@@ -68,65 +68,61 @@ body {
   flex-direction: row;
 }
 
-.ulc-image {
+.plc-image {
   height: 140px;
   border-radius: 10px;
   margin-top: 2.5px;
   width: 110px;
 }
 
-.ulc-product {
+.plc-product {
   height: 140px;
   border-radius: 10px;
 }
 
-.ulc-detail {
+.plc-detail {
   margin-left: 10px;
   display: flex;
   flex-direction: column;
   width: 240px;
 }
 
-.ulc-detail.name {
-  height: 40%;
-  font-size: 12px;
+.plc-detail-name {
+  font-size: 18px;
   font-weight: bolder;
 }
 
-.ulc-detail-subname {
-  height: 15%;
-  font-size: 10px;
+.plc-detail-subname {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+
+.plc-detail-subname-1 {
+  font-size: 8px;
   color: grey;
 }
 
-.ulc-detail-status-1,
-.ulc-detail-status-2,
-.ulc-detail-status-3,
-.ulc-detail-status-4,
-.ulc-detail-status-5,
-.ulc-detail-status-6 {
-  margin-top: 3px;
-  font-size: 8px;
-  text-align: center;
-  padding: 5px;
-  width: 93px;
-  height: 13px;
-  border-radius: 20px;
+.plc-detail-subname-2 {
+  font-size: 10px;
+  color: grey;
+  margin-left: 5px;
+  margin-top: 5px;
 }
 
-.ulc-detail-bottom {
+.plc-detail-bottom {
   height: 30%;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   font-size: 10px;
-  margin-top: 5px;
+  margin-top: 15px;
   margin-left: 60px;
 }
 
-.ulc-detail-bottom-delete,
-.ulc-detail-bottom-edit,
-.ulc-detail-bottom-detail {
+.plc-detail-bottom-delete,
+.plc-detail-bottom-edit,
+.plc-detail-bottom-detail {
   height: 80%;
   width: 65px;
   font-size: 8px;

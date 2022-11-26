@@ -9,6 +9,9 @@ import Dashboard from './pages/Admin/Dashboard';
 import UserList from './pages/Admin/UserList';
 import DetailUser from './pages/Admin/DetailUser';
 import AddUser from './pages/Admin/AddUser';
+import ProductCategory from './pages/Admin/ProductCategory';
+import ProductListAdmin from './pages/Admin/ProductListAdmin';
+import ProductDetailAdmin from './pages/Admin/ProductDetailAdmin';
 
 import ProductDetail from './pages/ProductDetail';
 import ChangePassword from './pages/Auth/PasswordChange/ChangePassword';
@@ -23,7 +26,6 @@ import AddressList from './pages/AddressList';
 import NewAddress from './pages/NewAddress';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
-import AdminProductCategory from './pages/Admin/AdminProductCategory';
 
 class App extends React.Component {
   render() {
@@ -38,7 +40,9 @@ class App extends React.Component {
           <Route component={UserList} path="/user-list" />
           <Route component={DetailUser} path="/detail-user" />
           <Route component={AddUser} path="/add-user" />
-          <Route component={AdminProductCategory} path="/admin-product-category" />
+          <Route component={ProductCategory} path="/products-management-category" />
+          <Route component={ProductListAdmin} path="/products-management-list" />
+          <Route component={ProductDetailAdmin} path="/products-management-detail" />
 
           <Route component={ProductDetail} path="/product-detail" />
           <Route component={ProductLists} path="/product-list" />

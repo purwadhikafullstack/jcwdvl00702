@@ -15,13 +15,13 @@ import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
 import { Link } from 'react-router-dom';
 
-import '../../assets/styles/AdminProductCategory.css';
+import '../../assets/styles/ProductCategory.css';
 
-class AdminProductCategory extends React.Component {
+class ProductCategory extends React.Component {
   state = {
-    isEdit: false,
     setIcon: 0,
     setAdd: false,
+    editedIndex: '',
   };
 
   inputHandler = (event) => {
@@ -30,12 +30,12 @@ class AdminProductCategory extends React.Component {
     this.setState({ [name]: value });
   };
 
-  isEditHandle = () => {
-    this.setState({ ...this.state, isEdit: true });
+  isEditHandle = (index) => {
+    this.setState({ ...this.state, editedIndex: index });
   };
 
   isEditHandleClose = () => {
-    this.setState({ ...this.state, isEdit: false });
+    this.setState({ ...this.state, editedIndex: '' });
   };
 
   handleIconChange = (event) => {
@@ -77,12 +77,12 @@ class AdminProductCategory extends React.Component {
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/admin-product-list" className="apc-banner-menu-link">
+                <Link to="/products-management-list" className="apc-banner-menu-link">
                   Product List
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/admin-product-category" className="apc-banner-menu-link">
+                <Link to="/products-management-category" className="apc-banner-menu-link">
                   Product Category
                 </Link>
               </MenuItem>
@@ -118,10 +118,10 @@ class AdminProductCategory extends React.Component {
     );
   };
 
-  categoryCard = (icon, text) => {
+  categoryCard = (icon, text, index) => {
     return (
       <div className="apc-card">
-        {this.state.isEdit ? (
+        {this.state.editedIndex === index ? (
           <>
             <Select
               labelId="demo-simple-select-label"
@@ -154,14 +154,12 @@ class AdminProductCategory extends React.Component {
                 <FitnessCenterOutlined />
               </MenuItem>
             </Select>
-
             <InputBase
               sx={{ ml: 1, width: '200px', border: '1px solid grey' }}
               placeholder={text}
               inputProps={{ 'aria-label': 'Search' }}
               className="apc-card-input"
             />
-
             <Button
               sx={{
                 borderRadius: '20px',
@@ -204,7 +202,7 @@ class AdminProductCategory extends React.Component {
               }}
               variant="contained"
               className="apc-card-edit"
-              onClick={this.isEditHandle}>
+              onClick={() => this.isEditHandle(index)}>
               Edit
             </Button>
           </>
@@ -221,15 +219,15 @@ class AdminProductCategory extends React.Component {
             <IconButton disabled>
               <Sell />
             </IconButton>
-            <div className="apc-banner-text">Product Categories</div>
+            <div className="apc-banner-text">Product Category</div>
             <div className="apc-banner-menu">{this.menuHandler()}</div>
           </div>
           <div className="apc-content">
-            {this.categoryCard(<SportsSoccerOutlined />, 'Sports')}
-            {this.categoryCard(<BusinessCenterOutlined />, 'Bags')}
-            {this.categoryCard(<DirectionsBikeOutlined />, 'Bikes')}
-            {this.categoryCard(<HikingOutlined />, 'Sportswear')}
-            {this.categoryCard(<HandymanOutlined />, 'Accessories')}
+            {this.categoryCard(<SportsSoccerOutlined />, 'Sports', 0)}
+            {this.categoryCard(<BusinessCenterOutlined />, 'Bags', 1)}
+            {this.categoryCard(<DirectionsBikeOutlined />, 'Bikes', 2)}
+            {this.categoryCard(<HikingOutlined />, 'Sportswear', 3)}
+            {this.categoryCard(<HandymanOutlined />, 'Accessories', 4)}
           </div>
 
           <button className="apc-add" onClick={this.addOpen}>
@@ -314,4 +312,4 @@ class AdminProductCategory extends React.Component {
   }
 }
 
-export default AdminProductCategory;
+export default ProductCategory;

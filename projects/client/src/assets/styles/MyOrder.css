@@ -110,9 +110,9 @@ div {
   flex-direction: column;
 }
 
-.moc-detail.name {
+.moc-detail-name {
   height: 40%;
-  font-size: 12px;
+  font-size: 18px;
   font-weight: bolder;
 }
 

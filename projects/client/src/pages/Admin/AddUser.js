@@ -2,8 +2,6 @@ import React from 'react';
 import { IconButton, Container, FormControl, Input, InputAdornment } from '@mui/material';
 import { ArrowBack, Person, Email, Lock, AddAPhoto, Visibility, VisibilityOff } from '@mui/icons-material';
 
-import { Link } from 'react-router-dom';
-
 import '../../assets/styles/AddUser.css';
 import '../../assets/styles/DetailUser.css';
 
