@@ -45,7 +45,7 @@ class SignUp extends React.Component {
           .then(() => {
             alert("Mohon verifikasi email anda");
             firebaseAuthentication.signOut();
-            this.props.history.push("/login");
+            this.props.history.push("/reset-password");
           })
           .catch((error) => {
             alert(error.message);

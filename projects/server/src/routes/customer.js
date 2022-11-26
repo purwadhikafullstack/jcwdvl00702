@@ -53,4 +53,22 @@ router.post("/register-social", async (req, res) => {
   }
 });
 
+//LOGIN
+router.post("/login", async (req, res) => {
+  try {
+    const customer = await Customer.findOne({ email: req.body.email });
+    !customer && res.status(404).json("customer not found");
+
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      customer.password
+    );
+    !validPassword && res.status(400).json("wrong password");
+
+    res.status(200).json(customer);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;

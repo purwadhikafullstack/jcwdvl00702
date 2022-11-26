@@ -16,6 +16,11 @@ import {
   GoogleLoginButton,
 } from "react-social-login-buttons";
 import { Link } from "react-router-dom";
+import {
+  firebaseAuthentication,
+  googleProvider,
+  facebookProvider,
+} from "../../config/firebase.js";
 
 import "../../assets/styles/SignIn.css";
 
@@ -33,27 +38,35 @@ class SignIn extends React.Component {
     this.setState({ [name]: value });
   };
 
-  // submitHandler = (event) => {
-  //   event.preventDefault();
-  //   const { email, password } = this.state;
-  //   firebaseAuthentication
-  //     .createUserWithEmailAndPassword(email, password)
-  //     .then((res) => {
-  //       firebaseAuthentication.currentUser
-  //         .sendEmailVerification()
-  //         .then(() => {
-  //           alert("Mohon verifikasi email anda");
-  //           firebaseAuthentication.signOut();
-  //           this.props.history.push("/login");
-  //         })
-  //         .catch((error) => {
-  //           alert(error.message);
-  //         });
-  //     })
-  //     .catch((err) => {
-  //       alert(err.message);
-  //     });
-  // };
+  submitHandler = (event) => {
+    event.preventDefault();
+    const { email, password } = this.state;
+    firebaseAuthentication
+      .signInWithEmailAndPassword(email, password)
+      .then((res) => {
+        console.log(res);
+        if (res.user.emailVerified) {
+          this.props.history.push("/home");
+        } else {
+          alert("Verifikasi email anda terlebih dahulu!");
+          firebaseAuthentication.signOut();
+        }
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  };
+
+  handleLoginWithGoogle = () => {
+    firebaseAuthentication
+      .signInWithPopup(googleProvider)
+      .then(() => {
+        this.props.history.push("/home");
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  };
 
   handleClickShowPassword = () => {
     this.setState({
@@ -139,6 +152,7 @@ class SignIn extends React.Component {
                   sx={{ borderRadius: "20px", backgroundColor: "black" }}
                   variant="contained"
                   className="sign-in-form-button"
+                  onClick={this.submitHandler}
                 >
                   Sign in
                 </Button>
@@ -179,7 +193,7 @@ class SignIn extends React.Component {
                     </IconButton>
                   </div>
                   <div classname="sign-in-social-2-g">
-                    <IconButton>
+                    <IconButton onClick={this.handleLoginWithGoogle}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         x="0px"
@@ -252,7 +266,7 @@ class SignIn extends React.Component {
                   <div classname="sign-in-social-2-g">
                     <GoogleLoginButton
                       style={{ fontSize: "16px" }}
-                      onClick={() => alert("Hello")}
+                      onClick={this.handleLoginWithGoogle}
                     />
                   </div>
                   <div classname="sign-in-social-2-a">
