@@ -128,13 +128,13 @@ export default function ProductDetailAdmin() {
         <div className="pdadmin-stock-name">Warehouse {name}</div>
         <div className="pdadmin-stock-qty">20 pcs</div>
         <div className="pdadmin-stock-edit">
-          <InputBase sx={{ fontFamily: 'Lora' }} placeholder="0" className="pdadmin-stock-text" />
+          <div className="pdadmin-stock-text">Add</div>
           <IconButton className="pdadmin-stock-add">
             <Add />
           </IconButton>
         </div>
         <div className="pdadmin-stock-edit">
-          <InputBase sx={{ fontFamily: 'Lora' }} placeholder="0" className="pdadmin-stock-text" />
+          <div className="pdadmin-stock-text">Decrease</div>
           <IconButton className="pdadmin-stock-decrease">
             <Remove />
           </IconButton>

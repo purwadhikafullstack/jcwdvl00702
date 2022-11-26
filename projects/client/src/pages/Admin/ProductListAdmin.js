@@ -253,7 +253,7 @@ class ProductListAdmin extends React.Component {
               </>
             )}
             <div className="pladmin-banner-add">
-              <Link to="/products-management-add">
+              <Link to="/add-user">
                 <IconButton>
                   <AddBox />
                 </IconButton>
