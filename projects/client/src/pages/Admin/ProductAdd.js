@@ -1,8 +1,12 @@
 import Axios from 'axios';
 import { useState } from 'react';
 import {
+  Add,
   ArrowBack,
+  FavoriteBorder,
+  Remove,
   SportsSoccerOutlined,
+  StarHalf,
   BusinessCenterOutlined,
   DirectionsBikeOutlined,
   HikingOutlined,
@@ -10,8 +14,8 @@ import {
   MonitorHeartOutlined,
   FitnessCenterOutlined,
 } from '@mui/icons-material';
-import { useHistory } from 'react-router-dom';
-import { Container, Button, IconButton, InputBase, Select, MenuItem, TextField } from '@mui/material';
+import { Link, useHistory } from 'react-router-dom';
+import { Container, Button, IconButton, InputBase, Select, MenuItem, Box, TextField } from '@mui/material';
 import '../../assets/styles/ProductAdd.css';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
