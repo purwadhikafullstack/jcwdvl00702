@@ -1,3 +1,5 @@
+const { BOOLEAN } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   const Customer = sequelize.define(
     "customer",
@@ -13,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         allowNull: false,
         type: DataTypes.STRING,
+        unique: true,
       },
       password: {
         allowNull: false,
@@ -35,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       is_banned: {
+        allowNull: false,
+        type: DataTypes.BOOLEAN,
+      },
+      social_login: {
         allowNull: false,
         type: DataTypes.BOOLEAN,
       },
