@@ -4,12 +4,13 @@ body {
   font-family: 'Lora', serif;
 }
 
-.pdadmin-main {
+.pdadd-main {
   background-color: white;
   height: auto;
+  border: 1px solid pink;
 }
 
-.pdadmin-banner {
+.pdadd-banner {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -17,61 +18,63 @@ body {
   margin-top: 15px;
 }
 
-.pdadmin-img {
-  max-height: 500px;
-  width: 100%;
+.pdadd-img {
+  height: 256px;
+  width: 89%;
   margin-top: 10px;
-  /* border: 1px solid pink; */
+  margin-left: 20px;
+  border: 1px solid lightgray;
 }
 
-.pdadmin-detail {
+.pdadd-img-button {
+  margin-top: 100px;
+  margin-left: 130px;
+}
+
+.pdadd-detail {
   padding-left: 20px;
   padding-right: 20px;
   margin-top: 10px;
 }
 
-.pdadmin-desc-1 {
+.pdadd-desc-1 {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 }
 
-.pdadmin-desc-name {
+.pdadd-desc-name {
   font-weight: 600;
   font-size: 30px;
   margin-top: 20px;
 }
 
-.pdadmin-desc-name-input {
-  height: 38px;
+.pdadd-desc-name-input {
+  height: 30px;
   background-color: white;
   width: 100%;
-  border: 1px solid lightgray;
-  padding-left: 5px;
 }
 
-.pdadmin-desc-title-2 {
+.pdadd-desc-title-2 {
   margin-top: 5px;
-  height: 38px;
   display: flex;
   flex-direction: row;
   align-items: center;
   color: grey;
 }
-.pdadmin-desc-title-2-input {
-  margin-top: 5px;
+.pdadd-desc-title-2-input {
+  margin-top: 30px;
 }
 
-.pdadmin-desc-title-2-input-select {
+.pdadd-desc-title-2-input-select {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-content: center;
-  /* margin-top: 5px; */
 }
 
-.pdadmin-desc-title-3 {
+.pdadd-desc-title-3 {
   margin-left: 5px;
   font-size: 14px;
   color: grey;
@@ -81,56 +84,56 @@ hr {
   color: rgb(227, 225, 225);
 }
 
-.pdadmin-desc {
+.pdadd-desc {
 }
 
-.pdadmin-desc-1 {
+.pdadd-desc-1 {
   font-weight: 500;
   font-size: 18px;
 }
 
-.pdadmin-desc-2 {
+.pdadd-desc-2 {
   margin-top: 10px;
   font-size: 12px;
 }
 
-.pdadmin-pricing {
+.pdadd-pricing {
   display: flex;
   flex-direction: row;
   margin-top: 10px;
 }
 
-.pdadmin-price-title {
+.pdadd-price-title {
   color: rgb(146, 146, 146);
   font-size: 15px;
   margin-top: 9px;
   margin-right: 10px;
 }
 
-.pdadmin-price {
+.pdadd-price {
   font-weight: 500;
   font-size: 30px;
 }
 
-.pdadmin-price-input {
+.pdadd-price-input {
   display: flex;
   flex: row;
   align-items: center;
 }
 
-.pdadmin-price-input-1 {
+.pdadd-price-input-1 {
   font-weight: 500;
   font-size: 30px;
 }
 
-.pdadmin-price-input-2 {
+.pdadd-price-input-2 {
   margin-left: 3px;
   border: 1px solid lightgray;
   padding-left: 5px;
 }
 
-.pdadmin-stock {
-  padding-left: 10px;
+.pdadd-stock {
+  padding-left: 20px;
   padding-right: 10px;
   display: flex;
   flex-direction: column;
@@ -138,36 +141,36 @@ hr {
   margin-top: 20px;
 }
 
-.pdadmin-stock-wh {
+.pdadd-stock-wh {
   display: flex;
   flex-direction: row;
   align-items: center;
   margin-bottom: 10px;
 }
 
-.pdadmin-stock-name {
-  width: 114px;
+.pdadd-stock-name {
+  width: 250px;
   font-size: 12px;
   font-weight: bolder;
 }
 
-.pdadmin-stock-qty {
+.pdadd-stock-qty {
   font-size: 12px;
-  width: 80px;
+  width: 100px;
   text-align: center;
 }
 
-.pdadmin-stock-add {
+.pdadd-stock-add {
 }
 
-.pdadmin-stock-decrease {
+.pdadd-stock-decrease {
 }
 
-.pdadmin-stock-text {
+.pdadd-stock-text {
   /* font-size: 8px; */
 }
 
-.pdadmin-stock-edit {
+.pdadd-stock-edit {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -177,4 +180,48 @@ hr {
   padding: 3px;
   margin-left: 3px;
   border-radius: 5px;
+}
+
+.pdadd-stock-qty {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.pdadd-stock-qty-input {
+  margin-left: 3px;
+  border: 1px solid lightgray;
+  padding-left: 5px;
+  font-size: 12px;
+  margin-right: 5px;
+}
+
+.pdadd-button {
+  margin-top: 30px;
+  width: 100%;
+  margin-left: 85px;
+  margin-bottom: 30px;
+}
+
+.pdadd-button-2 {
+  border: 1px solid black;
+  background-color: black;
+  padding: 13px 45px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 16px;
+  color: white;
+  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+}
+
+.pdadd-button-2:hover {
+  cursor: pointer;
+  background-color: rgb(29, 27, 27);
+}
+
+.pdadd-button-2:active {
+  cursor: pointer;
+  color: black;
+  background-color: transparent;
+  margin: 1px solid black;
 }

@@ -180,7 +180,7 @@ class ProductListAdmin extends React.Component {
               </>
             ) : (
               <>
-                <div className="pladmin-banner-text">User List</div>
+                <div className="pladmin-banner-text">Products List</div>
                 <div className="pladmin-banner-search">
                   <IconButton onClick={this.isSearchHandle}>
                     <Search />
@@ -189,7 +189,7 @@ class ProductListAdmin extends React.Component {
               </>
             )}
             <div className="pladmin-banner-add">
-              <Link to="/add-user">
+              <Link to="/products-management-add">
                 <IconButton>
                   <AddBox />
                 </IconButton>

@@ -12,6 +12,7 @@ import AddUser from './pages/Admin/AddUser';
 import ProductCategory from './pages/Admin/ProductCategory';
 import ProductListAdmin from './pages/Admin/ProductListAdmin';
 import ProductDetailAdmin from './pages/Admin/ProductDetailAdmin';
+import ProductAdd from './pages/Admin/ProductAdd';
 
 import ProductDetail from './pages/ProductDetail';
 import ChangePassword from './pages/Auth/PasswordChange/ChangePassword';
@@ -43,6 +44,7 @@ class App extends React.Component {
           <Route component={ProductCategory} path="/products-management-category" />
           <Route component={ProductListAdmin} path="/products-management-list" />
           <Route component={ProductDetailAdmin} path="/products-management-detail" />
+          <Route component={ProductAdd} path="/products-management-add" />
 
           <Route component={ProductDetail} path="/product-detail" />
           <Route component={ProductLists} path="/product-list" />

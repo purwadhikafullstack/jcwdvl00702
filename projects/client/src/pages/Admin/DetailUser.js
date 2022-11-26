@@ -17,6 +17,18 @@ import { Link } from 'react-router-dom';
 import '../../assets/styles/DetailUser.css';
 
 class DetailUser extends React.Component {
+  state = {
+    isEdit: false,
+  };
+
+  editHandler = () => {
+    this.setState({ ...this.state, isEdit: true });
+  };
+
+  saveHandler = () => {
+    this.setState({ ...this.state, isEdit: false });
+  };
+
   goBack = () => {
     this.props.history.goBack();
   };
@@ -30,33 +42,67 @@ class DetailUser extends React.Component {
               <ArrowBack />
             </IconButton>
             <div className="detailuser-banner-text">User Detail</div>
-            <Button
-              sx={{
-                borderRadius: '20px',
-                backgroundColor: 'rgb(255,153,153,0.9)',
-                fontSize: '8px',
-                fontFamily: 'Lora',
-                color: 'black',
-                marginRight: '5px',
-              }}
-              variant="contained"
-              className="detailuser-banner-delete">
-              Delete
-            </Button>
-            <Link to="/edit-user" className="userlist-banner-menu-link">
-              <Button
-                sx={{
-                  borderRadius: '20px',
-                  backgroundColor: 'rgb(255,204,153,0.9)',
-                  fontSize: '8px',
-                  fontFamily: 'Lora',
-                  color: 'black',
-                }}
-                variant="contained"
-                className="detailuser-banner-edit">
-                Edit
-              </Button>
-            </Link>
+
+            {this.state.isEdit ? (
+              <>
+                <Button
+                  disabled
+                  sx={{
+                    borderRadius: '20px',
+                    backgroundColor: 'rgb(255,153,153,0.9)',
+                    fontSize: '8px',
+                    fontFamily: 'Lora',
+                    color: 'black',
+                    marginRight: '5px',
+                  }}
+                  variant="contained"
+                  className="detailuser-banner-delete">
+                  Delete
+                </Button>
+                <Button
+                  sx={{
+                    borderRadius: '20px',
+                    backgroundColor: 'rgb(153,255,255,0.9)',
+                    fontSize: '8px',
+                    fontFamily: 'Lora',
+                    color: 'black',
+                  }}
+                  variant="contained"
+                  onClick={this.saveHandler}
+                  className="detailuser-banner-edit">
+                  Save
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  sx={{
+                    borderRadius: '20px',
+                    backgroundColor: 'rgb(255,153,153,0.9)',
+                    fontSize: '8px',
+                    fontFamily: 'Lora',
+                    color: 'black',
+                    marginRight: '5px',
+                  }}
+                  variant="contained"
+                  className="detailuser-banner-delete">
+                  Delete
+                </Button>
+                <Button
+                  sx={{
+                    borderRadius: '20px',
+                    backgroundColor: 'rgb(255,204,153,0.9)',
+                    fontSize: '8px',
+                    fontFamily: 'Lora',
+                    color: 'black',
+                  }}
+                  variant="contained"
+                  onClick={this.editHandler}
+                  className="detailuser-banner-edit">
+                  Edit
+                </Button>
+              </>
+            )}
           </div>
           <div className="detailuser-content">
             <div className="detailuser-content-avatar">
