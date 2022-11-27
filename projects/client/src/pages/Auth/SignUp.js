@@ -11,6 +11,10 @@ import {
 } from '@mui/material';
 import { Email, Person } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import {
+  firebaseAuthentication,
+  googleProvider,
+  facebookProvider} from '../../config/firebase.js'
 
 import '../../assets/styles/SignIn.css';
 
@@ -18,6 +22,7 @@ class SignUp extends React.Component {
   state = {
     email: '',
     fullname: '',
+    password:'dummyPassword',
     isCheck: false,
   };
 
@@ -26,6 +31,48 @@ class SignUp extends React.Component {
     const name = event.target.name;
     this.setState({ [name]: value });
   };
+
+  submitHandler = (event) => {
+    event.preventDefault();
+        const {email, password} = this.state
+        firebaseAuthentication.createUserWithEmailAndPassword(email, password)
+        .then(res=>{
+            firebaseAuthentication.currentUser.sendEmailVerification()
+            .then(()=>{
+                alert('Mohon verifikasi email anda');
+                firebaseAuthentication.signOut();
+                this.props.history.push('/login');
+            })
+            .catch((error)=>{
+                alert(error.message)
+            })
+        })
+        .catch(err=>{
+            alert(err.message)
+        })
+
+  }
+
+  handleLoginWithGoogle = () =>{
+    firebaseAuthentication.signInWithPopup(googleProvider)
+    .then(()=>{
+        this.props.history.push('/home')
+    })
+    .catch(error=>{
+        alert(error.message)
+    })
+}
+
+handleLoginWithFacebook = () =>{
+  firebaseAuthentication.signInWithPopup(facebookProvider)
+  .then(()=>{
+      this.props.history.push('/home')
+  })
+  .catch(error=>{
+      alert(error.message)
+  })
+}
+
 
   render() {
     return (
@@ -87,7 +134,8 @@ class SignUp extends React.Component {
               sx={{ borderRadius: '20px', backgroundColor: 'black' }}
               variant="contained"
               disabled={!this.state.isCheck ? true : false}
-              className="sign-in-form-button">
+              className="sign-in-form-button"
+              onCLick={this.submitHandler}>
               Sign up
             </Button>
           </div>
@@ -95,7 +143,7 @@ class SignUp extends React.Component {
             <div className="sign-in-social-1">or continue with</div>
             <div classname="sign-in-social-2" style={{ display: 'flex', flexDirection: 'row', marginLeft: '82px' }}>
               <div classname="sign-in-social-2-fb">
-                <IconButton>
+                <IconButton onClick={this.handleLoginWithFacebook}>
                   <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48" height="48" viewBox="0 0 48 48">
                     <path fill="#039be5" d="M24 5A19 19 0 1 0 24 43A19 19 0 1 0 24 5Z"></path>
                     <path
@@ -105,7 +153,7 @@ class SignUp extends React.Component {
                 </IconButton>
               </div>
               <div classname="sign-in-social-2-g">
-                <IconButton>
+                <IconButton onClick={this.handleLoginWithGoogle}>
                   <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48" height="48" viewBox="0 0 48 48">
                     <path
                       fill="#FFC107"
