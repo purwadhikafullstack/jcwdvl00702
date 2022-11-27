@@ -28,6 +28,7 @@ class MyOrder extends React.Component {
     isOrderOg: false,
     status: '',
     isSearch: false,
+    isAdmin: true,
   };
 
   handleChange = (event, value) => {
@@ -169,6 +170,22 @@ class MyOrder extends React.Component {
                         <img src="https://img.icons8.com/windows/24/null/sort-numeric-up-reversed.png" />
                         Recent
                       </MenuItem>
+                      {this.state.isAdmin ? (
+                        <>
+                          <MenuItem>
+                            <img src="https://img.icons8.com/ios/24/null/garage-closed.png" />
+                            Warehouse A
+                          </MenuItem>
+                          <MenuItem>
+                            <img src="https://img.icons8.com/ios/24/null/garage-closed.png" />
+                            Warehouse B
+                          </MenuItem>
+                          <MenuItem>
+                            <img src="https://img.icons8.com/ios/24/null/garage-closed.png" />
+                            Warehouse C
+                          </MenuItem>
+                        </>
+                      ) : null}
                     </Menu>
                   </React.Fragment>
                 )}
