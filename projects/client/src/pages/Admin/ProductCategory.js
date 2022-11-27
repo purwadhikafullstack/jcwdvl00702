@@ -301,7 +301,7 @@ class ProductCategory extends React.Component {
                 }}
                 variant="contained"
                 className="apc-card-edit"
-                onClick={this.isEditHandleClose}>
+                onClick={this.addClose}>
                 Add
               </Button>
             </Box>
