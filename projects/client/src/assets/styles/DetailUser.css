@@ -1,0 +1,159 @@
+@import url(https://fonts.googleapis.com/css?family=Lora);
+
+body {
+  font-family: 'Lora', serif;
+}
+
+.detailuser-main {
+  position: relative;
+  margin: auto;
+  height: auto;
+  /* height: 83vh; */
+  /* height: 87vh; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.detailuser-banner {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.detailuser-banner-text {
+  font-size: 20px;
+  padding-top: 2px;
+  margin-left: 5px;
+  width: 205px;
+}
+
+.detailuser-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.detailuser-content-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: 98px;
+  border: 3px solid white;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.detailuser-content-avatar-edit {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: 98px;
+  border: 3px solid white;
+  margin-bottom: 10px;
+  /* margin-top: 20px; */
+}
+
+.detailuser-content-detail {
+  background-color: white;
+  margin-top: 15px;
+  /* position: sticky; */
+  width: 340px;
+  /* height: 180px; */
+  height: auto;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+  box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+  margin-bottom: 20px;
+  padding: 15px;
+}
+
+.du-c-d-data {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.du-c-d-item {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 5px;
+  align-items: center;
+}
+
+.du-c-d-item-1 {
+  color: darkgray;
+  font-size: 10px;
+  width: 80px;
+}
+
+.du-c-d-item-2 {
+  font-size: 12px;
+  position: absolute;
+  left: 150px;
+}
+
+.du-c-d-item-2-select {
+  position: absolute;
+  left: 2px;
+}
+
+.du-c-d-item-2-input {
+  position: absolute;
+  left: 2px;
+  width: 200px;
+  border: 1px solid lightgray;
+  border-radius: 3px;
+  padding-left: 5px;
+}
+
+.detailuser-content-option {
+  margin-top: 10px;
+  margin-left: 35px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.du-c-o {
+  border: 1px solid rgb(90, 86, 86);
+  background-color: white;
+  width: 300px;
+  height: 50px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 16px;
+  color: black;
+  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.du-c-o:hover {
+  cursor: pointer;
+  background-color: rgb(233, 224, 224);
+}
+
+.du-c-o:active {
+  background-color: black;
+  cursor: pointer;
+  color: white;
+  margin: 1px solid black;
+}
+
+.du-c-o-text {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.du-c-o-button {
+  text-decoration: none;
+  color: black;
+}
