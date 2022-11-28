@@ -1,0 +1,180 @@
+@import url(https://fonts.googleapis.com/css?family=Lora);
+
+body {
+  font-family: 'Lora', serif;
+}
+
+.pdadmin-main {
+  background-color: white;
+  height: auto;
+}
+
+.pdadmin-banner {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.pdadmin-img {
+  max-height: 500px;
+  width: 100%;
+  margin-top: 10px;
+  /* border: 1px solid pink; */
+}
+
+.pdadmin-detail {
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 10px;
+}
+
+.pdadmin-desc-1 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pdadmin-desc-name {
+  font-weight: 600;
+  font-size: 30px;
+  margin-top: 20px;
+}
+
+.pdadmin-desc-name-input {
+  height: 38px;
+  background-color: white;
+  width: 100%;
+  border: 1px solid lightgray;
+  padding-left: 5px;
+}
+
+.pdadmin-desc-title-2 {
+  margin-top: 5px;
+  height: 38px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: grey;
+}
+.pdadmin-desc-title-2-input {
+  margin-top: 5px;
+}
+
+.pdadmin-desc-title-2-input-select {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  /* margin-top: 5px; */
+}
+
+.pdadmin-desc-title-3 {
+  margin-left: 5px;
+  font-size: 14px;
+  color: grey;
+}
+
+hr {
+  color: rgb(227, 225, 225);
+}
+
+.pdadmin-desc {
+}
+
+.pdadmin-desc-1 {
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.pdadmin-desc-2 {
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.pdadmin-pricing {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+
+.pdadmin-price-title {
+  color: rgb(146, 146, 146);
+  font-size: 15px;
+  margin-top: 9px;
+  margin-right: 10px;
+}
+
+.pdadmin-price {
+  font-weight: 500;
+  font-size: 30px;
+}
+
+.pdadmin-price-input {
+  display: flex;
+  flex: row;
+  align-items: center;
+}
+
+.pdadmin-price-input-1 {
+  font-weight: 500;
+  font-size: 30px;
+}
+
+.pdadmin-price-input-2 {
+  margin-left: 3px;
+  border: 1px solid lightgray;
+  padding-left: 5px;
+}
+
+.pdadmin-stock {
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.pdadmin-stock-wh {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.pdadmin-stock-name {
+  width: 114px;
+  font-size: 12px;
+  font-weight: bolder;
+}
+
+.pdadmin-stock-qty {
+  font-size: 12px;
+  width: 80px;
+  text-align: center;
+}
+
+.pdadmin-stock-add {
+}
+
+.pdadmin-stock-decrease {
+}
+
+.pdadmin-stock-text {
+  /* font-size: 8px; */
+}
+
+.pdadmin-stock-edit {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 80px;
+  justify-content: space-evenly;
+  border: 1px solid grey;
+  padding: 3px;
+  margin-left: 3px;
+  border-radius: 5px;
+}
