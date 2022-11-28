@@ -21,7 +21,7 @@ import {
   googleProvider,
   facebookProvider,
 } from "../../config/firebase.js";
-
+import Axios from "axios";
 import "../../assets/styles/SignIn.css";
 
 class SignIn extends React.Component {
@@ -46,7 +46,7 @@ class SignIn extends React.Component {
       .then((res) => {
         console.log(res);
         if (res.user.emailVerified) {
-          this.props.history.push("/home");
+          this.props.history.push("/");
         } else {
           alert("Verifikasi email anda terlebih dahulu!");
           firebaseAuthentication.signOut();
@@ -61,7 +61,18 @@ class SignIn extends React.Component {
     firebaseAuthentication
       .signInWithPopup(googleProvider)
       .then(() => {
-        this.props.history.push("/home");
+        this.props.history.push("/");
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  };
+
+  handleLoginWithFacebook = () => {
+    firebaseAuthentication
+      .signInWithPopup(facebookProvider)
+      .then(() => {
+        this.props.history.push("/");
       })
       .catch((error) => {
         alert(error.message);
@@ -75,7 +86,7 @@ class SignIn extends React.Component {
     });
   };
 
-  handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+  handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
@@ -172,7 +183,7 @@ class SignIn extends React.Component {
                   }}
                 >
                   <div classname="sign-in-social-2-fb">
-                    <IconButton>
+                    <IconButton onClick={this.handleLoginWithFacebook}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         x="0px"
@@ -260,7 +271,7 @@ class SignIn extends React.Component {
                   <div classname="sign-in-social-2-fb">
                     <FacebookLoginButton
                       style={{ fontSize: "16px" }}
-                      onClick={() => alert("Hello")}
+                      onClick={this.handleLoginWithFacebook}
                     />
                   </div>
                   <div classname="sign-in-social-2-g">

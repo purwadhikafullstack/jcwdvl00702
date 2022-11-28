@@ -44,8 +44,8 @@ class SignUp extends React.Component {
           .sendEmailVerification()
           .then(() => {
             alert("Mohon verifikasi email anda");
-            // firebaseAuthentication.signOut();
-            // this.props.history.push("/reset-password");
+            firebaseAuthentication.signOut();
+            this.props.history.push("/");
           })
           .catch((error) => {
             alert(error.message);
@@ -151,11 +151,32 @@ class SignUp extends React.Component {
   handleLoginWithFacebook = () => {
     firebaseAuthentication
       .signInWithPopup(facebookProvider)
-      .then(() => {
-        this.props.history.push("/home");
+      .then((result) => {
+        /** @type {firebase.auth.OAuthCredential} */
+        var credential = result.credential;
+
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        var token = credential.accessToken;
+        // The signed-in user info.
+        var user = result.user;
+
+        const data = {
+          email: user.email,
+          fullname: user.displayName,
+          is_verified: user.emailVerified,
+        };
+
+        return data;
       })
       .catch((error) => {
-        alert(error.message);
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // The email of the user's account used.
+        var email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        var credential = error.credential;
+        // ...
       });
   };
 

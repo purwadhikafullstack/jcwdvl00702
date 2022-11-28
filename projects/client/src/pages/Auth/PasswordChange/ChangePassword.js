@@ -4,8 +4,11 @@ import { useState, useEffect, useContext, useRef } from "react";
 import { ArrowBack, Email } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
+import { AuthContext } from "../../../context/AuthProvider";
 
 export default function ChangePassword() {
+  const { user } = useContext(AuthContext);
+  console.log(user);
   const email = useRef();
 
   const submitHandler = (event) => {

@@ -27,6 +27,7 @@ import AddressList from "./pages/AddressList";
 import NewAddress from "./pages/NewAddress";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import HomeFunc from "./pages/HomeFunc";
 import { AuthProvider } from "./context/AuthProvider";
 
 class App extends React.Component {
@@ -56,7 +57,6 @@ class App extends React.Component {
               path="/products-management-detail"
             />
             <Route component={ProductAdd} path="/products-management-add" />
-
             <Route component={ProductDetail} path="/product-detail" />
             <Route component={ProductLists} path="/product-list" />
             <Route component={AddressList} path="/address-list" />
@@ -68,7 +68,8 @@ class App extends React.Component {
             <Route component={ChooseShipping} path="/choose-shipping" />
             <Route component={Cart} path="/cart" />
             <Route component={Checkout} path="/checkout" />
-            <Route component={HomePage} path="/" />
+            <Route component={HomeFunc} path="/" />
+            {/* <Route component={HomePage} path="/" /> */}
           </Switch>
           <Footer />
         </BrowserRouter>

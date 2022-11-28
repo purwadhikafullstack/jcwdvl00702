@@ -34,11 +34,13 @@ import firebase from "firebase";
 import { AuthContext } from "../context/AuthProvider";
 
 class HomePage extends React.Component {
+  static contextType = AuthContext;
+
   render() {
+    // this.context.setUser();
     const customer = firebase.auth().currentUser;
-    console.log(customer.email);
-    // const user = useContext(AuthContext);
-    // console.log(user);
+    console.log(customer?.email);
+    console.log(customer);
 
     const slideCarousels = [
       {
@@ -125,7 +127,7 @@ class HomePage extends React.Component {
 
               <div className="name-bar">
                 <div className="font-size">Welcome</div>
-                <div className="font-name">{customer.email}</div>
+                <div className="font-name"></div>
               </div>
               <div className="cart-icon">
                 <NotificationsOutlinedIcon />

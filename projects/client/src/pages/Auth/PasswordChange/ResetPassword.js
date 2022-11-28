@@ -4,8 +4,11 @@ import { useState, useEffect, useContext, useRef } from "react";
 import { ArrowBack, Visibility, Lock } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
+import { AuthContext } from "../../../context/AuthProvider";
 
 export default function ResetPassword() {
+  const { user } = useContext(AuthContext);
+  console.log(user);
   const password = useRef();
   const passwordAgain = useRef();
   const [passwordShown, setPasswordShown] = useState(false);
