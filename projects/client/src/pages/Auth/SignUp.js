@@ -44,15 +44,48 @@ class SignUp extends React.Component {
           .sendEmailVerification()
           .then(() => {
             alert("Mohon verifikasi email anda");
-            firebaseAuthentication.signOut();
-            this.props.history.push("/reset-password");
+            // firebaseAuthentication.signOut();
+            // this.props.history.push("/reset-password");
           })
           .catch((error) => {
             alert(error.message);
           });
+
+        var user = res.user;
+
+        const data = {
+          email: user.email,
+          password: this.state.password,
+          fullname: this.state.fullname,
+          is_verified: user.emailVerified,
+        };
+
+        return data;
       })
       .catch((err) => {
-        alert(err.message);
+        // alert(err.message);
+
+        // Handle Errors here.
+        var errorCode = err.code;
+        var errorMessage = err.message;
+        // The email of the user's account used.
+        var email = err.email;
+        // The firebase.auth.AuthCredential type that was used.
+        var credential = err.credential;
+        // ...
+      })
+
+      .then((data) => {
+        console.log("here", data);
+
+        Axios.post("http://localhost:3300/api/customer/register", data)
+          .then(() => {
+            return;
+          })
+          .catch((error) => {
+            console.log(error);
+            alert(error.response.data.errors[0].message);
+          });
       });
   };
 

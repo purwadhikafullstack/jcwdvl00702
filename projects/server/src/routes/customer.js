@@ -13,7 +13,7 @@ router.post("/register", async (req, res) => {
     const newCustomer = new Customer({
       email: req.body.email,
       password: hashedPassword,
-      is_verified: false,
+      is_verified: req.body.is_verified,
       is_banned: false,
       role: "user",
       fullname: req.body.fullname,
@@ -70,5 +70,8 @@ router.post("/login", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+//NEW REGISTER PASSWORD
+router.patch("/new-password", async (req, res) => {});
 
 module.exports = router;
