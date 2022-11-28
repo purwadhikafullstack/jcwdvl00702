@@ -24,6 +24,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
+import { Link } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Slide } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
@@ -33,10 +34,16 @@ import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 import firebase from "firebase";
 import { AuthContext } from "../context/AuthProvider";
 import { useState, useEffect, useContext, useRef } from "react";
+import { firebaseAuthentication } from "../config/firebase";
 
 export default function HomeFunc() {
   const { user } = useContext(AuthContext);
   console.log(user);
+
+  const handleLogout = () => {
+    firebaseAuthentication.signOut();
+    this.props.history.push("/sign-in");
+  };
 
   const slideCarousels = [
     {
@@ -112,7 +119,11 @@ export default function HomeFunc() {
                       Profile
                     </MenuItem>
                     <MenuItem onClick={popupState.close}>
-                      <LogoutIcon />
+                      <Link to="/sign-in">
+                        <button className="logout-btn" onClick={handleLogout}>
+                          <LogoutIcon />
+                        </button>
+                      </Link>
                       Sign Out
                     </MenuItem>
                   </Menu>
