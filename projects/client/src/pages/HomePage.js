@@ -1,6 +1,6 @@
-import "../assets/styles/HomePage.css"
-import * as React from "react"
-import Avatar from "@mui/material/Avatar"
+import "../assets/styles/HomePage.css";
+import * as React from "react";
+import Avatar from "@mui/material/Avatar";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
@@ -12,18 +12,36 @@ import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlin
 import DirectionsBikeOutlinedIcon from "@mui/icons-material/DirectionsBikeOutlined";
 import HikingOutlinedIcon from "@mui/icons-material/HikingOutlined";
 import HandymanOutlinedIcon from "@mui/icons-material/HandymanOutlined";
-import {Navbar, Nav, NavItem, NavLink, UncontrolledDropdown, DropdownToggle, NavbarBrand, NavbarText, DropdownMenu, DropdownItem} from 'reactstrap';
+import {
+  Navbar,
+  Nav,
+  NavItem,
+  NavLink,
+  UncontrolledDropdown,
+  DropdownToggle,
+  NavbarBrand,
+  NavbarText,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Slide } from "react-slideshow-image";
-import 'react-slideshow-image/dist/styles.css';
+import "react-slideshow-image/dist/styles.css";
 import "../assets/styles/ProductLists.css";
 import { Tooltip, Menu, MenuItem, Button, Container } from "@mui/material";
-import PopupState, {bindTrigger, bindMenu} from "material-ui-popup-state";
-
+import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
+import firebase from "firebase";
+import { AuthContext } from "../context/AuthProvider";
 
 class HomePage extends React.Component {
+  static contextType = AuthContext;
 
   render() {
+    // this.context.setUser();
+    const customer = firebase.auth().currentUser;
+    console.log(customer?.email);
+    console.log(customer);
+
     const slideCarousels = [
       {
         url: "https://www.state.gov/wp-content/uploads/2019/04/Japan-2107x1406.jpg",
@@ -109,7 +127,7 @@ class HomePage extends React.Component {
 
               <div className="name-bar">
                 <div className="font-size">Welcome</div>
-                <div className="font-name">Dean Febrius</div>
+                <div className="font-name"></div>
               </div>
               <div className="cart-icon">
                 <NotificationsOutlinedIcon />
@@ -186,4 +204,4 @@ class HomePage extends React.Component {
   }
 }
 
-export default HomePage
+export default HomePage;
