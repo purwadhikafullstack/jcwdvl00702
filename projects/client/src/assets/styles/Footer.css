@@ -1,29 +1,29 @@
 .footer-margin {
-    background-color: black;
-    color: white;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
+  background-color: black;
+  color: white;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  height: 140px;
 }
 
 .footer-data > a {
-    text-align: center;
-    text-decoration: none;
-    color: white;
-    margin: 5px;
-    font-size: 12px;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  margin: 5px;
+  font-size: 12px;
 }
 
-
 .footer-data > a:hover {
-    color: rgb(234, 234, 234);
+  color: rgb(234, 234, 234);
 }
 
 .copyright-word {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .logo-store {
-    color: white;
+  color: white;
 }

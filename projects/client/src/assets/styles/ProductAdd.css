@@ -1,0 +1,227 @@
+@import url(https://fonts.googleapis.com/css?family=Lora);
+
+body {
+  font-family: 'Lora', serif;
+}
+
+.pdadd-main {
+  background-color: white;
+  height: auto;
+  border: 1px solid pink;
+}
+
+.pdadd-banner {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.pdadd-img {
+  height: 256px;
+  width: 89%;
+  margin-top: 10px;
+  margin-left: 20px;
+  border: 1px solid lightgray;
+}
+
+.pdadd-img-button {
+  margin-top: 100px;
+  margin-left: 130px;
+}
+
+.pdadd-detail {
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 10px;
+}
+
+.pdadd-desc-1 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pdadd-desc-name {
+  font-weight: 600;
+  font-size: 30px;
+  margin-top: 20px;
+}
+
+.pdadd-desc-name-input {
+  height: 30px;
+  background-color: white;
+  width: 100%;
+}
+
+.pdadd-desc-title-2 {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: grey;
+}
+.pdadd-desc-title-2-input {
+  margin-top: 30px;
+}
+
+.pdadd-desc-title-2-input-select {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+}
+
+.pdadd-desc-title-3 {
+  margin-left: 5px;
+  font-size: 14px;
+  color: grey;
+}
+
+hr {
+  color: rgb(227, 225, 225);
+}
+
+.pdadd-desc {
+}
+
+.pdadd-desc-1 {
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.pdadd-desc-2 {
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.pdadd-pricing {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+
+.pdadd-price-title {
+  color: rgb(146, 146, 146);
+  font-size: 15px;
+  margin-top: 9px;
+  margin-right: 10px;
+}
+
+.pdadd-price {
+  font-weight: 500;
+  font-size: 30px;
+}
+
+.pdadd-price-input {
+  display: flex;
+  flex: row;
+  align-items: center;
+}
+
+.pdadd-price-input-1 {
+  font-weight: 500;
+  font-size: 30px;
+}
+
+.pdadd-price-input-2 {
+  margin-left: 3px;
+  border: 1px solid lightgray;
+  padding-left: 5px;
+}
+
+.pdadd-stock {
+  padding-left: 20px;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.pdadd-stock-wh {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.pdadd-stock-name {
+  width: 250px;
+  font-size: 12px;
+  font-weight: bolder;
+}
+
+.pdadd-stock-qty {
+  font-size: 12px;
+  width: 100px;
+  text-align: center;
+}
+
+.pdadd-stock-add {
+}
+
+.pdadd-stock-decrease {
+}
+
+.pdadd-stock-text {
+  /* font-size: 8px; */
+}
+
+.pdadd-stock-edit {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 80px;
+  justify-content: space-evenly;
+  border: 1px solid grey;
+  padding: 3px;
+  margin-left: 3px;
+  border-radius: 5px;
+}
+
+.pdadd-stock-qty {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.pdadd-stock-qty-input {
+  margin-left: 3px;
+  border: 1px solid lightgray;
+  padding-left: 5px;
+  font-size: 12px;
+  margin-right: 5px;
+}
+
+.pdadd-button {
+  margin-top: 30px;
+  width: 100%;
+  margin-left: 85px;
+  margin-bottom: 30px;
+}
+
+.pdadd-button-2 {
+  border: 1px solid black;
+  background-color: black;
+  padding: 13px 45px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 16px;
+  color: white;
+  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+}
+
+.pdadd-button-2:hover {
+  cursor: pointer;
+  background-color: rgb(29, 27, 27);
+}
+
+.pdadd-button-2:active {
+  cursor: pointer;
+  color: black;
+  background-color: transparent;
+  margin: 1px solid black;
+}

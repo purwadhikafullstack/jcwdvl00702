@@ -1,0 +1,95 @@
+@import url(https://fonts.googleapis.com/css?family=Lora);
+
+body {
+  font-family: 'Lora', serif;
+}
+
+.dashboard-main {
+  display: flex;
+  flex-direction: column;
+  height: 83vh;
+  /* width: 110%; */
+}
+
+.dashboard-top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.dashboard-top-avatar {
+  border: none;
+  color: transparent;
+  background-color: transparent;
+}
+
+.dashboard-top-avatar:hover {
+  cursor: pointer;
+}
+
+.dashboard-top-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-top-text-1 {
+  font-size: 12px;
+  text-align: start;
+  margin-left: 5px;
+}
+
+.dashboard-top-text-2 {
+  font-weight: bold;
+  font-size: 15px;
+  text-align: start;
+  margin-left: 5px;
+}
+
+.dashboard-top-icon {
+  margin-left: auto;
+  display: flex;
+  flex-direction: row;
+}
+
+hr {
+  border: 3px double cornflowerblue;
+}
+
+.dashboard-bottom {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.dashboard-bottom-text {
+  margin-bottom: 5px;
+  color: gray;
+}
+
+.d-b-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+}
+
+.d-b-icon-2 {
+  border: none;
+  transition: color 250ms ease-in-out;
+  border-radius: 50%;
+  padding: 5px;
+  width: 70px;
+  height: 70px;
+}
+
+.d-b-icon-2:hover {
+  cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(92, 107, 192, 0.2), 0px 2px 4px rgba(59, 69, 123, 0.2);
+}
+
+.d-b-icon-text {
+  font-size: 10px;
+  text-align: center;
+  width: 70px;
+}
