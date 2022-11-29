@@ -53,10 +53,7 @@ class SignIn extends React.Component {
         }
       })
       .catch((err) => {
-        var errorCode = err.code;
-        var errorMessage = err.message;
-        var email = err.email;
-        var credential = err.credential;
+        alert("Error when submitting data");
       });
   };
 

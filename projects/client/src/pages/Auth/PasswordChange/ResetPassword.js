@@ -14,8 +14,6 @@ export default function ResetPassword() {
   const [passwordShown, setPasswordShown] = useState(false);
   const [passwordShown2, setPasswordShown2] = useState(false);
   const [email, setEmail] = useState("");
-  //   const [inputPassword, setInputPassword] = useState("");
-  //   const [inputPassword2, setInputPassword2] = useState("");
 
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
@@ -24,11 +22,6 @@ export default function ResetPassword() {
   const togglePassword2 = () => {
     setPasswordShown2(!passwordShown2);
   };
-
-  //   const inputHandler = (event) => {
-  //     setInputPassword = event.target.value;
-  //     setInputPassword2 = event.target.value;
-  //   };
 
   const submitHandler = (event) => {
     event.preventDefault();

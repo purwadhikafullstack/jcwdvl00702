@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const Order = sequelize.define(
     "order",
     {
-      user_id: {
+      customer_uid: {
         allowNull: false,
         type: DataTypes.STRING,
       },

@@ -1,5 +1,3 @@
-const { BOOLEAN } = require("sequelize");
-
 module.exports = (sequelize, DataTypes) => {
   const Customer = sequelize.define(
     "customer",
@@ -45,13 +43,17 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.BOOLEAN,
       },
+      customer_uid: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
     },
     {}
   );
   Customer.associate = (models) => {
-    Customer.hasMany(models.Address, { foreignKey: "user_id" });
-    Customer.hasOne(models.Cart, { foreignKey: "user_id" });
-    Customer.hasOne(models.Order, { foreignKey: "user_id" });
+    Customer.hasMany(models.Address, { foreignKey: "customer_uid" });
+    Customer.hasOne(models.Cart, { foreignKey: "customer_uid" });
+    Customer.hasOne(models.Order, { foreignKey: "customer_uid" });
   };
   return Customer; //user
 };
