@@ -153,74 +153,75 @@ export default function Dashboard() {
 
         <div style={{ borderTop: '2px solid lightgray ', height: '10px' }}></div>
 
-        <div className="dashboard-bottom">
-          <div className="dashboard-bottom-text">Activities</div>
-          <div
-            classname="dashboard-bottom-icon"
-            style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-            <div classname="d-b-icon" style={{ margin: '10px' }}>
-              <Link to="/user-list">
+          <div className="dashboard-bottom">
+            <div className="dashboard-bottom-text">Activities</div>
+            <div
+              classname="dashboard-bottom-icon"
+              style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+              <div classname="d-b-icon" style={{ margin: '10px' }}>
+                <Link to="/user-list">
+                  <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
+                    <People />
+                  </IconButton>
+                </Link>
+                <div className="d-b-icon-text">User List</div>
+              </div>
+              <div classname="d-b-icon" style={{ margin: '10px' }}>
+                <Link to="/warehouse-management">
+                  <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
+                    <Warehouse />
+                  </IconButton>
+                </Link>
+                <div className="d-b-icon-text">Warehouse Management</div>
+              </div>
+              <div classname="d-b-icon" style={{ margin: '10px' }}>
+                <Link to="/products-management-list">
+                  <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
+                    <Ballot />
+                  </IconButton>
+                </Link>
+                <div className="d-b-icon-text">Product List</div>
+              </div>
+              <div classname="d-b-icon" style={{ margin: '10px' }}>
+                <Link to="/products-management-category">
+                  <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
+                    <Sell />
+                  </IconButton>
+                </Link>
+                <div className="d-b-icon-text">Product Category</div>
+              </div>
+              <div classname="d-b-icon" style={{ margin: '10px' }}>
+                <Link to="/stock-mutation">
+                  <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
+                    <Inventory />
+                  </IconButton>
+                </Link>
+                <div className="d-b-icon-text">Stock Mutation</div>
+              </div>
+              <div classname="d-b-icon" style={{ margin: '10px' }}>
+                <Link to="/order-list">
+                  <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
+                    <ContentPaste />
+                  </IconButton>
+                </Link>
+                <div className="d-b-icon-text">Order List</div>
+              </div>
+              <div classname="d-b-icon" style={{ margin: '10px' }}>
                 <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
-                  <People />
+                  <ReceiptLong />
                 </IconButton>
-              </Link>
-              <div className="d-b-icon-text">User List</div>
-            </div>
-            <div classname="d-b-icon" style={{ margin: '10px' }}>
-              <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
-                <Warehouse />
-              </IconButton>
-              <div className="d-b-icon-text">Warehouse Management</div>
-            </div>
-            <div classname="d-b-icon" style={{ margin: '10px' }}>
-              <Link to="/products-management-list">
+                <div className="d-b-icon-text">Sales Report</div>
+              </div>
+              <div classname="d-b-icon" style={{ margin: '10px' }}>
                 <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
-                  <Ballot />
+                  <ManageSearch />
                 </IconButton>
-              </Link>
-              <div className="d-b-icon-text">Product List</div>
-            </div>
-            <div classname="d-b-icon" style={{ margin: '10px' }}>
-              <Link to="/products-management-category">
-                <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
-                  <Sell />
-                </IconButton>
-              </Link>
-              <div className="d-b-icon-text">Product Category</div>
-            </div>
-            <div classname="d-b-icon" style={{ margin: '10px' }}>
-              <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
-                <Inventory />
-              </IconButton>
-              <div className="d-b-icon-text">Stock Mutation</div>
-            </div>
-            <div classname="d-b-icon" style={{ margin: '10px' }}>
-              <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
-                <ContentPaste />
-              </IconButton>
-              <div className="d-b-icon-text">Order List</div>
-            </div>
-            <div classname="d-b-icon" style={{ margin: '10px' }}>
-              <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
-                <ReceiptLong />
-              </IconButton>
-              <div className="d-b-icon-text">Sales Report</div>
-            </div>
-            <div classname="d-b-icon" style={{ margin: '10px' }}>
-              <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
-                <ManageSearch />
-              </IconButton>
-              <div className="d-b-icon-text">Stock History</div>
-            </div>
-            <div classname="d-b-icon" style={{ margin: '10px' }}>
-              <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
-                <Work />
-              </IconButton>
-              <div className="d-b-icon-text">Assign Task</div>
+                <div className="d-b-icon-text">Stock History</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </Container>
-  );
+      </Container>
+    );
+  }
 }
