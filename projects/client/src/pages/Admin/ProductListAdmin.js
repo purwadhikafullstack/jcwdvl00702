@@ -11,7 +11,7 @@ import {
   Stack,
   Pagination,
 } from '@mui/material';
-import { MoreHoriz, People, Search, SportsSoccerOutlined, AddBox } from '@mui/icons-material';
+import { MoreHoriz, People, Search, SportsSoccerOutlined, AddBox, Ballot } from '@mui/icons-material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 import Axios from "axios"
 import { Link, useHistory } from 'react-router-dom';
@@ -160,11 +160,6 @@ class ProductListAdmin extends React.Component {
                   Stock History
                 </Link>
               </MenuItem>
-              <MenuItem>
-                <Link to="/assign-task" className="pladmin-banner-menu-link">
-                  Assign Task
-                </Link>
-              </MenuItem>
             </Menu>
           </React.Fragment>
         )}
@@ -237,7 +232,7 @@ class ProductListAdmin extends React.Component {
           <div className="pladmin-banner">
             <div className="pladmin-banner-logo">
               <IconButton disabled>
-                <People />
+                <Ballot />
               </IconButton>
             </div>
             {this.state.isSearch ? (
