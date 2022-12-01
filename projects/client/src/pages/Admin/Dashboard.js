@@ -200,9 +200,11 @@ export default function Dashboard() {
                 <div className="d-b-icon-text">Stock Mutation</div>
               </div>
               <div classname="d-b-icon" style={{ margin: '10px' }}>
-                <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
-                  <ContentPaste />
-                </IconButton>
+                <Link to="/order-list">
+                  <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
+                    <ContentPaste />
+                  </IconButton>
+                </Link>
                 <div className="d-b-icon-text">Order List</div>
               </div>
               <div classname="d-b-icon" style={{ margin: '10px' }}>
