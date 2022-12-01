@@ -46,6 +46,7 @@ router.post("/register-social", async (req, res) => {
       picture: "",
       social_login: true,
       customer_uid: req.body.customer_uid,
+
     });
 
     const customer = await newCustomer.save();

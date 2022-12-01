@@ -44,8 +44,9 @@ class SignUp extends React.Component {
           .sendEmailVerification()
           .then(() => {
             alert("Mohon verifikasi email anda");
-            // firebaseAuthentication.signOut();
-            // this.props.history.push("/sign-in");
+            firebaseAuthentication.signOut();
+            this.props.history.push("/");
+
           })
           .catch((error) => {
             alert(error.message);
@@ -65,7 +66,6 @@ class SignUp extends React.Component {
       })
       .catch((err) => {
         // alert(err.message);
-
         // Handle Errors here.
         var errorCode = err.code;
         var errorMessage = err.message;

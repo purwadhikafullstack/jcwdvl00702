@@ -68,6 +68,7 @@ class SignIn extends React.Component {
         var errorMessage = err.message;
         var email = err.email;
         var credential = err.credential;
+
       });
   };
 
@@ -82,6 +83,7 @@ class SignIn extends React.Component {
         var errorMessage = err.message;
         var email = err.email;
         var credential = err.credential;
+
       });
   };
 

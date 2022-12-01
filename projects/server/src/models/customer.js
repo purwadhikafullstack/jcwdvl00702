@@ -1,3 +1,5 @@
+const { BOOLEAN } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   const Customer = sequelize.define(
     "customer",
@@ -47,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
+
     },
     {}
   );

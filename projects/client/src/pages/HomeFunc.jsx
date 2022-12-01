@@ -25,6 +25,7 @@ import {
   DropdownItem,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Slide } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
@@ -49,6 +50,7 @@ export default function HomeFunc() {
         alert(error);
       });
   };
+
 
   const slideCarousels = [
     {
@@ -139,6 +141,7 @@ export default function HomeFunc() {
             <div className="name-bar">
               <div className="font-size">Welcome</div>
               <div className="font-name">{currentUser?.email}</div>
+
             </div>
             <div className="cart-icon">
               <NotificationsOutlinedIcon />

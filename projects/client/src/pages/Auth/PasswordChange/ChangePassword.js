@@ -7,10 +7,10 @@ import { Container } from "@mui/material";
 import { AuthContext } from "../../../context/AuthProvider";
 import { firebaseAuthentication } from "../../../config/firebase";
 
+
 export default function ChangePassword() {
   const { user } = useContext(AuthContext);
   console.log(user);
-  // const email = useRef();
   const [email, setEmail] = useState("");
 
   const inputHandler = (event) => {
@@ -29,6 +29,7 @@ export default function ChangePassword() {
         alert(error.message);
       });
     console.log(email);
+
   };
   return (
     <div className="password-wrap">
