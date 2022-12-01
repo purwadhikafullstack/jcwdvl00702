@@ -21,6 +21,7 @@ router.post("/register", async (req, res) => {
       expired_time: 0,
       picture: "",
       social_login: false,
+      customer_uid: req.body.customer_uid,
     });
 
     const customer = await newCustomer.save();
@@ -44,6 +45,8 @@ router.post("/register-social", async (req, res) => {
       expired_time: 0,
       picture: "",
       social_login: true,
+      customer_uid: req.body.customer_uid,
+
     });
 
     const customer = await newCustomer.save();

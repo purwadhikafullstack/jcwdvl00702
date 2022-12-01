@@ -4,8 +4,11 @@ import { useState, useEffect, useContext } from "react";
 import { ArrowBack, FavoriteBorder, StarHalf } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
+import { AuthContext } from "../context/AuthProvider";
 
 export default function ProductDetail() {
+  const { user } = useContext(AuthContext);
+  console.log(user);
   return (
     <div className="pd-wrap">
       <Container maxWidth="xs" className="container-product-detail">
