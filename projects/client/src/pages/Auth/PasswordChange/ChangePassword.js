@@ -5,14 +5,31 @@ import { ArrowBack, Email } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
 import { AuthContext } from "../../../context/AuthProvider";
+import { firebaseAuthentication } from "../../../config/firebase";
+
 
 export default function ChangePassword() {
   const { user } = useContext(AuthContext);
   console.log(user);
-  const email = useRef();
+  const [email, setEmail] = useState("");
+
+  const inputHandler = (event) => {
+    setEmail(event.target.value);
+  };
 
   const submitHandler = (event) => {
     event.preventDefault();
+    firebaseAuthentication
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        alert("Cek email untuk ubah password");
+        window.history.push("/reset-password");
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+    console.log(email);
+
   };
   return (
     <div className="password-wrap">
@@ -42,11 +59,18 @@ export default function ChangePassword() {
             </div>
             <div className="password-input">
               <Email style={{ fill: "gray", marginLeft: "5px" }} />
-              <input placeholder="Email" className="reset-input" ref={email} />
+              <input
+                placeholder="Email"
+                className="reset-input"
+                onChange={inputHandler}
+                value={email}
+              />
             </div>
             <div className="changepass-button">
               <Link to="/reset-password">
-                <button className="changepass-continue">Send</button>
+                <button className="changepass-continue" onClick={submitHandler}>
+                  Send
+                </button>
               </Link>
             </div>
           </div>

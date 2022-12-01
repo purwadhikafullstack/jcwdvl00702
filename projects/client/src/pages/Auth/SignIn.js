@@ -52,8 +52,8 @@ class SignIn extends React.Component {
           firebaseAuthentication.signOut();
         }
       })
-      .catch((error) => {
-        alert(error.message);
+      .catch((err) => {
+        alert("Error when submitting data");
       });
   };
 
@@ -63,8 +63,12 @@ class SignIn extends React.Component {
       .then(() => {
         this.props.history.push("/");
       })
-      .catch((error) => {
-        alert(error.message);
+      .catch((err) => {
+        var errorCode = err.code;
+        var errorMessage = err.message;
+        var email = err.email;
+        var credential = err.credential;
+
       });
   };
 
@@ -74,8 +78,12 @@ class SignIn extends React.Component {
       .then(() => {
         this.props.history.push("/");
       })
-      .catch((error) => {
-        alert(error.message);
+      .catch((err) => {
+        var errorCode = err.code;
+        var errorMessage = err.message;
+        var email = err.email;
+        var credential = err.credential;
+
       });
   };
 

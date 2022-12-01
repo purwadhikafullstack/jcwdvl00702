@@ -46,6 +46,7 @@ class SignUp extends React.Component {
             alert("Mohon verifikasi email anda");
             firebaseAuthentication.signOut();
             this.props.history.push("/");
+
           })
           .catch((error) => {
             alert(error.message);
@@ -58,13 +59,13 @@ class SignUp extends React.Component {
           password: this.state.password,
           fullname: this.state.fullname,
           is_verified: user.emailVerified,
+          customer_uid: user.uid,
         };
-
+        console.log(data);
         return data;
       })
       .catch((err) => {
         // alert(err.message);
-
         // Handle Errors here.
         var errorCode = err.code;
         var errorMessage = err.message;
@@ -105,6 +106,7 @@ class SignUp extends React.Component {
           email: user.email,
           fullname: user.displayName,
           is_verified: user.emailVerified,
+          customer_uid: user.uid,
         };
 
         return data;
@@ -164,6 +166,7 @@ class SignUp extends React.Component {
           email: user.email,
           fullname: user.displayName,
           is_verified: user.emailVerified,
+          customer_uid: user.uid,
         };
 
         return data;

@@ -5,7 +5,6 @@ export const AuthContext = React.createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [pending, setPending] = useState(true);
 
   useEffect(() => {
     app.auth().onAuthStateChanged(setUser);
