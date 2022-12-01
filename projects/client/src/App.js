@@ -38,7 +38,7 @@ class App extends React.Component {
           <Switch>
             <Route component={SignIn} path="/sign-in" />
             <Route component={SignUp} path="/sign-up" />
-            {/* <Route component={CreatePassword} path="/create-password" /> */}
+            <Route component={CreatePassword} path="/create-password" />
             <Route component={MyOrder} path="/my-order" />
             <Route component={Dashboard} path="/dashboard" />
             <Route component={UserList} path="/user-list" />

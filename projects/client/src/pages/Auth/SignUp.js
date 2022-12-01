@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Checkbox,
   FormControlLabel,
@@ -16,184 +16,197 @@ import {
   googleProvider,
   facebookProvider,
 } from "../../config/firebase.js";
-
 import "../../assets/styles/SignIn.css";
 import Axios from "axios";
+import {useHistory} from "react-router-dom"
+import {useFormik} from "formik"
+import * as Yup from "yup"
+import YupPassword from "yup-password"
 
-class SignUp extends React.Component {
-  state = {
-    email: "",
-    fullname: "",
-    password: "dummyPassword",
-    isCheck: false,
-  };
 
-  inputHandler = (event) => {
-    const value = event.target.value;
-    const name = event.target.name;
-    this.setState({ [name]: value });
-  };
+function SignUp(){
+    // untuk pindah page
+    let history = useHistory()
+    
+    const [isCheck, setIscheck] = useState(true)
+    const changeIsCheck = () => {
+        setIscheck(!isCheck)
 
-  submitHandler = (event) => {
-    event.preventDefault();
-    const { email, password } = this.state;
-    firebaseAuthentication
-      .createUserWithEmailAndPassword(email, password)
-      .then((res) => {
-        firebaseAuthentication.currentUser
-          .sendEmailVerification()
-          .then(() => {
-            alert("Mohon verifikasi email anda");
-            firebaseAuthentication.signOut();
-            this.props.history.push("/");
+    }
 
-          })
-          .catch((error) => {
-            alert(error.message);
-          });
+     // masuk melalui email dan password//
 
-        var user = res.user;
+    // konfigurasi yup
+    YupPassword(Yup)
+    //isinialisasi formik
+    const formik = useFormik({
+        initialValues : {
+            email: "",
+            fullname: "",
+            password: "dummyPassword",
+        },
+        validationSchema : Yup.object().shape({
+            email: Yup.string().required("your email is invalid").email("format yang dimasukan bukan email"),
+        }),
+        validateOnChange : false,
+        onSubmit: async (values) => {
+            firebaseAuthentication
+            .createUserWithEmailAndPassword(values.email, values.password)
+            .then((res) => {
+              firebaseAuthentication.currentUser
+                .sendEmailVerification()
+                .then(() => {
+                  alert("Mohon verifikasi email anda");
+                  history.push("/create-password");
+                })
+                .catch((error) => {
+                  alert(error.message);
+                });
+      
+              var user = res.user;
+              console.log("cek data user",user)
+              console.log(user.uid);
+              const data = {
+                email: values.email,
+                fullname: values.fullname,
+                is_verified: user.emailVerified,
+                customer_uid: user.uid,
+              };
+      
+              return data;
+            })
+            .catch((err) => {
+              // alert(err.message);
+      
+              // Handle Errors here.
+              var errorCode = err.code;
+              var errorMessage = err.message;
+              // The email of the user's account used.
+              var email = err.email;
+              // The firebase.auth.AuthCredential type that was used.
+              var credential = err.credential;
+              // ...
+            })
+      
+            .then((data) => {
+              console.log("here", data);
+      
+              Axios.post("http://localhost:3300/api/customer/register", data)
+                .then(() => {
+                  return;
+                })
+                .catch((error) => {
+                  console.log(error);
+                  alert(error);
+                });
+            });
+        }
 
-        const data = {
-          email: user.email,
-          password: this.state.password,
-          fullname: this.state.fullname,
-          is_verified: user.emailVerified,
-          customer_uid: user.uid,
-        };
-        console.log(data);
-        return data;
-      })
-      .catch((err) => {
-        // alert(err.message);
-        // Handle Errors here.
-        var errorCode = err.code;
-        var errorMessage = err.message;
-        // The email of the user's account used.
-        var email = err.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = err.credential;
-        // ...
-      })
+    })
+ 
+    // masuk melalui Google//
 
-      .then((data) => {
-        console.log("here", data);
+    const handleLoginWithGoogle = async () =>{
+        firebaseAuthentication
+        .signInWithPopup(googleProvider)
+        .then((result) => {
+          /** @type {firebase.auth.OAuthCredential} */
+          var credential = result.credential;
+  
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          var token = credential.accessToken;
+          // The signed-in user info.
+          var user = result.user;
+  
+          const data = {
+            email: user.email,
+            fullname: user.displayName,
+            is_verified: user.emailVerified,
+            customer_uid: user.uid,
+          };
+  
+          return data;
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // The email of the user's account used.
+          var email = error.email;
+          // The firebase.auth.AuthCredential type that was used.
+          var credential = error.credential;
+          // ...
+        })
+        .then((data) => {
+          console.log("here", data);
+  
+          Axios.post("http://localhost:3300/api/customer/register-social", data)
+            .then(() => {
+              history.push("/");
+            })
+            .catch((error) => {
+              console.log(error);
+              alert(error);
+            });
+        });
+    }
 
-        Axios.post("http://localhost:3300/api/customer/register", data)
-          .then(() => {
-            return;
-          })
-          .catch((error) => {
-            console.log(error);
-            alert(error.response.data.errors[0].message);
-          });
-      });
-  };
+    // masuk melaui Facebook //
 
-  handleLoginWithGoogle = () => {
-    firebaseAuthentication
-      .signInWithPopup(googleProvider)
-      .then((result) => {
-        /** @type {firebase.auth.OAuthCredential} */
-        var credential = result.credential;
+    const handleLoginWithFacebook = async () => {
+        firebaseAuthentication
+        .signInWithPopup(facebookProvider)
+        .then((result) => {
+          /** @type {firebase.auth.OAuthCredential} */
+          var credential = result.credential;
+  
+          // The signed-in user info.
+          var user = result.user;
+  
+          const data = {
+            email: user.email,
+            fullname: user.displayName,
+            is_verified: user.emailVerified,
+            customer_uid: user.uid,
+          };
+  
+          return data;
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // The email of the user's account used.
+          var email = error.email;
+          // The firebase.auth.AuthCredential type that was used.
+          var credential = error.credential;
+          // ...
+        })
+        .then((data) => {
+          console.log("here", data);
+  
+          Axios.post("http://localhost:3300/api/customer/register-social", data)
+            .then(() => {
+              history.push("/");
+            })
+            .catch((error) => {
+              console.log(error);
+              alert(error);
+            });
+        });
+    }
 
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        var token = credential.accessToken;
-        // The signed-in user info.
-        var user = result.user;
 
-        const data = {
-          email: user.email,
-          fullname: user.displayName,
-          is_verified: user.emailVerified,
-          customer_uid: user.uid,
-        };
 
-        return data;
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
-        // ...
-      })
-      .then((data) => {
-        console.log("here", data);
-
-        Axios.post("http://localhost:3300/api/customer/register-social", data)
-          .then(() => {
-            return;
-          })
-          .catch((error) => {
-            console.log(error);
-            alert(error.response.data.errors[0].message);
-          });
-      });
-
-    //     firebaseAuthentication.signInWithPopup(googleProvider)
-    //     .then((res)=>{
-    //       const credential = googleProvider.credentialFromResult(res);
-    //       const token = credential.accessToken;
-
-    //       console.log(token);
-    //       const user = res.user;
-
-    //       console.log(user);
-    //         this.props.history.push('/home')
-    //     })
-    //     .catch(error=>{
-    //         alert(error.message)
-    //     })
-  };
-
-  handleLoginWithFacebook = () => {
-    firebaseAuthentication
-      .signInWithPopup(facebookProvider)
-      .then((result) => {
-        /** @type {firebase.auth.OAuthCredential} */
-        var credential = result.credential;
-
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        var token = credential.accessToken;
-        // The signed-in user info.
-        var user = result.user;
-
-        const data = {
-          email: user.email,
-          fullname: user.displayName,
-          is_verified: user.emailVerified,
-          customer_uid: user.uid,
-        };
-
-        return data;
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
-        // ...
-      });
-  };
-
-  render() {
-    return (
-      <Container maxWidth="xs" sx={{ backgroundColor: "white" }}>
+    return(
+        <Container maxWidth="xs" sx={{ backgroundColor: "white" }}>
         <div className="sign-in-main">
           <div className="sign-in-label">Create Your Account</div>
           <div className="sign-up-form">
             <FormControl variant="standard" className="sign-in-form-input">
               <Input
                 name="email"
-                onChange={this.inputHandler}
-                value={this.state.email}
+                onChange={(e) => formik.setFieldValue("email", e.target.value)}
                 id="input-with-icon-adornment"
                 sx={{ padding: "7px" }}
                 startAdornment={
@@ -208,8 +221,7 @@ class SignUp extends React.Component {
             <FormControl variant="standard" className="sign-in-form-input">
               <Input
                 name="fullname"
-                onChange={this.inputHandler}
-                value={this.state.fullname}
+                onChange={(e) => formik.setFieldValue("fullname", e.target.value)}
                 id="input-with-icon-adornment"
                 sx={{ padding: "7px" }}
                 startAdornment={
@@ -225,13 +237,14 @@ class SignUp extends React.Component {
               <FormControlLabel
                 control={<Checkbox />}
                 sx={{ marginRight: "0px" }}
-                value={this.state.isCheck}
-                onChange={(e) => {
-                  this.setState({
-                    ...this.state,
-                    isCheck: !this.state.isCheck,
-                  });
-                }}
+                // value={this.state.isCheck}
+                // onChange={(e) => {
+                //   this.setState({
+                //     ...this.state,
+                //     isCheck: !this.state.isCheck,
+                //   });
+                // }}
+                onClick={changeIsCheck}
               />
               <div>Agree to </div>
               <Link
@@ -246,9 +259,9 @@ class SignUp extends React.Component {
             <Button
               sx={{ borderRadius: "20px", backgroundColor: "black" }}
               variant="contained"
-              disabled={!this.state.isCheck ? true : false}
+              disabled={isCheck ? true : false}
               className="sign-in-form-button"
-              onClick={this.submitHandler}
+              onClick={formik.handleSubmit}
             >
               Sign up
             </Button>
@@ -264,7 +277,7 @@ class SignUp extends React.Component {
               }}
             >
               <div classname="sign-in-social-2-fb">
-                <IconButton onClick={this.handleLoginWithFacebook}>
+                <IconButton onClick={handleLoginWithFacebook}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     x="0px"
@@ -285,7 +298,7 @@ class SignUp extends React.Component {
                 </IconButton>
               </div>
               <div classname="sign-in-social-2-g">
-                <IconButton onClick={this.handleLoginWithGoogle}>
+                <IconButton onClick={handleLoginWithGoogle}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     x="0px"
@@ -340,8 +353,7 @@ class SignUp extends React.Component {
           </div>
         </div>
       </Container>
-    );
-  }
+    )
 }
 
-export default SignUp;
+export default SignUp
