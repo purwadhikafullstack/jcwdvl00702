@@ -1,10 +1,11 @@
 @import url(https://fonts.googleapis.com/css?family=Lora);
 
-body {
+body,
+div {
   font-family: 'Lora', serif;
 }
 
-.userlist-main {
+.stockmutation-main {
   position: relative;
   margin: auto;
   height: 83vh;
@@ -14,7 +15,7 @@ body {
   align-items: center;
 }
 
-.userlist-banner {
+.stockmutation-banner {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -22,26 +23,26 @@ body {
   margin-top: 15px;
 }
 
-.userlist-banner-text {
-  font-size: 20px;
+.stockmutation-banner-text {
+  font-size: 19px;
   padding-top: 2px;
   margin-left: 5px;
-  width: 100px;
+  width: 180px;
 }
 
-.userlist-banner-search {
-  margin-left: 75px;
+.stockmutation-banner-search {
+  margin-left: 25px;
 }
 
-.userlist-banner-add {
+.stockmutation-banner-add {
 }
 
-.userlist-banner-menu-link {
+.stockmutation-banner-menu-link {
   color: black;
   text-decoration: none;
 }
 
-.userlist-search {
+.stockmutation-search {
   display: flex;
   flex-direction: row;
   height: 33px;
@@ -51,12 +52,12 @@ body {
   background-color: rgb(234, 234, 234);
 }
 
-.userlist-content {
+.stockmutation-content {
   margin-top: 20px;
 }
 
-.ulc-main {
-  width: 350px;
+.mutation-main {
+  width: 100%;
   height: 150px;
   /* border: 1px darkgray solid; */
   background-color: rgba(211, 211, 211, 0.19);
@@ -69,52 +70,62 @@ body {
   flex-direction: row;
 }
 
-.ulc-image {
+.mutation-image {
   height: 140px;
   border-radius: 10px;
   margin-top: 2.5px;
-  width: 110px;
 }
 
-.ulc-product {
+.mutation-product {
   height: 140px;
   border-radius: 10px;
 }
 
-.ulc-detail {
+.mutation-detail {
   margin-left: 10px;
   display: flex;
   flex-direction: column;
-  width: 240px;
 }
 
-.ulc-detail.name {
-  height: 40%;
+.mutation-detail-name {
+  height: 30%;
   font-size: 12px;
   font-weight: bolder;
 }
 
-.ulc-detail-subname {
-  /* height: 15%; */
-  margin-top: 5px;
-  font-size: 10px;
+.mutation-detail-subname {
+  font-size: 9px;
   color: grey;
 }
 
-.ulc-detail-bottom {
-  height: 30%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  font-size: 10px;
-  margin-top: 6px;
-  margin-left: 60px;
+.mutation-detail-status-1,
+.mutation-detail-status-2 {
+  margin-top: 3px;
+  font-size: 8px;
+  text-align: center;
+  padding: 5px;
+  width: 50px;
+  height: 13px;
+  border-radius: 20px;
 }
 
-.ulc-detail-bottom-delete,
-.ulc-detail-bottom-edit,
-.ulc-detail-bottom-detail {
-  height: 80%;
+.mutation-detail-bottom {
+  margin-top: 10px;
+  width: 140px;
+  margin-left: 60px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 10px;
+}
+
+.mutation-detail-bottom-price {
+  margin-top: 9px;
+  font-size: 12px;
+}
+
+.mutation-detail-bottom-track {
+  height: 65%;
   width: 65px;
   font-size: 8px;
   padding: 6px;

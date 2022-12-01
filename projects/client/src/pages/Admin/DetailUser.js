@@ -11,6 +11,7 @@ import {
   VerifiedUser,
   Lock,
   PhotoCamera,
+  Work,
 } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import '../../assets/styles/DetailUser.css';

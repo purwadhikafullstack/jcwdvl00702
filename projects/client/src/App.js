@@ -12,6 +12,10 @@ import ProductCategory from './pages/Admin/ProductCategory';
 import ProductListAdmin from './pages/Admin/ProductListAdmin';
 import ProductDetailAdmin from './pages/Admin/ProductDetailAdmin';
 import ProductAdd from './pages/Admin/ProductAdd';
+import WarehouseManagement from './pages/Admin/WarehouseManagement';
+import AddWarehouse from './pages/Admin/AddWarehouse';
+import DetailWarehouse from './pages/Admin/DetailWarehouse';
+import StockMutation from './pages/Admin/StockMutation';
 
 import ProductDetail from './pages/ProductDetail';
 import ChangePassword from './pages/Auth/PasswordChange/ChangePassword';
@@ -85,6 +89,10 @@ export default function App() {
         <Route component={ProductListAdmin} path="/products-management-list" />
         <Route component={ProductDetailAdmin} path="/products-management-detail" />
         <Route component={ProductAdd} path="/products-management-add" />
+        <Route component={WarehouseManagement} path="/warehouse-management" />
+        <Route component={AddWarehouse} path="/add-warehouse" />
+        <Route component={DetailWarehouse} path="/detail-warehouse" />
+        <Route component={StockMutation} path="/stock-mutation" />
         <Route component={ProductDetail} path="/product-detail" />
         <Route component={ProductLists} path="/product-list" />
         <Route component={AddressList} path="/address-list" />

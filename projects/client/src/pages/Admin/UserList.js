@@ -11,7 +11,7 @@ import {
   Stack,
   Pagination,
 } from '@mui/material';
-import { MoreHoriz, People, Search, PersonAdd } from '@mui/icons-material';
+import { MoreHoriz, People, Search, PersonAdd, SortTwoTone } from '@mui/icons-material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 import { Link } from 'react-router-dom';
 import '../../assets/styles/UserList.css';
@@ -126,11 +126,6 @@ export default function UserList() {
               <MenuItem>
                 <Link to="/stock-history" className="userlist-banner-menu-link">
                   Stock History
-                </Link>
-              </MenuItem>
-              <MenuItem>
-                <Link to="/assign-task" className="userlist-banner-menu-link">
-                  Assign Task
                 </Link>
               </MenuItem>
             </Menu>

@@ -11,14 +11,14 @@ import {
   Stack,
   Pagination,
 } from '@mui/material';
-import { MoreHoriz, People, Search, SportsSoccerOutlined, AddBox, Ballot } from '@mui/icons-material';
+import { MoreHoriz, People, Search, PersonAdd, SortTwoTone, AddBusiness, Warehouse } from '@mui/icons-material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
 import { Link } from 'react-router-dom';
 
-import '../../assets/styles/ProductListAdmin.css';
+import '../../assets/styles/WarehouseManagement.css';
 
-class ProductListAdmin extends React.Component {
+class WarehouseManagement extends React.Component {
   state = {
     isSearch: false,
   };
@@ -43,47 +43,47 @@ class ProductListAdmin extends React.Component {
             </button>
             <Menu {...bindMenu(popupState)}>
               <MenuItem>
-                <Link to="/dashboard" className="pladmin-banner-menu-link">
+                <Link to="/dashboard" className="whmanagement-banner-menu-link">
                   Dashboard
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/user-list" className="pladmin-banner-menu-link">
+                <Link to="/user-list" className="whmanagement-banner-menu-link">
                   User List
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/warehouse-management" className="pladmin-banner-menu-link">
+                <Link to="/warehouse-management" className="whmanagement-banner-menu-link">
                   Warehouse Mng.
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/products-management-list" className="pladmin-banner-menu-link">
+                <Link to="/products-management-list" className="whmanagement-banner-menu-link">
                   Product List
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/products-management-category" className="pladmin-banner-menu-link">
+                <Link to="/products-management-category" className="whmanagement-banner-menu-link">
                   Product Category
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/stock-mutation" className="pladmin-banner-menu-link">
+                <Link to="/stock-mutation" className="whmanagement-banner-menu-link">
                   Stock Mutation
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/order-list" className="pladmin-banner-menu-link">
+                <Link to="/order-list" className="whmanagement-banner-menu-link">
                   Order List
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/sales-report" className="pladmin-banner-menu-link">
+                <Link to="/sales-report" className="whmanagement-banner-menu-link">
                   Sales Report
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/stock-history" className="pladmin-banner-menu-link">
+                <Link to="/stock-history" className="whmanagement-banner-menu-link">
                   Stock History
                 </Link>
               </MenuItem>
@@ -94,25 +94,21 @@ class ProductListAdmin extends React.Component {
     );
   };
 
-  prodlistCard = () => {
+  whManagementCard = (whName) => {
     return (
-      <div className="plc-main">
-        <div className="plc-image">
+      <div className="wmc-main">
+        <div className="wmc-image">
           <img
-            src="https://i.pinimg.com/originals/6f/df/bc/6fdfbc41d6a8e26d4b9073bc1afd899f.jpg"
-            className="plc-product"
+            src="https://i.pinimg.com/736x/74/28/e6/7428e6b80ecd09bb6590d7ae175d5400.jpg"
+            className="wmc-product"
             alt="Product Image"
           />
         </div>
-        <div className="plc-detail">
-          <div className="plc-detail-name">Kocheng Kochengan Lucu Aja</div>
-          <div className="plc-detail-subname">
-            <div className="plc-detail-subname-1">
-              <SportsSoccerOutlined />
-            </div>
-            <div className="plc-detail-subname-2">Sports</div>
-          </div>
-          <div className="plc-detail-bottom">
+        <div className="wmc-detail">
+          <div className="wmc-detail-name">Warehouse {whName} </div>
+          <div className="wmc-detail-subname">Admin: Arnold Purnomo</div>
+          <div className="wmc-detail-subname">Area 1 - DKI Jakarta</div>
+          <div className="wmc-detail-bottom">
             <Button
               sx={{
                 borderRadius: '20px',
@@ -122,10 +118,10 @@ class ProductListAdmin extends React.Component {
                 color: 'black',
               }}
               variant="contained"
-              className="plc-detail-bottom-delete">
+              className="wmc-detail-bottom-delete">
               Delete
             </Button>
-            <Link to="/products-management-detail" className="pladmin-banner-menu-link">
+            <Link to="/detail-warehouse" className="whmanagement-banner-menu-link">
               <Button
                 sx={{
                   borderRadius: '20px',
@@ -135,7 +131,7 @@ class ProductListAdmin extends React.Component {
                   color: 'black',
                 }}
                 variant="contained"
-                className="plc-detail-bottom-detail">
+                className="wmc-detail-bottom-detail">
                 Detail
               </Button>
             </Link>
@@ -148,11 +144,11 @@ class ProductListAdmin extends React.Component {
   render() {
     return (
       <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
-        <div className="pladmin-main">
-          <div className="pladmin-banner">
-            <div className="pladmin-banner-logo">
+        <div className="whmanagement-main">
+          <div className="whmanagement-banner">
+            <div className="whmanagement-banner-logo">
               <IconButton disabled>
-                <Ballot />
+                <Warehouse />
               </IconButton>
             </div>
             {this.state.isSearch ? (
@@ -162,7 +158,7 @@ class ProductListAdmin extends React.Component {
                     sx={{ ml: 1, flex: 1, fontFamily: 'Lora' }}
                     placeholder="Search"
                     inputProps={{ 'aria-label': 'Search' }}
-                    className="pladmin-search"
+                    className="whmanagement-search"
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton edge="end">
@@ -175,27 +171,28 @@ class ProductListAdmin extends React.Component {
               </>
             ) : (
               <>
-                <div className="pladmin-banner-text">Products List</div>
-                <div className="pladmin-banner-search">
+                <div className="whmanagement-banner-text">Warehouse List</div>
+                <div className="whmanagement-banner-search">
                   <IconButton onClick={this.isSearchHandle}>
                     <Search />
                   </IconButton>
                 </div>
               </>
             )}
-            <div className="pladmin-banner-add">
-              <Link to="/products-management-add">
+
+            <div className="whmanagement-banner-add">
+              <Link to="/add-warehouse">
                 <IconButton>
-                  <AddBox />
+                  <AddBusiness />
                 </IconButton>
               </Link>
             </div>
-            <div className="pladmin-banner-menu">{this.menuHandler()}</div>
+            <div className="whmanagement-banner-menu">{this.menuHandler()}</div>
           </div>
-          <div className="pladmin-content">
-            {this.prodlistCard()}
-            {this.prodlistCard()}
-            {this.prodlistCard()}
+          <div className="whmanagement-content">
+            {this.whManagementCard('A')}
+            {this.whManagementCard('B')}
+            {this.whManagementCard('C')}
             <Stack spacing={1} sx={{ position: 'fixed', top: '78%', width: '110%', fontFamily: 'Lora' }}>
               <Pagination count={10} />
             </Stack>
@@ -206,4 +203,4 @@ class ProductListAdmin extends React.Component {
   }
 }
 
-export default ProductListAdmin;
+export default WarehouseManagement;

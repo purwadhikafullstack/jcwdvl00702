@@ -4,7 +4,7 @@ body {
   font-family: 'Lora', serif;
 }
 
-.userlist-main {
+.whmanagement-main {
   position: relative;
   margin: auto;
   height: 83vh;
@@ -14,7 +14,7 @@ body {
   align-items: center;
 }
 
-.userlist-banner {
+.whmanagement-banner {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -22,26 +22,26 @@ body {
   margin-top: 15px;
 }
 
-.userlist-banner-text {
+.whmanagement-banner-text {
   font-size: 20px;
   padding-top: 2px;
   margin-left: 5px;
-  width: 100px;
+  width: 170px;
 }
 
-.userlist-banner-search {
-  margin-left: 75px;
+.whmanagement-banner-search {
+  margin-left: 65px;
 }
 
-.userlist-banner-add {
+.whmanagement-banner-add {
 }
 
-.userlist-banner-menu-link {
+.whmanagement-banner-menu-link {
   color: black;
   text-decoration: none;
 }
 
-.userlist-search {
+.whmanagement-search {
   display: flex;
   flex-direction: row;
   height: 33px;
@@ -51,11 +51,11 @@ body {
   background-color: rgb(234, 234, 234);
 }
 
-.userlist-content {
+.whmanagement-content {
   margin-top: 20px;
 }
 
-.ulc-main {
+.wmc-main {
   width: 350px;
   height: 150px;
   /* border: 1px darkgray solid; */
@@ -69,51 +69,52 @@ body {
   flex-direction: row;
 }
 
-.ulc-image {
+.wmc-image {
   height: 140px;
   border-radius: 10px;
   margin-top: 2.5px;
-  width: 110px;
+  max-width: 140px;
 }
 
-.ulc-product {
+.wmc-product {
   height: 140px;
   border-radius: 10px;
+  max-width: 140px;
 }
 
-.ulc-detail {
+.wmc-detail {
   margin-left: 10px;
   display: flex;
   flex-direction: column;
   width: 240px;
 }
 
-.ulc-detail.name {
+.wmc-detail.name {
   height: 40%;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bolder;
 }
 
-.ulc-detail-subname {
+.wmc-detail-subname {
   /* height: 15%; */
   margin-top: 5px;
-  font-size: 10px;
+  font-size: 12px;
   color: grey;
 }
 
-.ulc-detail-bottom {
+.wmc-detail-bottom {
   height: 30%;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   font-size: 10px;
-  margin-top: 6px;
-  margin-left: 60px;
+  margin-top: 35px;
+  margin-left: 35px;
 }
 
-.ulc-detail-bottom-delete,
-.ulc-detail-bottom-edit,
-.ulc-detail-bottom-detail {
+.wmc-detail-bottom-delete,
+.wmc-detail-bottom-edit,
+.wmc-detail-bottom-detail {
   height: 80%;
   width: 65px;
   font-size: 8px;
