@@ -1,113 +1,84 @@
 import React from 'react';
-import { Button, InputAdornment, Input, FormControl, IconButton, Container } from '@mui/material';
-import { Lock, Visibility, VisibilityOff } from '@mui/icons-material';
-
+import { Button, Input, FormControl, Container,  InputAdornment } from '@mui/material';
+import {firebaseAuthentication,} from "../../config/firebase.js";
+import firebase from 'firebase';
+import { Email} from "@mui/icons-material";
 import '../../assets/styles/SignIn.css';
+import {useHistory} from "react-router-dom"
+import {useFormik} from "formik"
+import * as Yup from "yup"
+import YupPassword from "yup-password"
 
-class CreatePassword extends React.Component {
-  state = {
-    password: '',
-    repassword: '',
-    showPassword: false,
-    showRepassword: false,
-  };
 
-  inputHandler = (event) => {
-    const value = event.target.value;
-    const name = event.target.name;
-    this.setState({ [name]: value });
-  };
+function CreatePassword (){
+      // untuk pindah page
+      let history = useHistory()
 
-  handleClickShowPassword = () => {
-    this.setState({
-      ...this.state,
-      showPassword: !this.state.showPassword,
-    });
-  };
+      // Send Email untuk membuat Password menggunakan formik dan yup
 
-  handleClickShowRepassword = () => {
-    this.setState({
-      ...this.state,
-      showRepassword: !this.state.showRepassword,
-    });
-  };
+       // konfigurasi yup
+    YupPassword(Yup)
+    //isinialisasi formik
+    const formik = useFormik({
+        initialValues : {
+            email: "",
+        },
+        validationSchema : Yup.object().shape({
+            email: Yup.string().required("your email is invalid").email("format yang dimasukan bukan email"),
+        }),
+        validateOnChange : false,
+        onSubmit: async (values) => {
+          const user = firebase.auth().currentUser;
+          console.log("user :", user)
+           if (user.emailVerified === true) {
+            firebaseAuthentication.sendPasswordResetEmail(values.email)
+            .then(()=>{
+             alert('Silahkan periksa email anda untuk mengubah password')
+             firebaseAuthentication.signOut();
+             history.push('/sign-in')
+             })
+             .catch(error=>{
+             alert(error.message)
+         })
+           }else{
+            alert("mohon Verifikasi email Anda Terlebih Dahulu")
+           }
+        }
+      })
 
-  handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
 
-  render() {
-    return (
-      <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
-        <div className="sign-in-main">
-          <div className="sign-in-label">Create Your Account</div>
-          <div className="create-pass-form">
-            <FormControl variant="standard" className="sign-in-form-input">
-              <Input
-                name="password"
-                onChange={this.inputHandler}
-                value={this.state.password}
-                id="input-with-icon-adornment"
-                sx={{ padding: '7px' }}
-                type={this.state.showPassword ? 'text' : 'password'}
-                startAdornment={
-                  <InputAdornment position="start">
-                    <Lock />
-                  </InputAdornment>
-                }
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={this.handleClickShowPassword}
-                      onMouseDown={this.handleMouseDownPassword}
-                      edge="end">
-                      {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                placeholder="Password"
-              />
-            </FormControl>
 
-            <FormControl variant="standard" className="sign-in-form-input">
-              <Input
-                name="repassword"
-                onChange={this.inputHandler}
-                value={this.state.repassword}
-                id="input-with-icon-adornment"
-                sx={{ padding: '7px' }}
-                type={this.state.showRepassword ? 'text' : 'password'}
-                startAdornment={
-                  <InputAdornment position="start">
-                    <Lock />
-                  </InputAdornment>
-                }
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={this.handleClickShowRepassword}
-                      onMouseDown={this.handleMouseDownPassword}
-                      edge="end">
-                      {this.state.showRepassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                placeholder="Re-enter Password"
-              />
-            </FormControl>
-          </div>
-          <Button
-            sx={{ borderRadius: '20px', backgroundColor: 'black', marginTop: '45px' }}
-            variant="contained"
-            className="sign-in-form-button">
-            Create Password
-          </Button>
-        </div>
-      </Container>
-    );
-  }
+  
+  return(
+    <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
+    <div className="sign-in-main">
+      <div className="sign-in-label">Create Your Password</div>
+      <div className="create-pass-form">
+      <FormControl variant="standard" className="sign-in-form-input">
+          <Input
+            name="email"
+            onChange={(e) => formik.setFieldValue("email", e.target.value)}
+            id="input-with-icon-adornment"
+            sx={{ padding: "7px" }}
+            startAdornment={
+              <InputAdornment position="start">
+                <Email />
+              </InputAdornment>
+            }
+            placeholder="Email"
+          />
+        </FormControl>
+      </div>
+      <Button
+        onClick={formik.handleSubmit}
+        sx={{ borderRadius: '20px', backgroundColor: 'black', marginTop: '45px' }}
+        variant="contained"
+        className="sign-in-form-button">
+        send Email for create password
+      </Button>
+    </div>
+  </Container>
+  )
 }
 
-export default CreatePassword;
+export default CreatePassword
