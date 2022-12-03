@@ -6,11 +6,14 @@ import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
 import { AuthContext } from "../../../context/AuthProvider";
 import { firebaseAuthentication } from "../../../config/firebase";
+import firebase from "firebase";
 
 
 export default function ChangePassword() {
   const { user } = useContext(AuthContext);
-  console.log(user);
+  console.log(user.providerId)
+  // const customer = firebase.auth().currentUser.providerId
+  // console.log(customer)
   const [email, setEmail] = useState("");
 
   const inputHandler = (event) => {
