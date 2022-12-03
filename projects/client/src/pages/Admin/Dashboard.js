@@ -207,15 +207,19 @@ export default function Dashboard() {
                 <div className="d-b-icon-text">Order List</div>
               </div>
               <div classname="d-b-icon" style={{ margin: '10px' }}>
-                <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
-                  <ReceiptLong />
-                </IconButton>
+                <Link to="/sales-report">
+                  <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
+                    <ReceiptLong />
+                  </IconButton>
+                </Link>
                 <div className="d-b-icon-text">Sales Report</div>
               </div>
               <div classname="d-b-icon" style={{ margin: '10px' }}>
-                <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
-                  <ManageSearch />
-                </IconButton>
+                <Link to="/stock-history">
+                  <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
+                    <ManageSearch />
+                  </IconButton>
+                </Link>
                 <div className="d-b-icon-text">Stock History</div>
               </div>
             </div>

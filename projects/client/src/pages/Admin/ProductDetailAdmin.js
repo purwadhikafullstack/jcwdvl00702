@@ -324,6 +324,7 @@ export default function ProductDetailAdmin() {
                 <div className="pdadmin-desc-title-1">
                   <span className="pdadmin-desc-name">{state.name}</span>
                 </div>
+                <div className="pdadmin-desc-title-4">Product ID: 701241</div>
                 <div className="pdadmin-desc-title-2">
                   <SportsSoccerOutlined />
                   <div className="pdadmin-desc-title-3">{state.category}</div>
