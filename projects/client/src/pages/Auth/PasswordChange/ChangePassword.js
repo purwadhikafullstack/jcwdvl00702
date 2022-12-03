@@ -11,7 +11,11 @@ import firebase from "firebase";
 
 export default function ChangePassword() {
   const { user } = useContext(AuthContext);
-  console.log(user.providerId)
+
+  // Minimum eight characters, at least one letter, one number and one special character
+  const passwordRules = "^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
+
+
   // const customer = firebase.auth().currentUser.providerId
   // console.log(customer)
   const [email, setEmail] = useState("");

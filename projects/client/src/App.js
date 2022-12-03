@@ -13,7 +13,6 @@ import ProductCategory from "./pages/Admin/ProductCategory";
 import ProductListAdmin from "./pages/Admin/ProductListAdmin";
 import ProductDetailAdmin from "./pages/Admin/ProductDetailAdmin";
 import ProductAdd from "./pages/Admin/ProductAdd";
-
 import ProductDetail from "./pages/ProductDetail";
 import ChangePassword from "./pages/Auth/PasswordChange/ChangePassword";
 import ResetPassword from "./pages/Auth/PasswordChange/ResetPassword";
@@ -29,6 +28,8 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import HomeFunc from "./pages/HomeFunc";
 import { AuthProvider } from "./context/AuthProvider";
+import NewPassword from "./pages/Auth/newchangepassw"
+import Login from "./pages/Auth/newsignin";
 
 class App extends React.Component {
   render() {
@@ -68,6 +69,8 @@ class App extends React.Component {
             <Route component={ChooseShipping} path="/choose-shipping" />
             <Route component={Cart} path="/cart" />
             <Route component={Checkout} path="/checkout" />
+            <Route component={Login} path="/login"/>
+            <Route component={NewPassword} path="/newpassword"/>
             <Route component={HomeFunc} path="/" />
             {/* <Route component={HomePage} path="/" /> */}
           </Switch>

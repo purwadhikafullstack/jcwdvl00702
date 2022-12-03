@@ -29,7 +29,7 @@ import {useFormik, yupToFormErrors} from "formik"
 import * as Yup from "yup"
 import YupPassword from "yup-password"
 
-function SignIn(){
+export default function Login(){
   // const [email,setEmail]=useState('')
   // const [password,setPassword]=useState('')
   const [withPassword,setWithPassword]=useState(false)
@@ -323,4 +323,4 @@ function SignIn(){
   
 }
 
-export default SignIn;
+

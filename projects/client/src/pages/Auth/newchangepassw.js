@@ -1,11 +1,11 @@
 import axios from "axios";
-import "../../../assets/styles/passwordChange.css";
+import "../../assets/styles/passwordChange.css";
 import { useState, useEffect, useContext, useRef } from "react";
 import { ArrowBack, Email } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
-import { AuthContext } from "../../../context/AuthProvider";
-import { firebaseAuthentication } from "../../../config/firebase";
+import { AuthContext } from "../../context/AuthProvider";
+import { firebaseAuthentication } from "../../config/firebase";
 import {useHistory} from "react-router-dom"
 import {useFormik} from "formik"
 import * as Yup from "yup"
@@ -13,9 +13,13 @@ import YupPassword from "yup-password"
 import firebase from "firebase";
 
 
-export default function ChangePassword() {
+export default function NewPassword() {
   const { user } = useContext(AuthContext);
+  console.log(user?.email,user?.providerData[0].providerId)
   let history = useHistory()
+
+  // Minimum eight characters, at least one letter, one number and one special character
+  const passwordRules = "^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" 
 
   YupPassword(Yup)
   const formik = useFormik({
@@ -28,7 +32,7 @@ export default function ChangePassword() {
     }),
     validateOnChange:false,
     onSubmit:async(values)=>{
-      if(user.providerId === 'firebase'){
+      if(values.email == user.email && user.providerData[0].providerId === 'password'){
         firebaseAuthentication.sendPasswordResetEmail(values.email)
         .then(()=>{
           alert('Check Email to Change Password')

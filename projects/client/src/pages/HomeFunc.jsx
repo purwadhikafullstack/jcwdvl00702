@@ -39,6 +39,7 @@ import { firebaseAuthentication } from "../config/firebase";
 
 export default function HomeFunc() {
   const { user: currentUser } = useContext(AuthContext);
+  console.log(currentUser?.email,currentUser?.providerData[0].providerId)
 
   const handleLogout = () => {
     firebaseAuthentication
