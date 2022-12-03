@@ -4,12 +4,12 @@ body {
   font-family: 'Lora', serif;
 }
 
-.pdadmin-main {
+.prodsh-main {
   background-color: white;
-  height: auto;
+  height: max-content;
 }
 
-.pdadmin-banner {
+.prodsh-banner {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -17,33 +17,47 @@ body {
   margin-top: 15px;
 }
 
-.pdadmin-img {
+.prodsh-img {
   max-height: 500px;
   width: 100%;
   margin-top: 10px;
   /* border: 1px solid pink; */
 }
 
-.pdadmin-detail {
+.prodsh-detail {
   padding-left: 20px;
   padding-right: 20px;
   margin-top: 10px;
 }
 
-.pdadmin-desc-1 {
+.prodsh-desc-1 {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 }
 
-.pdadmin-desc-name {
+.prodsh-desc-1-text {
+  width: 40%;
+}
+
+.prodsh-desc-1-select {
+  width: 25%;
+  margin-left: 20px;
+}
+
+.prodsh-desc-1-icon {
+  width: 10%;
+  margin-left: 5px;
+}
+
+.prodsh-desc-name {
   font-weight: 600;
   font-size: 30px;
   margin-top: 20px;
 }
 
-.pdadmin-desc-name-input {
+.prodsh-desc-name-input {
   height: 38px;
   background-color: white;
   width: 100%;
@@ -51,7 +65,7 @@ body {
   padding-left: 5px;
 }
 
-.pdadmin-desc-title-2 {
+.prodsh-desc-title-2 {
   margin-top: 5px;
   height: 38px;
   display: flex;
@@ -59,11 +73,11 @@ body {
   align-items: center;
   color: grey;
 }
-.pdadmin-desc-title-2-input {
+.prodsh-desc-title-2-input {
   margin-top: 5px;
 }
 
-.pdadmin-desc-title-2-input-select {
+.prodsh-desc-title-2-input-select {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -71,13 +85,13 @@ body {
   /* margin-top: 5px; */
 }
 
-.pdadmin-desc-title-3 {
+.prodsh-desc-title-3 {
   margin-left: 5px;
   font-size: 14px;
   color: grey;
 }
 
-.pdadmin-desc-title-4 {
+.prodsh-desc-title-4 {
   font-size: 14px;
   color: grey;
 }
@@ -86,55 +100,55 @@ hr {
   color: rgb(227, 225, 225);
 }
 
-.pdadmin-desc {
+.prodsh-desc {
 }
 
-.pdadmin-desc-1 {
+.prodsh-desc-1 {
   font-weight: 500;
   font-size: 18px;
 }
 
-.pdadmin-desc-2 {
+.prodsh-desc-2 {
   margin-top: 10px;
   font-size: 12px;
 }
 
-.pdadmin-pricing {
+.prodsh-pricing {
   display: flex;
   flex-direction: row;
   margin-top: 10px;
 }
 
-.pdadmin-price-title {
+.prodsh-price-title {
   color: rgb(146, 146, 146);
   font-size: 15px;
   margin-top: 9px;
   margin-right: 10px;
 }
 
-.pdadmin-price {
+.prodsh-price {
   font-weight: 500;
   font-size: 30px;
 }
 
-.pdadmin-price-input {
+.prodsh-price-input {
   display: flex;
   flex: row;
   align-items: center;
 }
 
-.pdadmin-price-input-1 {
+.prodsh-price-input-1 {
   font-weight: 500;
   font-size: 30px;
 }
 
-.pdadmin-price-input-2 {
+.prodsh-price-input-2 {
   margin-left: 3px;
   border: 1px solid lightgray;
   padding-left: 5px;
 }
 
-.pdadmin-stock {
+.prodsh-stock {
   padding-left: 10px;
   padding-right: 10px;
   display: flex;
@@ -143,43 +157,84 @@ hr {
   margin-top: 20px;
 }
 
-.pdadmin-stock-wh {
+.prodsh-stock-period {
+  font-size: 15px;
+  font-weight: bolder;
+  margin-bottom: 5px;
+}
+
+.prodsh-stock-wh {
   display: flex;
   flex-direction: row;
   align-items: center;
   margin-bottom: 10px;
+  height: 80px;
+  align-items: center;
 }
 
-.pdadmin-stock-name {
-  width: 114px;
+.pswh-data {
+  padding: 0;
+  margin: 0;
+}
+
+.pswh-item-left {
+  display: flex;
+  flex-direction: column;
+  color: darkgray;
   font-size: 12px;
+  width: 100px;
   font-weight: bolder;
 }
 
-.pdadmin-stock-qty {
+.pswh-item-right {
+  display: flex;
+  flex-direction: column;
   font-size: 12px;
-  width: 80px;
-  text-align: center;
+  width: 100px;
 }
 
-.pdadmin-stock-add {
-}
-
-.pdadmin-stock-decrease {
-}
-
-.pdadmin-stock-text {
-  /* font-size: 8px; */
-}
-
-.pdadmin-stock-edit {
+.mhistory-main {
+  width: 340px;
+  height: max-content;
+  background-color: rgba(211, 211, 211, 0.19);
+  margin-bottom: 10px;
+  margin-left: 10px;
+  border-radius: 10px;
+  padding: 10px;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  width: 80px;
+}
+
+.mhistory-subdetail {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mhistory-detail {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mhistory-detail-name {
+  height: 30%;
+  font-size: 12px;
+  /* font-weight: bolder; */
+}
+
+.mhistory-detail-subname {
+  font-size: 9px;
+  color: grey;
+}
+
+.mhistory-detail-bottom {
+  width: 20%;
+  display: flex;
+  flex-direction: row;
   justify-content: space-evenly;
-  border: 1px solid grey;
-  padding: 3px;
-  margin-left: 3px;
-  border-radius: 5px;
+  font-size: 20px;
+  margin-top: 5px;
+  align-items: center;
+  font-weight: bolder;
 }

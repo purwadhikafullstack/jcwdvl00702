@@ -106,12 +106,15 @@ class ProductListAdmin extends React.Component {
         </div>
         <div className="plc-detail">
           <div className="plc-detail-name">Kocheng Kochengan Lucu Aja</div>
+          <div className="plc-detail-subname-3">Product ID: 701241</div>
+
           <div className="plc-detail-subname">
             <div className="plc-detail-subname-1">
               <SportsSoccerOutlined />
             </div>
             <div className="plc-detail-subname-2">Sports</div>
           </div>
+
           <div className="plc-detail-bottom">
             <Button
               sx={{
@@ -175,7 +178,7 @@ class ProductListAdmin extends React.Component {
               </>
             ) : (
               <>
-                <div className="pladmin-banner-text">Products List</div>
+                <div className="pladmin-banner-text">Product List</div>
                 <div className="pladmin-banner-search">
                   <IconButton onClick={this.isSearchHandle}>
                     <Search />
