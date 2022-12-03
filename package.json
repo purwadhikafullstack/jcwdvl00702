@@ -21,6 +21,7 @@
     "projects/*"
   ],
   "dependencies": {
-    "@mui/lab": "^5.0.0-alpha.108"
+    "@mui/lab": "^5.0.0-alpha.108",
+    "multer": "^1.4.5-lts.1"
   }
 }

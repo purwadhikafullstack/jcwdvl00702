@@ -1,44 +1,116 @@
-import React from "react";
-import "../assets/styles/editProfile.css"
-import {
-  InputAdornment,
-  Input,
-  FormControl,
-} from "@mui/material"
-import {Email, Person} from "@mui/icons-material"
-import Container from "@mui/material/Container"
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto'
+import React, { useContext, useState, useEffect } from "react";
+import "../assets/styles/editProfile.css";
+import { InputAdornment, Input, FormControl } from "@mui/material";
+import { Email, Person } from "@mui/icons-material";
+import Container from "@mui/material/Container";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import { AuthContext } from "../context/AuthProvider";
+import { useParams } from "react-router-dom";
+import Axios from "axios";
 
+function EditProfile() {
+  const { user: currentUser } = useContext(AuthContext);
+  //  console.log(currentUser);
+  const userUID = currentUser?.uid;
+  console.log(userUID);
 
-class EditProfile extends React.Component {
-    render(){
-        return(
-           <Container maxWidth="xs">
-            <div className="editProfilePage">
-                <div className="backPage"><ArrowBackIcon/>   Profile</div>
-                <div className="profilePic">
-                    <img
-                    className="profileUserImg"
-                    src="https://media.istockphoto.com/id/1309328823/photo/headshot-portrait-of-smiling-male-employee-in-office.jpg?b=1&s=170667a&w=0&k=20&c=MRMqc79PuLmQfxJ99fTfGqHL07EDHqHLWg0Tb4rPXQc="
-                    alt=""
-                    />
-                    <button className="editPicBtn"><AddAPhotoIcon/></button>
-                </div>
-                <div className="editForm">
-                    <FormControl variant="standard" className="editFormInput">
-                        <Input
-                        sx={{ padding: '7px' }}
-                        endAdornment={
-                           <InputAdornment position="end">
-                            <Person />
-                           </InputAdornment>
-                        }
-                         placeholder="Username"
-                        />
-                    </FormControl>
-                    
-                    <FormControl className="editFormInput">
+  const [fullname, setFullname] = useState("");
+  const [picture, setPicture] = useState("");
+  const [preview, setPreview] = useState("");
+
+  useEffect(() => {
+    console.log(userUID, "useeffect check");
+    if (userUID) {
+      const getUserById = async (userUID) => {
+        const response = await Axios.get(
+          `http://localhost:3300/api/customer/profile/${userUID}`
+        );
+        console.log(response, "halo");
+        setFullname(response.data.fullname);
+        setPicture(response.data.picture);
+      };
+      getUserById(userUID);
+    }
+  }, [userUID]);
+
+  // const getUserById = async(userUID) => {
+  //     const response = await Axios.get(`http://localhost:3300/api/customer/profile/${userUID}`);
+  //     console.log(response)
+  //     setFullname(response.data.fullname);
+  //     setPicture(response.data.picture);
+  // }
+
+  const loadPicture = (e) => {
+    const image = e.target.files[0];
+    setPicture(image);
+    setPreview(URL.createObjectURL(image));
+  };
+
+  const updateProfile = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("fullname", fullname);
+    formData.append("picture", picture);
+    try {
+      await Axios.put(
+        `http://localhost:3300/api/customer/edit-profile/${userUID}`,
+        formData,
+        {
+          headers: {
+            "Content-type": "multipart/form-data",
+          },
+        }
+      );
+      alert("Berhasil");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <Container maxWidth="xs">
+      <div className="editProfilePage">
+        <div className="backPage">
+          <ArrowBackIcon /> Profile
+        </div>
+        <div className="profilePic">
+          <label for="uploadImg">
+            <i>
+              {/* <button className="editPicBtn"> */}
+              <AddAPhotoIcon />
+              {/* </button> */}
+            </i>
+          </label>
+          <input
+            type="file"
+            id="uploadImg"
+            onChange={loadPicture}
+            style={{ display: "none", visibility: "none" }}
+          />
+          {console.log(picture, "here")}
+          {preview ? (
+            <img className="profileUserImg" src={preview} alt="" />
+          ) : (
+            <img className="profileUserImg" src={picture} alt="" />
+          )}
+        </div>
+        <div className="editForm">
+          <FormControl variant="standard" className="editFormInput">
+            <Input
+              sx={{ padding: "7px" }}
+              endAdornment={
+                <InputAdornment position="end">
+                  <Person />
+                </InputAdornment>
+              }
+              placeholder="Full Name"
+              value={fullname}
+              onChange={(e) => setFullname(e.target.value)}
+            />
+          </FormControl>
+
+          {/* <FormControl className="editFormInput">
                         <Input
                         sx={{ padding: '7px' }}
                         endAdornment={
@@ -48,15 +120,16 @@ class EditProfile extends React.Component {
                         }
                          placeholder="Email"
                         />
-                    </FormControl>
-                </div>
-                <div className="saveButton">
-                <button class="btn-lp">Save Your Profile</button>
-                </div>
-            </div>
-           </Container>
-        )
-    }
+                    </FormControl> */}
+        </div>
+        <div className="saveButton">
+          <button class="btn-lp" onClick={updateProfile}>
+            Save Your Profile
+          </button>
+        </div>
+      </div>
+    </Container>
+  );
 }
 
-export default EditProfile
+export default EditProfile;
