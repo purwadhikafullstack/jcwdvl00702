@@ -166,12 +166,14 @@ class OrderList extends React.Component {
           <div className="olistc-detail-subname">Maria Marcelinus</div>
           <div className="olistc-detail-subname">Warehouse A</div>
           <div className="olistc-detail-bottom">
-            <Button
-              sx={{ borderRadius: '20px', backgroundColor: 'black', fontSize: '8px', fontFamily: 'Lora' }}
-              variant="contained"
-              className="olistc-detail-bottom-track">
-              Detail
-            </Button>
+            <Link to="/order-detail-admin">
+              <Button
+                sx={{ borderRadius: '20px', backgroundColor: 'black', fontSize: '8px', fontFamily: 'Lora' }}
+                variant="contained"
+                className="olistc-detail-bottom-track">
+                Detail
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

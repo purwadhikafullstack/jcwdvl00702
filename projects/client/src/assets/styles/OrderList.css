@@ -8,8 +8,8 @@ div {
 .orderlist-main {
   position: relative;
   margin: auto;
-  height: 83vh;
-  /* height: 87vh; */
+  height: max-content;
+  min-height: 83vh;
   display: flex;
   flex-direction: column;
   align-items: center;
