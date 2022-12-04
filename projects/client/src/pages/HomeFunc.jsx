@@ -12,20 +12,7 @@ import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlin
 import DirectionsBikeOutlinedIcon from "@mui/icons-material/DirectionsBikeOutlined";
 import HikingOutlinedIcon from "@mui/icons-material/HikingOutlined";
 import HandymanOutlinedIcon from "@mui/icons-material/HandymanOutlined";
-import {
-  Navbar,
-  Nav,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  NavbarBrand,
-  NavbarText,
-  DropdownMenu,
-  DropdownItem,
-} from "reactstrap";
 import { Link } from "react-router-dom";
-
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Slide } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
@@ -36,6 +23,7 @@ import firebase from "firebase";
 import { AuthContext } from "../context/AuthProvider";
 import { useState, useEffect, useContext } from "react";
 import { firebaseAuthentication } from "../config/firebase";
+import {Login} from '@mui/icons-material'
 
 export default function HomeFunc() {
   const { user: currentUser } = useContext(AuthContext);
@@ -45,7 +33,8 @@ export default function HomeFunc() {
     firebaseAuthentication
       .signOut()
       .then(() => {
-        window.history.push("/sign-in");
+        window.location.reload()
+        return false
       })
       .catch((error) => {
         alert(error);
@@ -121,30 +110,41 @@ export default function HomeFunc() {
                       <AccountBoxIcon />
                     </Avatar>
                   </button>
-                  <Menu {...bindMenu(popupState)}>
-                    <MenuItem onClick={popupState.close}>
-                      <AccountBoxIcon />
-                      Profile
-                    </MenuItem>
-                    <MenuItem onClick={popupState.close}>
-                      {/* <Link to="/sign-in"> */}
-                      <button className="logout-btn" onClick={handleLogout}>
-                        <LogoutIcon />
-                      </button>
-                      {/* </Link> */}
-                      Sign Out
-                    </MenuItem>
-                  </Menu>
+                  
+                    {currentUser ? 
+                      <>
+                      <Menu {...bindMenu(popupState)}>
+                        <MenuItem onClick={popupState.close}>
+                          <Link to="/profile">
+                            <AccountBoxIcon />
+                          </Link>
+                          Profile
+                        </MenuItem>
+                        <MenuItem onClick={popupState.close}>
+                        <button className="logout-btn" onClick={handleLogout}>
+                          <LogoutIcon />
+                        </button>
+                        Sign Out
+                        </MenuItem>
+                      </Menu>
+                      </>
+                    : null
+                    }
                 </React.Fragment>
               )}
             </PopupState>
 
             <div className="name-bar">
               <div className="font-size">Welcome</div>
-              <div className="font-name">{currentUser?.email}</div>
+              <div className="font-name">{currentUser ? currentUser?.email : "Guest"}</div>
 
             </div>
             <div className="cart-icon">
+              <Link to='/sign-in' onClick={currentUser ? event=>event.preventDefault() : null}>
+                <button className="home-button-login" disabled={currentUser}>
+                  <Login/>
+                </button>
+              </Link> 
               <NotificationsOutlinedIcon />
               <ShoppingCartOutlinedIcon />
             </div>
