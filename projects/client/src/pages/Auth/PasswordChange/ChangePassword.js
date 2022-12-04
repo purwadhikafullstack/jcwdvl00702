@@ -10,6 +10,8 @@ import {useFormik} from "formik"
 import * as Yup from "yup"
 import YupPassword from "yup-password"
 import axios from 'axios'
+import { firebaseAuthentication } from "../../../config/firebase";
+
 
 export default function ChangePassword() {
   const { user } = useContext(AuthContext);
