@@ -31,14 +31,9 @@ function SignUp(){
     const [isCheck, setIscheck] = useState(true)
     const changeIsCheck = () => {
         setIscheck(!isCheck)
-
     }
 
-     // masuk melalui email dan password//
-
-    // konfigurasi yup
     YupPassword(Yup)
-    //isinialisasi formik
     const formik = useFormik({
         initialValues : {
             email: "",
@@ -65,19 +60,16 @@ function SignUp(){
       
               var user = res.user;
               console.log("cek data user",user)
-              console.log(user.uid);
               const data = {
                 email: values.email,
                 fullname: values.fullname,
+                password: values.password,
                 is_verified: user.emailVerified,
                 customer_uid: user.uid,
               };
-      
               return data;
             })
             .catch((err) => {
-              // alert(err.message);
-      
               // Handle Errors here.
               var errorCode = err.code;
               var errorMessage = err.message;
@@ -87,10 +79,8 @@ function SignUp(){
               var credential = err.credential;
               // ...
             })
-      
             .then((data) => {
               console.log("here", data);
-      
               Axios.post("http://localhost:3300/api/customer/register", data)
                 .then(() => {
                   return;

@@ -31,7 +31,7 @@ router.post("/register", async (req, res) => {
       fullname: req.body.fullname,
       token: "",
       expired_time: 0,
-      picture: req.body.picture,
+      picture: "",
       social_login: false,
       customer_uid: req.body.customer_uid,
     });

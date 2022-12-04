@@ -23,45 +23,53 @@ import {
 } from "../../config/firebase.js";
 import Axios from "axios";
 import "../../assets/styles/SignIn.css";
+import {useHistory} from "react-router-dom"
+import { useState, useEffect, useContext } from "react";
+import {useFormik, yupToFormErrors} from "formik"
+import * as Yup from "yup"
+import YupPassword from "yup-password"
 
-class SignIn extends React.Component {
-  state = {
-    email: "",
-    password: "",
-    withPassword: false,
-    showPassword: false,
-  };
+export default function SignIn(){
+  const [withPassword,setWithPassword]=useState(false)
+  const [showPassword,setShowPassword]=useState(false)
+  let history = useHistory()
 
-  inputHandler = (event) => {
-    const value = event.target.value;
-    const name = event.target.name;
-    this.setState({ [name]: value });
-  };
+  // Minimum eight characters, at least one letter, one number and one special character
+  const passwordRules = "^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
 
-  submitHandler = (event) => {
-    event.preventDefault();
-    const { email, password } = this.state;
-    firebaseAuthentication
-      .signInWithEmailAndPassword(email, password)
-      .then((res) => {
-        console.log(res);
-        if (res.user.emailVerified) {
-          this.props.history.push("/");
-        } else {
-          alert("Verifikasi email anda terlebih dahulu!");
-          firebaseAuthentication.signOut();
+  YupPassword(Yup)
+  const formik = useFormik({
+    initialValues:{
+      email:"",
+      password:""
+    },
+    validationSchema : Yup.object().shape({
+      email: Yup.string().required("Email Invalid").email("Format is not Email"),
+      // password: Yup.string().required('Please Enter your password').matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,"Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"),
+    }),
+    validateOnChange: false,
+    onSubmit:async(values)=>{
+      firebaseAuthentication.signInWithEmailAndPassword(values.email,values.password)
+      .then(res=>{
+        console.log(res)
+        if(res.user.emailVerified){
+          history.push("/")
+        } else{
+          alert("Please Verify your Email First!")
+          firebaseAuthentication.signOut()
         }
       })
-      .catch((err) => {
-        alert("Error when submitting data");
-      });
-  };
+      .catch(err=>{
+        alert("Error Submitting Data")
+      })
+    }
+  })
 
-  handleLoginWithGoogle = () => {
+  const handleLoginWithGoogle = () => {
     firebaseAuthentication
       .signInWithPopup(googleProvider)
       .then(() => {
-        this.props.history.push("/");
+        history.push("/");
       })
       .catch((err) => {
         var errorCode = err.code;
@@ -72,11 +80,11 @@ class SignIn extends React.Component {
       });
   };
 
-  handleLoginWithFacebook = () => {
+  const handleLoginWithFacebook = () => {
     firebaseAuthentication
       .signInWithPopup(facebookProvider)
       .then(() => {
-        this.props.history.push("/");
+        history.push("/");
       })
       .catch((err) => {
         var errorCode = err.code;
@@ -87,34 +95,30 @@ class SignIn extends React.Component {
       });
   };
 
-  handleClickShowPassword = () => {
-    this.setState({
-      ...this.state,
-      showPassword: !this.state.showPassword,
-    });
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword)
   };
 
-  handleMouseDownPassword = (event) => {
+  const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
-  handleChange = (event, value) => {
-    this.setState({ ...this.state, withPassword: true });
+  const handleChange = (event) => {
+    setWithPassword(true)
   };
 
-  render() {
+  
     return (
       <Container maxWidth="xs" sx={{ backgroundColor: "white" }}>
         <div className="sign-in-main">
-          {this.state.withPassword ? (
+          {withPassword ? (
             <div className="sign-in-submain">
               <div className="sign-in-label">Login to Your Account</div>
               <div className="sign-in-form">
                 <FormControl variant="standard" className="sign-in-form-input">
                   <Input
                     name="email"
-                    onChange={this.inputHandler}
-                    value={this.state.email}
+                    onChange={(e) => formik.setFieldValue("email", e.target.value)}
                     id="input-with-icon-adornment"
                     sx={{ padding: "7px", border: "none" }}
                     startAdornment={
@@ -129,11 +133,10 @@ class SignIn extends React.Component {
                 <FormControl variant="standard" className="sign-in-form-input">
                   <Input
                     name="password"
-                    onChange={this.inputHandler}
-                    value={this.state.password}
+                    onChange={(e) => formik.setFieldValue("password", e.target.value)}
                     id="input-with-icon-adornment"
                     sx={{ padding: "7px" }}
-                    type={this.state.showPassword ? "text" : "password"}
+                    type={showPassword ? "text" : "password"}
                     startAdornment={
                       <InputAdornment position="start">
                         <Lock />
@@ -143,11 +146,11 @@ class SignIn extends React.Component {
                       <InputAdornment position="end">
                         <IconButton
                           aria-label="toggle password visibility"
-                          onClick={this.handleClickShowPassword}
-                          onMouseDown={this.handleMouseDownPassword}
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
                           edge="end"
                         >
-                          {this.state.showPassword ? (
+                          {showPassword ? (
                             <VisibilityOff />
                           ) : (
                             <Visibility />
@@ -171,7 +174,7 @@ class SignIn extends React.Component {
                   sx={{ borderRadius: "20px", backgroundColor: "black" }}
                   variant="contained"
                   className="sign-in-form-button"
-                  onClick={this.submitHandler}
+                  onClick={formik.handleSubmit}
                 >
                   Sign in
                 </Button>
@@ -191,7 +194,7 @@ class SignIn extends React.Component {
                   }}
                 >
                   <div classname="sign-in-social-2-fb">
-                    <IconButton onClick={this.handleLoginWithFacebook}>
+                    <IconButton onClick={handleLoginWithFacebook}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         x="0px"
@@ -212,7 +215,7 @@ class SignIn extends React.Component {
                     </IconButton>
                   </div>
                   <div classname="sign-in-social-2-g">
-                    <IconButton onClick={this.handleLoginWithGoogle}>
+                    <IconButton onClick={handleLoginWithGoogle}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         x="0px"
@@ -279,19 +282,19 @@ class SignIn extends React.Component {
                   <div classname="sign-in-social-2-fb">
                     <FacebookLoginButton
                       style={{ fontSize: "16px" }}
-                      onClick={this.handleLoginWithFacebook}
+                      onClick={handleLoginWithFacebook}
                     />
                   </div>
                   <div classname="sign-in-social-2-g">
                     <GoogleLoginButton
                       style={{ fontSize: "16px" }}
-                      onClick={this.handleLoginWithGoogle}
+                      onClick={handleLoginWithGoogle}
                     />
                   </div>
                   <div classname="sign-in-social-2-a">
                     <TwitterLoginButton
                       style={{ fontSize: "16px" }}
-                      onClick={() => alert("Hello")}
+                      onClick={() => alert("Work In Progress")}
                     />
                   </div>
                 </div>
@@ -302,7 +305,7 @@ class SignIn extends React.Component {
                   sx={{ borderRadius: "20px", backgroundColor: "black" }}
                   variant="contained"
                   className="sign-in-form-button"
-                  onClick={this.handleChange}
+                  onClick={handleChange}
                 >
                   Sign in with password
                 </Button>
@@ -319,7 +322,4 @@ class SignIn extends React.Component {
         </div>
       </Container>
     );
-  }
 }
-
-export default SignIn;
