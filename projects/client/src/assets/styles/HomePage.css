@@ -106,3 +106,27 @@
   background: transparent;
   text-decoration: none;
 }
+
+.logout-btn :hover{
+  cursor: pointer;
+}
+
+.profile-btn{
+  text-decoration: none;
+}
+
+.logout-wrapper{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-wrapper{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: black;
+}

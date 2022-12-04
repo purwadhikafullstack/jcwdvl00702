@@ -13,7 +13,6 @@ import ProductCategory from "./pages/Admin/ProductCategory";
 import ProductListAdmin from "./pages/Admin/ProductListAdmin";
 import ProductDetailAdmin from "./pages/Admin/ProductDetailAdmin";
 import ProductAdd from "./pages/Admin/ProductAdd";
-
 import ProductDetail from "./pages/ProductDetail";
 import ChangePassword from "./pages/Auth/PasswordChange/ChangePassword";
 import ResetPassword from "./pages/Auth/PasswordChange/ResetPassword";
