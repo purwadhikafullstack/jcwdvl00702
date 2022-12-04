@@ -1,4 +1,3 @@
-import axios from "axios";
 import "../../../assets/styles/passwordChange.css";
 import { useState, useEffect, useContext, useRef } from "react";
 import { ArrowBack, Email } from "@mui/icons-material";
@@ -6,38 +5,46 @@ import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
 import { AuthContext } from "../../../context/AuthProvider";
 import { firebaseAuthentication } from "../../../config/firebase";
-import firebase from "firebase";
-
+import {useHistory} from "react-router-dom"
+import {useFormik} from "formik"
+import * as Yup from "yup"
+import YupPassword from "yup-password"
+import axios from 'axios'
 
 export default function ChangePassword() {
   const { user } = useContext(AuthContext);
+  console.log(user?.email,user?.providerData[0].providerId)
+  let history = useHistory()
 
   // Minimum eight characters, at least one letter, one number and one special character
-  const passwordRules = "^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
+  const passwordRules = "^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" 
 
+  YupPassword(Yup)
+  const formik = useFormik({
+    initialValues:{
+      email:""
+    },
+    validationSchema : Yup.object().shape({
+      email : Yup.string().required("Invalid Email").email("Invalid Email Format"),
 
-  // const customer = firebase.auth().currentUser.providerId
-  // console.log(customer)
-  const [email, setEmail] = useState("");
+    }),
+    validateOnChange:false,
+    onSubmit:async(values)=>{
+      if(values.email == user.email && user.providerData[0].providerId === 'password'){
+        firebaseAuthentication.sendPasswordResetEmail(values.email)
+        .then(()=>{
+          alert('Check Email to Change Password')
+          history.push('/')
+        })
+        .catch(err=>{
+          alert(err.message)
+        })
+      } else{
+        alert('Logged In as Social Account, Cannot Change Password')
+      }
+    }
+  })
 
-  const inputHandler = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const submitHandler = (event) => {
-    event.preventDefault();
-    firebaseAuthentication
-      .sendPasswordResetEmail(email)
-      .then(() => {
-        alert("Cek email untuk ubah password");
-        window.history.push("/reset-password");
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
-    console.log(email);
-
-  };
   return (
     <div className="password-wrap">
       <Container maxWidth="xs" className="password-container">
@@ -69,13 +76,12 @@ export default function ChangePassword() {
               <input
                 placeholder="Email"
                 className="reset-input"
-                onChange={inputHandler}
-                value={email}
+                onChange={(e) => formik.setFieldValue("email", e.target.value)}
               />
             </div>
             <div className="changepass-button">
               <Link to="/reset-password">
-                <button className="changepass-continue" onClick={submitHandler}>
+                <button className="changepass-continue" onClick={formik.handleSubmit}>
                   Send
                 </button>
               </Link>

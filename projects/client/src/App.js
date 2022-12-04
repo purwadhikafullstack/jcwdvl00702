@@ -28,7 +28,6 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import HomeFunc from "./pages/HomeFunc";
 import { AuthProvider } from "./context/AuthProvider";
-import NewPassword from "./pages/Auth/newchangepassw"
 
 class App extends React.Component {
   render() {
@@ -68,7 +67,6 @@ class App extends React.Component {
             <Route component={ChooseShipping} path="/choose-shipping" />
             <Route component={Cart} path="/cart" />
             <Route component={Checkout} path="/checkout" />
-            <Route component={NewPassword} path="/newpassword"/>
             <Route component={HomeFunc} path="/" />
             {/* <Route component={HomePage} path="/" /> */}
           </Switch>

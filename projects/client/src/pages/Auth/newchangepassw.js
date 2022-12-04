@@ -1,4 +1,3 @@
-import axios from "axios";
 import "../../assets/styles/passwordChange.css";
 import { useState, useEffect, useContext, useRef } from "react";
 import { ArrowBack, Email } from "@mui/icons-material";
@@ -10,8 +9,7 @@ import {useHistory} from "react-router-dom"
 import {useFormik} from "formik"
 import * as Yup from "yup"
 import YupPassword from "yup-password"
-import firebase from "firebase";
-
+import axios from 'axios'
 
 export default function NewPassword() {
   const { user } = useContext(AuthContext);
