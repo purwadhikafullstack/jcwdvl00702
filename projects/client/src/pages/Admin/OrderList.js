@@ -13,7 +13,7 @@ import {
   Pagination,
   Stack,
 } from '@mui/material';
-import { ReceiptLong, Search, SortTwoTone, MoreHoriz } from '@mui/icons-material';
+import { Search, SortTwoTone, MoreHoriz, ContentPaste } from '@mui/icons-material';
 import { TabPanel, TabList, TabContext } from '@mui/lab';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
@@ -185,7 +185,7 @@ class OrderList extends React.Component {
           <div className="orderlist-banner">
             <div className="orderlist-banner-logo">
               <IconButton disabled>
-                <ReceiptLong />
+                <ContentPaste />
               </IconButton>
             </div>
 
@@ -194,7 +194,7 @@ class OrderList extends React.Component {
                 <ClickAwayListener onClickAway={this.isSearchHandleClose}>
                   <InputBase
                     sx={{ ml: 1, flex: 1, fontFamily: 'Lora' }}
-                    placeholder="Search"
+                    placeholder="Order ID"
                     inputProps={{ 'aria-label': 'Search' }}
                     className="orderlist-search"
                     endAdornment={

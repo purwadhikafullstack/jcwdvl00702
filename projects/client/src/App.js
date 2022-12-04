@@ -19,6 +19,7 @@ import StockMutation from './pages/Admin/StockMutation';
 import OrderList from './pages/Admin/OrderList';
 import StockHistory from './pages/Admin/StockHistory';
 import ProductStockHistory from './pages/Admin/ProductStockHistory';
+import SalesReport from './pages/Admin/SalesReport';
 
 import ProductDetail from './pages/ProductDetail';
 import ChangePassword from './pages/Auth/PasswordChange/ChangePassword';
