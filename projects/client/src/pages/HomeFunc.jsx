@@ -13,8 +13,6 @@ import DirectionsBikeOutlinedIcon from "@mui/icons-material/DirectionsBikeOutlin
 import HikingOutlinedIcon from "@mui/icons-material/HikingOutlined";
 import HandymanOutlinedIcon from "@mui/icons-material/HandymanOutlined";
 import { Link } from "react-router-dom";
-import { Link } from "react-router-dom";
-
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Slide } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
@@ -117,16 +115,20 @@ export default function HomeFunc() {
                       <>
                       <Menu {...bindMenu(popupState)}>
                         <MenuItem onClick={popupState.close}>
-                          <Link to="/profile">
-                            <AccountBoxIcon />
+                          <Link to="/profile" className="profile-btn">
+                            <div className="profile-wrapper">
+                              <div><AccountBoxIcon /></div>
+                              <div>Profile</div>
+                            </div>
                           </Link>
-                          Profile
                         </MenuItem>
                         <MenuItem onClick={popupState.close}>
-                        <button className="logout-btn" onClick={handleLogout}>
-                          <LogoutIcon />
-                        </button>
-                        Sign Out
+                          <button className="logout-btn" onClick={handleLogout}>
+                            <div className="logout-wrapper">
+                              <div><LogoutIcon /></div>
+                              <div>Sign Out</div>
+                            </div>
+                          </button>
                         </MenuItem>
                       </Menu>
                       </>

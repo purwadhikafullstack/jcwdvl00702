@@ -10,7 +10,6 @@ import {useFormik} from "formik"
 import * as Yup from "yup"
 import YupPassword from "yup-password"
 import axios from 'axios'
-import { firebaseAuthentication } from "../../../config/firebase";
 
 
 export default function ChangePassword() {
@@ -54,11 +53,11 @@ export default function ChangePassword() {
           <div className="changepass-topside">
             <div className="changepass-title">
               <div>
-                {/* <Link to="/"> */}
+                <Link to="/">
                 <button className="arrowback">
                   <ArrowBack />
                 </button>
-                {/* </Link> */}
+                </Link>
               </div>
               <div className="changepass-text">Change Password</div>
             </div>
