@@ -33,6 +33,7 @@
     "react-scripts": "5.0.1",
     "react-slideshow-image": "^4.0.5",
     "react-social-login-buttons": "^3.6.1",
+    "react-toastify": "^9.1.1",
     "reactstrap": "^8.9.0",
     "redux": "^4.2.0",
     "redux-devtools-extension": "^2.13.9",

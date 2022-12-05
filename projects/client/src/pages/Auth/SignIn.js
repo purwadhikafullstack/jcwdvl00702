@@ -28,11 +28,14 @@ import { useState, useEffect, useContext } from "react";
 import {useFormik, yupToFormErrors} from "formik"
 import * as Yup from "yup"
 import YupPassword from "yup-password"
+import {useDispatch} from 'react-redux'
+import { loginUser, logoutUser } from "../../redux/actionCreators/authActionCreators.js";
 
 export default function SignIn(){
   const [withPassword,setWithPassword]=useState(false)
   const [showPassword,setShowPassword]=useState(false)
   let history = useHistory()
+  const dispatch = useDispatch()
 
   // Minimum eight characters, at least one letter, one number and one special character
   const passwordRules = "^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
@@ -52,11 +55,19 @@ export default function SignIn(){
       firebaseAuthentication.signInWithEmailAndPassword(values.email,values.password)
       .then(res=>{
         console.log(res)
+        const data = {
+          user:res.user.providerData[0],
+          id:res.user.uid
+        }
+
+        dispatch(loginUser(data))
+
         if(res.user.emailVerified){
           history.push("/")
         } else{
           alert("Please Verify your Email First!")
           firebaseAuthentication.signOut()
+          dispatch(logoutUser())
         }
       })
       .catch(err=>{

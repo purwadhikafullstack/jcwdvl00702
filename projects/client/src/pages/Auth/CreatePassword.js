@@ -35,11 +35,27 @@ function CreatePassword (){
             .then(()=>{
              alert('Silahkan periksa email anda untuk mengubah password')
              firebaseAuthentication.signOut();
-             history.push('/sign-in')
-             })
-             .catch(error=>{
-             alert(error.message)
-         })
+            //  history.push('/sign-in')
+
+             const data = {
+              is_verified : user.emailVerified,
+             }
+             console.log(data)
+             return data
+            })
+            .catch(error=>{
+              alert(error.message)
+            })
+            // .then((data) => {
+            //   Axios.put(`http://localhost:3300/api/customer/verify/${user.customer_uid}`,data)
+            //     .then(() => {
+            //       return;
+            //     })
+            //     .catch((error) => {
+            //       console.log(error);
+            //       alert(error);
+            //     });
+            // });
            }else{
             alert("mohon Verifikasi email Anda Terlebih Dahulu")
            }

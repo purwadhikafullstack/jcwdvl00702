@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-
 import SignIn from "./pages/Auth/SignIn";
 import SignUp from "./pages/Auth/SignUp";
 import CreatePassword from "./pages/Auth/CreatePassword";
@@ -28,11 +27,26 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import HomeFunc from "./pages/HomeFunc";
 import { AuthProvider } from "./context/AuthProvider";
+import {ToastContainer} from 'react-toastify'
+import {useEffect} from 'react'
+import { firebaseAuthentication } from "./config/firebase";
+import {useDispatch} from 'react-redux'
+import { loginUser } from "./redux/actionCreators/authActionCreators";
 
-class App extends React.Component {
-  render() {
+export default function App() {
+  useEffect(()=>{
+    firebaseAuthentication.onAuthStateChanged(user=>{
+      console.log(user)
+      const data ={
+        user:user.providerData[0],
+        id:user.uid
+      }
+      dispatchEvent(loginUser())
+    })
+  },[])
+  
     return (
-      <AuthProvider>
+      // <AuthProvider>
         <BrowserRouter>
           <Switch>
             <Route component={SignIn} path="/sign-in" />
@@ -67,14 +81,12 @@ class App extends React.Component {
             <Route component={ChooseShipping} path="/choose-shipping" />
             <Route component={Cart} path="/cart" />
             <Route component={Checkout} path="/checkout" />
+            {/* <Route component={} path="/admin"/> */}
             <Route component={HomeFunc} path="/" />
-            {/* <Route component={HomePage} path="/" /> */}
           </Switch>
           <Footer />
         </BrowserRouter>
-      </AuthProvider>
+    //  </AuthProvider>
     );
-  }
 }
 
-export default App;
