@@ -11,15 +11,7 @@ import {
   Stack,
   Pagination,
 } from '@mui/material';
-import {
-  MoreHoriz,
-  People,
-  Search,
-  SportsSoccerOutlined,
-  AddBox,
-  ManageSearch,
-  SortTwoTone,
-} from '@mui/icons-material';
+import { MoreHoriz, Search, SportsSoccerOutlined, ManageSearch, SortTwoTone } from '@mui/icons-material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
 import { Link } from 'react-router-dom';

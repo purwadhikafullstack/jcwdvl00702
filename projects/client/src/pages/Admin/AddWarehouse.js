@@ -1,17 +1,5 @@
 import React from 'react';
-import {
-  ArrowBack,
-  PhotoCamera,
-  Person,
-  Email,
-  Lock,
-  Visibility,
-  VisibilityOff,
-  Warehouse,
-  Map,
-  Work,
-  LocationOn,
-} from '@mui/icons-material';
+import { ArrowBack, Email, Warehouse, Map, Work, LocationOn } from '@mui/icons-material';
 import {
   Container,
   FormControl,
@@ -22,7 +10,6 @@ import {
   TextField,
   Select,
   MenuItem,
-  InputLabel,
 } from '@mui/material';
 import GoogleMaps from '../../components/GoogleMaps';
 

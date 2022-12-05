@@ -12,7 +12,6 @@ import {
   ContentPaste,
   ReceiptLong,
   ManageSearch,
-  Work,
   Sell,
 } from '@mui/icons-material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';

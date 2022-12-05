@@ -1,15 +1,11 @@
-import axios from 'axios';
 import { useState, Fragment } from 'react';
-import { Add, ArrowBack, Remove, ReceiptLong, SportsSoccerOutlined, MoreHoriz } from '@mui/icons-material';
-import { useHistory } from 'react-router-dom';
+import { ReceiptLong, SportsSoccerOutlined, MoreHoriz } from '@mui/icons-material';
 import {
   Container,
-  Button,
   IconButton,
   InputBase,
   Select,
   MenuItem,
-  TextField,
   Radio,
   FormControl,
   FormControlLabel,

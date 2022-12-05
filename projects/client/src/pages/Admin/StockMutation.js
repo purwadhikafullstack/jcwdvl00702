@@ -20,16 +20,7 @@ import {
   DialogContentText,
   DialogActions,
 } from '@mui/material';
-import {
-  MoreHoriz,
-  People,
-  NoteAdd,
-  ReceiptLong,
-  Search,
-  SortTwoTone,
-  Inventory,
-  SportsSoccerOutlined,
-} from '@mui/icons-material';
+import { MoreHoriz, NoteAdd, Search, SortTwoTone, Inventory } from '@mui/icons-material';
 import { TabPanel, TabList, TabContext } from '@mui/lab';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
@@ -156,7 +147,7 @@ class StockMutation extends React.Component {
                     onClose={this.handleCloseAccept}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description">
-                    <DialogTitle id="alert-dialog-title">{'Accept mutation request?'}</DialogTitle>
+                    <DialogTitle id="alert-dialog-title">{'Accept mutation request'}</DialogTitle>
                     <DialogContent>
                       <DialogContentText id="alert-dialog-description">Are you sure ?</DialogContentText>
                     </DialogContent>
@@ -187,7 +178,7 @@ class StockMutation extends React.Component {
                     onClose={this.handleCloseReject}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description">
-                    <DialogTitle id="alert-dialog-title">{'Reject mutation request?'}</DialogTitle>
+                    <DialogTitle id="alert-dialog-title">{'Reject mutation request'}</DialogTitle>
                     <DialogContent>
                       <DialogContentText id="alert-dialog-description">Are you sure ?</DialogContentText>
                     </DialogContent>

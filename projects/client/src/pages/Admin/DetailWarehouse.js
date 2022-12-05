@@ -1,24 +1,7 @@
 import React from 'react';
 import { Button, IconButton, Container, Select, MenuItem, InputBase } from '@mui/material';
-import {
-  ArrowBack,
-  Person,
-  Email,
-  Edit,
-  ArrowForwardIos,
-  Badge,
-  Schedule,
-  VerifiedUser,
-  Lock,
-  PhotoCamera,
-  Work,
-  Warehouse,
-  Map,
-  LocationOn,
-} from '@mui/icons-material';
+import { ArrowBack, Email, Badge, VerifiedUser, Work, Warehouse, Map, LocationOn } from '@mui/icons-material';
 import GoogleMaps from '../../components/GoogleMaps';
-
-import { Link } from 'react-router-dom';
 
 import '../../assets/styles/DetailWarehouse.css';
 

@@ -1,22 +1,7 @@
-import axios from 'axios';
 import { useState } from 'react';
-import {
-  Add,
-  ArrowBack,
-  Remove,
-  SportsSoccerOutlined,
-  BusinessCenterOutlined,
-  DirectionsBikeOutlined,
-  HikingOutlined,
-  HandymanOutlined,
-  MonitorHeartOutlined,
-  FitnessCenterOutlined,
-  Search,
-} from '@mui/icons-material';
+import { ArrowBack, Search } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
-import { Container, Button, IconButton, InputBase, Select, MenuItem, TextField } from '@mui/material';
-
-import { Link } from 'react-router-dom';
+import { Container, IconButton, Select, MenuItem } from '@mui/material';
 
 import '../../assets/styles/ProductStockHistory.css';
 

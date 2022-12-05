@@ -12,6 +12,11 @@ import {
   ClickAwayListener,
   Pagination,
   Stack,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from '@mui/material';
 import { Search, SortTwoTone, MoreHoriz, ContentPaste } from '@mui/icons-material';
 import { TabPanel, TabList, TabContext } from '@mui/lab';
@@ -31,6 +36,7 @@ class OrderList extends React.Component {
     status: '',
     isSearch: false,
     isAdmin: true,
+    setOpenC: false,
   };
 
   handleChange = (event, value) => {
@@ -43,6 +49,14 @@ class OrderList extends React.Component {
 
   isSearchHandleClose = () => {
     this.setState({ ...this.state, isSearch: false });
+  };
+
+  handleCloseCancel = () => {
+    this.setState({ ...this.state, setOpenC: false });
+  };
+
+  handleClickOpenCancel = () => {
+    this.setState({ ...this.state, setOpenC: true });
   };
 
   olistcDetailStatus = (status) => {
@@ -166,6 +180,29 @@ class OrderList extends React.Component {
           <div className="olistc-detail-subname">Maria Marcelinus</div>
           <div className="olistc-detail-subname">Warehouse A</div>
           <div className="olistc-detail-bottom">
+            <Button
+              sx={{ borderRadius: '20px', backgroundColor: 'white', color: 'red', fontSize: '8px', fontFamily: 'Lora' }}
+              variant="contained"
+              onClick={this.handleClickOpenCancel}
+              className="olistc-detail-bottom-track">
+              Cancel
+            </Button>
+            <Dialog
+              open={this.state.setOpenC}
+              onClose={this.handleCloseCancel}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description">
+              <DialogTitle id="alert-dialog-title">{'Cancel this order'}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">Are you sure ?</DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={this.handleCloseCancel}>No</Button>
+                <Button onClick={this.handleCloseCancel} autoFocus>
+                  Yes
+                </Button>
+              </DialogActions>
+            </Dialog>
             <Link to="/order-detail-admin">
               <Button
                 sx={{ borderRadius: '20px', backgroundColor: 'black', fontSize: '8px', fontFamily: 'Lora' }}
