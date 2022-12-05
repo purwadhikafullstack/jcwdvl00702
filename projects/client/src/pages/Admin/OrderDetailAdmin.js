@@ -1,22 +1,9 @@
-import axios from 'axios';
 import { useState, Fragment } from 'react';
-import { Add, ArrowBack, Remove, ReceiptLong, SportsSoccerOutlined, MoreHoriz } from '@mui/icons-material';
-import { useHistory } from 'react-router-dom';
+import { ArrowBack } from '@mui/icons-material';
 import {
   Container,
   Button,
   IconButton,
-  InputBase,
-  Select,
-  MenuItem,
-  TextField,
-  Radio,
-  FormControl,
-  FormControlLabel,
-  RadioGroup,
-  Stack,
-  Pagination,
-  Menu,
   Stepper,
   Step,
   StepLabel,
@@ -31,8 +18,9 @@ import '../../assets/styles/OrderDetailAdmin.css';
 import Axios from 'axios';
 
 export default function OrderDetailAdmin() {
+  const history = useHistory();
   const goBack = () => {
-    this.props.history.goBack();
+    history.goBack();
   };
 
   const { isLoggedIn, user } = useSelector((state) => ({
@@ -98,10 +86,10 @@ export default function OrderDetailAdmin() {
       label: 'Received',
       description: `Order is received by User. Process is finished.`,
     },
-    {
-      label: 'Cancelled',
-      description: `Order is cancelled`,
-    },
+    // {
+    //   label: 'Cancelled',
+    //   description: `Order is cancelled`,
+    // },
   ];
 
   const orderDetailCard = () => {
@@ -143,6 +131,11 @@ export default function OrderDetailAdmin() {
       </div>
     );
   };
+
+  const paymentDetail = [
+    { title: 'Total', value: 'Rp 126.789.999 ,-' },
+    { title: 'Payment Method', value: 'Bank Transfer' },
+  ];
 
   return (
     <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
