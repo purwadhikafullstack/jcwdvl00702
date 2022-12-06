@@ -35,6 +35,7 @@ router.post("/register", async (req, res) => {
       picture: "",
       social_login: false,
       customer_uid: req.body.customer_uid,
+      role:"user"
     });
 
     const customer = await newCustomer.save();
@@ -165,7 +166,5 @@ router.put(
   }
 );
 
-//NEW REGISTER PASSWORD
-router.patch("/new-password", async (req, res) => {});
 
 module.exports = router;
