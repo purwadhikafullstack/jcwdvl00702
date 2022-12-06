@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Checkbox,
   FormControlLabel,
@@ -22,18 +22,25 @@ import {useHistory} from "react-router-dom"
 import {useFormik} from "formik"
 import * as Yup from "yup"
 import YupPassword from "yup-password"
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {loginUser} from '../../redux/actionCreators/authActionCreators'
 
 
 function SignUp(){
     let history = useHistory()
     const dispatch = useDispatch()
+    // const isLoggedIn = useSelector(state=>state.auth.isLoggedIn)
     
     const [isCheck, setIscheck] = useState(true)
     const changeIsCheck = () => {
         setIscheck(!isCheck)
     }
+
+    // useEffect(()=>{
+    //   if(!isLoggedIn){
+    //     history.push("/dashboard")
+    //   }
+    // })
 
     YupPassword(Yup)
     const formik = useFormik({

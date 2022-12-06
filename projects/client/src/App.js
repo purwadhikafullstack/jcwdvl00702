@@ -34,6 +34,8 @@ import {useDispatch} from 'react-redux'
 import { loginUser } from "./redux/actionCreators/authActionCreators";
 
 export default function App() {
+  const dispatch = useDispatch()
+
   useEffect(()=>{
     firebaseAuthentication.onAuthStateChanged(user=>{
       console.log(user)
@@ -41,7 +43,8 @@ export default function App() {
         user:user.providerData[0],
         id:user.uid
       }
-      dispatchEvent(loginUser())
+      dispatch(loginUser(data))
+      // history.push("")
     })
   },[])
   

@@ -24,23 +24,21 @@ import { AuthContext } from "../context/AuthProvider";
 import { useState, useEffect, useContext } from "react";
 import { firebaseAuthentication } from "../config/firebase";
 import {Login} from '@mui/icons-material'
-import {useDispatch} from 'react-redux'
+import {shallowEqual, useDispatch,useSelector} from 'react-redux'
 import { logoutUser } from "../redux/actionCreators/authActionCreators";
 
 export default function HomeFunc() {
-  // const { user: currentUser } = useContext(AuthContext);
-  // console.log(currentUser?.email,currentUser?.providerData[0].providerId)
-  // console.log(currentUser)
-
   const dispatch = useDispatch()
-
-  console.log()
+  const {isLoggedIn,user} = useSelector(state=>({
+    isLoggedIn:state.auth.isLoggedIn,
+    user:state.auth.user
+  }),shallowEqual)
 
   const handleLogout = () => {
     firebaseAuthentication.signOut()
-    dispatch(logoutUser())
       .then(() => {
         window.location.reload()
+        dispatch(logoutUser())
         return false
       })
       .catch((error) => {
@@ -117,7 +115,7 @@ export default function HomeFunc() {
                       <AccountBoxIcon />
                     </Avatar>
                   </button>
-                    {/* {user ? 
+                    {isLoggedIn ? 
                       <>
                       <Menu {...bindMenu(popupState)}>
                         <MenuItem onClick={popupState.close}>
@@ -139,22 +137,22 @@ export default function HomeFunc() {
                       </Menu>
                       </>
                     : null
-                    } */}
+                    }
                 </React.Fragment>
               )}
             </PopupState>
 
             <div className="name-bar">
               <div className="font-size">Welcome</div>
-              {/* <div className="font-name">{user ? user?.displayName : "Guest"}</div> */}
+              <div className="font-name">{isLoggedIn ? user?.displayName : "Guest"}</div>
 
             </div>
             <div className="cart-icon">
-              {/* <Link to='/sign-in' onClick={user ? event=>event.preventDefault() : null}>
-                <button className="home-button-login" disabled={user}>
+              <Link to='/sign-in' onClick={isLoggedIn ? event=>event.preventDefault() : null}>
+                <button className="home-button-login" disabled={isLoggedIn}>
                   <Login/>
                 </button>
-              </Link>  */}
+              </Link> 
               <NotificationsOutlinedIcon />
               <ShoppingCartOutlinedIcon />
             </div>
