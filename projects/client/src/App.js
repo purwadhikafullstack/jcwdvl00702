@@ -32,21 +32,37 @@ import {useEffect} from 'react'
 import { firebaseAuthentication } from "./config/firebase";
 import {useDispatch} from 'react-redux'
 import { loginUser } from "./redux/actionCreators/authActionCreators";
+import Axios from 'axios'
 
 export default function App() {
   const dispatch = useDispatch()
 
-  useEffect(()=>{
+  // useEffect(()=>{
     firebaseAuthentication.onAuthStateChanged(user=>{
       console.log(user)
       const data ={
         user:user.providerData[0],
         id:user.uid
       }
-      dispatch(loginUser(data))
-      // history.push("")
+      console.log(data)
+      Axios.get(`http://localhost:3300/api/admin/get-user-one/${data.id}`)
+      .then(res => {
+        const getRes = res.data
+        const dataPersist = {
+          user:getRes.result,
+          id:getRes.result.customer_uid
+        }
+        console.log(dataPersist)
+        dispatch(loginUser(dataPersist))
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      });
+      // dispatch(loginUser(data))
     })
-  },[])
+
+  // },[])
   
     return (
       // <AuthProvider>

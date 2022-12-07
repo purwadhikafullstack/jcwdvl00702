@@ -13,25 +13,52 @@ import {
 } from '@mui/material';
 import { MoreHoriz, People, Search, PersonAdd } from '@mui/icons-material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-
 import { Link } from 'react-router-dom';
-
 import '../../assets/styles/UserList.css';
+import { useState, useEffect, useContext } from "react";
+import { firebaseAuthentication } from '../../config/firebase';
+import {useDispatch,useSelector} from 'react-redux'
+import Axios from 'axios';
+import { getUserData } from '../../redux/actionCreators/userDataActions';
 
-class UserList extends React.Component {
-  state = {
-    isSearch: false,
+export default function UserList() {
+  const [isSearch,setIsSearch] = useState(false)
+  const [userBox,setUserBox] = useState([])
+  const dispatch = useDispatch()
+
+  useEffect(()=>{
+    const processUsers=()=>{
+      Axios.get(`http://localhost:3300/api/admin/get-user`)
+      .then(res=>{
+        const getRes = res.data.allUser
+        console.log(getRes)
+        dispatch(getUserData(getRes))
+        setUserBox(getRes)
+      })
+    } 
+    processUsers()
+  },[])
+
+  const {isLoggedIn,user,dataUser} = useSelector(state=>({
+    isLoggedIn:state.auth.isLoggedIn,
+    user:state.auth.user,
+    dataUser:state.userData.userData
+  }))
+  console.log(dataUser[0])
+  
+  const isSearchHandle = () => {
+    setIsSearch(true);
   };
 
-  isSearchHandle = () => {
-    this.setState({ ...this.state, isSearch: true });
+  const isSearchHandleClose = () => {
+    setIsSearch(false);
   };
 
-  isSearchHandleClose = () => {
-    this.setState({ ...this.state, isSearch: false });
-  };
+  const deleteHandler=()=>{
+    Axios.put(``,)
+  }
 
-  menuHandler = () => {
+  const menuHandler = () => {
     return (
       <PopupState variant="popover" popupId="demo-popup-menu">
         {(popupState) => (
@@ -99,7 +126,8 @@ class UserList extends React.Component {
     );
   };
 
-  userlistCard = () => {
+  const userlistCard = (abc) => {
+    console.log(userBox)
     return (
       <div className="ulc-main">
         <div className="ulc-image">
@@ -110,12 +138,12 @@ class UserList extends React.Component {
           />
         </div>
         <div className="ulc-detail">
-          <div className="ulc-detail-name">Maria Marcelinus</div>
-          <div className="ulc-detail-subname">ID User: 19450817110256</div>
-          <div className="ulc-detail-subname">Area 1 - DKI Jakarta</div>
-          <div className="ulc-detail-subname">Member since: 17-08-1945</div>
+          <div className="ulc-detail-name">{userBox[abc]?.fullname}</div>
+          <div className="ulc-detail-subname">{dataUser[abc]?.email}</div>
+          <div className="ulc-detail-subname">{dataUser[abc]?.role}</div>
+          <div className="ulc-detail-subname">{dataUser[abc]?.createdAt}</div>
           <div className="ulc-detail-bottom">
-            <Button
+            <Button onClick={deleteHandler}
               sx={{
                 borderRadius: '20px',
                 backgroundColor: 'rgb(255,153,153,0.9)',
@@ -147,7 +175,6 @@ class UserList extends React.Component {
     );
   };
 
-  render() {
     return (
       <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
         <div className="userlist-main">
@@ -157,9 +184,9 @@ class UserList extends React.Component {
                 <People />
               </IconButton>
             </div>
-            {this.state.isSearch ? (
+            {isSearch ? (
               <>
-                <ClickAwayListener onClickAway={this.isSearchHandleClose}>
+                <ClickAwayListener onClickAway={isSearchHandleClose}>
                   <InputBase
                     sx={{ ml: 1, flex: 1, fontFamily: 'Lora' }}
                     placeholder="Search"
@@ -179,7 +206,7 @@ class UserList extends React.Component {
               <>
                 <div className="userlist-banner-text">User List</div>
                 <div className="userlist-banner-search">
-                  <IconButton onClick={this.isSearchHandle}>
+                  <IconButton onClick={isSearchHandle}>
                     <Search />
                   </IconButton>
                 </div>
@@ -192,12 +219,13 @@ class UserList extends React.Component {
                 </IconButton>
               </Link>
             </div>
-            <div className="userlist-banner-menu">{this.menuHandler()}</div>
+            <div className="userlist-banner-menu">{menuHandler()}</div>
           </div>
           <div className="userlist-content">
-            {this.userlistCard()}
-            {this.userlistCard()}
-            {this.userlistCard()}
+              {/* {userlistCard()} */}
+            {Object.keys(userBox).map((i)=>{
+              return userlistCard(i)
+            })}
             <Stack spacing={1} sx={{ position: 'fixed', top: '78%', width: '110%', fontFamily: 'Lora' }}>
               <Pagination count={10} />
             </Stack>
@@ -206,6 +234,4 @@ class UserList extends React.Component {
       </Container>
     );
   }
-}
 
-export default UserList;

@@ -4,11 +4,26 @@ const bcrypt = require("bcrypt");
 const customer = require("../models/customer");
 const { user } = require("../config/db-config");
 
-//GET USER
+//GET ALL USER
 router.get("/get-user",async(req,res)=>{
     try{
         const allUser = await Customer.findAll()
         return res.status(200).send({allUser})
+    } catch(err){
+        console.log(err)
+        return res.status(500).json({message:err.toString()})
+    }
+})
+
+//GET ONE USER
+router.get("/get-user-one/:customer_uid",async(req,res)=>{
+    try{
+        const result = await Customer.findOne({
+            where:{
+                customer_uid:req.params.customer_uid
+            }
+        })
+        return res.status(200).send({result})
     } catch(err){
         console.log(err)
         return res.status(500).json({message:err.toString()})

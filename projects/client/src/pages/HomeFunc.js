@@ -33,6 +33,8 @@ export default function HomeFunc() {
     isLoggedIn:state.auth.isLoggedIn,
     user:state.auth.user
   }),shallowEqual)
+  
+  console.log(user)
 
   const handleLogout = () => {
     firebaseAuthentication.signOut()
@@ -144,7 +146,8 @@ export default function HomeFunc() {
 
             <div className="name-bar">
               <div className="font-size">Welcome</div>
-              <div className="font-name">{isLoggedIn ? user?.displayName : "Guest"}</div>
+              <div className="font-name">{isLoggedIn ? `${user?.fullname} as ${user?.role}`: "Guest"}</div>
+              
 
             </div>
             <div className="cart-icon">

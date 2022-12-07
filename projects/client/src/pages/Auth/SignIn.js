@@ -59,7 +59,6 @@ export default function SignIn(){
           user:res.user.providerData[0],
           id:res.user.uid
         }
-
         dispatch(loginUser(data))
 
         if(res.user.emailVerified){
