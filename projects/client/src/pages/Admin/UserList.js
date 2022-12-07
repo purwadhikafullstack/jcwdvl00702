@@ -26,16 +26,26 @@ export default function UserList() {
   const [userBox,setUserBox] = useState([])
   const dispatch = useDispatch()
 
+  const processUsers=()=>{
+    Axios.get(`http://localhost:3300/api/admin/get-user`)
+    .then(res=>{
+      const getRes = res.data.allUser
+      console.log(getRes)
+      dispatch(getUserData(getRes))
+      setUserBox(getRes)
+    })
+  } 
+
   useEffect(()=>{
-    const processUsers=()=>{
-      Axios.get(`http://localhost:3300/api/admin/get-user`)
-      .then(res=>{
-        const getRes = res.data.allUser
-        console.log(getRes)
-        dispatch(getUserData(getRes))
-        setUserBox(getRes)
-      })
-    } 
+    // const processUsers=()=>{
+    //   Axios.get(`http://localhost:3300/api/admin/get-user`)
+    //   .then(res=>{
+    //     const getRes = res.data.allUser
+    //     console.log(getRes)
+    //     dispatch(getUserData(getRes))
+    //     setUserBox(getRes)
+    //   })
+    // } 
     processUsers()
   },[])
 
@@ -54,8 +64,17 @@ export default function UserList() {
     setIsSearch(false);
   };
 
-  const deleteHandler=()=>{
-    Axios.put(``,)
+  const deleteHandler=(id)=>{
+    const data = {
+      is_banned:true
+    }
+    Axios.put(`http://localhost:3300/api/admin/update/${id}`,data)
+    .then(()=>{
+      processUsers()
+    })
+    .catch(error=>{
+      console.log(error)
+    })
   }
 
   const menuHandler = () => {
@@ -129,7 +148,7 @@ export default function UserList() {
   const userlistCard = (abc) => {
     console.log(userBox)
     return (
-      <div className="ulc-main">
+        <div className="ulc-main">
         <div className="ulc-image">
           <img
             src="https://i.pinimg.com/originals/6f/df/bc/6fdfbc41d6a8e26d4b9073bc1afd899f.jpg"
@@ -138,12 +157,17 @@ export default function UserList() {
           />
         </div>
         <div className="ulc-detail">
-          <div className="ulc-detail-name">{userBox[abc]?.fullname}</div>
+          <div className="ulc-detail-name">{dataUser[abc]?.fullname}</div>
           <div className="ulc-detail-subname">{dataUser[abc]?.email}</div>
           <div className="ulc-detail-subname">{dataUser[abc]?.role}</div>
+          {dataUser[abc]?.is_banned==true ? 
+          <div className="ulc-detail-subname" style={{color:"darkred"}}>Banned</div>
+          : 
+          <div className="ulc-detail-subname">Safe User</div>
+          }
           <div className="ulc-detail-subname">{dataUser[abc]?.createdAt}</div>
           <div className="ulc-detail-bottom">
-            <Button onClick={deleteHandler}
+            <Button onClick={()=>deleteHandler(dataUser[abc]?.customer_uid)}
               sx={{
                 borderRadius: '20px',
                 backgroundColor: 'rgb(255,153,153,0.9)',
@@ -172,8 +196,8 @@ export default function UserList() {
           </div>
         </div>
       </div>
-    );
-  };
+    )
+  }
 
     return (
       <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
