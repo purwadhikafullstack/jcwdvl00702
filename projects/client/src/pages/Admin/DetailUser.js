@@ -60,6 +60,37 @@ export default function DetailUser() {
     history.goBack();
   };
 
+  YupPassword(Yup)
+  const formik = useFormik({
+    initialValues:{
+      email:"",
+      fullname:"",
+    },
+    validationSchema: Yup.object().shape({
+      email: Yup.string().required("No email entered").email("Not an email format"),
+      fullname: Yup.string().required("No fullname entered")
+        .matches(
+        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+            'Name can only contain Latin letters.'
+        )
+        .matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms,'Please enter your full name.'),
+   }),
+    validateOnChange:false,
+    onSubmit:async(values)=>{
+      const data={
+        email:values.email,
+        fullname:values.fullname
+      }
+      Axios.put(`http://localhost:3300/api/admin/update/${detailUser.customer_uid}`,data)
+      .then(()=>{
+        fetchDetail()
+      })
+      .catch(error=>{
+        console.log(error)
+      })
+    }
+  })
+
     return (
       <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
         <div className="detailuser-main">
@@ -177,6 +208,7 @@ export default function DetailUser() {
                         sx={{ fontFamily: 'Lora', fontSize: '12px' }}
                         placeholder={detailUser.fullname}
                         className="du-c-d-item-2-input"
+                        onChange={(e) => formik.setFieldValue("fullname", e.target.value)}
                       />
                     </li>
                     <li className="du-c-d-item">
@@ -186,6 +218,7 @@ export default function DetailUser() {
                         sx={{ fontFamily: 'Lora', fontSize: '12px' }}
                         placeholder={detailUser.email}
                         className="du-c-d-item-2-input"
+                        onChange={(e) => formik.setFieldValue("email", e.target.value)}
                       />
                     </li>
                   </>
@@ -241,7 +274,13 @@ export default function DetailUser() {
                     </>
                   )}
                 </li>
-              </ul>
+                {
+                  isEdit ?
+                  <button onClick={formik.handleSubmit}>Submit Changes</button>
+                  :
+                  null
+                }
+                 </ul>
             </div>
             <div className="detailuser-content-option">
               <Link to="/address-list" className="du-c-o-button">
