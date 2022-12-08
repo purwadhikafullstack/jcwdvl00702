@@ -10,6 +10,7 @@ class DetailWarehouse extends React.Component {
     isEdit: false,
     isSuperAdmin: true,
     statusValue: 0,
+    adminValue: 0,
   };
 
   editHandler = () => {
@@ -22,6 +23,10 @@ class DetailWarehouse extends React.Component {
 
   handleStatusChange = (event) => {
     this.setState({ ...this.state, statusValue: event.target.value });
+  };
+
+  handleAdminChange = (event) => {
+    this.setState({ ...this.state, adminValue: event.target.value });
   };
 
   goBack = () => {
@@ -213,32 +218,51 @@ class DetailWarehouse extends React.Component {
                   </>
                 )}
 
-                <li className="dw-c-d-item">
-                  <Work className="profileIcon" />
-                  <span className="dw-c-d-item-1">Admin</span>
-                  <span className="dw-c-d-item-2">Maria Marcelinus</span>
-                </li>
-
                 {this.state.isEdit ? (
                   <>
-                    <VerifiedUser className="profileIcon" />
-                    <span className="dw-c-d-item-1">Status</span>
-                    <Select
-                      sx={{ fontSize: '10px', width: '150px' }}
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={this.state.statusValue}
-                      className="dw-c-d-item-2-select"
-                      onChange={this.handleStatusChange}>
-                      <MenuItem value={0}>
-                        <em>Status</em>
-                      </MenuItem>
-                      <MenuItem value={1}>Active</MenuItem>
-                      <MenuItem value={2}>Non-Active</MenuItem>
-                    </Select>
+                    <li className="dw-c-d-item">
+                      <Work className="profileIcon" />
+                      <span className="dw-c-d-item-1">Admin</span>
+                      <Select
+                        sx={{ fontSize: '10px', width: '150px' }}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={this.state.adminValue}
+                        className="dw-c-d-item-2-select"
+                        onChange={this.handleAdminChange}>
+                        <MenuItem value={0}>
+                          <em>Admin</em>
+                        </MenuItem>
+                        <MenuItem value={1}>Maria Marcelinus</MenuItem>
+                        <MenuItem value={2}>Kapitan Pattimura</MenuItem>
+                      </Select>
+                    </li>
+
+                    <li className="dw-c-d-item">
+                      <VerifiedUser className="profileIcon" />
+                      <span className="dw-c-d-item-1">Status</span>
+                      <Select
+                        sx={{ fontSize: '10px', width: '150px' }}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={this.state.statusValue}
+                        className="dw-c-d-item-2-select"
+                        onChange={this.handleStatusChange}>
+                        <MenuItem value={0}>
+                          <em>Status</em>
+                        </MenuItem>
+                        <MenuItem value={1}>Active</MenuItem>
+                        <MenuItem value={2}>Non-Active</MenuItem>
+                      </Select>
+                    </li>
                   </>
                 ) : (
                   <>
+                    <li className="dw-c-d-item">
+                      <Work className="profileIcon" />
+                      <span className="dw-c-d-item-1">Admin</span>
+                      <span className="dw-c-d-item-2">Maria Marcelinus</span>
+                    </li>
                     <li className="dw-c-d-item">
                       <VerifiedUser className="profileIcon" />
                       <span className="dw-c-d-item-1">Status</span>
