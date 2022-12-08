@@ -39,7 +39,6 @@ export default function HomeFunc() {
   const handleLogout = () => {
     firebaseAuthentication.signOut()
       .then(() => {
-        window.location.reload()
         dispatch(logoutUser())
         return false
       })

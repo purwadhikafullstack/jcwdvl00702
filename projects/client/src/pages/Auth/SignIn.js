@@ -74,13 +74,8 @@ export default function SignIn(){
       })
     }
   })
-      .catch(err=>{
-        alert("Error Submitting Data")
-      })
-    }
-  })
+      
 
-  const handleLoginWithGoogle = () => {
   const handleLoginWithGoogle = () => {
     firebaseAuthentication
       .signInWithPopup(googleProvider)
@@ -98,7 +93,6 @@ export default function SignIn(){
   };
 
   const handleLoginWithFacebook = () => {
-  const handleLoginWithFacebook = () => {
     firebaseAuthentication
       .signInWithPopup(facebookProvider)
       .then(() => {
@@ -113,30 +107,24 @@ export default function SignIn(){
       });
   };
 
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword)
+  
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword)
   };
 
-  const handleMouseDownPassword = (event) => {
+  
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
-  const handleChange = (event) => {
-    setWithPassword(true)
+ 
   const handleChange = (event) => {
     setWithPassword(true)
   };
 
-  
-
-  
     return (
       <Container maxWidth="xs" sx={{ backgroundColor: "white" }}>
         <div className="sign-in-main">
-          {withPassword ? (
           {withPassword ? (
             <div className="sign-in-submain">
               <div className="sign-in-label">Login to Your Account</div>
@@ -144,7 +132,6 @@ export default function SignIn(){
                 <FormControl variant="standard" className="sign-in-form-input">
                   <Input
                     name="email"
-                    onChange={(e) => formik.setFieldValue("email", e.target.value)}
                     onChange={(e) => formik.setFieldValue("email", e.target.value)}
                     id="input-with-icon-adornment"
                     sx={{ padding: "7px", border: "none" }}
@@ -161,10 +148,8 @@ export default function SignIn(){
                   <Input
                     name="password"
                     onChange={(e) => formik.setFieldValue("password", e.target.value)}
-                    onChange={(e) => formik.setFieldValue("password", e.target.value)}
                     id="input-with-icon-adornment"
                     sx={{ padding: "7px" }}
-                    type={showPassword ? "text" : "password"}
                     type={showPassword ? "text" : "password"}
                     startAdornment={
                       <InputAdornment position="start">
@@ -177,11 +162,8 @@ export default function SignIn(){
                           aria-label="toggle password visibility"
                           onClick={handleClickShowPassword}
                           onMouseDown={handleMouseDownPassword}
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
                           edge="end"
                         >
-                          {showPassword ? (
                           {showPassword ? (
                             <VisibilityOff />
                           ) : (
@@ -207,7 +189,6 @@ export default function SignIn(){
                   variant="contained"
                   className="sign-in-form-button"
                   onClick={formik.handleSubmit}
-                  onClick={formik.handleSubmit}
                 >
                   Sign in
                 </Button>
@@ -227,7 +208,6 @@ export default function SignIn(){
                   }}
                 >
                   <div classname="sign-in-social-2-fb">
-                    <IconButton onClick={handleLoginWithFacebook}>
                     <IconButton onClick={handleLoginWithFacebook}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -249,7 +229,6 @@ export default function SignIn(){
                     </IconButton>
                   </div>
                   <div classname="sign-in-social-2-g">
-                    <IconButton onClick={handleLoginWithGoogle}>
                     <IconButton onClick={handleLoginWithGoogle}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -318,20 +297,17 @@ export default function SignIn(){
                     <FacebookLoginButton
                       style={{ fontSize: "16px" }}
                       onClick={handleLoginWithFacebook}
-                      onClick={handleLoginWithFacebook}
                     />
                   </div>
                   <div classname="sign-in-social-2-g">
                     <GoogleLoginButton
                       style={{ fontSize: "16px" }}
                       onClick={handleLoginWithGoogle}
-                      onClick={handleLoginWithGoogle}
                     />
                   </div>
                   <div classname="sign-in-social-2-a">
                     <TwitterLoginButton
                       style={{ fontSize: "16px" }}
-                      onClick={() => alert("Work In Progress")}
                       onClick={() => alert("Work In Progress")}
                     />
                   </div>
@@ -343,7 +319,6 @@ export default function SignIn(){
                   sx={{ borderRadius: "20px", backgroundColor: "black" }}
                   variant="contained"
                   className="sign-in-form-button"
-                  onClick={handleChange}
                   onClick={handleChange}
                 >
                   Sign in with password
@@ -361,5 +336,5 @@ export default function SignIn(){
         </div>
       </Container>
     );
-}
-}
+  }
+
