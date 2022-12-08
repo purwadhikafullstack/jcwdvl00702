@@ -16,17 +16,33 @@ import {
   Sell,
 } from '@mui/icons-material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-
 import { Link } from 'react-router-dom';
-
 import '../../assets/styles/Dashboard.css';
+import { logoutUser } from '../../redux/actionCreators/authActionCreators'
+import {shallowEqual, useDispatch,useSelector} from 'react-redux'
+import { firebaseAuthentication } from '../../config/firebase';
 
-class Dashboard extends React.Component {
-  state = {
-    role: 'Super-Admin',
+export default function Dashboard() {
+  const dispatch = useDispatch()
+  
+  const {isLoggedIn,user} = useSelector(state=>({
+    isLoggedIn:state.auth.isLoggedIn,
+    user:state.auth.user
+  }),shallowEqual)
+
+  const handleLogout = () => {
+    firebaseAuthentication.signOut()
+      .then(() => {
+        window.location.reload()
+        dispatch(logoutUser())
+        return false
+      })
+      .catch((error) => {
+        alert(error);
+      });
   };
 
-  menuHandler = () => {
+  const menuHandler = () => {
     return (
       <PopupState variant="popover" popupId="demo-popup-menu">
         {(popupState) => (
@@ -94,7 +110,6 @@ class Dashboard extends React.Component {
     );
   };
 
-  render() {
     return (
       <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
         <div className="dashboard-main">
@@ -125,8 +140,8 @@ class Dashboard extends React.Component {
               </PopupState>
             </div>
             <div className="dashboard-top-text">
-              <div className="dashboard-top-text-1">{this.state.role}</div>
-              <div className="dashboard-top-text-2">Dean Febrius</div>
+              <div className="dashboard-top-text-1">{isLoggedIn? user?.role : "Restricted"}</div>
+              <div className="dashboard-top-text-2">{isLoggedIn? user?.fullname : "Access"}</div>
             </div>
             <div className="dashboard-top-icon">
               <div className="dashboard-top-icon-1">
@@ -134,7 +149,7 @@ class Dashboard extends React.Component {
                   <NotificationsOutlined />
                 </IconButton>
               </div>
-              <div className="dashboard-top-icon-2"> {this.menuHandler()}</div>
+              <div className="dashboard-top-icon-2"> {menuHandler()}</div>
             </div>
           </div>
 
@@ -211,6 +226,4 @@ class Dashboard extends React.Component {
       </Container>
     );
   }
-}
 
-export default Dashboard;

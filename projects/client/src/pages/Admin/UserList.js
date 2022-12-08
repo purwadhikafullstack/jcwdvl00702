@@ -13,25 +13,67 @@ import {
 } from '@mui/material';
 import { MoreHoriz, People, Search, PersonAdd } from '@mui/icons-material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-
 import { Link } from 'react-router-dom';
-
 import '../../assets/styles/UserList.css';
+import { useState, useEffect, useContext } from "react";
+import { firebaseAuthentication } from '../../config/firebase';
+import {useDispatch,useSelector} from 'react-redux'
+import Axios from 'axios';
+import { getUserData } from '../../redux/actionCreators/userDataActions';
+import { getUserDetail } from '../../redux/actionCreators/userDetailActions';
 
-class UserList extends React.Component {
-  state = {
-    isSearch: false,
+export default function UserList() {
+  const [isSearch,setIsSearch] = useState(false)
+  const [userBox,setUserBox] = useState([])
+  const dispatch = useDispatch()
+
+  const processUsers=()=>{
+    Axios.get(`http://localhost:3300/api/admin/get-user`)
+    .then(res=>{
+      const getRes = res.data.allUser
+      console.log(getRes)
+      dispatch(getUserData(getRes))
+      setUserBox(getRes)
+    })
+  } 
+
+  useEffect(()=>{
+    processUsers()
+  },[])
+
+  const {isLoggedIn,user,dataUser} = useSelector(state=>({
+    isLoggedIn:state.auth.isLoggedIn,
+    user:state.auth.user,
+    dataUser:state.userData.userData
+  }))
+  console.log(dataUser)
+  
+  const isSearchHandle = () => {
+    setIsSearch(true);
   };
 
-  isSearchHandle = () => {
-    this.setState({ ...this.state, isSearch: true });
+  const isSearchHandleClose = () => {
+    setIsSearch(false);
   };
 
-  isSearchHandleClose = () => {
-    this.setState({ ...this.state, isSearch: false });
-  };
+  const deleteHandler=(id)=>{
+    const data = {
+      is_banned:true
+    }
+    Axios.put(`http://localhost:3300/api/admin/update/${id}`,data)
+    .then(()=>{
+      processUsers()
+    })
+    .catch(error=>{
+      console.log(error)
+    })
+  }
 
-  menuHandler = () => {
+  const handleDetail=(datadetail)=>{
+    dispatch(getUserDetail(datadetail))
+  }
+
+  const menuHandler = () => {
     return (
       <PopupState variant="popover" popupId="demo-popup-menu">
         {(popupState) => (
@@ -99,9 +141,10 @@ class UserList extends React.Component {
     );
   };
 
-  userlistCard = () => {
+  const userlistCard = (abc) => {
+    console.log(userBox)
     return (
-      <div className="ulc-main">
+        <div className="ulc-main">
         <div className="ulc-image">
           <img
             src="https://i.pinimg.com/originals/6f/df/bc/6fdfbc41d6a8e26d4b9073bc1afd899f.jpg"
@@ -110,12 +153,17 @@ class UserList extends React.Component {
           />
         </div>
         <div className="ulc-detail">
-          <div className="ulc-detail-name">Maria Marcelinus</div>
-          <div className="ulc-detail-subname">ID User: 19450817110256</div>
-          <div className="ulc-detail-subname">Area 1 - DKI Jakarta</div>
-          <div className="ulc-detail-subname">Member since: 17-08-1945</div>
+          <div className="ulc-detail-name">{userBox[abc]?.fullname}</div>
+          <div className="ulc-detail-subname">{userBox[abc]?.email}</div>
+          <div className="ulc-detail-subname">{userBox[abc]?.role}</div>
+          {userBox[abc]?.is_banned==true ? 
+          <div className="ulc-detail-subname" style={{color:"darkred"}}>Banned</div>
+          : 
+          <div className="ulc-detail-subname">Safe User</div>
+          }
+          <div className="ulc-detail-subname">{userBox[abc]?.createdAt}</div>
           <div className="ulc-detail-bottom">
-            <Button
+            <Button onClick={()=>deleteHandler(userBox[abc]?.customer_uid)}
               sx={{
                 borderRadius: '20px',
                 backgroundColor: 'rgb(255,153,153,0.9)',
@@ -128,7 +176,7 @@ class UserList extends React.Component {
               Delete
             </Button>
             <Link to="/detail-user" className="userlist-banner-menu-link">
-              <Button
+              <Button onClick={()=>handleDetail(dataUser[abc])}
                 sx={{
                   borderRadius: '20px',
                   backgroundColor: 'rgb(153,255,153,0.9)',
@@ -144,10 +192,9 @@ class UserList extends React.Component {
           </div>
         </div>
       </div>
-    );
-  };
+    )
+  }
 
-  render() {
     return (
       <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
         <div className="userlist-main">
@@ -157,9 +204,9 @@ class UserList extends React.Component {
                 <People />
               </IconButton>
             </div>
-            {this.state.isSearch ? (
+            {isSearch ? (
               <>
-                <ClickAwayListener onClickAway={this.isSearchHandleClose}>
+                <ClickAwayListener onClickAway={isSearchHandleClose}>
                   <InputBase
                     sx={{ ml: 1, flex: 1, fontFamily: 'Lora' }}
                     placeholder="Search"
@@ -179,7 +226,7 @@ class UserList extends React.Component {
               <>
                 <div className="userlist-banner-text">User List</div>
                 <div className="userlist-banner-search">
-                  <IconButton onClick={this.isSearchHandle}>
+                  <IconButton onClick={isSearchHandle}>
                     <Search />
                   </IconButton>
                 </div>
@@ -192,12 +239,12 @@ class UserList extends React.Component {
                 </IconButton>
               </Link>
             </div>
-            <div className="userlist-banner-menu">{this.menuHandler()}</div>
+            <div className="userlist-banner-menu">{menuHandler()}</div>
           </div>
           <div className="userlist-content">
-            {this.userlistCard()}
-            {this.userlistCard()}
-            {this.userlistCard()}
+            {Object.keys(userBox).map((i)=>{
+              return userlistCard(i)
+            })}
             <Stack spacing={1} sx={{ position: 'fixed', top: '78%', width: '110%', fontFamily: 'Lora' }}>
               <Pagination count={10} />
             </Stack>
@@ -206,6 +253,4 @@ class UserList extends React.Component {
       </Container>
     );
   }
-}
 
-export default UserList;

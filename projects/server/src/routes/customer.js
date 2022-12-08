@@ -4,6 +4,7 @@ const {
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const multer = require("multer");
+const customer = require("../models/customer");
 // const upload = multer({dest: "../public/profileimages"})
 
 const storage = multer.diskStorage({
@@ -34,6 +35,7 @@ router.post("/register", async (req, res) => {
       picture: "",
       social_login: false,
       customer_uid: req.body.customer_uid,
+      role:"user"
     });
 
     const customer = await newCustomer.save();
@@ -84,6 +86,32 @@ router.post("/login", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+// UPDATE VERIFIED
+router.put("/verify/:customer_uid",async(req,res)=>{
+  await Customer.findOne({
+    where: {
+      customer_uid: req.params.customer_uid,
+    },
+  })
+
+  try {
+    let updateVerify = await Customer.update(
+      {
+        is_verified : req.body.is_verified
+      },
+      {
+        where: {
+          customer_uid: req.params.customer_uid,
+        },
+      }
+    );
+    res.status(201).json({message: "Success",});
+  } catch (error) {
+    console.log(error.message);
+  }
+
+})
 
 // GET PROFILE BY ID
 router.get("/profile/:customer_uid", async (req, res) => {
@@ -138,7 +166,5 @@ router.put(
   }
 );
 
-//NEW REGISTER PASSWORD
-router.patch("/new-password", async (req, res) => {});
 
 module.exports = router;

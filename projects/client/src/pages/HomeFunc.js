@@ -24,16 +24,22 @@ import { AuthContext } from "../context/AuthProvider";
 import { useState, useEffect, useContext } from "react";
 import { firebaseAuthentication } from "../config/firebase";
 import {Login} from '@mui/icons-material'
+import {shallowEqual, useDispatch,useSelector} from 'react-redux'
+import { logoutUser } from "../redux/actionCreators/authActionCreators";
 
 export default function HomeFunc() {
-  const { user: currentUser } = useContext(AuthContext);
-  console.log(currentUser?.email,currentUser?.providerData[0].providerId)
+  const dispatch = useDispatch()
+  const {isLoggedIn,user} = useSelector(state=>({
+    isLoggedIn:state.auth.isLoggedIn,
+    user:state.auth.user
+  }),shallowEqual)
+  
+  console.log(user)
 
   const handleLogout = () => {
-    firebaseAuthentication
-      .signOut()
+    firebaseAuthentication.signOut()
       .then(() => {
-        window.location.reload()
+        dispatch(logoutUser())
         return false
       })
       .catch((error) => {
@@ -110,8 +116,7 @@ export default function HomeFunc() {
                       <AccountBoxIcon />
                     </Avatar>
                   </button>
-                  
-                    {currentUser ? 
+                    {isLoggedIn ? 
                       <>
                       <Menu {...bindMenu(popupState)}>
                         <MenuItem onClick={popupState.close}>
@@ -140,12 +145,13 @@ export default function HomeFunc() {
 
             <div className="name-bar">
               <div className="font-size">Welcome</div>
-              <div className="font-name">{currentUser ? currentUser?.email : "Guest"}</div>
+              <div className="font-name">{isLoggedIn ? `${user?.fullname} as ${user?.role}`: "Guest"}</div>
+              
 
             </div>
             <div className="cart-icon">
-              <Link to='/sign-in' onClick={currentUser ? event=>event.preventDefault() : null}>
-                <button className="home-button-login" disabled={currentUser}>
+              <Link to='/sign-in' onClick={isLoggedIn ? event=>event.preventDefault() : null}>
+                <button className="home-button-login" disabled={isLoggedIn}>
                   <Login/>
                 </button>
               </Link> 

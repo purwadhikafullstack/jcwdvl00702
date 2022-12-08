@@ -12,44 +12,96 @@ import {
   Lock,
   PhotoCamera,
 } from '@mui/icons-material';
-
 import { Link } from 'react-router-dom';
-
 import '../../assets/styles/DetailUser.css';
+import Axios from "axios";
+import {useHistory} from "react-router-dom"
+import {useFormik} from "formik"
+import * as Yup from "yup"
+import YupPassword from "yup-password"
+import { firebaseAuthentication } from '../../config/firebase';
+import { useState,useEffect } from 'react';
+import {useSelector} from 'react-redux'
 
-class DetailUser extends React.Component {
-  state = {
-    isEdit: false,
-    securityValue: 0,
+export default function DetailUser() {
+  let history = useHistory()
+
+  const [isEdit,setIsEdit]=useState(false)
+  const [securityValue,setSecurityValue]=useState(0)
+  const [editDetail,setEditDetail]=useState([])
+
+  const {detailUser} = useSelector(state=>({
+    detailUser:state.userDetail.detailData
+  }))
+  console.log(`detail user`, editDetail)
+
+  const fetchDetail=()=>{
+    setEditDetail(detailUser)
+  }
+
+  useEffect(()=>{
+    fetchDetail()
+  },[])
+
+
+  const editHandler = () => {
+    setIsEdit(true);
   };
 
-  editHandler = () => {
-    this.setState({ ...this.state, isEdit: true });
+  const saveHandler = () => {
+    setIsEdit(false);
   };
 
-  saveHandler = () => {
-    this.setState({ ...this.state, isEdit: false });
+  const handleSecurityChange = (event) => {
+    setSecurityValue(event.target.value)
   };
 
-  handleSecurityChange = (event) => {
-    this.setState({ ...this.state, securityValue: event.target.value });
+  const goBack = () => {
+    history.goBack();
   };
 
-  goBack = () => {
-    this.props.history.goBack();
-  };
+  YupPassword(Yup)
+  const formik = useFormik({
+    initialValues:{
+      email:"",
+      fullname:"",
+    },
+    validationSchema: Yup.object().shape({
+      email: Yup.string().required("No email entered").email("Not an email format"),
+      fullname: Yup.string().required("No fullname entered")
+        .matches(
+        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+            'Name can only contain Latin letters.'
+        )
+        .matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms,'Please enter your full name.'),
+   }),
+    validateOnChange:false,
+    onSubmit:async(values)=>{
+      const data={
+        email:values.email,
+        fullname:values.fullname
+      }
+      Axios.put(`http://localhost:3300/api/admin/update/${detailUser.customer_uid}`,data)
+      .then(()=>{
+        fetchDetail()
+        history.push("/user-list")
+      })
+      .catch(error=>{
+        console.log(error)
+      })
+    }
+  })
 
-  render() {
     return (
       <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
         <div className="detailuser-main">
           <div className="detailuser-banner">
-            <IconButton onClick={this.goBack}>
+            <IconButton onClick={goBack}>
               <ArrowBack />
             </IconButton>
             <div className="detailuser-banner-text">User Detail</div>
 
-            {this.state.isEdit ? (
+            {isEdit ? (
               <>
                 <Button
                   disabled
@@ -74,7 +126,7 @@ class DetailUser extends React.Component {
                     color: 'black',
                   }}
                   variant="contained"
-                  onClick={this.saveHandler}
+                  onClick={saveHandler}
                   className="detailuser-banner-edit">
                   Save
                 </Button>
@@ -103,7 +155,7 @@ class DetailUser extends React.Component {
                     color: 'black',
                   }}
                   variant="contained"
-                  onClick={this.editHandler}
+                  onClick={editHandler}
                   className="detailuser-banner-edit">
                   Edit
                 </Button>
@@ -111,7 +163,7 @@ class DetailUser extends React.Component {
             )}
           </div>
           <div className="detailuser-content">
-            {this.state.isEdit ? (
+            {isEdit ? (
               <>
                 <IconButton
                   color="primary"
@@ -145,18 +197,19 @@ class DetailUser extends React.Component {
                 <li className="du-c-d-item">
                   <Badge className="profileIcon" />
                   <span className="du-c-d-item-1">ID User</span>
-                  <span className="du-c-d-item-2">19450817110256</span>
+                  <span className="du-c-d-item-2">{detailUser?.customer_uid}</span>
                 </li>
 
-                {this.state.isEdit ? (
+                {isEdit ? (
                   <>
                     <li className="du-c-d-item">
                       <Person className="profileIcon" />
-                      <span className="du-c-d-item-1">Fullname</span>
+                      <span className="du-c-d-item-1">Username</span>
                       <InputBase
                         sx={{ fontFamily: 'Lora', fontSize: '12px' }}
-                        placeholder="Maria Marcelinus"
+                        placeholder={detailUser.fullname}
                         className="du-c-d-item-2-input"
+                        onChange={(e) => formik.setFieldValue("fullname", e.target.value)}
                       />
                     </li>
                     <li className="du-c-d-item">
@@ -164,8 +217,9 @@ class DetailUser extends React.Component {
                       <span className="du-c-d-item-1">Email</span>
                       <InputBase
                         sx={{ fontFamily: 'Lora', fontSize: '12px' }}
-                        placeholder="maria.marcelinus@mail.com"
+                        placeholder={detailUser.email}
                         className="du-c-d-item-2-input"
+                        onChange={(e) => formik.setFieldValue("email", e.target.value)}
                       />
                     </li>
                   </>
@@ -174,12 +228,12 @@ class DetailUser extends React.Component {
                     <li className="du-c-d-item">
                       <Person className="profileIcon" />
                       <span className="du-c-d-item-1">Fullname</span>
-                      <span className="du-c-d-item-2">Maria Marcelinus</span>
+                      <span className="du-c-d-item-2">{detailUser?.fullname}</span>
                     </li>
                     <li className="du-c-d-item">
                       <Email className="profileIcon" />
                       <span className="du-c-d-item-1">Email</span>
-                      <span className="du-c-d-item-2">maria.marcelinus@mail.com</span>
+                      <span className="du-c-d-item-2">{detailUser?.email}</span>
                     </li>
                   </>
                 )}
@@ -187,15 +241,15 @@ class DetailUser extends React.Component {
                 <li className="du-c-d-item">
                   <Schedule className="profileIcon" />
                   <span className="du-c-d-item-1">Member since</span>
-                  <span className="du-c-d-item-2">17-08-1945</span>
+                  <span className="du-c-d-item-2">{detailUser?.createdAt}</span>
                 </li>
                 <li className="du-c-d-item">
                   <VerifiedUser className="profileIcon" />
                   <span className="du-c-d-item-1">Status</span>
-                  <span className="du-c-d-item-2">Unverified</span>
+                  <span className="du-c-d-item-2">{detailUser?.is_verified ? "Verifed" : "Not Verified"}</span>
                 </li>
                 <li className="du-c-d-item">
-                  {this.state.isEdit ? (
+                  {isEdit ? (
                     <>
                       <Lock className="profileIcon" />
                       <span className="du-c-d-item-1">Security</span>
@@ -203,9 +257,9 @@ class DetailUser extends React.Component {
                         sx={{ fontSize: '10px' }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={this.state.securityValue}
+                        value={securityValue}
                         className="du-c-d-item-2-select"
-                        onChange={this.handleSecurityChange}>
+                        onChange={handleSecurityChange}>
                         <MenuItem value={0}>
                           <em>Security Status</em>
                         </MenuItem>
@@ -221,7 +275,13 @@ class DetailUser extends React.Component {
                     </>
                   )}
                 </li>
-              </ul>
+                {
+                  isEdit ?
+                  <button onClick={formik.handleSubmit}>Submit Changes</button>
+                  :
+                  null
+                }
+                 </ul>
             </div>
             <div className="detailuser-content-option">
               <Link to="/address-list" className="du-c-o-button">
@@ -244,6 +304,4 @@ class DetailUser extends React.Component {
       </Container>
     );
   }
-}
 
-export default DetailUser;
