@@ -9,11 +9,9 @@ import {useFormik} from "formik"
 import * as Yup from "yup"
 import YupPassword from "yup-password"
 import { firebaseAuthentication } from '../../config/firebase';
-import {useDispatch} from 'react-redux'
 import { useState } from 'react';
 
 export default function AddUser() {
-  //fullname,email,password,repassword = ''
   let history = useHistory()
   const [showPassword,setShowPassword]=useState(false)
   const [showRepassword,setShowRepassword]=useState(false)

@@ -20,6 +20,7 @@ import { firebaseAuthentication } from '../../config/firebase';
 import {useDispatch,useSelector} from 'react-redux'
 import Axios from 'axios';
 import { getUserData } from '../../redux/actionCreators/userDataActions';
+import { getUserDetail } from '../../redux/actionCreators/userDetailActions';
 
 export default function UserList() {
   const [isSearch,setIsSearch] = useState(false)
@@ -37,15 +38,6 @@ export default function UserList() {
   } 
 
   useEffect(()=>{
-    // const processUsers=()=>{
-    //   Axios.get(`http://localhost:3300/api/admin/get-user`)
-    //   .then(res=>{
-    //     const getRes = res.data.allUser
-    //     console.log(getRes)
-    //     dispatch(getUserData(getRes))
-    //     setUserBox(getRes)
-    //   })
-    // } 
     processUsers()
   },[])
 
@@ -54,7 +46,7 @@ export default function UserList() {
     user:state.auth.user,
     dataUser:state.userData.userData
   }))
-  console.log(dataUser[0])
+  console.log(dataUser)
   
   const isSearchHandle = () => {
     setIsSearch(true);
@@ -75,6 +67,10 @@ export default function UserList() {
     .catch(error=>{
       console.log(error)
     })
+  }
+
+  const handleDetail=(datadetail)=>{
+    dispatch(getUserDetail(datadetail))
   }
 
   const menuHandler = () => {
@@ -157,17 +153,17 @@ export default function UserList() {
           />
         </div>
         <div className="ulc-detail">
-          <div className="ulc-detail-name">{dataUser[abc]?.fullname}</div>
-          <div className="ulc-detail-subname">{dataUser[abc]?.email}</div>
-          <div className="ulc-detail-subname">{dataUser[abc]?.role}</div>
-          {dataUser[abc]?.is_banned==true ? 
+          <div className="ulc-detail-name">{userBox[abc]?.fullname}</div>
+          <div className="ulc-detail-subname">{userBox[abc]?.email}</div>
+          <div className="ulc-detail-subname">{userBox[abc]?.role}</div>
+          {userBox[abc]?.is_banned==true ? 
           <div className="ulc-detail-subname" style={{color:"darkred"}}>Banned</div>
           : 
           <div className="ulc-detail-subname">Safe User</div>
           }
-          <div className="ulc-detail-subname">{dataUser[abc]?.createdAt}</div>
+          <div className="ulc-detail-subname">{userBox[abc]?.createdAt}</div>
           <div className="ulc-detail-bottom">
-            <Button onClick={()=>deleteHandler(dataUser[abc]?.customer_uid)}
+            <Button onClick={()=>deleteHandler(userBox[abc]?.customer_uid)}
               sx={{
                 borderRadius: '20px',
                 backgroundColor: 'rgb(255,153,153,0.9)',
@@ -180,7 +176,7 @@ export default function UserList() {
               Delete
             </Button>
             <Link to="/detail-user" className="userlist-banner-menu-link">
-              <Button
+              <Button onClick={()=>handleDetail(dataUser[abc])}
                 sx={{
                   borderRadius: '20px',
                   backgroundColor: 'rgb(153,255,153,0.9)',
@@ -246,7 +242,6 @@ export default function UserList() {
             <div className="userlist-banner-menu">{menuHandler()}</div>
           </div>
           <div className="userlist-content">
-              {/* {userlistCard()} */}
             {Object.keys(userBox).map((i)=>{
               return userlistCard(i)
             })}
