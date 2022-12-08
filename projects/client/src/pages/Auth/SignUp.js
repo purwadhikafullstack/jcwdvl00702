@@ -29,18 +29,18 @@ import {loginUser} from '../../redux/actionCreators/authActionCreators'
 function SignUp(){
     let history = useHistory()
     const dispatch = useDispatch()
-    // const isLoggedIn = useSelector(state=>state.auth.isLoggedIn)
+
+    const isLoggedIn = useSelector(state=>state.auth.isLoggedIn)
+    useEffect(()=>{
+      if(!isLoggedIn){
+        history.push("/")
+      }
+    })
     
     const [isCheck, setIscheck] = useState(true)
     const changeIsCheck = () => {
         setIscheck(!isCheck)
     }
-
-    // useEffect(()=>{
-    //   if(!isLoggedIn){
-    //     history.push("/dashboard")
-    //   }
-    // })
 
     YupPassword(Yup)
     const formik = useFormik({
