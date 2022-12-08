@@ -84,6 +84,7 @@ export default function DetailUser() {
       Axios.put(`http://localhost:3300/api/admin/update/${detailUser.customer_uid}`,data)
       .then(()=>{
         fetchDetail()
+        history.push("/user-list")
       })
       .catch(error=>{
         console.log(error)
