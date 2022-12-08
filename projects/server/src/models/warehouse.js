@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Warehouse = sequelize.define(
-    "warehouse",
+    'warehouse',
     {
       address: {
         allowNull: false,
@@ -18,8 +18,9 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   Warehouse.associate = (models) => {
-    Warehouse.hasMany(models.Product, { foreignKey: "warehouse_id" });
-    Warehouse.hasOne(models.Admin, { foreignKey: "warehouse_id" });
+    Warehouse.hasMany(models.Product, { foreignKey: 'warehouse_id' });
+    Warehouse.hasOne(models.Admin, { foreignKey: 'warehouse_id' });
+    // Warehouse.hasOne(models.Role, { foreignKey: 'warehouse_id' });
   };
   return Warehouse;
 };

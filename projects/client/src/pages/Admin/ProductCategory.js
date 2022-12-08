@@ -106,11 +106,6 @@ class ProductCategory extends React.Component {
                   Stock History
                 </Link>
               </MenuItem>
-              <MenuItem>
-                <Link to="/assign-task" className="apc-banner-menu-link">
-                  Assign Task
-                </Link>
-              </MenuItem>
             </Menu>
           </React.Fragment>
         )}

@@ -1,0 +1,163 @@
+@import url(https://fonts.googleapis.com/css?family=Lora);
+
+body,
+div {
+  font-family: 'Lora', serif;
+}
+
+.orderlist-main {
+  position: relative;
+  margin: auto;
+  height: max-content;
+  min-height: 83vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.orderlist-banner {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-top: 15px;
+}
+
+.orderlist-banner-text {
+  font-size: 20px;
+  padding-top: 6px;
+  margin-left: 5px;
+  width: 170px;
+}
+
+.orderlist-banner-search {
+  margin-left: 50px;
+}
+
+.orderlist-search {
+  display: flex;
+  flex-direction: row;
+  height: 33px;
+  margin-top: 6px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgb(234, 234, 234);
+}
+
+.orderlist-banner-menu-link {
+  color: black;
+  text-decoration: none;
+}
+
+.orderlist-tab {
+  margin-top: 0px;
+}
+
+.orderlist-og {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.orderlist-og-logo {
+  height: 180px;
+  margin-top: 100px;
+}
+
+.orderlist-og-text-1 {
+  font-size: larger;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 25px;
+}
+
+.orderlist-og-text-2 {
+  font-size: medium;
+  text-align: center;
+  color: grey;
+  margin-top: 15px;
+}
+
+.orderlist-c {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.olistc-main {
+  width: 333px;
+  height: 150px;
+  /* border: 1px darkgray solid; */
+  background-color: rgba(211, 211, 211, 0.19);
+  margin-bottom: 13px;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-right: 5px;
+  display: flex;
+  flex-direction: row;
+}
+
+.olistc-subdetail {
+  width: 30%;
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.olistc-detail {
+  width: 70%;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.olistc-detail-name {
+  height: 20%;
+  font-size: 15px;
+  font-weight: bolder;
+}
+
+.olistc-detail-subname {
+  font-size: 10px;
+  margin-bottom: 5px;
+  color: grey;
+}
+
+.olistc-detail-status-1,
+.olistc-detail-status-2,
+.olistc-detail-status-3,
+.olistc-detail-status-4,
+.olistc-detail-status-5,
+.olistc-detail-status-6 {
+  margin-top: 3px;
+  font-size: 8px;
+  text-align: center;
+  padding: 5px;
+  width: 93px;
+  height: 13px;
+  border-radius: 20px;
+}
+
+.olistc-detail-bottom {
+  height: 30%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 10px;
+  width: 70%;
+}
+
+/* .olistc-detail-bottom-price {
+  margin-top: 9px;
+  font-size: 12px;
+} */
+
+.olistc-detail-bottom-track {
+  height: 80%;
+  width: 65px;
+  font-size: 8px;
+  padding: 6px;
+  margin-left: 140px;
+}

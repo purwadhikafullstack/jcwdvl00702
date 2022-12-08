@@ -4,7 +4,7 @@ body {
   font-family: 'Lora', serif;
 }
 
-.pladmin-main {
+.stockhistory-main {
   position: relative;
   margin: auto;
   height: 83vh;
@@ -14,7 +14,7 @@ body {
   align-items: center;
 }
 
-.pladmin-banner {
+.stockhistory-banner {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -22,26 +22,26 @@ body {
   margin-top: 15px;
 }
 
-.pladmin-banner-text {
+.stockhistory-banner-text {
   font-size: 20px;
   padding-top: 2px;
   margin-left: 5px;
-  width: 180px;
+  width: 270px;
 }
 
-.pladmin-banner-search {
+.stockhistory-banner-search {
   margin-left: 40px;
 }
 
-.pladmin-banner-add {
+.stockhistory-banner-add {
 }
 
-.pladmin-banner-menu-link {
+.stockhistory-banner-menu-link {
   color: black;
   text-decoration: none;
 }
 
-.pladmin-search {
+.stockhistory-search {
   display: flex;
   flex-direction: row;
   height: 33px;
@@ -51,11 +51,11 @@ body {
   background-color: rgb(234, 234, 234);
 }
 
-.pladmin-content {
+.stockhistory-content {
   margin-top: 20px;
 }
 
-.plc-main {
+.shc-main {
   width: 350px;
   height: 150px;
   /* border: 1px darkgray solid; */
@@ -69,69 +69,122 @@ body {
   flex-direction: row;
 }
 
-.plc-image {
+.shc-image {
   height: 140px;
   border-radius: 10px;
   margin-top: 2.5px;
   width: 110px;
 }
 
-.plc-product {
+.shc-product {
   height: 140px;
   border-radius: 10px;
 }
 
-.plc-detail {
+.shc-detail {
   margin-left: 10px;
   display: flex;
   flex-direction: column;
   width: 240px;
 }
 
-.plc-detail-name {
+.shc-detail-name {
   height: 40%;
   font-size: 18px;
   font-weight: bolder;
 }
 
-.plc-detail-subname {
+.shc-detail-subname {
   display: flex;
   flex-direction: row;
   margin-top: 10px;
 }
 
-.plc-detail-subname-1 {
+.shc-detail-subname-1 {
   font-size: 8px;
   color: grey;
 }
 
-.plc-detail-subname-2 {
+.shc-detail-subname-2 {
   font-size: 10px;
   color: grey;
   margin-left: 5px;
   margin-top: 5px;
 }
 
-.plc-detail-subname-3 {
+.shc-detail-subname-3 {
   font-size: 10px;
   color: grey;
   margin-top: 5px;
 }
 
-.plc-detail-bottom {
+.shc-detail-bottom {
   height: 30%;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   font-size: 10px;
-  margin-top: 6px;
-  margin-left: 60px;
+  margin-top: 15px;
+  margin-left: 140px;
 }
 
-.plc-detail-bottom-delete,
-.plc-detail-bottom-detail {
+.shc-detail-bottom-detail {
   height: 80%;
   width: 65px;
   font-size: 8px;
   padding: 6px;
 }
+
+/* ALTERNATE 1  */
+/* .shc-main {
+  width: 350px;
+  height: 100px;
+  background-color: rgba(211, 211, 211, 0.19);
+  margin-bottom: 13px;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-right: 5px;
+  display: flex;
+  flex-direction: row;
+}
+
+.shc-subdetail {
+  width: 27%;
+  display: flex;
+  flex-direction: column;
+}
+
+.shc-detail {
+  width: 54%;
+  display: flex;
+  flex-direction: column;
+}
+
+.shc-detail-name {
+  height: 30%;
+  font-size: 12px;
+  font-weight: bolder;
+}
+
+.shc-detail-subname {
+  font-size: 9px;
+  color: grey;
+}
+
+.shc-detail-bottom {
+  width: 19%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  font-size: 10px;
+  margin-top: 5px;
+  align-items: center;
+}
+
+.shc-detail-bottom-detail {
+  height: 30px;
+  width: 100%;
+  font-size: 8px;
+  padding: 6px;
+} */

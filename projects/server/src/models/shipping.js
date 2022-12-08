@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Shipping = sequelize.define(
-    "shipping",
+    'shipping',
     {
       area: {
         allowNull: false,
@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   Shipping.associate = (models) => {
-    Shipping.hasOne(models.Order, { foreignKey: "shipping_id" });
+    Shipping.hasOne(models.Order, { foreignKey: 'shipping_id' });
   };
   return Shipping;
 };

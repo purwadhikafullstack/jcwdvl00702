@@ -11,16 +11,17 @@ import {
   Stack,
   Pagination,
 } from '@mui/material';
-import { MoreHoriz, Search, SportsSoccerOutlined, AddBox, Ballot } from '@mui/icons-material';
+import { MoreHoriz, Search, SportsSoccerOutlined, ManageSearch, SortTwoTone } from '@mui/icons-material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
 import { Link } from 'react-router-dom';
 
-import '../../assets/styles/ProductListAdmin.css';
+import '../../assets/styles/StockHistory.css';
 
-class ProductListAdmin extends React.Component {
+class StockHistory extends React.Component {
   state = {
     isSearch: false,
+    isAdmin: true,
   };
 
   isSearchHandle = () => {
@@ -94,41 +95,29 @@ class ProductListAdmin extends React.Component {
     );
   };
 
-  prodlistCard = () => {
+  stockHistory = (product) => {
     return (
-      <div className="plc-main">
-        <div className="plc-image">
+      <div className="shc-main">
+        <div className="shc-image">
           <img
             src="https://i.pinimg.com/originals/6f/df/bc/6fdfbc41d6a8e26d4b9073bc1afd899f.jpg"
-            className="plc-product"
+            className="shc-product"
             alt="Product Image"
           />
         </div>
-        <div className="plc-detail">
-          <div className="plc-detail-name">Kocheng Kochengan Lucu Aja</div>
-          <div className="plc-detail-subname-3">Product ID: 701241</div>
+        <div className="shc-detail">
+          <div className="shc-detail-name">{product}</div>
+          <div className="shc-detail-subname-3">Product ID: 701241</div>
 
-          <div className="plc-detail-subname">
-            <div className="plc-detail-subname-1">
+          <div className="shc-detail-subname">
+            <div className="shc-detail-subname-1">
               <SportsSoccerOutlined />
             </div>
-            <div className="plc-detail-subname-2">Sports</div>
+            <div className="shc-detail-subname-2">Sports</div>
           </div>
 
-          <div className="plc-detail-bottom">
-            <Button
-              sx={{
-                borderRadius: '20px',
-                backgroundColor: 'rgb(255,153,153,0.9)',
-                fontSize: '8px',
-                fontFamily: 'Lora',
-                color: 'black',
-              }}
-              variant="contained"
-              className="plc-detail-bottom-delete">
-              Delete
-            </Button>
-            <Link to="/products-management-detail" className="pladmin-banner-menu-link">
+          <div className="shc-detail-bottom">
+            <Link to="/product-stock-history" className="pladmin-banner-menu-link">
               <Button
                 sx={{
                   borderRadius: '20px',
@@ -138,24 +127,62 @@ class ProductListAdmin extends React.Component {
                   color: 'black',
                 }}
                 variant="contained"
-                className="plc-detail-bottom-detail">
+                className="shc-detail-bottom-detail">
                 Detail
               </Button>
             </Link>
           </div>
         </div>
       </div>
+
+      // ALTERNATE 1
+      // <div className="shc-main">
+      //   <div className="shc-subdetail">
+      //     <div className="shc-detail-name">Product Name</div>
+      //     <div className="shc-detail-subname">Product ID</div>
+      //     <div className="shc-detail-subname">Periode</div>
+      //     <div className="shc-detail-subname">Location</div>
+      //     <div className="shc-detail-subname">Increment</div>
+      //     <div className="shc-detail-subname">Reduction</div>
+      //     <div className="shc-detail-subname">Final Stock</div>
+      //   </div>
+      //   <div className="shc-detail">
+      //     <div className="shc-detail-name">{product}</div>
+      //     <div className="shc-detail-subname">701241</div>
+      //     <div className="shc-detail-subname">December 2022</div>
+      //     <div className="shc-detail-subname">Warehouse A</div>
+      //     <div className="shc-detail-subname">15</div>
+      //     <div className="shc-detail-subname">3</div>
+      //     <div className="shc-detail-subname">21</div>
+      //   </div>
+      //   <div className="shc-detail-bottom">
+      //     <Link to="/products-management-detail" className="pladmin-banner-menu-link">
+      //       <Button
+      //         sx={{
+      //           borderRadius: '20px',
+      //           backgroundColor: 'rgb(153,255,153,0.9)',
+      //           fontSize: '8px',
+      //           fontFamily: 'Lora',
+      //           color: 'black',
+      //         }}
+      //         variant="contained"
+      //         className="shc-detail-bottom-detail">
+      //         Detail
+      //       </Button>
+      //     </Link>
+      //   </div>
+      // </div>
     );
   };
 
   render() {
     return (
       <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
-        <div className="pladmin-main">
-          <div className="pladmin-banner">
-            <div className="pladmin-banner-logo">
+        <div className="stockhistory-main">
+          <div className="stockhistory-banner">
+            <div className="stockhistory-banner-logo">
               <IconButton disabled>
-                <Ballot />
+                <ManageSearch />
               </IconButton>
             </div>
             {this.state.isSearch ? (
@@ -163,9 +190,9 @@ class ProductListAdmin extends React.Component {
                 <ClickAwayListener onClickAway={this.isSearchHandleClose}>
                   <InputBase
                     sx={{ ml: 1, flex: 1, fontFamily: 'Lora' }}
-                    placeholder="Search"
+                    placeholder="Product Name / ID"
                     inputProps={{ 'aria-label': 'Search' }}
-                    className="pladmin-search"
+                    className="stockhistory-search"
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton edge="end">
@@ -178,27 +205,41 @@ class ProductListAdmin extends React.Component {
               </>
             ) : (
               <>
-                <div className="pladmin-banner-text">Product List</div>
-                <div className="pladmin-banner-search">
+                <div className="stockhistory-banner-text">Stock History</div>
+                <div className="stockhistory-banner-search">
                   <IconButton onClick={this.isSearchHandle}>
                     <Search />
                   </IconButton>
                 </div>
               </>
             )}
-            <div className="pladmin-banner-add">
-              <Link to="/products-management-add">
-                <IconButton>
-                  <AddBox />
-                </IconButton>
-              </Link>
+            <div className="stockhistory-banner-add">
+              <PopupState variant="popover" popupId="demo-popup-menu">
+                {(popupState) => (
+                  <React.Fragment>
+                    <button className="account-button" variant="contained" {...bindTrigger(popupState)}>
+                      <IconButton>
+                        <SortTwoTone />
+                      </IconButton>
+                    </button>
+                    <Menu {...bindMenu(popupState)}>
+                      <MenuItem onClick={popupState.close} sx={{ fontFamily: 'Lora' }}>
+                        <img src="https://img.icons8.com/fluency-systems-filled/22/null/sort-numeric-up.png" />A - Z
+                      </MenuItem>
+                      <MenuItem onClick={popupState.close} sx={{ fontFamily: 'Lora' }}>
+                        <img src="https://img.icons8.com/windows/24/null/sort-numeric-up-reversed.png" />Z - A
+                      </MenuItem>
+                    </Menu>
+                  </React.Fragment>
+                )}
+              </PopupState>
             </div>
-            <div className="pladmin-banner-menu">{this.menuHandler()}</div>
+            <div className="stockhistory-banner-menu">{this.menuHandler()}</div>
           </div>
-          <div className="pladmin-content">
-            {this.prodlistCard()}
-            {this.prodlistCard()}
-            {this.prodlistCard()}
+          <div className="stockhistory-content">
+            {this.stockHistory('Barang A')}
+            {this.stockHistory('Kocheng Kochengan Najkal Tapi Lucu Aja')}
+            {this.stockHistory('Sepatu sueve')}
             <Stack spacing={1} sx={{ position: 'fixed', top: '78%', width: '110%', fontFamily: 'Lora' }}>
               <Pagination count={10} />
             </Stack>
@@ -209,4 +250,4 @@ class ProductListAdmin extends React.Component {
   }
 }
 
-export default ProductListAdmin;
+export default StockHistory;
