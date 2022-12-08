@@ -99,7 +99,10 @@ export default function App() {
         <Route component={DetailWarehouse} path="/detail-warehouse" />
         <Route component={StockMutation} path="/stock-mutation" />
         <Route component={OrderList} path="/order-list" />
+        <Route component={OrderDetailAdmin} path="/order-detail-admin" />
         <Route component={StockHistory} path="/stock-history" />
+        <Route component={ProductStockHistory} path="/product-stock-history" />
+        <Route component={SalesReport} path="/sales-report" />
         <Route component={ProductDetail} path="/product-detail" />
         <Route component={ProductLists} path="/product-list" />
         <Route component={AddressList} path="/address-list" />
