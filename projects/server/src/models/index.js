@@ -27,11 +27,11 @@ db.models.Example = require('./example')(sequelize, Sequelize.DataTypes);
 db.models.Stock = require('./stock')(sequelize, Sequelize.DataTypes)
 
 db.models.Customer.hasMany(db.models.Address, {
-  foreignKey: "customer_uid",
-  sourceKey: "customer_uid",
+  foreignKey: 'customer_uid',
+  sourceKey: 'customer_uid',
 });
 db.models.Address.belongsTo(db.models.Customer, {
-  foreignKey: "customer_uid",
+  foreignKey: 'customer_uid',
 });
 // db.models.Product.hasMany(db.models.Warehouse,{
 //   foreignKey: "warehouse_id",
