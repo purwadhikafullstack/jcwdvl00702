@@ -1,8 +1,8 @@
 module.exports = {
-  host: `localhost`,
-  user: `root`,
-  password: `jcwdvl07`,
-  database: `db_ecom`,
+  // host: `localhost`,
+  // user: `root`,
+  // password: `jcwdvl07`,
+  // database: `db_ecom`,
 
   // host: `localhost`,
   // user: `root`,
