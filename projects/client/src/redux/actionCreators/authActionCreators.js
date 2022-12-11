@@ -1,18 +1,18 @@
-import * as types from "../types/authTypes"
+import * as types from '../types/authTypes';
 
-const setUser = (data)=>({
-    type:types.SET_USER,
-    payload:data
-})
+const setUser = (data) => ({
+  type: types.SET_USER,
+  payload: data,
+});
 
-const resetUser=()=>({
-    type: types.RESET_USER
-})
+const resetUser = () => ({
+  type: types.RESET_USER,
+});
 
-export const loginUser=(data)=>(dispatch)=>{
-    dispatch(setUser(data))
-}
+export const loginUser = (data) => (dispatch) => {
+  dispatch(setUser(data));
+};
 
-export const logoutUser=()=>(dispatch)=>{
-    dispatch(resetUser())
-}
+export const logoutUser = () => (dispatch) => {
+  dispatch(resetUser());
+};
