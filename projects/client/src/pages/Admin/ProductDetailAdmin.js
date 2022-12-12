@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import { useState } from 'react';
-import { useEffect } from 'react'
+import { useEffect } from 'react';
 import {
   Add,
   ArrowBack,
@@ -15,16 +15,16 @@ import {
 } from '@mui/icons-material';
 import { useHistory, useParams } from 'react-router-dom';
 import { Container, Button, IconButton, InputBase, Select, MenuItem, TextField } from '@mui/material';
-import {useFormik} from "formik"
-import * as Yup from "yup"
-import YupPassword from "yup-password"
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import YupPassword from 'yup-password';
 
 import '../../assets/styles/ProductDetailAdmin.css';
 
 export default function ProductDetailAdmin() {
   const history = useHistory();
 
-  const {id} = useParams()
+  const { id } = useParams();
   // console.log("Ini ID Woi:", id)
 
   const goBack = () => {
@@ -33,46 +33,45 @@ export default function ProductDetailAdmin() {
 
   const [isEdit, setIsEdit] = useState(false);
   const [selectIcon, setSelectIcon] = useState(0);
-  const [picture, setPicture] = useState("");
-  const [preview, setPreview] = useState("");
-  const [state, setState] = useState([])
-
+  const [picture, setPicture] = useState('');
+  const [preview, setPreview] = useState('');
+  const [state, setState] = useState([]);
 
   const [descript, setDescript] = useState('');
 
   const handleChange = (event) => {
     setDescript(event.target.value);
   };
-   
+
   // Mengambil data product berdasarkan ID dari backend
   const fetchProducts = () => {
     Axios.get(`http://localhost:3300/api/product/get-product/${id}`)
-    .then((result) => {
-      setState(result.data)
-      console.log("ini result data", result.data)
-    })
-    .catch(() => {
-      console.log("ini id untuk dikrim ke backend",id)
-      alert("Terjadi kesalahan di server")
-    })
-  }
+      .then((result) => {
+        setState(result.data);
+        console.log('ini result data', result.data);
+      })
+      .catch(() => {
+        console.log('ini id untuk dikrim ke backend', id);
+        alert('Terjadi kesalahan di server');
+      });
+  };
 
   // delete button handler
   const deleteBtnHandler = () => {
-    const confirmDelete = window.confirm("Delete Product?");
+    const confirmDelete = window.confirm('Delete Product?');
     if (confirmDelete) {
-      console.log("ini id: ", id)
+      console.log('ini id: ', id);
       Axios.delete(`http://localhost:3300/api/product/${id}`)
-      .then(() => {
-        history.push(`/products-management-list`)
-      })
-      .catch(() => {
-        alert("Server Error!")
-      })
+        .then(() => {
+          history.push(`/products-management-list`);
+        })
+        .catch(() => {
+          alert('Server Error!');
+        });
     } else {
-      alert("Cancel Delete Product");
+      alert('Cancel Delete Product');
     }
-  }
+  };
 
   // edit Product Setup
 
@@ -81,49 +80,47 @@ export default function ProductDetailAdmin() {
     setPicture(image);
     setPreview(URL.createObjectURL(image));
   };
- 
-    // konfigurasi yup
-    YupPassword( Yup)
-    //isinialisasi formik
-    const formik = useFormik({
-        initialValues : {
-            name: "",
-            price: 0,
-            product_detail:"",
 
-        },
-        validationSchema : Yup.object().shape({
-            name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'),
-            product_detail: Yup.string().min(2, 'Too Short!').max(100, 'Too Long!'),
-        }),
-        validateOnChange : false,
-        onSubmit: async (values) => {
-         console.log(values)
+  // konfigurasi yup
+  YupPassword(Yup);
+  //isinialisasi formik
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      price: 0,
+      product_detail: '',
+    },
+    validationSchema: Yup.object().shape({
+      name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'),
+      product_detail: Yup.string().min(2, 'Too Short!').max(100, 'Too Long!'),
+    }),
+    validateOnChange: false,
+    onSubmit: async (values) => {
+      console.log(values);
 
-        const data = new FormData();
-        data.append("name", values.name);
-        data.append("price", values.price);
-        data.append("product_detail", values.product_detail);
-        data.append("category", selectIcon)
-        data.append("picture", picture);
+      const data = new FormData();
+      data.append('name', values.name);
+      data.append('price', values.price);
+      data.append('product_detail', values.product_detail);
+      data.append('category', selectIcon);
+      data.append('picture', picture);
 
-         console.log(data)
-         Axios.put(`http://localhost:3300/api/product/edit-product/${id}`, data)
-         .then(() => {
-          alert("Product Edited!")
-           setIsEdit(false)
-         })
-         .catch((error) => {
-           console.log(error);
-           alert(error);
-         });
-
-        }
-       })
+      console.log(data);
+      Axios.put(`http://localhost:3300/api/product/edit-product/${id}`, data)
+        .then(() => {
+          alert('Product Edited!');
+          setIsEdit(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          alert(error);
+        });
+    },
+  });
 
   useEffect(() => {
-    fetchProducts()
-}, [])
+    fetchProducts();
+  }, []);
 
   const warehouseStock = (name) => {
     return (
@@ -221,25 +218,14 @@ export default function ProductDetailAdmin() {
 
         {isEdit ? (
           <>
-            <img
-              className="pdadmin-img"
-              src={picture}
-              alt=""
-            />
-            <Button 
-            variant="contained" 
-            component="label" 
-            sx={{ marginLeft: '130px', marginTop: '10px' }}>
+            <img className="pdadmin-img" src={picture} alt="" />
+            <Button variant="contained" component="label" sx={{ marginLeft: '130px', marginTop: '10px' }}>
               Change Photo
-              <input hidden accept="image/*" multiple type="file" id="uploadImg" onChange={loadPicture}/>
+              <input hidden accept="image/*" multiple type="file" id="uploadImg" onChange={loadPicture} />
             </Button>
           </>
         ) : (
-          <img
-            className="pdadmin-img"
-            src={state.picture}
-            alt=""
-          />
+          <img className="pdadmin-img" src={state.picture} alt="" />
         )}
 
         {isEdit ? (
@@ -251,7 +237,7 @@ export default function ProductDetailAdmin() {
                     sx={{ fontFamily: 'Lora' }}
                     placeholder={state.name}
                     className="pdadmin-desc-name-input"
-                    onChange={(e) => formik.setFieldValue("name", e.target.value)}
+                    onChange={(e) => formik.setFieldValue('name', e.target.value)}
                   />
                 </div>
                 {formik.errors.name ? <div className="alert alert-danger">{formik.errors.name}</div> : null}
@@ -309,18 +295,20 @@ export default function ProductDetailAdmin() {
                     multiline
                     rows={4}
                     placeholder={state.product_detail}
-                    onChange={(e) => formik.setFieldValue("product_detail", e.target.value)}
+                    onChange={(e) => formik.setFieldValue('product_detail', e.target.value)}
                   />
                 </div>
               </div>
-              {formik.errors.product_detail ? <div className="alert alert-danger">{formik.errors.product_detail}</div> : null}
+              {formik.errors.product_detail ? (
+                <div className="alert alert-danger">{formik.errors.product_detail}</div>
+              ) : null}
               <div className="pdadmin-pricing">
                 <div className="pdadmin-price-title">Price</div>
                 <div className="pdadmin-price-input">
                   <span className="pdadmin-price-input-1">$</span>
                   <InputBase
                     sx={{ fontFamily: 'Lora', width: '100px' }}
-                    onChange={(e) => formik.setFieldValue("price", e.target.value)}
+                    onChange={(e) => formik.setFieldValue('price', e.target.value)}
                     placeholder={state.price}
                     className="pdadmin-price-input-2"
                   />
@@ -336,6 +324,7 @@ export default function ProductDetailAdmin() {
                 <div className="pdadmin-desc-title-1">
                   <span className="pdadmin-desc-name">{state.name}</span>
                 </div>
+                <div className="pdadmin-desc-title-4">Product ID: 701241</div>
                 <div className="pdadmin-desc-title-2">
                   <SportsSoccerOutlined />
                   <div className="pdadmin-desc-title-3">{state.category}</div>
@@ -344,9 +333,7 @@ export default function ProductDetailAdmin() {
               <hr className="splitter" />
               <div className="pdadmin-desc">
                 <div className="pdadmin-desc-1">Description</div>
-                <div className="pdadmin-desc-2">
-                {state.product_detail}
-                </div>
+                <div className="pdadmin-desc-2">{state.product_detail}</div>
               </div>
               <div className="pdadmin-pricing">
                 <div className="pdadmin-price-title">Price</div>

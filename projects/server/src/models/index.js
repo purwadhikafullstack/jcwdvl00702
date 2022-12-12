@@ -23,5 +23,6 @@ db.models.Transaction = require('./transaction')(sequelize, Sequelize.DataTypes)
 db.models.History = require('./history')(sequelize, Sequelize.DataTypes);
 db.models.Orderitem = require('./orderitem')(sequelize, Sequelize.DataTypes);
 db.models.Role = require('./role')(sequelize, Sequelize.DataTypes);
+db.models.Example = require('./example')(sequelize, Sequelize.DataTypes);
 
 module.exports = db;
