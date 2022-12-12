@@ -135,3 +135,10 @@ body {
   font-size: 8px;
   padding: 6px;
 }
+
+alert.alert-danger {
+  color: rgba(114, 28, 36,1);
+  font-size: 20px;
+  font-weight: 600;
+  align-self:center
+}
