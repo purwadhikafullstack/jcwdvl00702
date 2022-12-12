@@ -1,0 +1,210 @@
+@import url(https://fonts.googleapis.com/css?family=Lora);
+
+body,
+div {
+  font-family: 'Lora', serif;
+}
+
+.oda-main {
+  position: relative;
+  margin: auto;
+  min-height: 83vh;
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.oda-banner {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.oda-banner-text {
+  font-size: 19px;
+  padding-top: 2px;
+  margin-left: 5px;
+  width: 350px;
+  font-weight: bold;
+}
+
+.oda-user {
+  width: 85%;
+  flex-direction: row;
+  padding: 5px;
+  margin-left: 30px;
+  margin-top: 10px;
+}
+
+.oda-user-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.oda-user-divider {
+  border-bottom: 1px solid lightgray;
+}
+
+.oda-user-left {
+  width: 30%;
+  color: grey;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.oda-user-right {
+  width: 70%;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.oda-user-data,
+.oda-user-data-address {
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.oda-user-data-address {
+  height: 50px;
+}
+
+.oda-step {
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+  margin-left: 30px;
+  margin-top: 10px;
+  border-bottom: 1px solid lightgray;
+}
+
+.oda-step-text {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.oda-payment {
+  width: 85%;
+  height: max-content;
+  border-bottom: 1px solid lightgray;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  margin-left: 30px;
+}
+
+.oda-payment-text {
+  font-weight: bold;
+}
+
+.oda-payment-detail {
+  width: 85%;
+  flex-direction: row;
+  padding: 5px;
+  margin-top: 10px;
+}
+
+.oda-payment-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.oda-payment-left {
+  width: 40%;
+  color: grey;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.oda-payment-right {
+  width: 60%;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.oda-payment-img {
+  width: 90%;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.oda-list {
+  width: 85%;
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  margin-left: 30px;
+}
+
+.oda-list-text {
+  font-weight: bold;
+}
+
+.oda-list-card {
+  width: 85%;
+  flex-direction: row;
+  padding: 5px;
+  margin-top: 10px;
+}
+
+.od-card-main {
+  width: 310px;
+  height: 150px;
+  background-color: rgba(211, 211, 211, 0.19);
+  margin-bottom: 13px;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-right: 5px;
+  display: flex;
+  flex-direction: row;
+}
+
+.od-card-image {
+  height: 140px;
+  border-radius: 10px;
+}
+
+.od-card-product {
+  height: 140px;
+  border-radius: 10px;
+}
+
+.od-card-detail {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.od-card-detail-name {
+  height: 40%;
+  font-size: 18px;
+  font-weight: bolder;
+}
+
+.od-card-detail-subname {
+  font-size: 10px;
+  color: grey;
+}
+
+.od-card-detail-bottom {
+  margin-top: 6px;
+  height: 20%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  font-size: 10px;
+}
+
+.od-card-detail-bottom-price {
+  font-size: 12px;
+}
+
+.od-card-detail-button-list {
+  background-color: black;
+  border: transparent;
+}

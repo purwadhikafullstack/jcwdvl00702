@@ -1,10 +1,10 @@
 const express = require(`express`);
 const cors = require(`cors`);
-// const mysql = require("mysql2");
 const db = require("./models");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const customerRoute = require("./routes/customer");
+const adminRoute = require("./routes/admin")
 const bodyParser = require("body-parser");
 const path = require("path");
 
@@ -27,5 +27,6 @@ app.use(
 })();
 
 app.use("/api/customer", customerRoute);
+app.use("/api/admin", adminRoute)
 
 app.listen(PORT, () => console.log(`API running:`, PORT));

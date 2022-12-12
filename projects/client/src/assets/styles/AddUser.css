@@ -31,6 +31,7 @@ body {
 .adduser-avatar {
   margin-top: 30px;
   display: flex;
+  flex-direction: column;
 }
 
 .adduser-avatar-photo {
@@ -38,23 +39,9 @@ body {
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
-  left: 0;
-  right: 0;
+  margin-left: 30px;
   top: 50px;
   border: 3px solid white;
-  z-index: 1;
-}
-
-.adduser-avatar-icon {
-  position: absolute;
-  height: 30px;
-  border: 1px solid transparent;
-  background-color: black;
-  border-radius: 50px;
-  padding: 1px 1px;
-  color: white;
-  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
-  z-index: 2;
 }
 
 .adduser-avatar-icon:hover {
@@ -75,7 +62,7 @@ body {
   display: flex;
   flex-direction: column;
   margin-top: 15px;
-  height: 280px;
+  height: 300px;
   justify-content: space-around;
 }
 
@@ -87,7 +74,7 @@ body {
 }
 
 .adduser-button {
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 .adduser-button-2 {

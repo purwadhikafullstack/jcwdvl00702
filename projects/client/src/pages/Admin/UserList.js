@@ -11,27 +11,68 @@ import {
   Stack,
   Pagination,
 } from '@mui/material';
-import { MoreHoriz, People, Search, PersonAdd } from '@mui/icons-material';
+import { MoreHoriz, People, Search, PersonAdd, SortTwoTone } from '@mui/icons-material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-
 import { Link } from 'react-router-dom';
-
 import '../../assets/styles/UserList.css';
+import { useState, useEffect, useContext } from 'react';
+import { firebaseAuthentication } from '../../config/firebase';
+import { useDispatch, useSelector } from 'react-redux';
+import Axios from 'axios';
+import { getUserData } from '../../redux/actionCreators/userDataActions';
+import { getUserDetail } from '../../redux/actionCreators/userDetailActions';
 
-class UserList extends React.Component {
-  state = {
-    isSearch: false,
+export default function UserList() {
+  const [isSearch, setIsSearch] = useState(false);
+  const [userBox, setUserBox] = useState([]);
+  const dispatch = useDispatch();
+
+  const processUsers = () => {
+    Axios.get(`http://localhost:3300/api/admin/get-user`).then((res) => {
+      const getRes = res.data.allUser;
+      console.log(getRes);
+      dispatch(getUserData(getRes));
+      setUserBox(getRes);
+    });
   };
 
-  isSearchHandle = () => {
-    this.setState({ ...this.state, isSearch: true });
+  useEffect(() => {
+    processUsers();
+  }, []);
+
+  const { isLoggedIn, user, dataUser } = useSelector((state) => ({
+    isLoggedIn: state.auth.isLoggedIn,
+    user: state.auth.user,
+    dataUser: state.userData.userData,
+  }));
+  console.log(dataUser);
+
+  const isSearchHandle = () => {
+    setIsSearch(true);
   };
 
-  isSearchHandleClose = () => {
-    this.setState({ ...this.state, isSearch: false });
+  const isSearchHandleClose = () => {
+    setIsSearch(false);
   };
 
-  menuHandler = () => {
+  const deleteHandler = (id) => {
+    const data = {
+      is_banned: true,
+    };
+    Axios.put(`http://localhost:3300/api/admin/update/${id}`, data)
+      .then(() => {
+        processUsers();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleDetail = (datadetail) => {
+    dispatch(getUserDetail(datadetail));
+  };
+
+  const menuHandler = () => {
     return (
       <PopupState variant="popover" popupId="demo-popup-menu">
         {(popupState) => (
@@ -87,11 +128,6 @@ class UserList extends React.Component {
                   Stock History
                 </Link>
               </MenuItem>
-              <MenuItem>
-                <Link to="/assign-task" className="userlist-banner-menu-link">
-                  Assign Task
-                </Link>
-              </MenuItem>
             </Menu>
           </React.Fragment>
         )}
@@ -99,7 +135,8 @@ class UserList extends React.Component {
     );
   };
 
-  userlistCard = () => {
+  const userlistCard = (abc) => {
+    console.log(userBox);
     return (
       <div className="ulc-main">
         <div className="ulc-image">
@@ -110,12 +147,20 @@ class UserList extends React.Component {
           />
         </div>
         <div className="ulc-detail">
-          <div className="ulc-detail-name">Maria Marcelinus</div>
-          <div className="ulc-detail-subname">ID User: 19450817110256</div>
-          <div className="ulc-detail-subname">Area 1 - DKI Jakarta</div>
-          <div className="ulc-detail-subname">Member since: 17-08-1945</div>
+          <div className="ulc-detail-name">{userBox[abc]?.fullname}</div>
+          <div className="ulc-detail-subname">{userBox[abc]?.email}</div>
+          <div className="ulc-detail-subname">{userBox[abc]?.role}</div>
+          {userBox[abc]?.is_banned == true ? (
+            <div className="ulc-detail-subname" style={{ color: 'darkred' }}>
+              Banned
+            </div>
+          ) : (
+            <div className="ulc-detail-subname">Safe User</div>
+          )}
+          <div className="ulc-detail-subname">{userBox[abc]?.createdAt}</div>
           <div className="ulc-detail-bottom">
             <Button
+              onClick={() => deleteHandler(userBox[abc]?.customer_uid)}
               sx={{
                 borderRadius: '20px',
                 backgroundColor: 'rgb(255,153,153,0.9)',
@@ -129,6 +174,7 @@ class UserList extends React.Component {
             </Button>
             <Link to="/detail-user" className="userlist-banner-menu-link">
               <Button
+                onClick={() => handleDetail(dataUser[abc])}
                 sx={{
                   borderRadius: '20px',
                   backgroundColor: 'rgb(153,255,153,0.9)',
@@ -147,65 +193,61 @@ class UserList extends React.Component {
     );
   };
 
-  render() {
-    return (
-      <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
-        <div className="userlist-main">
-          <div className="userlist-banner">
-            <div className="userlist-banner-logo">
-              <IconButton disabled>
-                <People />
-              </IconButton>
-            </div>
-            {this.state.isSearch ? (
-              <>
-                <ClickAwayListener onClickAway={this.isSearchHandleClose}>
-                  <InputBase
-                    sx={{ ml: 1, flex: 1, fontFamily: 'Lora' }}
-                    placeholder="Search"
-                    inputProps={{ 'aria-label': 'Search' }}
-                    className="userlist-search"
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton edge="end">
-                          <Search />
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                </ClickAwayListener>
-              </>
-            ) : (
-              <>
-                <div className="userlist-banner-text">User List</div>
-                <div className="userlist-banner-search">
-                  <IconButton onClick={this.isSearchHandle}>
-                    <Search />
-                  </IconButton>
-                </div>
-              </>
-            )}
-            <div className="userlist-banner-add">
-              <Link to="/add-user">
-                <IconButton>
-                  <PersonAdd />
+  return (
+    <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
+      <div className="userlist-main">
+        <div className="userlist-banner">
+          <div className="userlist-banner-logo">
+            <IconButton disabled>
+              <People />
+            </IconButton>
+          </div>
+          {isSearch ? (
+            <>
+              <ClickAwayListener onClickAway={isSearchHandleClose}>
+                <InputBase
+                  sx={{ ml: 1, flex: 1, fontFamily: 'Lora' }}
+                  placeholder="Search"
+                  inputProps={{ 'aria-label': 'Search' }}
+                  className="userlist-search"
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton edge="end">
+                        <Search />
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </ClickAwayListener>
+            </>
+          ) : (
+            <>
+              <div className="userlist-banner-text">User List</div>
+              <div className="userlist-banner-search">
+                <IconButton onClick={isSearchHandle}>
+                  <Search />
                 </IconButton>
-              </Link>
-            </div>
-            <div className="userlist-banner-menu">{this.menuHandler()}</div>
+              </div>
+            </>
+          )}
+          <div className="userlist-banner-add">
+            <Link to="/add-user">
+              <IconButton>
+                <PersonAdd />
+              </IconButton>
+            </Link>
           </div>
-          <div className="userlist-content">
-            {this.userlistCard()}
-            {this.userlistCard()}
-            {this.userlistCard()}
-            <Stack spacing={1} sx={{ position: 'fixed', top: '78%', width: '110%', fontFamily: 'Lora' }}>
-              <Pagination count={10} />
-            </Stack>
-          </div>
+          <div className="userlist-banner-menu">{menuHandler()}</div>
         </div>
-      </Container>
-    );
-  }
+        <div className="userlist-content">
+          {Object.keys(userBox).map((i) => {
+            return userlistCard(i);
+          })}
+          <Stack spacing={1} sx={{ position: 'fixed', top: '78%', width: '110%', fontFamily: 'Lora' }}>
+            <Pagination count={10} />
+          </Stack>
+        </div>
+      </div>
+    </Container>
+  );
 }
-
-export default UserList;

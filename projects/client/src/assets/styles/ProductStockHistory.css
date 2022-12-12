@@ -1,0 +1,240 @@
+@import url(https://fonts.googleapis.com/css?family=Lora);
+
+body {
+  font-family: 'Lora', serif;
+}
+
+.prodsh-main {
+  background-color: white;
+  height: max-content;
+}
+
+.prodsh-banner {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.prodsh-img {
+  max-height: 500px;
+  width: 100%;
+  margin-top: 10px;
+  /* border: 1px solid pink; */
+}
+
+.prodsh-detail {
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 10px;
+}
+
+.prodsh-desc-1 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.prodsh-desc-1-text {
+  width: 40%;
+}
+
+.prodsh-desc-1-select {
+  width: 25%;
+  margin-left: 20px;
+}
+
+.prodsh-desc-1-icon {
+  width: 10%;
+  margin-left: 5px;
+}
+
+.prodsh-desc-name {
+  font-weight: 600;
+  font-size: 30px;
+  margin-top: 20px;
+}
+
+.prodsh-desc-name-input {
+  height: 38px;
+  background-color: white;
+  width: 100%;
+  border: 1px solid lightgray;
+  padding-left: 5px;
+}
+
+.prodsh-desc-title-2 {
+  margin-top: 5px;
+  height: 38px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: grey;
+}
+.prodsh-desc-title-2-input {
+  margin-top: 5px;
+}
+
+.prodsh-desc-title-2-input-select {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  /* margin-top: 5px; */
+}
+
+.prodsh-desc-title-3 {
+  margin-left: 5px;
+  font-size: 14px;
+  color: grey;
+}
+
+.prodsh-desc-title-4 {
+  font-size: 14px;
+  color: grey;
+}
+
+hr {
+  color: rgb(227, 225, 225);
+}
+
+.prodsh-desc {
+}
+
+.prodsh-desc-1 {
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.prodsh-desc-2 {
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.prodsh-pricing {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+
+.prodsh-price-title {
+  color: rgb(146, 146, 146);
+  font-size: 15px;
+  margin-top: 9px;
+  margin-right: 10px;
+}
+
+.prodsh-price {
+  font-weight: 500;
+  font-size: 30px;
+}
+
+.prodsh-price-input {
+  display: flex;
+  flex: row;
+  align-items: center;
+}
+
+.prodsh-price-input-1 {
+  font-weight: 500;
+  font-size: 30px;
+}
+
+.prodsh-price-input-2 {
+  margin-left: 3px;
+  border: 1px solid lightgray;
+  padding-left: 5px;
+}
+
+.prodsh-stock {
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.prodsh-stock-period {
+  font-size: 15px;
+  font-weight: bolder;
+  margin-bottom: 5px;
+}
+
+.prodsh-stock-wh {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+  height: 80px;
+  align-items: center;
+}
+
+.pswh-data {
+  padding: 0;
+  margin: 0;
+}
+
+.pswh-item-left {
+  display: flex;
+  flex-direction: column;
+  color: darkgray;
+  font-size: 12px;
+  width: 100px;
+  font-weight: bolder;
+}
+
+.pswh-item-right {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  width: 100px;
+}
+
+.mhistory-main {
+  width: 340px;
+  height: max-content;
+  background-color: rgba(211, 211, 211, 0.19);
+  margin-bottom: 10px;
+  margin-left: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+.mhistory-subdetail {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mhistory-detail {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mhistory-detail-name {
+  height: 30%;
+  font-size: 12px;
+  /* font-weight: bolder; */
+}
+
+.mhistory-detail-subname {
+  font-size: 9px;
+  color: grey;
+}
+
+.mhistory-detail-bottom {
+  width: 20%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  font-size: 20px;
+  margin-top: 5px;
+  align-items: center;
+  font-weight: bolder;
+}

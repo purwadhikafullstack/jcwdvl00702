@@ -77,6 +77,11 @@ body {
   color: grey;
 }
 
+.pdadmin-desc-title-4 {
+  font-size: 14px;
+  color: grey;
+}
+
 hr {
   color: rgb(227, 225, 225);
 }

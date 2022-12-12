@@ -12,21 +12,40 @@ import {
   ContentPaste,
   ReceiptLong,
   ManageSearch,
-  Work,
   Sell,
 } from '@mui/icons-material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-
 import { Link } from 'react-router-dom';
-
 import '../../assets/styles/Dashboard.css';
+import { logoutUser } from '../../redux/actionCreators/authActionCreators';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { firebaseAuthentication } from '../../config/firebase';
 
-class Dashboard extends React.Component {
-  state = {
-    role: 'Super-Admin',
+export default function Dashboard() {
+  const dispatch = useDispatch();
+
+  const { isLoggedIn, user } = useSelector(
+    (state) => ({
+      isLoggedIn: state.auth.isLoggedIn,
+      user: state.auth.user,
+    }),
+    shallowEqual
+  );
+
+  const handleLogout = () => {
+    firebaseAuthentication
+      .signOut()
+      .then(() => {
+        window.location.reload();
+        dispatch(logoutUser());
+        return false;
+      })
+      .catch((error) => {
+        alert(error);
+      });
   };
 
-  menuHandler = () => {
+  const menuHandler = () => {
     return (
       <PopupState variant="popover" popupId="demo-popup-menu">
         {(popupState) => (
@@ -82,11 +101,6 @@ class Dashboard extends React.Component {
                   Stock History
                 </Link>
               </MenuItem>
-              <MenuItem>
-                <Link to="/assign-task" className="userlist-banner-menu-link">
-                  Assign Task
-                </Link>
-              </MenuItem>
             </Menu>
           </React.Fragment>
         )}
@@ -94,51 +108,50 @@ class Dashboard extends React.Component {
     );
   };
 
-  render() {
-    return (
-      <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
-        <div className="dashboard-main">
-          <div className="dashboard-top">
-            <div className="dashboard-top-avatar">
-              <PopupState variant="popover" popupId="demo-popup-menu">
-                {(popupState) => (
-                  <React.Fragment>
-                    <button className="account-button" variant="contained" {...bindTrigger(popupState)}>
-                      <IconButton>
-                        <Avatar>
-                          <AccountBox />
-                        </Avatar>
-                      </IconButton>
-                    </button>
-                    <Menu {...bindMenu(popupState)}>
-                      <MenuItem onClick={popupState.close}>
+  return (
+    <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
+      <div className="dashboard-main">
+        <div className="dashboard-top">
+          <div className="dashboard-top-avatar">
+            <PopupState variant="popover" popupId="demo-popup-menu">
+              {(popupState) => (
+                <React.Fragment>
+                  <button className="account-button" variant="contained" {...bindTrigger(popupState)}>
+                    <IconButton>
+                      <Avatar>
                         <AccountBox />
-                        Profile
-                      </MenuItem>
-                      <MenuItem onClick={popupState.close}>
-                        <Logout />
-                        Sign Out
-                      </MenuItem>
-                    </Menu>
-                  </React.Fragment>
-                )}
-              </PopupState>
-            </div>
-            <div className="dashboard-top-text">
-              <div className="dashboard-top-text-1">{this.state.role}</div>
-              <div className="dashboard-top-text-2">Dean Febrius</div>
-            </div>
-            <div className="dashboard-top-icon">
-              <div className="dashboard-top-icon-1">
-                <IconButton>
-                  <NotificationsOutlined />
-                </IconButton>
-              </div>
-              <div className="dashboard-top-icon-2"> {this.menuHandler()}</div>
-            </div>
+                      </Avatar>
+                    </IconButton>
+                  </button>
+                  <Menu {...bindMenu(popupState)}>
+                    <MenuItem onClick={popupState.close}>
+                      <AccountBox />
+                      Profile
+                    </MenuItem>
+                    <MenuItem onClick={popupState.close}>
+                      <Logout />
+                      Sign Out
+                    </MenuItem>
+                  </Menu>
+                </React.Fragment>
+              )}
+            </PopupState>
           </div>
+          <div className="dashboard-top-text">
+            <div className="dashboard-top-text-1">{isLoggedIn ? user?.role : 'Restricted'}</div>
+            <div className="dashboard-top-text-2">{isLoggedIn ? user?.fullname : 'Access'}</div>
+          </div>
+          <div className="dashboard-top-icon">
+            <div className="dashboard-top-icon-1">
+              <IconButton>
+                <NotificationsOutlined />
+              </IconButton>
+            </div>
+            <div className="dashboard-top-icon-2"> {menuHandler()}</div>
+          </div>
+        </div>
 
-          <div style={{ borderTop: '2px solid lightgray ', height: '10px' }}></div>
+        <div style={{ borderTop: '2px solid lightgray ', height: '10px' }}></div>
 
           <div className="dashboard-bottom">
             <div className="dashboard-bottom-text">Activities</div>
@@ -154,9 +167,11 @@ class Dashboard extends React.Component {
                 <div className="d-b-icon-text">User List</div>
               </div>
               <div classname="d-b-icon" style={{ margin: '10px' }}>
-                <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
-                  <Warehouse />
-                </IconButton>
+                <Link to="/warehouse-management">
+                  <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
+                    <Warehouse />
+                  </IconButton>
+                </Link>
                 <div className="d-b-icon-text">Warehouse Management</div>
               </div>
               <div classname="d-b-icon" style={{ margin: '10px' }}>
@@ -176,34 +191,36 @@ class Dashboard extends React.Component {
                 <div className="d-b-icon-text">Product Category</div>
               </div>
               <div classname="d-b-icon" style={{ margin: '10px' }}>
-                <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
-                  <Inventory />
-                </IconButton>
+                <Link to="/stock-mutation">
+                  <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
+                    <Inventory />
+                  </IconButton>
+                </Link>
                 <div className="d-b-icon-text">Stock Mutation</div>
               </div>
               <div classname="d-b-icon" style={{ margin: '10px' }}>
-                <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
-                  <ContentPaste />
-                </IconButton>
+                <Link to="/order-list">
+                  <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
+                    <ContentPaste />
+                  </IconButton>
+                </Link>
                 <div className="d-b-icon-text">Order List</div>
               </div>
               <div classname="d-b-icon" style={{ margin: '10px' }}>
-                <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
-                  <ReceiptLong />
-                </IconButton>
+                <Link to="/sales-report">
+                  <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
+                    <ReceiptLong />
+                  </IconButton>
+                </Link>
                 <div className="d-b-icon-text">Sales Report</div>
               </div>
               <div classname="d-b-icon" style={{ margin: '10px' }}>
-                <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
-                  <ManageSearch />
-                </IconButton>
+                <Link to="/stock-history">
+                  <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
+                    <ManageSearch />
+                  </IconButton>
+                </Link>
                 <div className="d-b-icon-text">Stock History</div>
-              </div>
-              <div classname="d-b-icon" style={{ margin: '10px' }}>
-                <IconButton className="d-b-icon-2" sx={{ backgroundColor: 'rgb(234, 234, 234)' }}>
-                  <Work />
-                </IconButton>
-                <div className="d-b-icon-text">Assign Task</div>
               </div>
             </div>
           </div>
@@ -212,5 +229,3 @@ class Dashboard extends React.Component {
     );
   }
 }
-
-export default Dashboard;
