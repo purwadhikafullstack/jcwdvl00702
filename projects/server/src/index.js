@@ -4,6 +4,7 @@ const db = require("./models");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const customerRoute = require("./routes/customer");
+const productRoute = require("./routes/product")
 const adminRoute = require("./routes/admin")
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -21,6 +22,10 @@ app.use(
   "/profileimages",
   express.static(path.join(__dirname, "../public/profileimages"))
 );
+app.use(
+  "/productimages",
+  express.static(path.join(__dirname, "../public/productimages"))
+);
 
 (async () => {
   await db.sequelize.sync();
@@ -28,5 +33,6 @@ app.use(
 
 app.use("/api/customer", customerRoute);
 app.use("/api/admin", adminRoute)
+app.use("/api/product", productRoute);
 
 app.listen(PORT, () => console.log(`API running:`, PORT));

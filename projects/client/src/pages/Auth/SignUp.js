@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Checkbox,
   FormControlLabel,
@@ -22,20 +22,11 @@ import {useHistory} from "react-router-dom"
 import {useFormik} from "formik"
 import * as Yup from "yup"
 import YupPassword from "yup-password"
-import {useDispatch, useSelector} from 'react-redux'
-import {loginUser} from '../../redux/actionCreators/authActionCreators'
 
 
 function SignUp(){
+    // untuk pindah page
     let history = useHistory()
-    const dispatch = useDispatch()
-
-    const isLoggedIn = useSelector(state=>state.auth.isLoggedIn)
-    useEffect(()=>{
-      if(!isLoggedIn){
-        history.push("/")
-      }
-    })
     
     const [isCheck, setIscheck] = useState(true)
     const changeIsCheck = () => {
@@ -54,34 +45,19 @@ function SignUp(){
         }),
         validateOnChange : false,
         onSubmit: async (values) => {
-          firebaseAuthentication
+            firebaseAuthentication
             .createUserWithEmailAndPassword(values.email, values.password)
             .then((res) => {
               firebaseAuthentication.currentUser
                 .sendEmailVerification()
                 .then(() => {
-                  firebaseAuthentication.currentUser.updateProfile({
-                    displayName:values.fullname
-                  })
-                  .then(user=>{
-                    console.log(user)
-                    const data={
-                      user:user.user.providerData[0],
-                      id:user.user.id
-                    }
-
-                    dispatch(loginUser(data))
-                  })
-                  .catch(err=>{
-                    console.log(err)
-                  })
                   alert("Mohon verifikasi email anda");
                   history.push("/create-password");
                 })
                 .catch((error) => {
                   alert(error.message);
                 });
-                
+      
               var user = res.user;
               console.log("cek data user",user)
               const data = {
@@ -90,12 +66,7 @@ function SignUp(){
                 password: values.password,
                 is_verified: user.emailVerified,
                 customer_uid: user.uid,
-              }
-              const reduxData = {
-                user:user.providerData[0],
-                id:user.uid
-              }
-              console.log(reduxData)
+              };
               return data;
             })
             .catch((err) => {
@@ -109,6 +80,7 @@ function SignUp(){
               // ...
             })
             .then((data) => {
+              console.log("here", data);
               Axios.post("http://localhost:3300/api/customer/register", data)
                 .then(() => {
                   return;
@@ -117,8 +89,7 @@ function SignUp(){
                   console.log(error);
                   alert(error);
                 });
-                // dispatch(loginUser(reduxData))
-            })
+            });
         }
 
     })
@@ -215,16 +186,6 @@ function SignUp(){
         });
     }
 
-        Axios.post('http://localhost:3300/api/customer/register-social', data)
-          .then(() => {
-            history.push('/');
-          })
-          .catch((error) => {
-            console.log(error);
-            alert(error);
-          });
-      });
-  };
 
 
     return(
@@ -246,7 +207,7 @@ function SignUp(){
                 placeholder="Email"
               />
             </FormControl>
-
+            {formik.errors.email ? <div className="alert alert-danger">{formik.errors.email}</div> : null}
             <FormControl variant="standard" className="sign-in-form-input">
               <Input
                 name="fullname"
@@ -261,7 +222,7 @@ function SignUp(){
                 placeholder="Full Name"
               />
             </FormControl>
-
+            {formik.errors.fullname ? <div className="alert alert-danger">{formik.errors.fullname}</div> : null}
             <div className="sign-in-form-check">
               <FormControlLabel
                 control={<Checkbox />}
