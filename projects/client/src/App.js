@@ -92,7 +92,7 @@ export default function App() {
         <Route component={AddUser} path="/add-user" />
         <Route component={ProductCategory} path="/products-management-category" />
         <Route component={ProductListAdmin} path="/products-management-list" />
-        <Route component={ProductDetailAdmin} path="/products-management-detail" />
+        <Route component={ProductDetailAdmin} path="/products-management-detail/:id" />
         <Route component={ProductAdd} path="/products-management-add" />
         <Route component={WarehouseManagement} path="/warehouse-management" />
         <Route component={AddWarehouse} path="/add-warehouse" />

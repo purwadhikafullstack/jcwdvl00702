@@ -13,13 +13,18 @@ import {
 } from '@mui/material';
 import { MoreHoriz, Search, SportsSoccerOutlined, AddBox, Ballot } from '@mui/icons-material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-
-import { Link } from 'react-router-dom';
+import Axios from 'axios';
+import { Link, useHistory } from 'react-router-dom';
 
 import '../../assets/styles/ProductListAdmin.css';
 
 class ProductListAdmin extends React.Component {
   state = {
+    productList: [],
+    page: 1,
+    maxPage: 0,
+    itemPerPage: 4,
+    keyWord: '',
     isSearch: false,
   };
 
@@ -30,6 +35,66 @@ class ProductListAdmin extends React.Component {
   isSearchHandleClose = () => {
     this.setState({ ...this.state, isSearch: false });
   };
+
+  filterHandler = () => {
+    this.fetchProducts();
+    this.setState({ ...this.state, keyWord: '' });
+  };
+
+  inputHandler = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    this.setState({ [name]: value });
+  };
+
+  // Product list Setup
+
+  // Setup Render list Product
+
+  fetchProducts = () => {
+    Axios.get(`http://localhost:3300/api/product/get-product/?searchQuery=${this.state.keyWord}`)
+      .then((result) => {
+        this.setState({ productList: result.data, maxPage: Math.ceil(result.data.length / this.state.itemPerPage) });
+        console.log(this.state.productList);
+      })
+      .catch(() => {
+        alert('Terjadi kesalahan di server');
+      });
+  };
+
+  // delete button handler
+  deleteBtnHandler = (id) => {
+    const confirmDelete = window.confirm('Delete Product?');
+    if (confirmDelete) {
+      Axios.delete(`http://localhost:3300/api/product/${id}`)
+        .then(() => {
+          this.fetchProducts();
+        })
+        .catch(() => {
+          alert('Server Error!');
+        });
+    } else {
+      alert('Cancel Delete Product');
+    }
+  };
+
+  // edit buton handler
+  editBtnHandler = (id) => {
+    this.props.history.push(`/products-management-detail/${id}`);
+  };
+
+  pageHandler = () => {
+    if (this.state.page < this.state.maxPage) {
+      this.setState({ page: this.state.page + 1 });
+    } else if (this.state.page > 1) {
+      this.setState({ page: this.state.page - 1 });
+    }
+  };
+
+  componentDidMount() {
+    this.fetchProducts();
+  }
 
   menuHandler = () => {
     return (
@@ -94,41 +159,38 @@ class ProductListAdmin extends React.Component {
     );
   };
 
-  prodlistCard = () => {
-    return (
-      <div className="plc-main">
-        <div className="plc-image">
-          <img
-            src="https://i.pinimg.com/originals/6f/df/bc/6fdfbc41d6a8e26d4b9073bc1afd899f.jpg"
-            className="plc-product"
-            alt="Product Image"
-          />
-        </div>
-        <div className="plc-detail">
-          <div className="plc-detail-name">Kocheng Kochengan Lucu Aja</div>
-          <div className="plc-detail-subname-3">Product ID: 701241</div>
+  renderProduct = () => {
+    const beginningIndex = (this.state.page - 1) * this.state.itemPerPage;
+    const currentData = this.state.productList.slice(beginningIndex, beginningIndex + this.state.itemPerPage);
 
-          <div className="plc-detail-subname">
-            <div className="plc-detail-subname-1">
-              <SportsSoccerOutlined />
-            </div>
-            <div className="plc-detail-subname-2">Sports</div>
+    return currentData.map((val) => {
+      return (
+        <div className="plc-main">
+          <div className="plc-image">
+            <img src={val.picture} className="plc-product" alt="Product Image" />
           </div>
-
-          <div className="plc-detail-bottom">
-            <Button
-              sx={{
-                borderRadius: '20px',
-                backgroundColor: 'rgb(255,153,153,0.9)',
-                fontSize: '8px',
-                fontFamily: 'Lora',
-                color: 'black',
-              }}
-              variant="contained"
-              className="plc-detail-bottom-delete">
-              Delete
-            </Button>
-            <Link to="/products-management-detail" className="pladmin-banner-menu-link">
+          <div className="plc-detail">
+            <div className="plc-detail-name">{val.name}</div>
+            <div className="plc-detail-subname">
+              <div className="plc-detail-subname-1">
+                <SportsSoccerOutlined />
+              </div>
+              <div className="plc-detail-subname-2">{val.category}</div>
+            </div>
+            <div className="plc-detail-bottom">
+              <Button
+                sx={{
+                  borderRadius: '20px',
+                  backgroundColor: 'rgb(255,153,153,0.9)',
+                  fontSize: '8px',
+                  fontFamily: 'Lora',
+                  color: 'black',
+                }}
+                variant="contained"
+                onClick={() => this.deleteBtnHandler(val.id)}
+                className="plc-detail-bottom-delete">
+                Delete
+              </Button>
               <Button
                 sx={{
                   borderRadius: '20px',
@@ -138,14 +200,15 @@ class ProductListAdmin extends React.Component {
                   color: 'black',
                 }}
                 variant="contained"
-                className="plc-detail-bottom-detail">
-                Detail
+                className="plc-detail-bottom-detail"
+                onClick={() => this.editBtnHandler(val.id)}>
+                Edit
               </Button>
-            </Link>
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    });
   };
 
   render() {
@@ -166,9 +229,11 @@ class ProductListAdmin extends React.Component {
                     placeholder="Search"
                     inputProps={{ 'aria-label': 'Search' }}
                     className="pladmin-search"
+                    onChange={this.inputHandler}
+                    name="keyWord"
                     endAdornment={
                       <InputAdornment position="end">
-                        <IconButton edge="end">
+                        <IconButton edge="end" onClick={this.filterHandler}>
                           <Search />
                         </IconButton>
                       </InputAdornment>
@@ -196,11 +261,9 @@ class ProductListAdmin extends React.Component {
             <div className="pladmin-banner-menu">{this.menuHandler()}</div>
           </div>
           <div className="pladmin-content">
-            {this.prodlistCard()}
-            {this.prodlistCard()}
-            {this.prodlistCard()}
+            {this.renderProduct()}
             <Stack spacing={1} sx={{ position: 'fixed', top: '78%', width: '110%', fontFamily: 'Lora' }}>
-              <Pagination count={10} />
+              <Pagination count={10} onChange={this.pageHandler} />
             </Stack>
           </div>
         </div>
