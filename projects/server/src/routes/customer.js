@@ -84,6 +84,59 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// GET PROFILE BY ID
+router.get("/profile/:customer_uid", async (req, res) => {
+  try {
+    const response = await Customer.findOne({
+      where: {
+        customer_uid: req.params.customer_uid,
+      },
+    });
+
+    let picPathArray = response.picture.split("\\");
+    let picPath =
+      "http://localhost:3300/" + picPathArray[1] + "/" + picPathArray[2];
+    response.picture = picPath;
+    // localhost:3300/profileimages/newzealand.jpg
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// UPDATE PROFILE
+router.put(
+  "/edit-profile/:customer_uid",
+  upload.single("picture"),
+  async (req, res) => {
+    console.log(req.file);
+    await Customer.findOne({
+      where: {
+        customer_uid: req.params.customer_uid,
+      },
+    });
+    try {
+      let updateProfile = await Customer.update(
+        {
+          fullname: req.body.fullname,
+          picture: req.file.path,
+        },
+        {
+          where: {
+            customer_uid: req.params.customer_uid,
+          },
+        }
+      );
+      res.status(201).json({
+        message: "Success",
+        data: updateProfile,
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+);
+
 // UPDATE VERIFIED
 router.put('/verify/:customer_uid', async (req, res) => {
   await Customer.findOne({
@@ -109,24 +162,6 @@ router.put('/verify/:customer_uid', async (req, res) => {
   }
 });
 
-// GET PROFILE BY ID
-router.get('/profile/:customer_uid', async (req, res) => {
-  try {
-    const response = await Customer.findOne({
-      where: {
-        customer_uid: req.params.customer_uid,
-      },
-    });
-
-    let picPathArray = response.picture.split('\\');
-    let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
-    response.picture = picPath;
-    // localhost:3300/profileimages/newzealand.jpg
-    res.json(response);
-  } catch (error) {
-    console.log(error);
-  }
-});
 
 // get user only
 router.get("/user/:customer_uid", async (req, res) => {
