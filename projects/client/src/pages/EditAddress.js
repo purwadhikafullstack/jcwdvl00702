@@ -4,30 +4,31 @@ import { Container, FormControl, Input, Button } from "@mui/material";
 import "../assets/styles/NewAddress.css";
 import { AuthContext } from "../context/AuthProvider";
 import Axios from "axios";
+import { useParams } from "react-router-dom";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
-function NewAddress() {
+function EditAddress() {
   const [provinces, setProvinces] = useState();
   const [cities, setCities] = useState();
   const [postals, setPostals] = useState();
-  // const { user: currentUser } = useContext(AuthContext);
+//   const { user: currentUser } = useContext(AuthContext);
   const [address_name, setAddress_name] = useState();
   const [address, setAddress] = useState();
   const [province, setProvince] = useState();
-  const [latitude, setLatitude] = useState();
-  const [longitude, setLongitude] = useState();
   const [city, setCity] = useState();
   const [postal_code, setPostal_code] = useState();
+  const [latitude, setLatitude] = useState();
+  const [longitude, setLongitude] = useState();
+  const { id } = useParams();
   //  console.log(currentUser);
-  // const userUID = currentUser?.uid;
-  // console.log(userUID);
-
-  const { isLoggedIn, user } = useSelector((state) => ({
-    isLoggedIn: state.auth.isLoggedIn,
-    user: state.auth.user,
-  }));
-  const userUID = user?.customer_uid;
-  console.log(userUID);
+//   const userUID = currentUser?.uid;
+//   console.log(userUID);
+const { isLoggedIn, user } = useSelector((state) => ({
+  isLoggedIn: state.auth.isLoggedIn,
+  user: state.auth.user,
+}));
+const userUID = user?.customer_uid;
+console.log(user);
 
   useEffect(() => {
     const provinceDetails = async () => {
@@ -76,13 +77,20 @@ function NewAddress() {
 
   useEffect(() => {
     if (userUID) {
-      const getUserById = async (userUID) => {
-        const getId = await Axios.get(
-          `http://localhost:3300/api/customer/user/${userUID}`
+      const getAddressById = async (userUID) => {
+        const getAddress = await Axios.get(
+          `http://localhost:3300/api/address/address-list/${userUID}/${id}`
         );
-        console.log(getId);
+        console.log(getAddress);
+        setAddress_name(getAddress.data.address_name);
+        setAddress(getAddress.data.address);
+        setProvince(getAddress.data.province);
+        setCity(getAddress.data.city);
+        setPostal_code(getAddress.data.postal_code);
+        setLatitude(getAddress.data.latitude);
+        setLongitude(getAddress.data.longitude);
       };
-      getUserById(userUID);
+      getAddressById(userUID);
     }
   }, [userUID]);
 
@@ -104,10 +112,9 @@ function NewAddress() {
     }
   };
 
-  const addAddress = async (e) => {
+  const editAddress = async (e) => {
     e.preventDefault();
     const data = {
-      customer_uid: userUID,
       address_name: address_name,
       address: address,
       province: province,
@@ -117,10 +124,11 @@ function NewAddress() {
       longitude: longitude,
     };
     try {
-      await Axios.post(
-        `http://localhost:3300/api/address/add-new-address`,
+      await Axios.put(
+        `http://localhost:3300/api/address/edit-address/${userUID}/${id}`,
         data
       );
+      console.log(id, "ini id nya");
       alert("Berhasil");
     } catch (error) {
       console.log(error);
@@ -133,7 +141,7 @@ function NewAddress() {
         <div className="new-address-page">
           <div className="new-address-detail">
             <ArrowBackIcon />
-            <div>Create New Address</div>
+            <div>Edit Address</div>
           </div>
           <div className="margin-size">Address Label</div>
           <FormControl variant="standard" className="address-type-form-input">
@@ -176,7 +184,6 @@ function NewAddress() {
               })}
             </select>
           </label>
-
           <div className="margin-size">Latitude</div>
           <FormControl variant="standard" className="address-type-form-input">
             <Input
@@ -205,7 +212,6 @@ function NewAddress() {
               })}
             </select>
           </label>
-
           <Button
             sx={{
               borderRadius: "20px",
@@ -214,9 +220,9 @@ function NewAddress() {
             }}
             variant="contained"
             className="add-address-button"
-            onClick={addAddress}
+            onClick={editAddress}
           >
-            Add Address
+            Edit Address
           </Button>
         </div>
       </Container>
@@ -224,4 +230,4 @@ function NewAddress() {
   );
 }
 
-export default NewAddress;
+export default EditAddress;

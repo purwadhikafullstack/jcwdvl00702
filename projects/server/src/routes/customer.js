@@ -128,6 +128,28 @@ router.get('/profile/:customer_uid', async (req, res) => {
   }
 });
 
+// get user only
+router.get("/user/:customer_uid", async (req, res) => {
+  try {
+    const response = await Customer.findOne({
+      where: {
+        customer_uid: req.params.customer_uid,
+      },
+      include: [
+        {
+          model: Address,
+          required: true,
+        },
+      ],
+    });
+    console.log(response);
+    // localhost:3300/profileimages/newzealand.jpg
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 // UPDATE PROFILE
 router.put('/edit-profile/:customer_uid', upload.single('picture'), async (req, res) => {
   console.log(req.file);

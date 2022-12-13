@@ -26,15 +26,16 @@ import { firebaseAuthentication } from "../config/firebase";
 import {Login} from '@mui/icons-material'
 import {shallowEqual, useDispatch,useSelector} from 'react-redux'
 import { logoutUser } from "../redux/actionCreators/authActionCreators";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 
 export default function HomeFunc() {
   const dispatch = useDispatch()
-  const {isLoggedIn,user} = useSelector(state=>({
-    isLoggedIn:state.auth.isLoggedIn,
-    user:state.auth.user
-  }),shallowEqual)
-  
-  console.log(user)
+  const { isLoggedIn, user } = useSelector((state) => ({
+    isLoggedIn: state.auth.isLoggedIn,
+    user: state.auth.user,
+  }));
+  const userUID = user?.customer_uid;
+  console.log(user);
 
   const handleLogout = () => {
     firebaseAuthentication.signOut()
@@ -116,45 +117,63 @@ export default function HomeFunc() {
                       <AccountBoxIcon />
                     </Avatar>
                   </button>
-                    {isLoggedIn ? 
-                      <>
+                  {isLoggedIn ? (
+                    <>
                       <Menu {...bindMenu(popupState)}>
                         <MenuItem onClick={popupState.close}>
-                          <Link to="/profile" className="profile-btn">
+                          <Link
+                            to={`/profile/${userUID}`}
+                            className="profile-btn"
+                          >
                             <div className="profile-wrapper">
-                              <div><AccountBoxIcon /></div>
+                              <div>
+                                <AccountBoxIcon />
+                              </div>
                               <div>Profile</div>
                             </div>
                           </Link>
                         </MenuItem>
                         <MenuItem onClick={popupState.close}>
+                          <Link
+                            to={`/address-list/${userUID}`}
+                            style={{ textDecoration: "none", color: "black" }}
+                          >
+                            <HomeOutlinedIcon />
+                            Address
+                          </Link>
+                        </MenuItem>
+                        <MenuItem onClick={popupState.close}>
                           <button className="logout-btn" onClick={handleLogout}>
                             <div className="logout-wrapper">
-                              <div><LogoutIcon /></div>
+                              <div>
+                                <LogoutIcon />
+                              </div>
                               <div>Sign Out</div>
                             </div>
                           </button>
                         </MenuItem>
                       </Menu>
-                      </>
-                    : null
-                    }
+                    </>
+                  ) : null}
                 </React.Fragment>
               )}
             </PopupState>
 
             <div className="name-bar">
               <div className="font-size">Welcome</div>
-              <div className="font-name">{isLoggedIn ? `${user?.fullname} as ${user?.role}`: "Guest"}</div>
-              
-
+              <div className="font-name">
+                {isLoggedIn ? `${user?.fullname} as ${user?.role}` : "Guest"}
+              </div>
             </div>
             <div className="cart-icon">
-              <Link to='/sign-in' onClick={isLoggedIn ? event=>event.preventDefault() : null}>
+              <Link
+                to="/sign-in"
+                onClick={isLoggedIn ? (event) => event.preventDefault() : null}
+              >
                 <button className="home-button-login" disabled={isLoggedIn}>
-                  <Login/>
+                  <Login />
                 </button>
-              </Link> 
+              </Link>
               <NotificationsOutlinedIcon />
               <ShoppingCartOutlinedIcon />
             </div>

@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const customerRoute = require('./routes/customer');
 const adminRoute = require('./routes/admin');
 const productRoute = require('./routes/product');
+const addressRoute = require("./routes/address");
 
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -29,5 +30,6 @@ app.use('/productimages', express.static(path.join(__dirname, '../public/product
 app.use('/api/customer', customerRoute);
 app.use('/api/admin', adminRoute);
 app.use('/api/product', productRoute);
+app.use("/api/address", addressRoute);
 
 app.listen(PORT, () => console.log(`API running:`, PORT));
