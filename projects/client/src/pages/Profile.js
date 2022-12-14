@@ -12,12 +12,22 @@ import Container from "@mui/material/Container";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import Axios from "axios";
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 function Profile() {
-  const { user: currentUser } = useContext(AuthContext);
+  // const { user: currentUser } = useContext(AuthContext);
   //  console.log(currentUser);
-  const userUID = currentUser?.uid;
-  console.log(userUID);
+  // const user = currentUser?.uid;
+  // console.log(user);
+
+  const { isLoggedIn, user } = useSelector(
+    (state) => ({
+      isLoggedIn: state.auth.isLoggedIn,
+      user: state.auth.user,
+    }),
+  );
+  const userUID = user?.customer_uid
+  console.log(user)
 
   const [fullname, setFullname] = useState("");
   const [picture, setPicture] = useState("");
@@ -62,11 +72,13 @@ function Profile() {
           </div>
         </div>
         <div className="profileOption">
-          <button className="optionBtn">
-            <EditIcon />
-            <span className="optionBtnText">Edit Profile</span>
-            <ArrowForwardIosIcon />
-          </button>
+          <Link to={`/edit-profile/${userUID}`}>
+            <button className="optionBtn">
+              <EditIcon />
+              <span className="optionBtnText">Edit Profile</span>
+              <ArrowForwardIosIcon />
+            </button>
+          </Link>
           <Link to="/change-password">
             <button className="optionBtn">
               <EditIcon />

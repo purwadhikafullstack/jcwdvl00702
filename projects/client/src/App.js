@@ -43,6 +43,7 @@ import { firebaseAuthentication } from './config/firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { loginUser } from './redux/actionCreators/authActionCreators';
+import EditAddress from "./pages/EditAddress";
 import Axios from 'axios';
 
 export default function App() {
@@ -105,12 +106,14 @@ export default function App() {
         <Route component={SalesReport} path="/sales-report" />
         <Route component={ProductDetail} path="/product-detail" />
         <Route component={ProductLists} path="/product-list" />
-        <Route component={AddressList} path="/address-list" />
-        <Route component={NewAddress} path="/add-address" />
+        <Route component={AddressList} path="/address-list/:userUID" />
+        <Route component={NewAddress} path="/add-address/:userUID" />
+        <Route component={EditAddress} path="/edit-address/:userUID/:id" />
+
         <Route component={ChangePassword} path="/change-password" />
         <Route component={ResetPassword} path="/reset-password" />
-        <Route component={Profile} path="/profile" />
-        <Route component={EditProfile} path="/edit-profile" />
+        <Route component={Profile} path="/profile/:userUID" />
+        <Route component={EditProfile} path="/edit-profile/:userUID" />
         <Route component={ChooseShipping} path="/choose-shipping" />
         <Route component={Cart} path="/cart" />
         <Route component={Checkout} path="/checkout" />

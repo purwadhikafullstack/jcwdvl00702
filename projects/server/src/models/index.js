@@ -25,4 +25,12 @@ db.models.Orderitem = require('./orderitem')(sequelize, Sequelize.DataTypes);
 db.models.Role = require('./role')(sequelize, Sequelize.DataTypes);
 db.models.Example = require('./example')(sequelize, Sequelize.DataTypes);
 
+db.models.Customer.hasMany(db.models.Address, {
+  foreignKey: "customer_uid",
+  sourceKey: "customer_uid",
+});
+db.models.Address.belongsTo(db.models.Customer, {
+  foreignKey: "customer_uid",
+});
+
 module.exports = db;

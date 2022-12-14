@@ -29,8 +29,9 @@ export default function Dashboard() {
       isLoggedIn: state.auth.isLoggedIn,
       user: state.auth.user,
     }),
-    shallowEqual
+    shallowEqual,
   );
+  console.log(user.customer_uid)
 
   const handleLogout = () => {
     firebaseAuthentication

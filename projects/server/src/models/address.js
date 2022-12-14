@@ -1,3 +1,5 @@
+const { BOOLEAN } = require("sequelize");
+const { Customer } = require("./customer");
 module.exports = (sequelize, DataTypes) => {
   const Address = sequelize.define(
     "address",
@@ -26,6 +28,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
+      latitude: {
+        type: DataTypes.STRING,
+      },
+      longitude: {
+        type: DataTypes.STRING,
+      },
       is_primary: {
         allowNull: false,
         type: DataTypes.BOOLEAN,
@@ -33,5 +41,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
+  // Address.associate = (models) => {
+  //   Address.belongsTo(Customer)
+  // }
   return Address;
 };
