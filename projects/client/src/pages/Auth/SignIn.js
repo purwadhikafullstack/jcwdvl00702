@@ -60,7 +60,10 @@ export default function SignIn(){
           id:res.user.uid
         }
         dispatch(loginUser(data))
-
+        // Axios.get(`http://localhost:3300/api/admin/get-user-one/${data.id}`).then((res) => {
+        //   const getRes = res.data.result;
+        //   return getRes
+        // });
         if(res.user.emailVerified){
           history.push("/")
         } else{
@@ -81,14 +84,12 @@ export default function SignIn(){
       .signInWithPopup(googleProvider)
       .then(() => {
         history.push("/");
-        history.push("/");
       })
       .catch((err) => {
         var errorCode = err.code;
         var errorMessage = err.message;
         var email = err.email;
         var credential = err.credential;
-
       });
   };
 

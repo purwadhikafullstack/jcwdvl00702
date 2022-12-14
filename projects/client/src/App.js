@@ -21,7 +21,6 @@ import StockHistory from './pages/Admin/StockHistory';
 import ProductStockHistory from './pages/Admin/ProductStockHistory';
 import SalesReport from './pages/Admin/SalesReport';
 import OrderDetailAdmin from './pages/Admin/OrderDetailAdmin';
-
 import ProductDetail from './pages/ProductDetail';
 import ChangePassword from './pages/Auth/PasswordChange/ChangePassword';
 import ResetPassword from './pages/Auth/PasswordChange/ResetPassword';
@@ -36,6 +35,7 @@ import NewAddress from './pages/NewAddress';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import HomeFunc from './pages/HomeFunc';
+import Main from './pages/main';
 import { AuthProvider } from './context/AuthProvider';
 import { ToastContainer } from 'react-toastify';
 import { useEffect } from 'react';
@@ -43,7 +43,6 @@ import { firebaseAuthentication } from './config/firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { loginUser } from './redux/actionCreators/authActionCreators';
-import EditAddress from "./pages/EditAddress";
 import Axios from 'axios';
 
 export default function App() {
@@ -76,24 +75,25 @@ export default function App() {
     user: state.auth.user,
   }));
   const mainUser = user.user;
+  console.log(mainUser)
 
   return (
-    // <AuthProvider>
     <BrowserRouter>
       <Switch>
-        <Route path="/sign-in">{mainUser ? <Redirect to="/" /> : <SignIn />}</Route>
-        <Route path="/sign-up">{mainUser ? <Redirect to="/" /> : <SignUp />}</Route>
+        <Route component={SignUp} path="/sign-up" />
+        <Route component={SignIn} path="/sign-in" />
+        {/* <Route path="/sign-up">{mainUser ?  <Redirect to="/" /> : <SignUp />}</Route>
+        <Route path="/sign-in">{mainUser ?  <Redirect to="/" /> : <SignIn />}</Route> */}
         <Route component={CreatePassword} path="/create-password" />
         <Route component={MyOrder} path="/my-order" />
-        <Route component={Dashboard} path="/dashboard" />
-        {/* <Route path="/dashboard">{mainUser.role=="user" ? <Redirect to="/"/> : <Dashboard/>}</Route> */}
-        <Route component={Dashboard} path="dashboard" />
+        {/* <Route path="/dashboard">{mainUser?.role=="user" ? <Redirect to="/"/> : <Dashboard/>}</Route> */}
+        {/* <Route component={Dashboard} path="dashboard" /> */}
         <Route component={UserList} path="/user-list" />
         <Route component={DetailUser} path="/detail-user" />
         <Route component={AddUser} path="/add-user" />
         <Route component={ProductCategory} path="/products-management-category" />
         <Route component={ProductListAdmin} path="/products-management-list" />
-        <Route component={ProductDetailAdmin} path="/products-management-detail/:id" />
+        <Route component={ProductDetailAdmin} path="/products-management-detail" />
         <Route component={ProductAdd} path="/products-management-add" />
         <Route component={WarehouseManagement} path="/warehouse-management" />
         <Route component={AddWarehouse} path="/add-warehouse" />
@@ -106,22 +106,18 @@ export default function App() {
         <Route component={SalesReport} path="/sales-report" />
         <Route component={ProductDetail} path="/product-detail" />
         <Route component={ProductLists} path="/product-list" />
-        <Route component={AddressList} path="/address-list/:userUID" />
-        <Route component={NewAddress} path="/add-address/:userUID" />
-        <Route component={EditAddress} path="/edit-address/:userUID/:id" />
-
+        <Route component={AddressList} path="/address-list" />
+        <Route component={NewAddress} path="/add-address" />
         <Route component={ChangePassword} path="/change-password" />
         <Route component={ResetPassword} path="/reset-password" />
-        <Route component={Profile} path="/profile/:userUID" />
-        <Route component={EditProfile} path="/edit-profile/:userUID" />
+        <Route component={Profile} path="/profile" />
+        <Route component={EditProfile} path="/edit-profile" />
         <Route component={ChooseShipping} path="/choose-shipping" />
         <Route component={Cart} path="/cart" />
         <Route component={Checkout} path="/checkout" />
-        <Route component={HomeFunc} path="/" />
-        {/* <Route path="/">{mainUser.role=="admin" ? <Redirect to="/dashboard"/> : <HomeFunc/>}</Route> */}
+        <Route component={Main} path="/" />
       </Switch>
       <Footer />
     </BrowserRouter>
-    //  </AuthProvider>
   );
 }
