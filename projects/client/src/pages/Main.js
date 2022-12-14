@@ -12,14 +12,12 @@ export default function Main(){
     return (
         <div>
             {
-                user ? 
-                user.role == "admin" && <Dashboard/> :
+                user ? user.role == "user" && <HomeFunc/> :
                 <HomeFunc/>
             }
             {
-                user ?
-                user.role == "user" && <HomeFunc/> :
-                <HomeFunc/>
+                user ? user.role == "admin" && <Dashboard/> :
+                null
             }
         </div>
     )

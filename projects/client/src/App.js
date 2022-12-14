@@ -35,7 +35,7 @@ import NewAddress from './pages/NewAddress';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import HomeFunc from './pages/HomeFunc';
-import Main from './pages/main';
+import Main from './pages/Main';
 import { AuthProvider } from './context/AuthProvider';
 import { ToastContainer } from 'react-toastify';
 import { useEffect } from 'react';
@@ -93,7 +93,7 @@ export default function App() {
         <Route component={AddUser} path="/add-user" />
         <Route component={ProductCategory} path="/products-management-category" />
         <Route component={ProductListAdmin} path="/products-management-list" />
-        <Route component={ProductDetailAdmin} path="/products-management-detail" />
+        <Route component={ProductDetailAdmin} path="/products-management-detail/:id" />
         <Route component={ProductAdd} path="/products-management-add" />
         <Route component={WarehouseManagement} path="/warehouse-management" />
         <Route component={AddWarehouse} path="/add-warehouse" />
@@ -104,7 +104,7 @@ export default function App() {
         <Route component={StockHistory} path="/stock-history" />
         <Route component={ProductStockHistory} path="/product-stock-history" />
         <Route component={SalesReport} path="/sales-report" />
-        <Route component={ProductDetail} path="/product-detail" />
+        <Route component={ProductDetail} path="/product-detail/:id" />
         <Route component={ProductLists} path="/product-list" />
         <Route component={AddressList} path="/address-list" />
         <Route component={NewAddress} path="/add-address" />

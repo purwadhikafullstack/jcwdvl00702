@@ -12,7 +12,7 @@ import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlin
 import DirectionsBikeOutlinedIcon from "@mui/icons-material/DirectionsBikeOutlined";
 import HikingOutlinedIcon from "@mui/icons-material/HikingOutlined";
 import HandymanOutlinedIcon from "@mui/icons-material/HandymanOutlined";
-import { Link } from "react-router-dom";
+import { Link ,useHistory} from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Slide } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
@@ -27,9 +27,13 @@ import {Login} from '@mui/icons-material'
 import {shallowEqual, useDispatch,useSelector} from 'react-redux'
 import { logoutUser } from "../redux/actionCreators/authActionCreators";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import Axios from 'axios'
 
 export default function HomeFunc() {
+  const [productShow,setProductShow]=useState([])
   const dispatch = useDispatch()
+  let history = useHistory()
+
   const { isLoggedIn, user } = useSelector((state) => ({
     isLoggedIn: state.auth.isLoggedIn,
     user: state.auth.user,
@@ -47,6 +51,10 @@ export default function HomeFunc() {
         alert(error);
       });
   };
+
+  const detailHandler=(id)=>{
+    history.push(`/product-detail/${id}`)
+  }
 
 
   const slideCarousels = [
@@ -100,6 +108,20 @@ export default function HomeFunc() {
       price: "299.000",
     },
   ];
+
+  const showProducts=()=>{
+    Axios.get(`http://localhost:3300/api/product/get-product`)
+    .then(res=>{
+      let homeProducts = res.data
+      setProductShow(homeProducts)
+      console.log(homeProducts)
+    })
+  }
+
+  useEffect(()=>{
+    showProducts()
+  },[])
+
   return (
     <>
       <Container maxWidth="xs" className="mobile">
@@ -231,13 +253,15 @@ export default function HomeFunc() {
             </div>
           </div>
           <div className="product-card">
-            {ListProducts.map((ListProduct, index) => (
+            {productShow.map((items) => (
               <div>
-                <div className="product-list">
-                  <img src={ListProduct.image} alt="" />
-                  <div>{ListProduct.description}</div>
-                  <div>{ListProduct.price}</div>
-                </div>
+                <button onClick={()=>detailHandler(items.id)}>
+                  <div className="product-list">
+                    <img src={items.picture} />
+                    <div>{items.product_detail}</div>
+                    <div>{items.price}</div>
+                  </div>
+                </button>
               </div>
             ))}
           </div>
