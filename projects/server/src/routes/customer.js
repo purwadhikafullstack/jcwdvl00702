@@ -69,7 +69,7 @@ router.post('/register-social', async (req, res) => {
   }
 });
 
-//LOGIN
+//LOGINå
 router.post('/login', async (req, res) => {
   try {
     const customer = await Customer.findOne({ email: req.body.email });
