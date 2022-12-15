@@ -9,10 +9,10 @@ module.exports = {
   // password: `rootpass`,
   // database: `db_ecom`,
 
-  // host: '127.0.0.1',
-  // user: 'root',
-  // password: 'password',
-  // database: 'db_ecom',
+  host: '127.0.0.1',
+  user: 'root',
+  password: 'password',
+  database: 'db_ecom',
 
   port: 3306,
   multipleStatements: true,
