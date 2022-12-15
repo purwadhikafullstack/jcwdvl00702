@@ -77,15 +77,15 @@ router.get('/get-product/', async (req, res) => {
       let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
       getProduct[i].picture = picPath;
     }
-
+    console.log('url check', getProduct[0].picture)
     res.status(200).json(getProduct);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-// Get Product By ID
 
+// Get Product By ID
 router.get('/get-product/:id', async (req, res) => {
   try {
     const getProduct = await Product.findOne({
@@ -105,7 +105,7 @@ router.get('/get-product/:id', async (req, res) => {
 //delete a product
 router.delete('/:id', async (req, res) => {
   try {
-    console.log('ini id nya woi', req.params.id);
+    console.log('ini id', req.params.id);
     const id = req.params.id;
     const deleteProduct = await Product.destroy({
       where: {

@@ -1,16 +1,35 @@
-import axios from "axios";
+import Axios from "axios";
 import "../assets/styles/productDetail.css";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { ArrowBack, FavoriteBorder, StarHalf } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
 import { AuthContext } from "../context/AuthProvider";
 import {shallowEqual, useDispatch,useSelector} from 'react-redux'
+import { useParams } from "react-router-dom";
 
 export default function ProductDetail() {
+  const {id} = useParams()
+  console.log(id)
+  const [singleProduct,setSingleProduct]=useState([])
+
+  const specProduct=()=>{
+    Axios.get(`http://localhost:3300/api/product/get-product/${id}`)
+      .then((res) => {
+        setSingleProduct(res.data)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  useEffect(()=>{
+    specProduct()
+  },[])
 
   return (
     <div className="pd-wrap">
+      {console.log(singleProduct)}
       <Container maxWidth="xs" className="container-product-detail">
         <div className="product-img">
           <Link to="/">
@@ -18,13 +37,13 @@ export default function ProductDetail() {
           </Link>
           <img
             className="detail-img"
-            src="https://www.freepnglogos.com/uploads/shoes-png/mens-shoes-png-transparent-images-images-11.png"
+            src={singleProduct.picture}
           />
         </div>
         <div className="product-spec">
           <div className="product-title">
             <div className="desc-1">
-              <span className="desc-name">Suga Leather Shoes</span>
+              <span className="desc-name">{singleProduct.name}</span>
               <span className="desc-icon">
                 <FavoriteBorder />
               </span>
@@ -42,10 +61,7 @@ export default function ProductDetail() {
             <div>
               <div className="desc">Description</div>
               <div className="desc-word">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum
-                cum ullam eius odio aliquid, nam quas libero? Aliquam similique
-                consequuntur molestias. Maxime nesciunt soluta ea aliquam,
-                excepturi illum impedit praesentium!
+                {singleProduct.product_detail}
               </div>
             </div>
             <div className="spec-select">
@@ -89,7 +105,7 @@ export default function ProductDetail() {
           <div className="pay-segment">
             <div className="pricing">
               <div className="price-title">Total Price</div>
-              <div className="price">$750</div>
+              <div className="price">${singleProduct.price}</div>
             </div>
             <div>
               <button className="add-cart">Add to Cart</button>
