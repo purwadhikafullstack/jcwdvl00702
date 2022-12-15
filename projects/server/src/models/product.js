@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define(
-    "product",
+    'product',
     {
       warehouse_id: {
         allowNull: false,
@@ -49,12 +49,12 @@ module.exports = (sequelize, DataTypes) => {
       picture: {
         allowNull: false,
         type: DataTypes.STRING,
-      }
+      },
     },
     {}
   );
   Product.associate = (models) => {
-    Product.hasMany(models.Warehouse, { foreignKey: "product_id" });
+    Product.hasMany(models.Warehouse, { foreignKey: 'product_id' });
   };
   return Product;
 };

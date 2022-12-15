@@ -1,16 +1,16 @@
 const {
   models: { Address },
-} = require("../models");
-const router = require("express").Router();
-const request = require("request");
+} = require('../models');
+const router = require('express').Router();
+const request = require('request');
 
 // get provinsi
-router.get("/provinces", async (req, res) => {
+router.get('/provinces', async (req, res) => {
   try {
     const options = {
-      method: "GET",
-      url: "https://api.rajaongkir.com/starter/province",
-      headers: { key: "c74330bcc1e63a717708e5a61daef6f7" },
+      method: 'GET',
+      url: 'https://api.rajaongkir.com/starter/province',
+      headers: { key: 'c74330bcc1e63a717708e5a61daef6f7' },
     };
 
     request(options, function (error, response, body) {
@@ -23,12 +23,12 @@ router.get("/provinces", async (req, res) => {
 });
 
 //get city
-router.get("/cities", async (req, res) => {
+router.get('/cities', async (req, res) => {
   try {
     const options = {
-      method: "GET",
-      url: "https://api.rajaongkir.com/starter/city",
-      headers: { key: "c74330bcc1e63a717708e5a61daef6f7" },
+      method: 'GET',
+      url: 'https://api.rajaongkir.com/starter/city',
+      headers: { key: 'c74330bcc1e63a717708e5a61daef6f7' },
     };
 
     request(options, function (error, response, body) {
@@ -41,12 +41,12 @@ router.get("/cities", async (req, res) => {
 });
 
 // get postal code
-router.get("/postal-code", async (req, res) => {
+router.get('/postal-code', async (req, res) => {
   try {
     const options = {
-      method: "GET",
-      url: "https://api.rajaongkir.com/starter/city",
-      headers: { key: "c74330bcc1e63a717708e5a61daef6f7" },
+      method: 'GET',
+      url: 'https://api.rajaongkir.com/starter/city',
+      headers: { key: 'c74330bcc1e63a717708e5a61daef6f7' },
     };
 
     request(options, function (error, response, body) {
@@ -59,7 +59,7 @@ router.get("/postal-code", async (req, res) => {
 });
 
 // add address
-router.post("/add-new-address", async (req, res) => {
+router.post('/add-new-address', async (req, res) => {
   try {
     const newAddress = new Address({
       address_name: req.body.address_name,
@@ -80,7 +80,7 @@ router.post("/add-new-address", async (req, res) => {
 });
 
 // get address by customer_uid
-router.get("/address-list/:customer_uid", async (req, res) => {
+router.get('/address-list/:customer_uid', async (req, res) => {
   try {
     const response = await Address.findAll({
       where: {
@@ -94,7 +94,7 @@ router.get("/address-list/:customer_uid", async (req, res) => {
 });
 
 // get address by id
-router.get("/address-list/:customer_uid/:id", async (req, res) => {
+router.get('/address-list/:customer_uid/:id', async (req, res) => {
   try {
     const response = await Address.findOne({
       where: {
@@ -109,7 +109,7 @@ router.get("/address-list/:customer_uid/:id", async (req, res) => {
 });
 
 // update address
-router.put("/edit-address/:customer_uid/:id", async (req, res) => {
+router.put('/edit-address/:customer_uid/:id', async (req, res) => {
   await Address.findOne({
     where: {
       id: req.params.id,
@@ -134,7 +134,7 @@ router.put("/edit-address/:customer_uid/:id", async (req, res) => {
       }
     );
     res.status(201).json({
-      message: "Success",
+      message: 'Success',
       data: updateAddress,
     });
   } catch (error) {
@@ -143,10 +143,10 @@ router.put("/edit-address/:customer_uid/:id", async (req, res) => {
 });
 
 // post latitude longitude from city
-router.post("/lat-long", async (req, res) => {
+router.post('/lat-long', async (req, res) => {
   try {
     const options = {
-      method: "GET",
+      method: 'GET',
       url: `https://api.opencagedata.com/geocode/v1/json?q=${req.body.city}&key=c4e13262d8e24d78b12cbbaee4ba9f39`,
     };
     console.log(options);
@@ -159,7 +159,7 @@ router.post("/lat-long", async (req, res) => {
   }
 
   // delete address
-  router.delete("/delete-address/:customer_uid/:id", async (req, res) => {
+  router.delete('/delete-address/:customer_uid/:id', async (req, res) => {
     try {
       await Address.destroy({
         where: {
@@ -167,7 +167,7 @@ router.post("/lat-long", async (req, res) => {
           id: req.params.id,
         },
       });
-      res.json({ message: "Address Deleted" });
+      res.json({ message: 'Address Deleted' });
     } catch (error) {}
   });
 });

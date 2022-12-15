@@ -10,7 +10,7 @@ const db = {};
 db.sequelize = sequelize;
 db.models = {};
 db.models.Customer = require('./customer')(sequelize, Sequelize.DataTypes);
-db.models.Address = require('./address')(sequelize, Sequelize.DataTypes);
+// db.models.Address = require('./address')(sequelize, Sequelize.DataTypes);
 db.models.Cart = require('./cart')(sequelize, Sequelize.DataTypes);
 db.models.Order = require('./order')(sequelize, Sequelize.DataTypes);
 db.models.Shipping = require('./shipping')(sequelize, Sequelize.DataTypes);
@@ -24,7 +24,7 @@ db.models.History = require('./history')(sequelize, Sequelize.DataTypes);
 db.models.Orderitem = require('./orderitem')(sequelize, Sequelize.DataTypes);
 db.models.Role = require('./role')(sequelize, Sequelize.DataTypes);
 db.models.Example = require('./example')(sequelize, Sequelize.DataTypes);
-db.models.Stock = require('./stock')(sequelize, Sequelize.DataTypes)
+db.models.Stock = require('./stock')(sequelize, Sequelize.DataTypes);
 
 db.models.Customer.hasMany(db.models.Address, {
   foreignKey: 'customer_uid',
