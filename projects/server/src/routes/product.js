@@ -187,6 +187,7 @@ router.put('/edit-product/:id', upload.single('picture'), async (req, res) => {
       id: req.params.id,
     },
   });
+  const pages = Math.ceil(resultCount.length / limit);
 
   try {
     let updateProduct = await Product.update(
