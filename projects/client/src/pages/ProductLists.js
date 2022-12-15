@@ -13,6 +13,7 @@ class ProductLists extends React.Component {
     super(props);
     this.state = {
       dataProduct: [],
+      page: 0,
       pages: 0,
       sort: '',
       search: '',
@@ -96,14 +97,14 @@ class ProductLists extends React.Component {
                     <Menu {...bindMenu(popupState)}>
                       <MenuItem
                         onClick={() => {
-                          this.getDataProduct(0, 'name');
-                          // this.setState({ ...this.state, page: 0 });
+                          this.getDataProduct(0, 'name', '');
+                          this.setState({ ...this.state, page: 0 });
                         }}
                         sx={{ fontFamily: 'Lora' }}>
                         {/* <img src="https://img.icons8.com/fluency-systems-filled/22/null/sort-numeric-up.png" /> */}
                         Name
                       </MenuItem>
-                      <MenuItem onClick={() => this.getDataProduct(0, 'createdAt')} sx={{ fontFamily: 'Lora' }}>
+                      <MenuItem onClick={() => this.getDataProduct(0, 'createdAt', '')} sx={{ fontFamily: 'Lora' }}>
                         {/* <img src="https://img.icons8.com/windows/24/null/sort-numeric-up-reversed.png" /> */}
                         CreatedAt
                       </MenuItem>
@@ -128,10 +129,18 @@ class ProductLists extends React.Component {
           </div>
         </Container>
         <Container maxWidth="xs" className="mobile2">
-          <Stack spacing={1} sx={{ width: '110%', marginLeft: '110px', fontFamily: 'Lora' }}>
+          <Stack
+            spacing={1}
+            sx={{
+              width: '110%',
+              fontFamily: 'Lora',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+            }}>
             <Pagination
               count={this.state.pages}
-              onChange={(e, value) => this.getDataProduct(value - 1, this.state.sort)}
+              onChange={(e, value) => this.getDataProduct(value - 1, this.state.sort, '')}
             />
           </Stack>
         </Container>
