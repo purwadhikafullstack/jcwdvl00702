@@ -43,6 +43,7 @@ import { firebaseAuthentication } from './config/firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { loginUser } from './redux/actionCreators/authActionCreators';
+import EditAddress from './pages/EditAddress';
 import Axios from 'axios';
 
 export default function App() {
@@ -75,7 +76,7 @@ export default function App() {
     user: state.auth.user,
   }));
   const mainUser = user.user;
-  console.log(mainUser)
+  console.log(mainUser);
 
   return (
     <BrowserRouter>
