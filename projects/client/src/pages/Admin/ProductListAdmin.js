@@ -214,6 +214,7 @@ class ProductListAdmin extends React.Component {
   render() {
     return (
       <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
+        {console.log(this.state.productList)}
         <div className="pladmin-main">
           <div className="pladmin-banner">
             <div className="pladmin-banner-logo">

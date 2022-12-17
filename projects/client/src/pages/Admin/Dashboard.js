@@ -29,8 +29,9 @@ export default function Dashboard() {
       isLoggedIn: state.auth.isLoggedIn,
       user: state.auth.user,
     }),
-    shallowEqual
+    shallowEqual,
   );
+  console.log(user.customer_uid)
 
   const handleLogout = () => {
     firebaseAuthentication
@@ -129,8 +130,14 @@ export default function Dashboard() {
                       Profile
                     </MenuItem>
                     <MenuItem onClick={popupState.close}>
-                      <Logout />
-                      Sign Out
+                    <button className="logout-btn" onClick={handleLogout}>
+                            <div className="logout-wrapper">
+                              <div>
+                                <Logout />
+                              </div>
+                              <div>Sign Out</div>
+                            </div>
+                          </button>
                     </MenuItem>
                   </Menu>
                 </React.Fragment>

@@ -1,3 +1,5 @@
+const { BOOLEAN } = require("sequelize");
+const { Customer } = require("./customer");
 module.exports = (sequelize, DataTypes) => {
   const Address = sequelize.define(
     "address",
@@ -24,6 +26,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       postal_code: {
         allowNull: false,
+        type: DataTypes.STRING,
+      },
+      latitude: {
+        type: DataTypes.STRING,
+      },
+      longitude: {
         type: DataTypes.STRING,
       },
       is_primary: {

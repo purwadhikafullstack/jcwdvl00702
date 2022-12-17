@@ -8,12 +8,21 @@ import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import { AuthContext } from "../context/AuthProvider";
 import { useParams } from "react-router-dom";
 import Axios from "axios";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 function EditProfile() {
-  const { user: currentUser } = useContext(AuthContext);
+  // const { user: currentUser } = useContext(AuthContext);
   //  console.log(currentUser);
-  const userUID = currentUser?.uid;
-  console.log(userUID);
+  // const userUID = currentUser?.uid;
+  // console.log(userUID);
+
+  const { isLoggedIn, user } = useSelector((state) => ({
+    isLoggedIn: state.auth.isLoggedIn,
+    user: state.auth.user,
+  }));
+  const userUID = user?.customer_uid;
+  console.log(user);
+
 
   const [fullname, setFullname] = useState("");
   const [picture, setPicture] = useState("");
