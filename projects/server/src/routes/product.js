@@ -1,5 +1,5 @@
 const {
-  models: { Product },
+  models: { Product, Stock },
 } = require('../models');
 const router = require('express').Router();
 const multer = require('multer');
@@ -20,7 +20,6 @@ router.post('/add-product', upload.single('picture'), async (req, res) => {
   try {
     let getProductName = await Product.findAll();
     let checkBox = false;
-    console.log('ini body:', req.body);
 
     for (let i = 0; i < getProductName.length; i++) {
       if (req.body.name.toLowerCase() === getProductName[i].name.toLowerCase()) {
@@ -28,30 +27,42 @@ router.post('/add-product', upload.single('picture'), async (req, res) => {
         break;
       }
     }
-    console.log('ini body checkBox:', checkBox);
 
     if (checkBox === true) {
       res.status(500).json(err);
     } else {
       const newProduct = await Product.create({
-        warehouse_id: req.body.warehouse_id,
         name: req.body.name,
         price: req.body.price,
-        status: req.body.status,
-        quantity: req.body.quantity,
         quantity_total: req.body.quantity_total,
         product_detail: req.body.product_detail,
         category: req.body.category,
-        cart_id: '',
-        orderitem_id: '',
-        history_id: '',
-        createdAt: '',
-        updateAt: '',
         picture: req.file.path,
       });
-      console.log('ini new Product:', newProduct);
-      const product = await newProduct.save();
-      res.status(200).json(product);
+      const productId = await Product.findOne({
+        where: {
+          name: req.body.name,
+        },
+      });
+      const stockData = [
+        {
+          warehouse_id: '1',
+          product_id: productId.id,
+          quantity: req.body.wh_1,
+        },
+        {
+          warehouse_id: '2',
+          product_id: productId.id,
+          quantity: req.body.wh_2,
+        },
+        {
+          warehouse_id: '3',
+          product_id: productId.id,
+          quantity: req.body.wh_3,
+        },
+      ];
+      const newStock = await Stock.bulkCreate(stockData, { returning: true });
+      res.status(200).json(newProduct);
     }
   } catch (err) {
     res.status(500).json(err);

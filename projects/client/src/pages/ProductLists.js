@@ -6,7 +6,7 @@ import '../assets/styles/ProductLists.css';
 import { SortTwoTone } from '@mui/icons-material';
 import { Container, Stack, Pagination, IconButton, InputBase, Menu, MenuItem, Button } from '@mui/material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-import { SportsSoccerOutlined } from '@mui/icons-material';
+import { URL_API } from '../redux/API';
 
 class ProductLists extends React.Component {
   constructor(props) {

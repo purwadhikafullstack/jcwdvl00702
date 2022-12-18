@@ -11,7 +11,7 @@ import {
   FitnessCenterOutlined,
 } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
-import { Container, Button, IconButton, InputBase, Select, MenuItem, Box, TextField } from '@mui/material';
+import { Container, Button, IconButton, InputBase, Select, MenuItem, TextField } from '@mui/material';
 import '../../assets/styles/ProductAdd.css';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -25,15 +25,9 @@ export default function ProductAdd() {
     history.goBack();
   };
 
-  const [isEdit, setIsEdit] = useState(false);
   const [selectIcon, setSelectIcon] = useState(0);
   const [picture, setPicture] = useState('');
-
-  const [descript, setDescript] = useState('');
-
-  const handleChange = (event) => {
-    setDescript(event.target.value);
-  };
+  const [qtyWh, setQtyWh] = useState([{ qty: 0 }, { qty: 0 }, { qty: 0 }]);
 
   const loadPicture = (e) => {
     const image = e.target.files[0];
@@ -61,21 +55,22 @@ export default function ProductAdd() {
     onSubmit: async (values) => {
       console.log(values);
       const data = new FormData();
-      data.append('warehouse_id', 'A');
+      const qtyTotal = qtyWh.reduce((accumulator, currentValue) => accumulator + parseInt(currentValue.qty), 0);
+
       data.append('name', values.name);
       data.append('price', values.price);
-      data.append('status', 'true');
-      data.append('quantity', 10);
-      data.append('quantity_total', 30);
+      data.append('quantity_total', qtyTotal);
       data.append('product_detail', values.product_detail);
       data.append('category', selectIcon);
-      data.append('cart_id', '');
-      data.append('orderitem_id', '');
-      data.append('history_id', '');
       data.append('picture', picture);
+      data.append('wh_1', qtyWh[0].qty);
+      data.append('wh_2', qtyWh[1].qty);
+      data.append('wh_3', qtyWh[2].qty);
 
-      console.log(data);
+      console.log('dataaa', data);
+      // Axios.post('http://localhost:3300/api/product/add-product', { ...data, quantity: qtyWh })
       Axios.post('http://localhost:3300/api/product/add-product', data)
+
         .then(() => {
           alert('Product Added!');
         })
@@ -85,16 +80,22 @@ export default function ProductAdd() {
     },
   });
 
-  const warehouseStock = (name) => {
+  const warehouseStock = (id) => {
     return (
       <div className="pdadd-stock-wh">
-        <div className="pdadd-stock-name">Warehouse {name}</div>
+        <div className="pdadd-stock-name">Warehouse {id + 1}</div>
         <div className="pdadd-stock-qty">
           {/* <div className="pdadd-stock-qty-input"> */}
           <InputBase
             sx={{ fontFamily: 'Lora', width: '100px' }}
             placeholder="Amount"
             className="pdadd-stock-qty-input"
+            value={qtyWh[id].qty}
+            onChange={(e) => {
+              const copyQtyWh = [...qtyWh];
+              copyQtyWh[id].qty = e.target.value;
+              setQtyWh(copyQtyWh);
+            }}
           />
           {/* </div> */}
           <span className="pdadd-stock-qty-text">pcs</span>
@@ -102,6 +103,8 @@ export default function ProductAdd() {
       </div>
     );
   };
+
+  console.log('qtywh', qtyWh);
 
   return (
     <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
@@ -138,7 +141,10 @@ export default function ProductAdd() {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={selectIcon}
-                onChange={(e) => setSelectIcon(e.target.value)}>
+                onChange={(e) => {
+                  setSelectIcon(e.target.value);
+                  formik.setFieldValue('category', e.target.value);
+                }}>
                 <MenuItem value={0}>
                   <em>Category</em>
                 </MenuItem>
@@ -206,9 +212,11 @@ export default function ProductAdd() {
         </div>
 
         <div className="pdadd-stock">
-          {warehouseStock('A')}
+          {qtyWh.map((item, index) => warehouseStock(index))}
+
+          {/* {warehouseStock('A')}
           {warehouseStock('B')}
-          {warehouseStock('C')}
+          {warehouseStock('C')} */}
         </div>
 
         <div className="pdadd-button">
