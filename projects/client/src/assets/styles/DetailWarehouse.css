@@ -118,8 +118,10 @@ body {
 }
 
 .dw-c-d-item-2-select {
-  position: absolute;
-  left: 2px;
+  margin-left: 147px;
+  margin-top: -8px;
+  width: 200px;
+  border: 1px solid grey;
 }
 
 .dw-c-d-item-2-input {
