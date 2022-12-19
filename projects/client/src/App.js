@@ -120,7 +120,7 @@ export default function App() {
         <Route component={EditAddress} path="/edit-address/:userUID/:id" />
         <Route component={ChangePassword} path="/change-password" />
         <Route component={ResetPassword} path="/reset-password" />
-        <Route component={Profile} path="/profile" />
+        <Route component={Profile} path="/profile/:userUID" />
         <Route component={EditProfile} path="/edit-profile/:userUID" />
         <Route component={ChooseShipping} path="/choose-shipping" />
         <Route component={Cart} path="/cart" />

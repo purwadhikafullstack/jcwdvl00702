@@ -31,7 +31,6 @@ function AddressList() {
           `http://localhost:3300/api/address/address-list/${userUID}`
         );
         //  console.log(response.data)
-        console.log(response.data)
         setAddressDetails(response.data);
       };
       getAddressById(userUID);
