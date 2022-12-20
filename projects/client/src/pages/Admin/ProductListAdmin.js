@@ -11,7 +11,7 @@ import {
   Stack,
   Pagination,
 } from '@mui/material';
-import { MoreHoriz, Search, SportsSoccerOutlined, AddBox, Ballot } from '@mui/icons-material';
+import { MoreHoriz, Search, SportsSoccerOutlined, AddBox, Ballot, SortTwoTone } from '@mui/icons-material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 import Axios from 'axios';
 import { Link, useHistory } from 'react-router-dom';
@@ -21,10 +21,14 @@ import '../../assets/styles/ProductListAdmin.css';
 class ProductListAdmin extends React.Component {
   state = {
     productList: [],
-    page: 1,
-    maxPage: 0,
-    itemPerPage: 4,
-    keyWord: '',
+    page: 0,
+    pages: 0,
+    sort: '',
+    search: '',
+    // page: 1,
+    // maxPage: 0,
+    // itemPerPage: 4,
+    // keyWord: '',
     isSearch: false,
   };
 
@@ -36,9 +40,13 @@ class ProductListAdmin extends React.Component {
     this.setState({ ...this.state, isSearch: false });
   };
 
-  filterHandler = () => {
-    this.fetchProducts();
-    this.setState({ ...this.state, keyWord: '' });
+  // filterHandler = () => {
+  //   this.fetchProducts();
+  //   this.setState({ ...this.state, keyWord: '' });
+  // };
+
+  searchHandler = (event) => {
+    this.setState({ ...this.state, search: event.target.value });
   };
 
   inputHandler = (event) => {
@@ -52,11 +60,26 @@ class ProductListAdmin extends React.Component {
 
   // Setup Render list Product
 
-  fetchProducts = () => {
-    Axios.get(`http://localhost:3300/api/product/get-product/?searchQuery=${this.state.keyWord}`)
+  fetchProducts = (page, sort, search) => {
+    Axios.get(
+      `http://localhost:3300/api/product/get-product?page=${page}&sort=${sort ? sort : this.state.sort}&search=${
+        search ? search : this.state.search
+      }`
+    )
+
+      // Axios.get(`http://localhost:3300/api/product/get-product/
+      // ?searchQuery=${this.state.keyWord}`)
+
       .then((result) => {
-        this.setState({ productList: result.data, maxPage: Math.ceil(result.data.length / this.state.itemPerPage) });
-        console.log(this.state.productList);
+        // this.setState({ productList: result.data, maxPage: Math.ceil(result.data.length / this.state.itemPerPage) });
+        console.log(result);
+        this.setState({
+          ...this.state,
+          productList: [...result.data.result],
+          pages: result.data.pages,
+          ...(sort && { sort: sort }),
+          ...(search && { search: search }),
+        });
       })
       .catch(() => {
         alert('Terjadi kesalahan di server');
@@ -69,7 +92,7 @@ class ProductListAdmin extends React.Component {
     if (confirmDelete) {
       Axios.delete(`http://localhost:3300/api/product/${id}`)
         .then(() => {
-          this.fetchProducts();
+          this.fetchProducts(0);
         })
         .catch(() => {
           alert('Server Error!');
@@ -84,16 +107,16 @@ class ProductListAdmin extends React.Component {
     this.props.history.push(`/products-management-detail/${id}`);
   };
 
-  pageHandler = () => {
-    if (this.state.page < this.state.maxPage) {
-      this.setState({ page: this.state.page + 1 });
-    } else if (this.state.page > 1) {
-      this.setState({ page: this.state.page - 1 });
-    }
-  };
+  // pageHandler = () => {
+  //   if (this.state.page < this.state.maxPage) {
+  //     this.setState({ page: this.state.page + 1 });
+  //   } else if (this.state.page > 1) {
+  //     this.setState({ page: this.state.page - 1 });
+  //   }
+  // };
 
   componentDidMount() {
-    this.fetchProducts();
+    this.fetchProducts(0);
   }
 
   menuHandler = () => {
@@ -160,10 +183,10 @@ class ProductListAdmin extends React.Component {
   };
 
   renderProduct = () => {
-    const beginningIndex = (this.state.page - 1) * this.state.itemPerPage;
-    const currentData = this.state.productList.slice(beginningIndex, beginningIndex + this.state.itemPerPage);
+    // const beginningIndex = (this.state.page - 1) * this.state.itemPerPage;
+    // const currentData = this.state.productList.slice(beginningIndex, beginningIndex + this.state.itemPerPage);
 
-    return currentData.map((val) => {
+    return this.state.productList.map((val, index) => {
       return (
         <div className="plc-main">
           <div className="plc-image">
@@ -171,10 +194,11 @@ class ProductListAdmin extends React.Component {
           </div>
           <div className="plc-detail">
             <div className="plc-detail-name">{val.name}</div>
+            <div className="plc-detail-subname-2">Product ID: {val.id}</div>
             <div className="plc-detail-subname">
-              <div className="plc-detail-subname-1">
+              {/* <div className="plc-detail-subname-1">
                 <SportsSoccerOutlined />
-              </div>
+              </div> */}
               <div className="plc-detail-subname-2">{val.category}</div>
             </div>
             <div className="plc-detail-bottom">
@@ -202,7 +226,7 @@ class ProductListAdmin extends React.Component {
                 variant="contained"
                 className="plc-detail-bottom-detail"
                 onClick={() => this.editBtnHandler(val.id)}>
-                Edit
+                Detail
               </Button>
             </div>
           </div>
@@ -212,63 +236,126 @@ class ProductListAdmin extends React.Component {
   };
 
   render() {
+    console.log('prodlist', this.state.productList);
+
     return (
-      <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
-        {console.log(this.state.productList)}
-        <div className="pladmin-main">
-          <div className="pladmin-banner">
-            <div className="pladmin-banner-logo">
-              <IconButton disabled>
-                <Ballot />
-              </IconButton>
-            </div>
-            {this.state.isSearch ? (
-              <>
-                <ClickAwayListener onClickAway={this.isSearchHandleClose}>
-                  <InputBase
-                    sx={{ ml: 1, flex: 1, fontFamily: 'Lora' }}
-                    placeholder="Search"
-                    inputProps={{ 'aria-label': 'Search' }}
-                    className="pladmin-search"
-                    onChange={this.inputHandler}
-                    name="keyWord"
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton edge="end" onClick={this.filterHandler}>
-                          <Search />
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                </ClickAwayListener>
-              </>
-            ) : (
-              <>
-                <div className="pladmin-banner-text">Product List</div>
-                <div className="pladmin-banner-search">
-                  <IconButton onClick={this.isSearchHandle}>
-                    <Search />
-                  </IconButton>
-                </div>
-              </>
-            )}
-            <div className="pladmin-banner-add">
-              <Link to="/products-management-add">
-                <IconButton>
-                  <AddBox />
+      <>
+        <Container maxWidth="xs" sx={{ backgroundColor: 'white' }} classname="mobile">
+          {/* {console.log(this.state.productList)} */}
+          <div className="pladmin-main">
+            <div className="pladmin-banner">
+              <div className="pladmin-banner-logo">
+                <IconButton disabled>
+                  <Ballot />
                 </IconButton>
-              </Link>
+              </div>
+              {this.state.isSearch ? (
+                <>
+                  <ClickAwayListener onClickAway={this.isSearchHandleClose}>
+                    <InputBase
+                      sx={{ ml: 1, flex: 1, fontFamily: 'Lora' }}
+                      placeholder="Search"
+                      inputProps={{ 'aria-label': 'Search' }}
+                      className="pladmin-search"
+                      onChange={this.searchHandler}
+                      // name="keyWord"
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            edge="end"
+                            // onClick={this.filterHandler}
+                            onClick={() => this.fetchProducts(0, '', this.state.search)}>
+                            <Search />
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                  </ClickAwayListener>
+                </>
+              ) : (
+                <>
+                  <div className="pladmin-banner-text">Product List</div>
+                  <div className="pladmin-banner-search">
+                    <IconButton onClick={this.isSearchHandle}>
+                      <Search />
+                    </IconButton>
+                  </div>
+                </>
+              )}
+
+              <PopupState variant="popover" popupId="demo-popup-menu">
+                {(popupState) => (
+                  <React.Fragment>
+                    <button className="account-button" variant="contained" {...bindTrigger(popupState)}>
+                      <IconButton>
+                        <SortTwoTone />
+                      </IconButton>
+                    </button>
+                    <Menu {...bindMenu(popupState)}>
+                      <MenuItem
+                        onClick={() => {
+                          this.fetchProducts(0, 'name', '');
+                          this.setState({ ...this.state, page: 0 });
+                        }}
+                        sx={{ fontFamily: 'Lora' }}>
+                        {/* <img src="https://img.icons8.com/fluency-systems-filled/22/null/sort-numeric-up.png" /> */}
+                        Name
+                      </MenuItem>
+                      <MenuItem onClick={() => this.fetchProducts(0, 'createdAt', '')} sx={{ fontFamily: 'Lora' }}>
+                        {/* <img src="https://img.icons8.com/windows/24/null/sort-numeric-up-reversed.png" /> */}
+                        ID
+                      </MenuItem>
+                    </Menu>
+                  </React.Fragment>
+                )}
+              </PopupState>
+
+              <div className="pladmin-banner-add">
+                <Link to="/products-management-add">
+                  <IconButton>
+                    <AddBox />
+                  </IconButton>
+                </Link>
+              </div>
+              <div className="pladmin-banner-menu">{this.menuHandler()}</div>
             </div>
-            <div className="pladmin-banner-menu">{this.menuHandler()}</div>
-          </div>
-          <div className="pladmin-content">
-            {this.renderProduct()}
-            <Stack spacing={1} sx={{ position: 'fixed', top: '78%', width: '110%', fontFamily: 'Lora' }}>
+            <div className="pladmin-content">
+              {this.renderProduct()}
+              {/* {this.state.productList.map((ListProduct, index) => (
+                <div key={ListProduct.id}>
+                  <div
+                    className="
+                      product-list">
+                    <img src="https://cf.shopee.co.id/file/d7622a165c1b915b19e63e1ebd246ba4" alt="Product Image" />
+                    <div>{ListProduct.name}</div>
+                    <div>{ListProduct.price}</div>
+                  </div>
+                </div>
+              ))} */}
+              {/* <Stack spacing={1} sx={{ position: 'fixed', top: '78%', width: '110%', fontFamily: 'Lora' }}>
               <Pagination count={10} onChange={this.pageHandler} />
-            </Stack>
+            </Stack> */}
+            </div>
           </div>
-        </div>
-      </Container>
+        </Container>
+
+        <Container maxWidth="xs" className="mobile2">
+          <Stack
+            spacing={1}
+            sx={{
+              width: '110%',
+              fontFamily: 'Lora',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+            }}>
+            <Pagination
+              count={this.state.pages}
+              onChange={(e, value) => this.fetchProducts(value - 1, this.state.sort, '')}
+            />
+          </Stack>
+        </Container>
+      </>
     );
   }
 }

@@ -68,7 +68,6 @@ export default function ProductAdd() {
       data.append('wh_3', qtyWh[2].qty);
 
       console.log('dataaa', data);
-      // Axios.post('http://localhost:3300/api/product/add-product', { ...data, quantity: qtyWh })
       Axios.post('http://localhost:3300/api/product/add-product', data)
 
         .then(() => {

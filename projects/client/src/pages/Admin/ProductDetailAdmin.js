@@ -1,6 +1,5 @@
 import Axios from 'axios';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Add,
   ArrowBack,
@@ -35,22 +34,42 @@ export default function ProductDetailAdmin() {
   const [selectIcon, setSelectIcon] = useState(0);
   const [picture, setPicture] = useState('');
   const [preview, setPreview] = useState('');
-  const [state, setState] = useState([]);
+  const [state, setState] = useState({});
 
   const [descript, setDescript] = useState('');
+
+  const [resStock, setResStock] = useState([]);
+  const [refreshStock, setRefreshStock] = useState([]);
+  const [stockChange, SetStockChange] = useState({
+    wh_id: '',
+    count: '',
+    number: 0,
+  });
 
   const handleChange = (event) => {
     setDescript(event.target.value);
   };
 
+  useEffect(() => {
+    fetchProducts();
+  }, [refreshStock]);
+
+  // useEffect(() => {
+  //   if (state.quantity_total !== resStock.reduce((partialSum, a) => partialSum + a, 0)) {
+  //     fetchProducts();
+  //   }
+  // }, [resStock]);
+
   // Mengambil data product berdasarkan ID dari backend
   const fetchProducts = () => {
     Axios.get(`http://localhost:3300/api/product/get-product/${id}`)
       .then((result) => {
-        setState(result.data);
+        setState(result.data.getProduct);
+        setResStock(result.data.stockWh);
         console.log('ini result data', result.data);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         console.log('ini id untuk dikrim ke backend', id);
         alert('Terjadi kesalahan di server');
       });
@@ -118,24 +137,64 @@ export default function ProductDetailAdmin() {
     },
   });
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const changeStock = (name, count, number) => {
+    if (number >= 1) {
+      Axios.patch(`http://localhost:3300/api/product/update-stock/${id}`, {
+        wh_id: name + 1,
+        count: count,
+        number: number,
+      })
+        .then((data) => {
+          resStock[name] = data.data;
+          setRefreshStock(resStock);
+          console.log('yes');
+          alert('Stock Updated!');
+        })
+        .catch((error) => {
+          console.log('gagal', error);
+          alert('gagal');
+        });
+    } else {
+      alert('Input stock amount first!');
+    }
+  };
 
-  const warehouseStock = (name) => {
+  const warehouseStock = (index, number) => {
     return (
       <div className="pdadmin-stock-wh">
-        <div className="pdadmin-stock-name">Warehouse {name}</div>
-        <div className="pdadmin-stock-qty">20 pcs</div>
+        <div className="pdadmin-stock-name">Warehouse {index + 1}</div>
+        <div className="pdadmin-stock-qty">{resStock[index]} pcs</div>
         <div className="pdadmin-stock-edit">
-          <InputBase sx={{ fontFamily: 'Lora' }} placeholder="0" className="pdadmin-stock-text" />
-          <IconButton className="pdadmin-stock-add">
+          <InputBase
+            sx={{ fontFamily: 'Lora' }}
+            placeholder="0"
+            className="pdadmin-stock-text"
+            onChange={(e) => {
+              number = e.target.value;
+            }}
+          />
+          <IconButton
+            className="pdadmin-stock-add"
+            onClick={() => {
+              changeStock(index, 'add', number);
+            }}>
             <Add />
           </IconButton>
         </div>
         <div className="pdadmin-stock-edit">
-          <InputBase sx={{ fontFamily: 'Lora' }} placeholder="0" className="pdadmin-stock-text" />
-          <IconButton className="pdadmin-stock-decrease">
+          <InputBase
+            sx={{ fontFamily: 'Lora' }}
+            placeholder="0"
+            className="pdadmin-stock-text"
+            onChange={(e) => {
+              number = e.target.value;
+            }}
+          />
+          <IconButton
+            className="pdadmin-stock-decrease"
+            onClick={() => {
+              changeStock(index, 'reduce', number);
+            }}>
             <Remove />
           </IconButton>
         </div>
@@ -324,7 +383,7 @@ export default function ProductDetailAdmin() {
                 <div className="pdadmin-desc-title-1">
                   <span className="pdadmin-desc-name">{state.name}</span>
                 </div>
-                <div className="pdadmin-desc-title-4">Product ID: 701241</div>
+                <div className="pdadmin-desc-title-4">Product ID: {state.id}</div>
                 <div className="pdadmin-desc-title-2">
                   <SportsSoccerOutlined />
                   <div className="pdadmin-desc-title-3">{state.category}</div>
@@ -345,9 +404,10 @@ export default function ProductDetailAdmin() {
         )}
 
         <div className="pdadmin-stock">
-          {warehouseStock('A')}
-          {warehouseStock('B')}
-          {warehouseStock('C')}
+          {resStock.map((item, index) => warehouseStock(index))}
+          {/* {warehouseStock(1)}
+          {warehouseStock(2)}
+          {warehouseStock(3)} */}
         </div>
       </div>
     </Container>

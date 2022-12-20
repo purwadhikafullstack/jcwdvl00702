@@ -1,5 +1,5 @@
 const {
-  models: { Product, Stock },
+  models: { Product, Stock, Stockmutation },
 } = require('../models');
 const router = require('express').Router();
 const multer = require('multer');
@@ -70,26 +70,67 @@ router.post('/add-product', upload.single('picture'), async (req, res) => {
 });
 
 // Get Product
-router.get('/get-product/', async (req, res) => {
+router.get('/get-product', async (req, res) => {
   try {
-    let searchQuery = req.query.searchQuery || '';
-    console.log('req query ges', req.query.searchQuery);
-    let getProduct = await Product.findAll({
-      where: {
-        name: { [Op.like]: '%' + searchQuery + '%' },
-      },
+    // let searchQuery = req.query.searchQuery || '';
+    // console.log('req query ges', req.query.searchQuery);
+    // let getProduct = await Product.findAll({
+    //   where: {
+    //     name: { [Op.like]: '%' + searchQuery + '%' },
+    //   },
+    // });
+
+    // console.log('ini get Product', getProduct[0].picture);
+    // console.log('ini lenght get product', getProduct.length);
+
+    // for (let i = 0; i < getProduct.length; i++) {
+    //   let picPathArray = getProduct[i].picture.split('\\');
+    //   let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
+    //   getProduct[i].picture = picPath;
+    // }
+
+    // res.status(200).json(getProduct);
+
+    const page = parseInt(req.query.page) || 0;
+    const limit = 3;
+    const search = req.query.search || '';
+    const offset = limit * page;
+    const productLength = await Product.findAll({});
+
+    const sort = req.query.sort || 'id';
+
+    const result = await Product.findAll({
+      limit: limit,
+      offset: page * limit,
+      order: [[sort, 'ASC']],
+      ...(req.query.search && {
+        where: {
+          name: {
+            [Op.like]: `%${req.query.search}%`,
+          },
+        },
+      }),
     });
+    const resultCount = await Product.findAll({
+      // offset: page * limit,
+      // order: [[sort, 'ASC']],
+      ...(req.query.search && {
+        where: {
+          name: {
+            [Op.like]: `%${req.query.search}%`,
+          },
+        },
+      }),
+    });
+    const pages = Math.ceil(resultCount.length / limit);
 
-    console.log('ini get Product', getProduct[0].picture);
-    console.log('ini lenght get product', getProduct.length);
-
-    for (let i = 0; i < getProduct.length; i++) {
-      let picPathArray = getProduct[i].picture.split('\\');
-      let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
-      getProduct[i].picture = picPath;
-    }
-
-    res.status(200).json(getProduct);
+    res.status(200).json({
+      result: result,
+      pages: pages,
+      page: page,
+      order: sort,
+      search: search,
+    });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -107,9 +148,20 @@ router.get('/get-product/:id', async (req, res) => {
     let picPathArray = getProduct.picture.split('\\');
     let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
     getProduct.picture = picPath;
-    res.status(200).json(getProduct);
+
+    const getStock = await Stock.findAll({
+      where: {
+        product_id: req.params.id,
+      },
+    });
+    const stockWh = [getStock[0].quantity, getStock[1].quantity, getStock[2].quantity];
+
+    // console.log('getstock', getStock);
+
+    res.status(200).json({ getProduct, stockWh });
   } catch (err) {
     res.status(500).json(err);
+    console.log('err', err);
   }
 });
 
@@ -162,9 +214,116 @@ router.put('/edit-product/:id', upload.single('picture'), async (req, res) => {
   }
 });
 
+// UPDATE STOCK
+
+router.patch('/update-stock/:id', async (req, res) => {
+  const theProduct = await Product.findOne({
+    where: {
+      id: req.params.id,
+    },
+  });
+  const theStock = await Stock.findOne({
+    where: {
+      warehouse_id: req.body.wh_id,
+      product_id: req.params.id,
+    },
+  });
+  const stockId = await Stock.findOne({
+    where: {
+      warehouse_id: req.body.wh_id,
+      product_id: req.params.id,
+    },
+  });
+
+  try {
+    if (req.body.count === 'add') {
+      const updateStock = await Product.update(
+        {
+          quantity_total: theProduct.quantity_total + parseInt(req.body.number),
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+          returning: true,
+          plain: true,
+        }
+      );
+      const changeStock = await Stock.update(
+        {
+          quantity: theStock.quantity + parseInt(req.body.number),
+        },
+        {
+          where: {
+            warehouse_id: req.body.wh_id,
+            product_id: req.params.id,
+          },
+          returning: true,
+          plain: true,
+        }
+      );
+      const newMutation = await Stockmutation.create({
+        stock_id: stockId.id,
+        warehouse_id: stockId.warehouse_id,
+        product_id: stockId.product_id,
+        quantity: '+' + req.body.number,
+        requester: 'admin name',
+        status: 'accepted',
+        move_type: 'Update stock',
+      });
+    } else {
+      const updateStock = await Product.update(
+        {
+          quantity_total: theProduct.quantity_total - parseInt(req.body.number),
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+          returning: true,
+          plain: true,
+        }
+      );
+      const changeStock = await Stock.update(
+        {
+          quantity: theStock.quantity - parseInt(req.body.number),
+        },
+        {
+          where: {
+            warehouse_id: req.body.wh_id,
+            product_id: req.params.id,
+          },
+          returning: true,
+          plain: true,
+        }
+      );
+      const newMutation = await Stockmutation.create({
+        stock_id: stockId.id,
+        warehouse_id: stockId.warehouse_id,
+        product_id: stockId.product_id,
+        quantity: '+' + req.body.number,
+        requester: 'admin name',
+        status: 'accepted',
+        move_type: 'Update stock',
+      });
+    }
+    const endStock = await Stock.findOne({
+      where: {
+        warehouse_id: req.body.wh_id,
+        product_id: req.params.id,
+      },
+    });
+
+    res.status(201).json(endStock.dataValues.quantity);
+  } catch (err) {
+    res.status(500).json(err);
+    console.log('err', err);
+  }
+});
+
 module.exports = router;
 
-// Maria
+// Maria Pagination - Search - Sort
 
 // const {
 //   models: { Example },
