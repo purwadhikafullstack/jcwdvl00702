@@ -1,5 +1,5 @@
 const {
-  models: { Customer },
+  models: { Customer, Address },
 } = require('../models');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
