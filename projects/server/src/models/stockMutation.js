@@ -1,31 +1,35 @@
 module.exports = (sequelize, DataTypes) => {
   const Stockmutation = sequelize.define(
-    "stockmutation",
+    'stockmutation',
     {
-      stock_id:{
-        allowNull:false,
-        type:DataTypes.STRING
+      stock_id: {
+        allowNull: false,
+        type: DataTypes.STRING,
       },
-      warehouse_id:{
-        allowNull:false,
-        type:DataTypes.STRING
+      warehouse_id: {
+        allowNull: false,
+        type: DataTypes.STRING,
       },
-      status:{
-        allowNull:false,
-        type:DataTypes.STRING
+      product_id: {
+        allowNull: false,
+        type: DataTypes.STRING,
       },
-      quantity:{
-        allowNull:false,
-        type:DataTypes.INTEGER
+      quantity: {
+        allowNull: false,
+        type: DataTypes.STRING,
       },
-      requester:{
-        allowNull:false,
-        type:DataTypes.STRING
+      requester: {
+        allowNull: false,
+        type: DataTypes.STRING,
       },
-      move_type:{
-        allowNull:false,
-        type:DataTypes.STRING
-      }
+      status: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      move_type: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
     },
     {}
   );
