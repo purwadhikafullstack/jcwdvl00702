@@ -33,6 +33,13 @@ db.models.Customer.hasMany(db.models.Address, {
 db.models.Address.belongsTo(db.models.Customer, {
   foreignKey: "customer_uid",
 });
+db.models.Product.hasMany(db.models.Cart, {
+  foreignKey: "product_id",
+  // sourceKey:"cart_id",
+})
+db.models.Cart.belongsTo(db.models.Product, {
+  foreignKey: "product_id",
+});
 // db.models.Product.hasMany(db.models.Warehouse,{
 //   foreignKey: "warehouse_id",
 // })

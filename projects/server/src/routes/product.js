@@ -1,5 +1,5 @@
 const {
-  models: { Product },
+  models: { Product, Cart },
 } = require('../models');
 const router = require('express').Router();
 const multer = require('multer');
@@ -62,7 +62,7 @@ router.post('/add-product', upload.single('picture'), async (req, res) => {
 router.get('/get-product/', async (req, res) => {
   try {
     let searchQuery = req.query.searchQuery || '';
-    console.log('req query ges', req.query.searchQuery);
+    console.log('req query', req.query.searchQuery);
     let getProduct = await Product.findAll({
       where: {
         name: { [Op.like]: '%' + searchQuery + '%' },

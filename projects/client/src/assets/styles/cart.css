@@ -1,8 +1,8 @@
 .cartPage{
     max-width: 320px;
     position: relative;
-    margin: auto;
-    height: 100vh;
+    /* margin: auto; */
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -25,10 +25,6 @@
     align-items: center;
 }
 
-.footer{
-    display: flex;
-    flex-direction: row;
-}
 
 .priceCntainer{
     display: flex;
@@ -40,7 +36,7 @@
     flex-direction: row;
     justify-content: space-around;
     width: 110%;
-    height: 80px;
+    height: 50px;
     border: 1px whitesmoke solid;
     margin-bottom: 13px;
     border-radius: 10px;
@@ -148,13 +144,17 @@
     height: 20%;
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
-    font-size: 10px;
+    justify-content: space-around;
+    font-size: 16px;
+    font-weight: 700;
   }
   
   .card-detail-bottom-price {
-    margin-top: 9px;
-    font-size: 12px;
+    margin-top: 9px; 
+  }
+  .card-detail-bottom-qty {
+    margin-top: 12px;
+    margin-left: 5px; 
   }
 
   .card-button{
@@ -181,3 +181,11 @@
     width: 80%;
    }
   
+   .mobile2 {
+    /* margin: auto; */
+    border: none;
+    padding: 20px;
+    height: 20px;
+    margin-bottom: 30px;
+    margin-top: -40px;
+  }

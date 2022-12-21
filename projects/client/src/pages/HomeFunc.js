@@ -118,6 +118,15 @@ export default function HomeFunc() {
     })
   }
 
+  const cartBtnHandler = (id) =>{
+    if(id){
+      history.push(`/cart/${id}`)
+    } else {
+      alert("Mohon Login Untuk Melihat Cart Anda")
+    }
+    
+  }
+
   useEffect(()=>{
     showProducts()
   },[])
@@ -196,8 +205,12 @@ export default function HomeFunc() {
                   <Login />
                 </button>
               </Link>
-              <NotificationsOutlinedIcon />
-              <ShoppingCartOutlinedIcon />
+              <IconButton>
+                 <NotificationsOutlinedIcon />
+              </IconButton>
+              <IconButton  onClick={() => cartBtnHandler(userUID)}>
+                <ShoppingCartOutlinedIcon />
+              </IconButton>
             </div>
           </div>
           <div className="search-bar-detail">
