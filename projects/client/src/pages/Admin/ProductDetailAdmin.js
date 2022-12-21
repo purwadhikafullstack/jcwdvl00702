@@ -19,6 +19,7 @@ import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 
 import '../../assets/styles/ProductDetailAdmin.css';
+import { useSelector } from 'react-redux';
 
 export default function ProductDetailAdmin() {
   const history = useHistory();
@@ -45,6 +46,8 @@ export default function ProductDetailAdmin() {
     count: '',
     number: 0,
   });
+
+  const stateUsername = useSelector((state) => state.auth);
 
   const handleChange = (event) => {
     setDescript(event.target.value);
@@ -137,12 +140,13 @@ export default function ProductDetailAdmin() {
     },
   });
 
-  const changeStock = (name, count, number) => {
+  const changeStock = (name, count, number, requester) => {
     if (number >= 1) {
       Axios.patch(`http://localhost:3300/api/product/update-stock/${id}`, {
         wh_id: name + 1,
         count: count,
         number: number,
+        requester: stateUsername.user.fullname,
       })
         .then((data) => {
           resStock[name] = data.data;

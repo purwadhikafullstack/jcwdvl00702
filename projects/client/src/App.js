@@ -32,10 +32,10 @@ import ProductLists from './pages/ProductLists';
 import ChooseShipping from './pages/ChooseShipping';
 import AddressList from './pages/AddressList';
 import NewAddress from './pages/NewAddress';
-import EditAddress from "./pages/EditAddress";
+import EditAddress from './pages/EditAddress';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
-import EditWarehouse from "./pages/Admin/EditWarehouse";
+import EditWarehouse from './pages/Admin/EditWarehouse';
 import HomeFunc from './pages/HomeFunc';
 import Main from './pages/Main';
 import { AuthProvider } from './context/AuthProvider';
@@ -45,7 +45,7 @@ import { firebaseAuthentication } from './config/firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { loginUser } from './redux/actionCreators/authActionCreators';
-import EditAddress from './pages/EditAddress';
+// import EditAddress from './pages/EditAddress';
 import Axios from 'axios';
 
 export default function App() {
@@ -94,15 +94,9 @@ export default function App() {
         <Route component={UserList} path="/user-list" />
         <Route component={DetailUser} path="/detail-user" />
         <Route component={AddUser} path="/add-user" />
-        <Route
-          component={ProductCategory}
-          path="/products-management-category"
-        />
+        <Route component={ProductCategory} path="/products-management-category" />
         <Route component={ProductListAdmin} path="/products-management-list" />
-        <Route
-          component={ProductDetailAdmin}
-          path="/products-management-detail/:id"
-        />
+        <Route component={ProductDetailAdmin} path="/products-management-detail/:id" />
         <Route component={ProductAdd} path="/products-management-add" />
         <Route component={WarehouseManagement} path="/warehouse-management" />
         <Route component={AddWarehouse} path="/add-warehouse" />
