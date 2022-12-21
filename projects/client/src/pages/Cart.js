@@ -16,8 +16,11 @@ export default function Cart(){
 
   const [state, setState] = useState([])
   const [totalPrice, setTotalPrice] = useState(0)
-  
 
+  
+  const checkoutHandler = (id) =>{
+      history.push(`/checkout`)
+    }
   
 // mengambil cart dan product
   const cartProduct = () => {
@@ -174,7 +177,7 @@ export default function Cart(){
                   <div className="priceTitle">Total Price</div>
                   <div className="totalPrice">$ {totalPrice}</div>
                 </div>
-                <div className="checkoutBtn">Checkout</div>
+                <div className="checkoutBtn" onClick={checkoutHandler()}>Checkout</div>
             </div>   
            </div>
          </Container>
