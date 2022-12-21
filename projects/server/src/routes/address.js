@@ -71,6 +71,7 @@ router.post("/add-new-address", async (req, res) => {
       customer_uid: req.body.customer_uid,
       latitude: req.body.latitude,
       longitude: req.body.longitude,
+      city_id: req.body.city_id,
     });
     const address = await newAddress.save();
     res.status(200).json(address);
@@ -171,5 +172,38 @@ router.post("/lat-long", async (req, res) => {
     } catch (error) {}
   });
 });
+
+// Get Ongkir 
+router.post("/ongkir-type",async(req,res)=>{
+  try{
+    const options={
+      method: 'POST',
+      url: 'https://api.rajaongkir.com/starter/cost',
+      headers: {key: 'e1517d3ccf2f24ed5cb7e65082d5697e'},
+      form: {origin: req.body.origin, destination: req.body.destination, weight: 1700, courier: req.body.courier}
+    }
+    //both origin and destinations use city ID
+    request(options, function (error, response, body) {
+      if (error) throw new Error(error);
+      res.json(body)
+    })
+  } catch(err){
+    console.log(err)
+  }
+})
+
+// // Get Warehouse Location ID
+// router.get("/wh-loc/:address",async(req,res)=>{
+//   try{
+//     const result = await Warehouse.findOne({
+//       where:{
+//         address:req.params.address
+//       }
+//     })
+//     return res.status(200).send(result)
+//   } catch(err){
+//     return res.status(500).json({message:err.toString()})
+//   }
+// })
 
 module.exports = router;
