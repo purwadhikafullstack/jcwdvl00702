@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.BOOLEAN,
       },
+      city_id: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
     },
     {}
   );

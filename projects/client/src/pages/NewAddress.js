@@ -2,28 +2,25 @@ import React, { useEffect, useState, useContext } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Container, FormControl, Input, Button } from "@mui/material";
 import "../assets/styles/NewAddress.css";
-import { AuthContext } from "../context/AuthProvider";
 import Axios from "axios";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {Link} from 'react-router-dom'
 
 function NewAddress() {
   const [provinces, setProvinces] = useState();
   const [cities, setCities] = useState();
   const [postals, setPostals] = useState();
-  // const { user: currentUser } = useContext(AuthContext);
   const [address_name, setAddress_name] = useState();
   const [address, setAddress] = useState();
   const [province, setProvince] = useState();
   const [latitude, setLatitude] = useState();
   const [longitude, setLongitude] = useState();
   const [city, setCity] = useState();
+  const [city_id, setCity_id] = useState()
+  const [cityData, setCityData] = useState()
   const [postal_code, setPostal_code] = useState();
-  //  console.log(currentUser);
-  // const userUID = currentUser?.uid;
-  // console.log(userUID);
 
-  const { isLoggedIn, user } = useSelector((state) => ({
-    isLoggedIn: state.auth.isLoggedIn,
+  const { user } = useSelector((state) => ({
     user: state.auth.user,
   }));
   const userUID = user?.customer_uid;
@@ -86,6 +83,23 @@ function NewAddress() {
     }
   }, [userUID]);
 
+  const cityCheck=(e)=>{
+    setCityData(e)
+    const splitCity = cityData.split(" ")
+    let cityName = ""
+    if(splitCity.length>2){
+      for(let x=0;x<(splitCity.length-1);x++){
+        cityName = cityName + splitCity[x] + " "
+      }
+      setCity(cityName)
+      console.log(city)
+    } else {
+      setCity(splitCity[0])
+    }
+    setCity_id(splitCity[splitCity.length-1])
+    console.log(city_id)
+  }
+
   const postLatLong = async () => {
     const data = {
       city: city,
@@ -115,7 +129,9 @@ function NewAddress() {
       postal_code: postal_code,
       latitude: latitude,
       longitude: longitude,
+      city_id: city_id,
     };
+    console.log(data)
     try {
       await Axios.post(
         `http://localhost:3300/api/address/add-new-address`,
@@ -132,7 +148,9 @@ function NewAddress() {
       <Container maxWidth="xs" className="mobile">
         <div className="new-address-page">
           <div className="new-address-detail">
-            <ArrowBackIcon />
+            <Link to ={`/address-list/${user?.customer_uid}`}>
+              <ArrowBackIcon />
+            </Link>
             <div>Create New Address</div>
           </div>
           <div className="margin-size">Address Label</div>
@@ -167,12 +185,12 @@ function NewAddress() {
           <label>
             <select
               className="select-style"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
+              value={cityData}
+              onChange={e=>cityCheck(e.target.value)}
               onClick={postLatLong}
             >
               {cities?.rajaongkir.results.map((cityDetail, index) => {
-                return <option>{cityDetail.city_name}</option>;
+                return <option>{`${cityDetail.city_name} ${cityDetail.city_id}`}</option>;
               })}
             </select>
           </label>

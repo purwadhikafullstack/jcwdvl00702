@@ -1,64 +1,143 @@
 import React from 'react';
-import axios from 'axios';
+import Axios from 'axios';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../assets/styles/ProductLists.css';
 import { SortTwoTone } from '@mui/icons-material';
-import { Container, Stack, Pagination, IconButton, InputBase, Menu, MenuItem } from '@mui/material';
+import { Container, Stack, Pagination, IconButton, InputBase, Menu, MenuItem,  Button, } from '@mui/material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-import { URL_API } from '../API';
+import { SportsSoccerOutlined} from '@mui/icons-material';
 
 class ProductLists extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dataProduct: [],
-      pages: 0,
-      sort: '',
-      search: '',
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     dataProduct: [],
+  //     pages: 0,
+  //     sort: '',
+  //     search: '',
+  //   };
+  // }
+
+  state = {
+    productList: [],
+    page: 1,
+    maxPage: 0,
+    itemPerPage: 4,
+    keyWord: '',
+
+  };
 
   componentDidMount() {
     this.getDataProduct(0);
   }
 
-  getDataProduct = (page, sort, search) => {
-    axios
-      .get(
-        URL_API +
-          `/api/product/get?page=${page}&sort=${sort ? sort : this.state.sort}&search=${
-            search ? search : this.state.search
-          }`
-      )
-      .then((res) => {
-        this.setState({
-          ...this.state,
-          dataProduct: [...res.data.result],
-          pages: res.data.pages,
-          ...(sort && { sort: sort }),
-          ...(search && { search: search }),
-        });
-        //   sort
-        //     ? this.setState({
-        //         ...this.state,
-        //         dataProduct: [...res.data.result],
-        //         pages: res.data.pages,
-        //         sort: sort,
-        //       })
-        //     : this.setState({
-        //         ...this.state,
-        //         dataProduct: [...res.data.result],
-        //         pages: res.data.pages,
-        //       });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  filterHandler = () => {
+    this.fetchProducts();
+    this.setState({ ...this.state, keyWord: '' });
+  };
+
+  inputHandler = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    this.setState({ [name]: value });
+  };
+
+  pageHandler = () => {
+    if (this.state.page < this.state.maxPage) {
+      this.setState({ page: this.state.page + 1 });
+    } else if (this.state.page > 1) {
+      this.setState({ page: this.state.page - 1 });
+    }
+  };
+
+    // product detail
+    detailBtnHandler = (id) => {
+      this.props.history.push(`/product-detail/${id}`);
+    };
+
+  getDataProduct = (/*page, sort, search*/) => {
+    Axios.get(`http://localhost:3300/api/product/get-product/?searchQuery=${this.state.keyWord}`)
+    .then((result) => {
+      this.setState({ productList: result.data, maxPage: Math.ceil(result.data.length / this.state.itemPerPage) });
+      console.log(this.state.productList);
+    })
+    .catch(() => {
+      alert('Terjadi kesalahan di server');
+    });
+
+    // Axios.get(`http://localhost:3300/api/product/get-product/?page=${page}&sort=${sort ? sort : this.state.sort}&search=${
+    //         search ? search : this.state.search
+    //       }`
+    //   )
+    //   .then((res) => {
+    //     this.setState({
+    //       ...this.state,
+    //       dataProduct: [...res.data.result],
+    //       pages: res.data.pages,
+    //       ...(sort && { sort: sort }),
+    //       ...(search && { search: search }),
+    //     });
+    //     //   sort
+    //     //     ? this.setState({
+    //     //         ...this.state,
+    //     //         dataProduct: [...res.data.result],
+    //     //         pages: res.data.pages,
+    //     //         sort: sort,
+    //     //       })
+    //     //     : this.setState({
+    //     //         ...this.state,
+    //     //         dataProduct: [...res.data.result],
+    //     //         pages: res.data.pages,
+    //     //       });
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   searchHandler = (event) => {
     this.setState({ ...this.state, search: event.target.value });
+  };
+
+  renderProduct = () => {
+    const beginningIndex = (this.state.page - 1) * this.state.itemPerPage;
+    const currentData = this.state.productList.slice(beginningIndex, beginningIndex + this.state.itemPerPage);
+
+    return currentData.map((val) => {
+      return (
+        <div className="plc-main">
+          <div className="plc-image">
+            <img src={val.picture} className="plc-product" alt="Product Image" />
+          </div>
+          <div className="plc-detail">
+            <div className="plc-detail-name">{val.name}</div>
+            <div className="plc-detail-subname">
+              <div className="plc-detail-subname-1">
+                <SportsSoccerOutlined />
+              </div>
+              <div className="plc-detail-subname-2">{val.category}</div>
+            </div>
+            <div className="plc-detail-bottom">
+              <Button
+                sx={{
+                  borderRadius: '20px',
+                  backgroundColor: 'rgb(153,255,153,0.9)',
+                  fontSize: '8px',
+                  fontFamily: 'Lora',
+                  color: 'black',
+                }}
+                variant="contained"
+                onClick={() => this.detailBtnHandler(val.id)}
+                className="plc-detail-bottom-delete">
+                Detail Product
+              </Button>
+            </div>
+          </div>
+        </div>
+      );
+    });
   };
 
   render() {
@@ -113,25 +192,15 @@ class ProductLists extends React.Component {
               </PopupState>
             </div>
             <div className="product-card">
-              {this.state.dataProduct.map((ListProduct, index) => (
-                <div key={ListProduct.id}>
-                  <div
-                    className="
-                      product-list">
-                    <img src="https://cf.shopee.co.id/file/d7622a165c1b915b19e63e1ebd246ba4" alt="Product Image" />
-                    <div>{ListProduct.name}</div>
-                    <div>{ListProduct.price}</div>
-                  </div>
-                </div>
-              ))}
+            {this.renderProduct()}
             </div>
           </div>
         </Container>
         <Container maxWidth="xs" className="mobile2">
           <Stack spacing={1} sx={{ width: '110%', marginLeft: '110px', fontFamily: 'Lora' }}>
             <Pagination
-              count={this.state.pages}
-              onChange={(e, value) => this.getDataProduct(value - 1, this.state.sort)}
+              count={this.state.maxPage}
+              onChange={this.pageHandler}
             />
           </Stack>
         </Container>
