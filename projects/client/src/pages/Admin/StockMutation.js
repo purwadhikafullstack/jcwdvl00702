@@ -37,8 +37,17 @@ class StockMutation extends React.Component {
     setAdd: false,
     askFrom: 0,
     askTo: 0,
+    productValue: 0,
+    quantityValue: 0,
     setOpenA: false,
     setOpenR: false,
+  };
+
+  inputHandler = (event) => {
+    const value = event.target.value;
+    const name = event.target.name;
+
+    this.setState({ ...this.state, [name]: value });
   };
 
   handleChange = (event, value) => {
@@ -58,6 +67,11 @@ class StockMutation extends React.Component {
   };
 
   addClose = () => {
+    this.setState({ ...this.state, setAdd: false });
+  };
+
+  askMutation = (from, to, product, quantity) => {
+    console.log('result', from, to, product, quantity);
     this.setState({ ...this.state, setAdd: false });
   };
 
@@ -357,9 +371,9 @@ class StockMutation extends React.Component {
                     <MenuItem value={0}>
                       <em>From</em>
                     </MenuItem>
-                    <MenuItem value={1}>Warehouse A</MenuItem>
-                    <MenuItem value={2}>Warehouse B</MenuItem>
-                    <MenuItem value={3}>Warehouse C</MenuItem>
+                    <MenuItem value={1}>Warehouse 1</MenuItem>
+                    <MenuItem value={2}>Warehouse 2</MenuItem>
+                    <MenuItem value={3}>Warehouse 3</MenuItem>
                   </Select>
                   <Select
                     sx={{ width: '200px' }}
@@ -371,9 +385,9 @@ class StockMutation extends React.Component {
                     <MenuItem value={0}>
                       <em>To</em>
                     </MenuItem>
-                    <MenuItem value={1}>Warehouse A</MenuItem>
-                    <MenuItem value={2}>Warehouse B</MenuItem>
-                    <MenuItem value={3}>Warehouse C</MenuItem>
+                    <MenuItem value={1}>Warehouse 1</MenuItem>
+                    <MenuItem value={2}>Warehouse 2</MenuItem>
+                    <MenuItem value={3}>Warehouse 3</MenuItem>
                   </Select>
                   <InputBase
                     sx={{
@@ -383,8 +397,15 @@ class StockMutation extends React.Component {
                       paddingLeft: '10px',
                     }}
                     placeholder="Product ID"
+                    name="productValue"
+                    // value={this.state.productValue}
                     inputProps={{ 'aria-label': 'Search' }}
                     className="apc-card-input"
+                    onChange={this.inputHandler}
+
+                    // onChange={(e) => {
+                    //   this.setState({ ...this.state, productValue: e.target.value });
+                    // }}
                   />
                   <InputBase
                     sx={{
@@ -394,8 +415,15 @@ class StockMutation extends React.Component {
                       paddingLeft: '10px',
                     }}
                     placeholder="Amount"
+                    name="quantityValue"
+                    // value={this.state.quantityValue}
                     inputProps={{ 'aria-label': 'Search' }}
                     className="apc-card-input"
+                    onChange={this.inputHandler}
+
+                    // onChange={(e) => {
+                    //   this.setState({ ...this.state, quantityValue: e.target.value });
+                    // }}
                   />
 
                   <Button
@@ -409,7 +437,14 @@ class StockMutation extends React.Component {
                     }}
                     variant="contained"
                     className="apc-card-edit"
-                    onClick={this.addClose}>
+                    onClick={() => {
+                      this.askMutation(
+                        this.state.askFrom,
+                        this.state.askTo,
+                        this.state.productValue,
+                        this.state.quantityValue
+                      );
+                    }}>
                     Ask
                   </Button>
                 </Box>
