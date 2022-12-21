@@ -32,8 +32,10 @@ import ProductLists from './pages/ProductLists';
 import ChooseShipping from './pages/ChooseShipping';
 import AddressList from './pages/AddressList';
 import NewAddress from './pages/NewAddress';
+import EditAddress from "./pages/EditAddress";
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
+import EditWarehouse from "./pages/Admin/EditWarehouse";
 import HomeFunc from './pages/HomeFunc';
 import Main from './pages/Main';
 import { AuthProvider } from './context/AuthProvider';
@@ -91,13 +93,20 @@ export default function App() {
         <Route component={UserList} path="/user-list" />
         <Route component={DetailUser} path="/detail-user" />
         <Route component={AddUser} path="/add-user" />
-        <Route component={ProductCategory} path="/products-management-category" />
+        <Route
+          component={ProductCategory}
+          path="/products-management-category"
+        />
         <Route component={ProductListAdmin} path="/products-management-list" />
-        <Route component={ProductDetailAdmin} path="/products-management-detail/:id" />
+        <Route
+          component={ProductDetailAdmin}
+          path="/products-management-detail/:id"
+        />
         <Route component={ProductAdd} path="/products-management-add" />
         <Route component={WarehouseManagement} path="/warehouse-management" />
         <Route component={AddWarehouse} path="/add-warehouse" />
-        <Route component={DetailWarehouse} path="/detail-warehouse" />
+        <Route component={DetailWarehouse} path="/detail-warehouse/:id" />
+        <Route component={EditWarehouse} path="/edit-warehouse/:id" />
         <Route component={StockMutation} path="/stock-mutation" />
         <Route component={OrderList} path="/order-list" />
         <Route component={OrderDetailAdmin} path="/order-detail-admin" />
@@ -106,12 +115,13 @@ export default function App() {
         <Route component={SalesReport} path="/sales-report" />
         <Route component={ProductDetail} path="/product-detail/:id" />
         <Route component={ProductLists} path="/product-list" />
-        <Route component={AddressList} path="/address-list" />
-        <Route component={NewAddress} path="/add-address" />
+        <Route component={AddressList} path="/address-list/:userUID" />
+        <Route component={NewAddress} path="/add-address/:userUID" />
+        <Route component={EditAddress} path="/edit-address/:userUID/:id" />
         <Route component={ChangePassword} path="/change-password" />
         <Route component={ResetPassword} path="/reset-password" />
-        <Route component={Profile} path="/profile" />
-        <Route component={EditProfile} path="/edit-profile" />
+        <Route component={Profile} path="/profile/:userUID" />
+        <Route component={EditProfile} path="/edit-profile/:userUID" />
         <Route component={ChooseShipping} path="/choose-shipping" />
         <Route component={Cart} path="/cart" />
         <Route component={Checkout} path="/checkout" />

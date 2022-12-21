@@ -46,4 +46,20 @@ db.models.Address.belongsTo(db.models.Customer, {
 //   foreignKey:"stock_id"
 // })
 
+// db.models.Customer.hasMany(db.models.Warehouse, {
+//   foreignKey: "customer_uid",
+//   sourceKey: "customer_uid",
+// });
+// db.models.Warehouse.belongsTo(db.models.Customer, {
+//   foreignKey: "customer_uid",
+// });
+
+db.models.Customer.hasMany(db.models.Address, {
+  foreignKey: "customer_uid",
+  sourceKey: "customer_uid",
+});
+db.models.Address.belongsTo(db.models.Customer, {
+  foreignKey: "customer_uid",
+});
+
 module.exports = db;
