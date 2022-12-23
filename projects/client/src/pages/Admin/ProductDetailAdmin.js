@@ -36,6 +36,7 @@ export default function ProductDetailAdmin() {
   const [picture, setPicture] = useState('');
   const [preview, setPreview] = useState('');
   const [state, setState] = useState({});
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
 
   const [descript, setDescript] = useState('');
 
@@ -54,14 +55,9 @@ export default function ProductDetailAdmin() {
   };
 
   useEffect(() => {
+    console.log('tes');
     fetchProducts();
   }, [refreshStock]);
-
-  // useEffect(() => {
-  //   if (state.quantity_total !== resStock.reduce((partialSum, a) => partialSum + a, 0)) {
-  //     fetchProducts();
-  //   }
-  // }, [resStock]);
 
   // Mengambil data product berdasarkan ID dari backend
   const fetchProducts = () => {
@@ -96,7 +92,6 @@ export default function ProductDetailAdmin() {
   };
 
   // edit Product Setup
-
   const loadPicture = (e) => {
     const image = e.target.files[0];
     setPicture(image);
@@ -168,40 +163,44 @@ export default function ProductDetailAdmin() {
       <div className="pdadmin-stock-wh">
         <div className="pdadmin-stock-name">Warehouse {index + 1}</div>
         <div className="pdadmin-stock-qty">{resStock[index]} pcs</div>
-        <div className="pdadmin-stock-edit">
-          <InputBase
-            sx={{ fontFamily: 'Lora' }}
-            placeholder="0"
-            className="pdadmin-stock-text"
-            onChange={(e) => {
-              number = e.target.value;
-            }}
-          />
-          <IconButton
-            className="pdadmin-stock-add"
-            onClick={() => {
-              changeStock(index, 'add', number);
-            }}>
-            <Add />
-          </IconButton>
-        </div>
-        <div className="pdadmin-stock-edit">
-          <InputBase
-            sx={{ fontFamily: 'Lora' }}
-            placeholder="0"
-            className="pdadmin-stock-text"
-            onChange={(e) => {
-              number = e.target.value;
-            }}
-          />
-          <IconButton
-            className="pdadmin-stock-decrease"
-            onClick={() => {
-              changeStock(index, 'reduce', number);
-            }}>
-            <Remove />
-          </IconButton>
-        </div>
+        {isSuperAdmin ? (
+          <>
+            <div className="pdadmin-stock-edit">
+              <InputBase
+                sx={{ fontFamily: 'Lora' }}
+                placeholder="0"
+                className="pdadmin-stock-text"
+                onChange={(e) => {
+                  number = e.target.value;
+                }}
+              />
+              <IconButton
+                className="pdadmin-stock-add"
+                onClick={() => {
+                  changeStock(index, 'add', number);
+                }}>
+                <Add />
+              </IconButton>
+            </div>
+            <div className="pdadmin-stock-edit">
+              <InputBase
+                sx={{ fontFamily: 'Lora' }}
+                placeholder="0"
+                className="pdadmin-stock-text"
+                onChange={(e) => {
+                  number = e.target.value;
+                }}
+              />
+              <IconButton
+                className="pdadmin-stock-decrease"
+                onClick={() => {
+                  changeStock(index, 'reduce', number);
+                }}>
+                <Remove />
+              </IconButton>
+            </div>
+          </>
+        ) : null}
       </div>
     );
   };
@@ -247,34 +246,38 @@ export default function ProductDetailAdmin() {
             </>
           ) : (
             <>
-              <Button
-                sx={{
-                  borderRadius: '20px',
-                  backgroundColor: 'rgb(255,153,153,0.9)',
-                  fontSize: '8px',
-                  fontFamily: 'Lora',
-                  color: 'black',
-                  marginRight: '5px',
-                  marginLeft: '210px',
-                }}
-                variant="contained"
-                onClick={deleteBtnHandler}
-                className="pdadmin-banner-delete">
-                Delete
-              </Button>
-              <Button
-                sx={{
-                  borderRadius: '20px',
-                  backgroundColor: 'rgb(255,204,153,0.9)',
-                  fontSize: '8px',
-                  fontFamily: 'Lora',
-                  color: 'black',
-                }}
-                variant="contained"
-                onClick={() => setIsEdit(true)}
-                className="pdadmin-banner-edit">
-                Edit
-              </Button>
+              {isSuperAdmin ? (
+                <>
+                  <Button
+                    sx={{
+                      borderRadius: '20px',
+                      backgroundColor: 'rgb(255,153,153,0.9)',
+                      fontSize: '8px',
+                      fontFamily: 'Lora',
+                      color: 'black',
+                      marginRight: '5px',
+                      marginLeft: '210px',
+                    }}
+                    variant="contained"
+                    onClick={deleteBtnHandler}
+                    className="pdadmin-banner-delete">
+                    Delete
+                  </Button>
+                  <Button
+                    sx={{
+                      borderRadius: '20px',
+                      backgroundColor: 'rgb(255,204,153,0.9)',
+                      fontSize: '8px',
+                      fontFamily: 'Lora',
+                      color: 'black',
+                    }}
+                    variant="contained"
+                    onClick={() => setIsEdit(true)}
+                    className="pdadmin-banner-edit">
+                    Edit
+                  </Button>
+                </>
+              ) : null}
             </>
           )}
         </div>
@@ -288,7 +291,7 @@ export default function ProductDetailAdmin() {
             </Button>
           </>
         ) : (
-          <img className="pdadmin-img" src={state.picture} alt="" />
+          <img className="pdadmin-img" src={state.picture} alt="Product" />
         )}
 
         {isEdit ? (
@@ -407,12 +410,7 @@ export default function ProductDetailAdmin() {
           </>
         )}
 
-        <div className="pdadmin-stock">
-          {resStock.map((item, index) => warehouseStock(index))}
-          {/* {warehouseStock(1)}
-          {warehouseStock(2)}
-          {warehouseStock(3)} */}
-        </div>
+        <div className="pdadmin-stock">{resStock.map((item, index) => warehouseStock(index))}</div>
       </div>
     </Container>
   );

@@ -25,8 +25,6 @@ body {
 }
 
 .pdadmin-detail {
-  padding-left: 20px;
-  padding-right: 20px;
   margin-top: 10px;
 }
 
@@ -84,9 +82,6 @@ body {
 
 hr {
   color: rgb(227, 225, 225);
-}
-
-.pdadmin-desc {
 }
 
 .pdadmin-desc-1 {
@@ -162,16 +157,6 @@ hr {
   text-align: center;
 }
 
-.pdadmin-stock-add {
-}
-
-.pdadmin-stock-decrease {
-}
-
-.pdadmin-stock-text {
-  /* font-size: 8px; */
-}
-
 .pdadmin-stock-edit {
   display: flex;
   flex-direction: row;
@@ -185,8 +170,8 @@ hr {
 }
 
 alert.alert-danger {
-  color: rgba(114, 28, 36,1);
+  color: rgba(114, 28, 36, 1);
   font-size: 20px;
   font-weight: 600;
-  align-self:center
+  align-self: center;
 }
