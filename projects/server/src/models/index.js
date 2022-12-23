@@ -18,6 +18,7 @@ db.models.Sales = require('./sales')(sequelize, Sequelize.DataTypes);
 db.models.Warehouse = require('./warehouse')(sequelize, Sequelize.DataTypes);
 db.models.Admin = require('./admin')(sequelize, Sequelize.DataTypes);
 db.models.Stockmutation = require('./stockmutation')(sequelize, Sequelize.DataTypes);
+db.models.Stockhistory = require('./stockhistory')(sequelize, Sequelize.DataTypes);
 db.models.Product = require('./product')(sequelize, Sequelize.DataTypes);
 db.models.Transaction = require('./transaction')(sequelize, Sequelize.DataTypes);
 db.models.History = require('./history')(sequelize, Sequelize.DataTypes);
@@ -55,11 +56,11 @@ db.models.Stock = require('./stock')(sequelize, Sequelize.DataTypes);
 // });
 
 db.models.Customer.hasMany(db.models.Address, {
-  foreignKey: "customer_uid",
-  sourceKey: "customer_uid",
+  foreignKey: 'customer_uid',
+  sourceKey: 'customer_uid',
 });
 db.models.Address.belongsTo(db.models.Customer, {
-  foreignKey: "customer_uid",
+  foreignKey: 'customer_uid',
 });
 
 module.exports = db;

@@ -69,7 +69,6 @@ export default function ProductAdd() {
 
       console.log('dataaa', data);
       Axios.post('http://localhost:3300/api/product/add-product', data)
-
         .then(() => {
           alert('Product Added!');
         })
@@ -102,8 +101,6 @@ export default function ProductAdd() {
       </div>
     );
   };
-
-  console.log('qtywh', qtyWh);
 
   return (
     <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
@@ -210,13 +207,7 @@ export default function ProductAdd() {
           <hr className="splitter" />
         </div>
 
-        <div className="pdadd-stock">
-          {qtyWh.map((item, index) => warehouseStock(index))}
-
-          {/* {warehouseStock('A')}
-          {warehouseStock('B')}
-          {warehouseStock('C')} */}
-        </div>
+        <div className="pdadd-stock">{qtyWh.map((item, index) => warehouseStock(index))}</div>
 
         <div className="pdadd-button">
           <button class="pdadd-button-2" type="submit" onClick={formik.handleSubmit}>
