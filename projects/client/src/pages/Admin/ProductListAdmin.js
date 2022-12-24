@@ -25,10 +25,6 @@ class ProductListAdmin extends React.Component {
     pages: 0,
     sort: '',
     search: '',
-    // page: 1,
-    // maxPage: 0,
-    // itemPerPage: 4,
-    // keyWord: '',
     isSearch: false,
   };
 
@@ -39,11 +35,6 @@ class ProductListAdmin extends React.Component {
   isSearchHandleClose = () => {
     this.setState({ ...this.state, isSearch: false });
   };
-
-  // filterHandler = () => {
-  //   this.fetchProducts();
-  //   this.setState({ ...this.state, keyWord: '' });
-  // };
 
   searchHandler = (event) => {
     this.setState({ ...this.state, search: event.target.value });
@@ -56,9 +47,9 @@ class ProductListAdmin extends React.Component {
     this.setState({ [name]: value });
   };
 
-  // Product list Setup
+  // PRODUCT LIST SETUP
 
-  // Setup Render list Product
+  // SETUP RENDER LIST PRODUCT
 
   fetchProducts = (page, sort, search) => {
     Axios.get(
@@ -66,13 +57,7 @@ class ProductListAdmin extends React.Component {
         search ? search : this.state.search
       }`
     )
-
-      // Axios.get(`http://localhost:3300/api/product/get-product/
-      // ?searchQuery=${this.state.keyWord}`)
-
       .then((result) => {
-        // this.setState({ productList: result.data, maxPage: Math.ceil(result.data.length / this.state.itemPerPage) });
-        console.log(result);
         this.setState({
           ...this.state,
           productList: [...result.data.result],
@@ -86,7 +71,7 @@ class ProductListAdmin extends React.Component {
       });
   };
 
-  // delete button handler
+  // DELETE BUTTON HANDLER
   deleteBtnHandler = (id) => {
     const confirmDelete = window.confirm('Delete Product?');
     if (confirmDelete) {
@@ -102,18 +87,10 @@ class ProductListAdmin extends React.Component {
     }
   };
 
-  // edit buton handler
+  // EDIT BUTTON HANDLER
   editBtnHandler = (id) => {
     this.props.history.push(`/products-management-detail/${id}`);
   };
-
-  // pageHandler = () => {
-  //   if (this.state.page < this.state.maxPage) {
-  //     this.setState({ page: this.state.page + 1 });
-  //   } else if (this.state.page > 1) {
-  //     this.setState({ page: this.state.page - 1 });
-  //   }
-  // };
 
   componentDidMount() {
     this.fetchProducts(0);
@@ -183,9 +160,6 @@ class ProductListAdmin extends React.Component {
   };
 
   renderProduct = () => {
-    // const beginningIndex = (this.state.page - 1) * this.state.itemPerPage;
-    // const currentData = this.state.productList.slice(beginningIndex, beginningIndex + this.state.itemPerPage);
-
     return this.state.productList.map((val, index) => {
       return (
         <div className="plc-main">
@@ -196,9 +170,9 @@ class ProductListAdmin extends React.Component {
             <div className="plc-detail-name">{val.name}</div>
             <div className="plc-detail-subname-2">Product ID: {val.id}</div>
             <div className="plc-detail-subname">
-              {/* <div className="plc-detail-subname-1">
+              <div className="plc-detail-subname-1">
                 <SportsSoccerOutlined />
-              </div> */}
+              </div>
               <div className="plc-detail-subname-2">{val.category}</div>
             </div>
             <div className="plc-detail-bottom">
@@ -241,7 +215,6 @@ class ProductListAdmin extends React.Component {
     return (
       <>
         <Container maxWidth="xs" sx={{ backgroundColor: 'white' }} classname="mobile">
-          {/* {console.log(this.state.productList)} */}
           <div className="pladmin-main">
             <div className="pladmin-banner">
               <div className="pladmin-banner-logo">
@@ -258,13 +231,9 @@ class ProductListAdmin extends React.Component {
                       inputProps={{ 'aria-label': 'Search' }}
                       className="pladmin-search"
                       onChange={this.searchHandler}
-                      // name="keyWord"
                       endAdornment={
                         <InputAdornment position="end">
-                          <IconButton
-                            edge="end"
-                            // onClick={this.filterHandler}
-                            onClick={() => this.fetchProducts(0, '', this.state.search)}>
+                          <IconButton edge="end" onClick={() => this.fetchProducts(0, '', this.state.search)}>
                             <Search />
                           </IconButton>
                         </InputAdornment>
@@ -319,23 +288,7 @@ class ProductListAdmin extends React.Component {
               </div>
               <div className="pladmin-banner-menu">{this.menuHandler()}</div>
             </div>
-            <div className="pladmin-content">
-              {this.renderProduct()}
-              {/* {this.state.productList.map((ListProduct, index) => (
-                <div key={ListProduct.id}>
-                  <div
-                    className="
-                      product-list">
-                    <img src="https://cf.shopee.co.id/file/d7622a165c1b915b19e63e1ebd246ba4" alt="Product Image" />
-                    <div>{ListProduct.name}</div>
-                    <div>{ListProduct.price}</div>
-                  </div>
-                </div>
-              ))} */}
-              {/* <Stack spacing={1} sx={{ position: 'fixed', top: '78%', width: '110%', fontFamily: 'Lora' }}>
-              <Pagination count={10} onChange={this.pageHandler} />
-            </Stack> */}
-            </div>
+            <div className="pladmin-content">{this.renderProduct()}</div>
           </div>
         </Container>
 

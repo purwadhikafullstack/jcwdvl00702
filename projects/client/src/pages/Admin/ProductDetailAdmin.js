@@ -25,7 +25,6 @@ export default function ProductDetailAdmin() {
   const history = useHistory();
 
   const { id } = useParams();
-  // console.log("Ini ID Woi:", id)
 
   const goBack = () => {
     history.goBack();

@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// ADD Product
+// ADD PRODUCT
 router.post('/add-product', upload.single('picture'), async (req, res) => {
   try {
     let getProductName = await Product.findAll();
@@ -70,34 +70,14 @@ router.post('/add-product', upload.single('picture'), async (req, res) => {
   }
 });
 
-// Get Product
+// GET PRODUCT LIST
 router.get('/get-product', async (req, res) => {
   try {
-    // let searchQuery = req.query.searchQuery || '';
-    // console.log('req query ges', req.query.searchQuery);
-    // let getProduct = await Product.findAll({
-    //   where: {
-    //     name: { [Op.like]: '%' + searchQuery + '%' },
-    //   },
-    // });
-
-    // console.log('ini get Product', getProduct[0].picture);
-    // console.log('ini lenght get product', getProduct.length);
-
-    // for (let i = 0; i < getProduct.length; i++) {
-    //   let picPathArray = getProduct[i].picture.split('\\');
-    //   let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
-    //   getProduct[i].picture = picPath;
-    // }
-
-    // res.status(200).json(getProduct);
-
     const page = parseInt(req.query.page) || 0;
     const limit = 3;
     const search = req.query.search || '';
     const offset = limit * page;
     const productLength = await Product.findAll({});
-
     const sort = req.query.sort || 'id';
 
     const result = await Product.findAll({
@@ -113,8 +93,6 @@ router.get('/get-product', async (req, res) => {
       }),
     });
     const resultCount = await Product.findAll({
-      // offset: page * limit,
-      // order: [[sort, 'ASC']],
       ...(req.query.search && {
         where: {
           name: {
@@ -137,8 +115,7 @@ router.get('/get-product', async (req, res) => {
   }
 });
 
-// Get Product DETAIL By ID
-
+// GET PRODUCT DETAIL BY ID
 router.get('/get-product/:id', async (req, res) => {
   try {
     const getProduct = await Product.findOne({
@@ -160,14 +137,12 @@ router.get('/get-product/:id', async (req, res) => {
     res.status(200).json({ getProduct, stockWh });
   } catch (err) {
     res.status(500).json(err);
-    console.log('err', err);
   }
 });
 
-//delete a product
+// DELETE PRODUCT
 router.delete('/:id', async (req, res) => {
   try {
-    console.log('ini id nya woi', req.params.id);
     const id = req.params.id;
     const deleteProduct = await Product.destroy({
       where: {
@@ -180,8 +155,7 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// edit product
-
+// EDIT PRODUCT
 router.put('/edit-product/:id', upload.single('picture'), async (req, res) => {
   await Product.findOne({
     where: {
@@ -214,7 +188,6 @@ router.put('/edit-product/:id', upload.single('picture'), async (req, res) => {
 });
 
 // UPDATE STOCK
-
 router.patch('/update-stock/:id', async (req, res) => {
   const theProduct = await Product.findOne({
     where: {
@@ -227,12 +200,6 @@ router.patch('/update-stock/:id', async (req, res) => {
       product_id: req.params.id,
     },
   });
-  // const stockId = await Stock.findOne({
-  //   where: {
-  //     warehouse_id: req.body.wh_id,
-  //     product_id: req.params.id,
-  //   },
-  // });
 
   try {
     if (req.body.count === 'add') {
@@ -320,12 +287,10 @@ router.patch('/update-stock/:id', async (req, res) => {
     res.status(201).json(endStock.dataValues.quantity);
   } catch (err) {
     res.status(500).json(err);
-    console.log('err', err);
   }
 });
 
 // GET STOCK MUTATION LIST
-
 router.get('/get-mutation', async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 0;
@@ -333,19 +298,15 @@ router.get('/get-mutation', async (req, res) => {
     const search = req.query.search || '';
     const offset = limit * page;
     const productLength = await Stockmutation.findAll({});
-
     const sort = req.query.sort || 'DESC';
     const filter = req.query.filter || '';
     const myWh = req.query.mywh;
 
-    const result = await Stockmutation.findAll({
+    const resultCount = await Stockmutation.findAll({
       where: {
         move_type: filter,
         [Op.or]: [{ warehouse_id: myWh }, { requester: myWh }],
       },
-      limit: limit,
-      offset: page * limit,
-      order: [['createdAt', sort]],
       ...(req.query.search && {
         where: {
           product_id: {
@@ -354,13 +315,14 @@ router.get('/get-mutation', async (req, res) => {
         },
       }),
     });
-    const resultCount = await Stockmutation.findAll({
+    const result = await Stockmutation.findAll({
       where: {
         move_type: filter,
         [Op.or]: [{ warehouse_id: myWh }, { requester: myWh }],
       },
-      // offset: page * limit,
-      // order: [[sort, 'ASC']],
+      limit: limit,
+      offset: page * limit,
+      order: [['createdAt', sort]],
       ...(req.query.search && {
         where: {
           product_id: {
@@ -385,7 +347,6 @@ router.get('/get-mutation', async (req, res) => {
 });
 
 // STOCK MUTATION
-
 router.post('/stock-mutation', async (req, res) => {
   const stockFrom = await Stock.findOne({
     where: {
@@ -404,13 +365,11 @@ router.post('/stock-mutation', async (req, res) => {
       id: req.body.product,
     },
   });
-
   const mutationData = {
     stock_id: stockFrom.id,
     warehouse_id: req.body.from,
     product_id: req.body.product,
     product_name: theProduct.name,
-    // product_picture: '/projects/server/' + theProduct.picture,
     product_picture: theProduct.picture,
     quantity: parseInt(req.body.quantity),
     requester: req.body.to,
@@ -421,15 +380,12 @@ router.post('/stock-mutation', async (req, res) => {
   try {
     const newMutation = await Stockmutation.create(mutationData);
     res.status(200).json({ theProduct, stockFrom });
-    console.log('res be', res);
   } catch (err) {
     res.status(500).json(err);
-    console.log('err be', err);
   }
 });
 
 // RESPOND MUTATION - MANUAL
-
 router.patch('/stock-mutation', async (req, res) => {
   const theMutation = await Stockmutation.findOne({
     where: {
@@ -512,10 +468,8 @@ router.patch('/stock-mutation', async (req, res) => {
         }
       );
       res.status(200).json({ historyData });
-      console.log('accept res', res);
     } catch (err) {
       res.status(500).json(err);
-      console.log('err', err);
     }
   } else if (req.body.respond === 'accept') {
     if (theStockFrom.quantity >= theMutation.quantity) {
@@ -558,10 +512,8 @@ router.patch('/stock-mutation', async (req, res) => {
         );
         const newHistory = await Stockhistory.bulkCreate(historyData, { returning: true });
         res.status(200).json({ historyData });
-        console.log('accept res', res);
       } catch (err) {
         res.status(500).json(err);
-        console.log('err', err);
       }
     } else {
       try {
@@ -604,71 +556,13 @@ router.patch('/stock-mutation', async (req, res) => {
         );
 
         const newHistory = await Stockhistory.bulkCreate(historyDataAlternate, { returning: true });
-
         const message = `Mutation success but amount available is only ` + theStockFrom.quantity + ` pcs.`;
         res.status(200).json({ historyDataAlternate, message });
       } catch (err) {
         res.status(500).json(err);
-        console.log('err', err);
       }
     }
   }
 });
 
 module.exports = router;
-
-// Maria Pagination - Search - Sort
-
-// const {
-//   models: { Example },
-// } = require('../models');
-// const router = require('express').Router();
-// const customer = require('../models/example');
-// // const { Sequelize, Op } = require('sequelize');
-// const Sequelize = require('sequelize');
-// const Op = Sequelize.Op;
-
-// router.get('/get', async (req, res) => {
-//   const page = parseInt(req.query.page) || 0;
-//   const limit = 2;
-//   const search = req.query.search || '';
-//   const offset = limit * page;
-//   const exampleLength = await Example.findAll({});
-
-//   const sort = req.query.sort || 'id';
-
-//   const result = await Example.findAll({
-//     limit: limit,
-//     offset: page * limit,
-//     order: [[sort, 'ASC']],
-//     ...(req.query.search && {
-//       where: {
-//         name: {
-//           [Op.like]: `%${req.query.search}%`,
-//         },
-//       },
-//     }),
-//   });
-//   const resultCount = await Example.findAll({
-//     // offset: page * limit,
-//     // order: [[sort, 'ASC']],
-//     ...(req.query.search && {
-//       where: {
-//         name: {
-//           [Op.like]: `%${req.query.search}%`,
-//         },
-//       },
-//     }),
-//   });
-//   const pages = Math.ceil(resultCount.length / limit);
-
-//   res.json({
-//     result: result,
-//     pages: pages,
-//     page: page,
-//     order: sort,
-//     search: search,
-//   });
-// });
-
-// module.exports = router;
