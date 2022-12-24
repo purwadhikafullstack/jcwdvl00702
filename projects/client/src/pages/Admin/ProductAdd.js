@@ -18,7 +18,7 @@ import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 
 export default function ProductAdd() {
-  // setup UI
+  // SETUP UI
   const history = useHistory();
 
   const goBack = () => {
@@ -34,11 +34,11 @@ export default function ProductAdd() {
     setPicture(image);
   };
 
-  // Add Product Setup
+  // ADD PRODUCT SETUP
 
-  // konfigurasi yup
+  // KONFIGURASI YUP
   YupPassword(Yup);
-  //isinialisasi formik
+  //INISIALISASI FORMIK
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -67,7 +67,6 @@ export default function ProductAdd() {
       data.append('wh_2', qtyWh[1].qty);
       data.append('wh_3', qtyWh[2].qty);
 
-      console.log('dataaa', data);
       Axios.post('http://localhost:3300/api/product/add-product', data)
         .then(() => {
           alert('Product Added!');
@@ -78,12 +77,12 @@ export default function ProductAdd() {
     },
   });
 
+  // UPDATE STOCK
   const warehouseStock = (id) => {
     return (
       <div className="pdadd-stock-wh">
         <div className="pdadd-stock-name">Warehouse {id + 1}</div>
         <div className="pdadd-stock-qty">
-          {/* <div className="pdadd-stock-qty-input"> */}
           <InputBase
             sx={{ fontFamily: 'Lora', width: '100px' }}
             placeholder="Amount"
@@ -95,7 +94,6 @@ export default function ProductAdd() {
               setQtyWh(copyQtyWh);
             }}
           />
-          {/* </div> */}
           <span className="pdadd-stock-qty-text">pcs</span>
         </div>
       </div>
@@ -195,7 +193,7 @@ export default function ProductAdd() {
           <div className="pdadd-pricing">
             <div className="pdadd-price-title">Price</div>
             <div className="pdadd-price-input">
-              <span className="pdadd-price-input-1">$</span>
+              <span className="pdadd-price-input-1">Rp </span>
               <InputBase
                 sx={{ fontFamily: 'Lora', width: '100px' }}
                 placeholder="Amount"

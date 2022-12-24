@@ -50,7 +50,7 @@ class StockMutation extends React.Component {
     sort: '',
     search: '',
     filter: '',
-    myWarehouse: '3',
+    myWarehouse: '1',
   };
 
   componentDidMount() {
@@ -194,20 +194,16 @@ class StockMutation extends React.Component {
 
   mutationCard = () => {
     return this.state.mutationList.map((val, index) => {
+      let picPathArray = val.product_picture.split('/');
+      let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
+      let productPicture = picPath;
       if (this.state.myWarehouse !== val.warehouse_id && this.state.myWarehouse !== val.requester) {
         return null;
       } else {
         return (
           <div className="mutation-main">
             <div className="mutation-image">
-              <img
-                src={'/projects/server/public/productimages/profile1.jpeg'}
-                // src={`${val.product_picture}`}
-                className="mutation-product"
-                alt="Product"
-              />
-
-              {/* <img src={val.product_picture} className="mutation-product" alt="Product Image" /> */}
+              <img src={productPicture} className="mutation-product" alt="Product" />
             </div>
             <div className="mutation-detail">
               <div className="mutation-detail-name">{val.product_name}</div>

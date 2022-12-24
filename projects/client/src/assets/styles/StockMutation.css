@@ -34,9 +34,6 @@ div {
   margin-left: 25px;
 }
 
-.stockmutation-banner-add {
-}
-
 .stockmutation-banner-menu-link {
   color: black;
   text-decoration: none;
@@ -74,11 +71,13 @@ div {
   height: 140px;
   border-radius: 10px;
   margin-top: 2.5px;
+  width: 140px;
 }
 
 .mutation-product {
   height: 140px;
   border-radius: 10px;
+  width: 140px;
 }
 
 .mutation-detail {
@@ -112,7 +111,7 @@ div {
 .mutation-detail-bottom {
   margin-top: 10px;
   width: 140px;
-  margin-left: 60px;
+  margin-left: 20px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
