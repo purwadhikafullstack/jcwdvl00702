@@ -6,10 +6,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
-      shipping_id: {
-        allowNull: false,
-        type: DataTypes.STRING,
-      },
       cart_id: {
         allowNull: false,
         type: DataTypes.STRING,
@@ -22,9 +18,17 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
-      created_at: {
+      shipping_price: {
         allowNull: false,
-        type: DataTypes.DATE,
+        type: DataTypes.INTEGER,
+      },
+      shipping_address: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      shipping_courier: {
+        allowNull: false,
+        type: DataTypes.STRING,
       },
       //   payment: {
       //     allowNull: false,

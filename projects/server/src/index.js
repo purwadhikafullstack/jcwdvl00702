@@ -9,6 +9,7 @@ const productRoute = require('./routes/product');
 const addressRoute = require("./routes/address");
 const warehouseRoute = require("./routes/warehouse");
 const cartRoute = require("./routes/cart")
+const orderRoute = require("./routes/order")
 
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -36,5 +37,6 @@ app.use('/api/product', productRoute);
 app.use("/api/address", addressRoute);
 app.use("/api/warehouse", warehouseRoute);
 app.use("/api/cart", cartRoute)
+app.use("/api/order", orderRoute)
 
 app.listen(PORT, () => console.log(`API running:`, PORT));
