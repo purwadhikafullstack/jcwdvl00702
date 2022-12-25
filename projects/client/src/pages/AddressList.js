@@ -19,7 +19,9 @@ function AddressList() {
   console.log(user);
 
   const [AddressDetails, setAddressDetails] = useState();
-  const [addressFinal, setAddressFinal] = useState()
+  const [addressFinal, setAddressFinal] = useState([])
+  console.log("address detail", AddressDetails)
+  console.log("address final", addressFinal)
 
   useEffect(() => {
     if (userUID) {
@@ -39,10 +41,20 @@ function AddressList() {
     if(!addressFinal){
       alert('Choose Address!')
     } else{
+      const data = {
+        shipping_address: addressFinal.address_name
+      }
+      Axios.put(`http://localhost:3300/api/order/edit-address/${userUID}`, data)
+      .then(() => {
       history.push({
         pathname: '/choose-shipping',
-        state: addressFinal
+        state: addressFinal.city_id
       })
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      });
     }
     
   }
@@ -60,8 +72,8 @@ function AddressList() {
               <div className="address">
                 <input type="radio" 
                 name="locradio" className="loc-radio"
-                value={addressDetail.city_id}
-                onChange={e=>setAddressFinal(e.target.value)}
+                // value={addressDetail.city_id}                
+                onChange={()=>setAddressFinal(addressDetail)}
                 />
                 <LocationOnOutlinedIcon />
                 <div className="address-info">

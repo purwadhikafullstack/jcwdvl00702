@@ -123,8 +123,8 @@ export default function App() {
         <Route component={Profile} path="/profile/:userUID" />
         <Route component={EditProfile} path="/edit-profile/:userUID" />
         <Route component={ChooseShipping} path="/choose-shipping" />
-        <Route component={Cart} path="/cart:id" />
-        <Route component={Checkout} path="/checkout" />
+        <Route component={Cart} path="/cart/:id" />
+        <Route component={Checkout} path="/checkout/:id/:orderId" />
         <Route component={Main} path="/" />
       </Switch>
       <Footer />

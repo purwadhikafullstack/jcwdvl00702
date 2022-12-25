@@ -87,7 +87,7 @@ export default function ProductDetail() {
     // jika kondisi checkbox false (tidak ada product ini dalam cart) maka akan membuat cart baru
     if(checkBox === false){
       if(state.quantity < qtyProduct){
-        alert(`Maaf stock hanya tersedia tersedia ${state.quantity}`)
+        alert(`Maaf stock hanya tersedia ${state.quantity}`)
       } else {
         if(qtyProduct <= 0){
           alert("Quantity tidak boleh 0 atau kurang")

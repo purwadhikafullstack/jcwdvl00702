@@ -11,11 +11,16 @@ import Axios from "axios";
 
 
 export default function Cart(){
-
+  
+  const history = useHistory();
   const { id } = useParams();
 
   const [state, setState] = useState([])
+  const [orderState, setOrderState] = useState([])
+  const [orderId,setOrderId] = useState([])
   const [totalPrice, setTotalPrice] = useState(0)
+
+
   
 
   
@@ -36,6 +41,18 @@ export default function Cart(){
     Axios.get(`http://localhost:3300/api/cart/get-total-price/${id}`)
     .then((result) => {
       setTotalPrice(result.data);
+    })
+    .catch(() => {
+      alert('Terjadi kesalahan di server');
+    });
+  }
+
+  // mengambil data order
+  const getOrder = () => {
+    Axios.get(`http://localhost:3300/api/order/get-order/${id}`)
+    .then((result) => {
+      setOrderState(result.data);
+      console.log("ini get order", result.data)
     })
     .catch(() => {
       alert('Terjadi kesalahan di server');
@@ -111,11 +128,58 @@ export default function Cart(){
     }
    }
    
+      // checkout
+    const  checkoutHandler = (id) => {
+      const data = {
+        customer_uid: id,
+      }
+      console.log("ini data", data)
+
+      if(!orderState){
+        Axios.post('http://localhost:3300/api/order/add-order', data)
+        .then((result) => {
+          console.log("ini result", result)
+         setOrderId(result.data)
+           history.push(`/checkout/${id}/${orderId.id}`)
+        })
+        .catch((error) => {
+          alert(error);
+        });
+      } else if(orderState) {
+        history.push(`/checkout/${id}/${orderState.id}`)
+      }
+      //     // checkBox untuk mencari apakah cus_uid sudah ada dalam 
+      // let checkBox = false
+
+    // for (let i = 0; i < orderState.length; i++){
+    //   if(id === orderState[i].customer_uid){
+    //     checkBox = true
+    //     break
+    //   }
+    // }
+    // console.log("ini checkbox", checkBox)
+
+    // if(checkBox === true){
+    //   history.push(`/checkout/${id}`);
+    // } else if (checkBox === false){
+    //   Axios.post('http://localhost:3300/api/order/add-order', data)
+    //   .then((result) => {
+    //     console.log("ini result", result)
+    //    setOrderId(result.data)
+    //      history.push(`/checkout/${id}/${orderState.id}`)
+    //   })
+    //   .catch((error) => {
+    //     alert(error);
+    //   });
+    // }
+  };
+  
   
 
   useEffect(() => {
     cartProduct();
     getTotalPrice()
+    getOrder()
   }, []);
  
 
@@ -174,7 +238,7 @@ export default function Cart(){
                   <div className="priceTitle">Total Price</div>
                   <div className="totalPrice">$ {totalPrice}</div>
                 </div>
-                <div className="checkoutBtn">Checkout</div>
+                <div className="checkoutBtn" onClick={()=> checkoutHandler(id)} >Checkout</div>
             </div>   
            </div>
          </Container>
