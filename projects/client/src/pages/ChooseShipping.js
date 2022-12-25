@@ -13,21 +13,27 @@ export default function ChooseShipping(){
     const { user } = useSelector((state) => ({
         user: state.auth.user,
     }));
+    console.log("user", user)
 
     const [warehouseLoc,setWarehouseLoc]=useState("")
     const [ongkir,setOngkir]=useState()
     const [courier,setCourier]=useState("")
     const [costSelect,setCostSelect]=useState()
+    const [orderState, setOrderState] = useState([])
+    console.log("ongkir", ongkir)
+    console.log("courier", courier)
+    console.log("costSelect", costSelect)
+    console.log("orderState", orderState)
     
     const whAddress = "114" //bali
     const homeLoc = location.state
     console.log(homeLoc)
-    // const fetchLocations=()=>{
-    //     Axios.get(`http://localhost:3300/api/address/wh-loc/${whAddress}`)
-    //     .then(res=>{
-    //         setWarehouseLoc(res.data.area)
-    //     })
-    // }
+    const fetchLocations=()=>{
+        Axios.get(`http://localhost:3300/api/address/wh-loc/${whAddress}`)
+        .then(res=>{
+            setWarehouseLoc(res.data.area)
+        })
+    }
 
     const ongkirCount=()=>{
         let courierCode = ""
@@ -51,7 +57,20 @@ export default function ChooseShipping(){
         })
     }
 
+  // mengambil data order
+  const getOrder = () => {
+    Axios.get(`http://localhost:3300/api/order/get-order/${user.customer_uid}`)
+    .then((result) => {
+      setOrderState(result.data);
+      console.log("ini get order", result.data)
+    })
+    .catch(() => {
+      alert('Terjadi kesalahan di server');
+    });
+  }
+
     useEffect(()=>{
+        getOrder()
         fetchLocations()
     },[])
 
@@ -85,7 +104,18 @@ export default function ChooseShipping(){
     }
 
     const ongkirFinal=()=>{
-        history.push('/checkout')
+        const data = {
+            shipping_courier: courier,
+            shipping_price: costSelect,
+          }
+          Axios.put(`http://localhost:3300/api/order/edit-shipping/${user.customer_uid}`, data)
+          .then(() => {
+            history.push(`/checkout/${user.customer_uid}/${orderState.id}`)
+          })
+          .catch((error) => {
+            console.log(error);
+            alert(error);
+          });
     }
 
     const detectCityId=()=>{
@@ -114,7 +144,7 @@ export default function ChooseShipping(){
                     <div className="ship-continue">
                         <button 
                             className="ship-button"
-                            // onClick={ongkirFinal}
+                            onClick={ongkirFinal}
                         >
                             Apply
                         </button>
