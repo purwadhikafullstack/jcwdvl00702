@@ -34,7 +34,23 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
+      start: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
+      end: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
       requester: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      year: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      month: {
         allowNull: false,
         type: DataTypes.STRING,
       },

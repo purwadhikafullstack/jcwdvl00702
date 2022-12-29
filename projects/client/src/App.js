@@ -106,7 +106,7 @@ export default function App() {
         <Route component={OrderList} path="/order-list" />
         <Route component={OrderDetailAdmin} path="/order-detail-admin" />
         <Route component={StockHistory} path="/stock-history" />
-        <Route component={ProductStockHistory} path="/product-stock-history" />
+        <Route component={ProductStockHistory} path="/product-stock-history/:id" />
         <Route component={SalesReport} path="/sales-report" />
         <Route component={ProductDetail} path="/product-detail/:id" />
         <Route component={ProductLists} path="/product-list" />

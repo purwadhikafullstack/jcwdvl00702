@@ -88,7 +88,7 @@ class ProductListAdmin extends React.Component {
   };
 
   // EDIT BUTTON HANDLER
-  editBtnHandler = (id) => {
+  detailBtnHandler = (id) => {
     this.props.history.push(`/products-management-detail/${id}`);
   };
 
@@ -199,7 +199,7 @@ class ProductListAdmin extends React.Component {
                 }}
                 variant="contained"
                 className="plc-detail-bottom-detail"
-                onClick={() => this.editBtnHandler(val.id)}>
+                onClick={() => this.detailBtnHandler(val.id)}>
                 Detail
               </Button>
             </div>
@@ -210,8 +210,6 @@ class ProductListAdmin extends React.Component {
   };
 
   render() {
-    console.log('prodlist', this.state.productList);
-
     return (
       <>
         <Container maxWidth="xs" sx={{ backgroundColor: 'white' }} classname="mobile">
