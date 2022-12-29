@@ -35,7 +35,7 @@ export default function ProductDetailAdmin() {
   const [picture, setPicture] = useState('');
   const [preview, setPreview] = useState('');
   const [state, setState] = useState({});
-  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(true);
 
   const [descript, setDescript] = useState('');
 
@@ -54,7 +54,6 @@ export default function ProductDetailAdmin() {
   };
 
   useEffect(() => {
-    console.log('tes');
     fetchProducts();
   }, [refreshStock]);
 
@@ -64,11 +63,8 @@ export default function ProductDetailAdmin() {
       .then((result) => {
         setState(result.data.getProduct);
         setResStock(result.data.stockWh);
-        console.log('ini result data', result.data);
       })
       .catch((err) => {
-        console.log(err);
-        console.log('ini id untuk dikrim ke backend', id);
         alert('Terjadi kesalahan di server');
       });
   };
@@ -128,7 +124,6 @@ export default function ProductDetailAdmin() {
           setIsEdit(false);
         })
         .catch((error) => {
-          console.log(error);
           alert(error);
         });
     },
@@ -145,11 +140,9 @@ export default function ProductDetailAdmin() {
         .then((data) => {
           resStock[name] = data.data;
           setRefreshStock(resStock);
-          console.log('yes');
           alert('Stock Updated!');
         })
         .catch((error) => {
-          console.log('gagal', error);
           alert('gagal');
         });
     } else {

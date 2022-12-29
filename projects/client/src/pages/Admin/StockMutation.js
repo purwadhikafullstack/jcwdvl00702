@@ -49,8 +49,8 @@ class StockMutation extends React.Component {
     pages: 0,
     sort: '',
     search: '',
-    filter: '',
-    myWarehouse: '1',
+    filter: 'manual',
+    myWarehouse: '3',
   };
 
   componentDidMount() {
@@ -93,13 +93,11 @@ class StockMutation extends React.Component {
       quantity: parseInt(quantity),
     })
       .then((data) => {
-        console.log('result', data);
         alert('Permintaan mutasi stok berhasil dibuat');
         this.setState({ ...this.state, setAdd: false });
         this.fetchMutation(0, '', '', this.state.value);
       })
       .catch((error) => {
-        console.log('gagal', error);
         alert('gagal');
       });
   };
@@ -137,10 +135,8 @@ class StockMutation extends React.Component {
           } else {
             alert('Mutasi berhasil!');
           }
-          console.log('resp data', data);
         } else {
           alert(data.data.message);
-          console.log('resp data', data);
         }
         this.fetchMutation(0, '', '', this.state.value);
       })
@@ -156,7 +152,6 @@ class StockMutation extends React.Component {
       }&filter=${filter ? filter : this.state.value}&mywh=${this.state.myWarehouse}`
     )
       .then((result) => {
-        console.log(result);
         this.setState({
           ...this.state,
           mutationList: [...result.data.result],
@@ -505,14 +500,9 @@ class StockMutation extends React.Component {
                       }}
                       placeholder="Product ID"
                       name="productValue"
-                      // value={this.state.productValue}
                       inputProps={{ 'aria-label': 'Search' }}
                       className="apc-card-input"
                       onChange={this.inputHandler}
-
-                      // onChange={(e) => {
-                      //   this.setState({ ...this.state, productValue: e.target.value });
-                      // }}
                     />
                     <InputBase
                       sx={{
@@ -523,14 +513,9 @@ class StockMutation extends React.Component {
                       }}
                       placeholder="Amount"
                       name="quantityValue"
-                      // value={this.state.quantityValue}
                       inputProps={{ 'aria-label': 'Search' }}
                       className="apc-card-input"
                       onChange={this.inputHandler}
-
-                      // onChange={(e) => {
-                      //   this.setState({ ...this.state, quantityValue: e.target.value });
-                      // }}
                     />
 
                     <Button
