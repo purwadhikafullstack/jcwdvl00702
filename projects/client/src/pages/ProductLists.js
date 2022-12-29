@@ -49,44 +49,45 @@ class ProductLists extends React.Component {
     this.props.history.push(`/product-detail/${id}`);
   };
 
-  getDataProduct = (/*page, sort, search*/) => {
-    Axios.get(`http://localhost:3300/api/product/get-product/?searchQuery=${this.state.keyWord}`)
-      .then((result) => {
-        this.setState({ productList: result.data, maxPage: Math.ceil(result.data.length / this.state.itemPerPage) });
-        console.log(this.state.productList);
-      })
-      .catch(() => {
-        alert('Terjadi kesalahan di server');
-      });
-
-    // Axios.get(`http://localhost:3300/api/product/get-product/?page=${page}&sort=${sort ? sort : this.state.sort}&search=${
-    //         search ? search : this.state.search
-    //       }`
-    //   )
-    //   .then((res) => {
-    //     this.setState({
-    //       ...this.state,
-    //       dataProduct: [...res.data.result],
-    //       pages: res.data.pages,
-    //       ...(sort && { sort: sort }),
-    //       ...(search && { search: search }),
-    //     });
-    //     //   sort
-    //     //     ? this.setState({
-    //     //         ...this.state,
-    //     //         dataProduct: [...res.data.result],
-    //     //         pages: res.data.pages,
-    //     //         sort: sort,
-    //     //       })
-    //     //     : this.setState({
-    //     //         ...this.state,
-    //     //         dataProduct: [...res.data.result],
-    //     //         pages: res.data.pages,
-    //     //       });
+  getDataProduct = (page, sort, search) => {
+    // Axios.get(`http://localhost:3300/api/product/get-product/?searchQuery=${this.state.keyWord}`)
+    //   .then((result) => {
+    //     this.setState({ productList: result.data, maxPage: Math.ceil(result.data.length / this.state.itemPerPage) });
+    //     console.log(this.state.productList);
     //   })
-    //   .catch((err) => {
-    //     console.log(err);
+    //   .catch(() => {
+    //     alert('Terjadi kesalahan di server');
     //   });
+
+    Axios.get(
+      `http://localhost:3300/api/product/get-product/?page=${page}&sort=${sort ? sort : this.state.sort}&search=${
+        search ? search : this.state.search
+      }`
+    )
+      .then((res) => {
+        this.setState({
+          ...this.state,
+          dataProduct: [...res.data.result],
+          pages: res.data.pages,
+          ...(sort && { sort: sort }),
+          ...(search && { search: search }),
+        });
+        //   sort
+        //     ? this.setState({
+        //         ...this.state,
+        //         dataProduct: [...res.data.result],
+        //         pages: res.data.pages,
+        //         sort: sort,
+        //       })
+        //     : this.setState({
+        //         ...this.state,
+        //         dataProduct: [...res.data.result],
+        //         pages: res.data.pages,
+        //       });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   searchHandler = (event) => {

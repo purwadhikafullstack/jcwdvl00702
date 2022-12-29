@@ -27,33 +27,33 @@ db.models.Role = require('./role')(sequelize, Sequelize.DataTypes);
 db.models.Example = require('./example')(sequelize, Sequelize.DataTypes);
 db.models.Stock = require('./stock')(sequelize, Sequelize.DataTypes);
 
-// db.models.Customer.hasMany(db.models.Address, {
-//   foreignKey: 'customer_uid',
-//   sourceKey: 'customer_uid',
-// });
-// db.models.Address.belongsTo(db.models.Customer, {
-//   foreignKey: 'customer_uid',
-// });
-// db.models.Product.hasMany(db.models.Warehouse,{
-//   foreignKey: "warehouse_id",
-// })
-// db.models.Product.hasMany(db.models.Stock, {
-//   foreignKey: 'product_id',
-// });
-// db.models.Stock.hasMany(db.models.Stockmutation,{
-//   foreignKey:"stock_id"
-// })
-// db.models.Stockmutation.belongsTo(db.models.Stock,{
-//   foreignKey:"stock_id"
-// })
+db.models.Customer.hasMany(db.models.Address, {
+  foreignKey: 'customer_uid',
+  sourceKey: 'customer_uid',
+});
+db.models.Address.belongsTo(db.models.Customer, {
+  foreignKey: 'customer_uid',
+});
+db.models.Product.hasMany(db.models.Warehouse, {
+  foreignKey: 'warehouse_id',
+});
+db.models.Product.hasMany(db.models.Stock, {
+  foreignKey: 'product_id',
+});
+db.models.Stock.hasMany(db.models.Stockmutation, {
+  foreignKey: 'stock_id',
+});
+db.models.Stockmutation.belongsTo(db.models.Stock, {
+  foreignKey: 'stock_id',
+});
 
-// db.models.Customer.hasMany(db.models.Warehouse, {
-//   foreignKey: "customer_uid",
-//   sourceKey: "customer_uid",
-// });
-// db.models.Warehouse.belongsTo(db.models.Customer, {
-//   foreignKey: "customer_uid",
-// });
+db.models.Customer.hasMany(db.models.Warehouse, {
+  foreignKey: 'customer_uid',
+  sourceKey: 'customer_uid',
+});
+db.models.Warehouse.belongsTo(db.models.Customer, {
+  foreignKey: 'customer_uid',
+});
 
 db.models.Customer.hasMany(db.models.Address, {
   foreignKey: 'customer_uid',
@@ -63,11 +63,11 @@ db.models.Address.belongsTo(db.models.Customer, {
   foreignKey: 'customer_uid',
 });
 db.models.Product.hasMany(db.models.Cart, {
-  foreignKey: "product_id",
+  foreignKey: 'product_id',
   // sourceKey:"cart_id",
-})
+});
 db.models.Cart.belongsTo(db.models.Product, {
-  foreignKey: "product_id",
+  foreignKey: 'product_id',
 });
 
 module.exports = db;

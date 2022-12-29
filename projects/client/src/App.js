@@ -45,7 +45,7 @@ import { firebaseAuthentication } from './config/firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { loginUser } from './redux/actionCreators/authActionCreators';
-// import EditAddress from './pages/EditAddress';
+import EditAddress from './pages/EditAddress';
 import Axios from 'axios';
 
 export default function App() {
@@ -70,7 +70,7 @@ export default function App() {
           console.log(error);
           alert(error);
         });
-      // dispatch(loginUser(data))
+      dispatch(loginUser(data));
     });
   }, []);
 
@@ -85,11 +85,11 @@ export default function App() {
       <Switch>
         <Route component={SignUp} path="/sign-up" />
         <Route component={SignIn} path="/sign-in" />
-        {/* <Route path="/sign-up">{mainUser ? <Redirect to="/" /> : <SignUp />}</Route>
-        <Route path="/sign-in">{mainUser ? <Redirect to="/" /> : <SignIn />}</Route> */}
+        <Route path="/sign-up">{mainUser ? <Redirect to="/" /> : <SignUp />}</Route>
+        <Route path="/sign-in">{mainUser ? <Redirect to="/" /> : <SignIn />}</Route>
         <Route component={CreatePassword} path="/create-password" />
         <Route component={MyOrder} path="/my-order" />
-        {/* <Route path="/dashboard">{mainUser?.role == 'user' ? <Redirect to="/" /> : <Dashboard />}</Route> */}
+        <Route path="/dashboard">{mainUser?.role == 'user' ? <Redirect to="/" /> : <Dashboard />}</Route>
         <Route component={Dashboard} path="/dashboard" />
         <Route component={UserList} path="/user-list" />
         <Route component={DetailUser} path="/detail-user" />
