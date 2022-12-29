@@ -1,18 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import "../assets/styles/AddressList.css";
 import { Container } from "@mui/material";
-import { AuthContext } from "../context/AuthProvider";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import Axios from "axios";
 import { Link } from "react-router-dom";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 function AddressList() {
-  // const { user: currentUser } = useContext(AuthContext);
-  // const userUID = currentUser?.uid;
-  // console.log(userUID);
+  let history = useHistory()
   const { isLoggedIn, user } = useSelector((state) => ({
     isLoggedIn: state.auth.isLoggedIn,
     user: state.auth.user,
@@ -20,8 +18,10 @@ function AddressList() {
   const userUID = user?.customer_uid;
   console.log(user);
 
-
   const [AddressDetails, setAddressDetails] = useState();
+  const [addressFinal, setAddressFinal] = useState([])
+  console.log("address detail", AddressDetails)
+  console.log("address final", addressFinal)
 
   useEffect(() => {
     if (userUID) {
@@ -37,6 +37,28 @@ function AddressList() {
     }
   }, [userUID]);
 
+  const activeSelect=()=>{
+    if(!addressFinal){
+      alert('Choose Address!')
+    } else{
+      const data = {
+        shipping_address: addressFinal.address_name
+      }
+      Axios.put(`http://localhost:3300/api/order/edit-address/${userUID}`, data)
+      .then(() => {
+      history.push({
+        pathname: '/choose-shipping',
+        state: addressFinal.city_id
+      })
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      });
+    }
+    
+  }
+
   return (
     <>
       <Container maxWidth="xs" className="mobile">
@@ -48,6 +70,11 @@ function AddressList() {
           <div className="address-list">
             {AddressDetails?.map((addressDetail) => (
               <div className="address">
+                <input type="radio" 
+                name="locradio" className="loc-radio"
+                // value={addressDetail.city_id}                
+                onChange={()=>setAddressFinal(addressDetail)}
+                />
                 <LocationOnOutlinedIcon />
                 <div className="address-info">
                   <div className="address-type">
@@ -58,7 +85,6 @@ function AddressList() {
                     {addressDetail.province}, {addressDetail.postal_code}
                   </div>
                 </div>
-                {/* <input type="radio" className="radio-css" /> */}
                 <Link to={`/edit-address/${userUID}/${addressDetail.id}`}>
                   <ModeEditOutlineOutlinedIcon className="radio-css" />
                 </Link>
@@ -68,7 +94,12 @@ function AddressList() {
           <Link to={`/add-address/${userUID}`}>
             <button className="button-new-address">Add New Address</button>
           </Link>
-          <button className="button-confirm">Confirm</button>
+          <button 
+          className="button-confirm"
+          onClick={activeSelect}
+          >
+            Confirm
+          </button>
         </div>
       </Container>
     </>

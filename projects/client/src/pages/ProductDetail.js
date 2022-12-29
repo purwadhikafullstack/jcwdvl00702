@@ -1,35 +1,140 @@
 import Axios from "axios";
 import "../assets/styles/productDetail.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { ArrowBack, FavoriteBorder, StarHalf } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import { Container } from "@mui/material";
 import { AuthContext } from "../context/AuthProvider";
 import {shallowEqual, useDispatch,useSelector} from 'react-redux'
-import { useParams } from "react-router-dom";
 
 export default function ProductDetail() {
-  const {id} = useParams()
-  console.log(id)
-  const [singleProduct,setSingleProduct]=useState([])
 
-  const specProduct=()=>{
+  const { user } = useSelector(
+    (state) => ({
+      user: state.auth.user,
+    }),
+  );
+
+  console.log("ini user UID:", user.customer_uid)
+
+
+  const { id } = useParams();
+  const history = useHistory();
+
+  const [state, setState] = useState([]);
+  const [cart, setCart] = useState([])
+  const [qtyProduct, setQtyProduct] = useState(0)
+ 
+   // Mengambil data product berdasarkan ID dari backend
+   const fetchProducts = () => {
     Axios.get(`http://localhost:3300/api/product/get-product/${id}`)
-      .then((res) => {
-        setSingleProduct(res.data)
+      .then((result) => {
+        setState(result.data);
+        console.log('ini result data', result.data);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        alert('Terjadi kesalahan di server');
       });
+  };
+
+  // setting qty product yg akan diambil
+
+  const addQtyHandler = () => {
+     setQtyProduct(qtyProduct + 1)
+  }
+  const minQtyHandler = () => {
+     setQtyProduct(qtyProduct - 1)
   }
 
-  useEffect(()=>{
-    specProduct()
-  },[])
+  // mengambil data untuk bikin kondisi add cart
 
+  const getCart = () => {
+    Axios.get(`http://localhost:3300/api/cart/get-cart/${user.customer_uid}`)
+    .then((result) => {
+      setCart(result.data);
+      console.log('ini result data', result.data);
+    })
+    .catch(() => {
+      alert('Terjadi kesalahan di server');
+    });
+  }
+
+  // mengirimkan data kedalam cart
+
+  const addToCart = () =>{
+    // data yg akan dipakai dibackend 
+    const data = {
+      customer_uid: user.customer_uid,
+      product_id: id,
+      quantity: qtyProduct,
+    }
+
+    // checkBox untuk mencari apakah product id sudah ada dalam cart
+    let checkBox = false
+    // untuk mengambil data quantity product yg ada dalam cart
+    let qtyProductCart = 0
+
+    for (let i = 0; i < cart.length; i++){
+      if(id === cart[i].product_id){
+        checkBox = true
+        qtyProductCart = cart[i].quantity
+        break
+      }
+    }
+    console.log("ini checkbox", checkBox)
+
+    // kondisi untuk kirim ke backend //
+    // jika kondisi checkbox false (tidak ada product ini dalam cart) maka akan membuat cart baru
+    if(checkBox === false){
+      if(state.quantity < qtyProduct){
+        alert(`Maaf stock hanya tersedia ${state.quantity}`)
+      } else {
+        if(qtyProduct <= 0){
+          alert("Quantity tidak boleh 0 atau kurang")
+        } else {
+          Axios.post('http://localhost:3300/api/cart/add-to-cart', data)
+          .then(() => {
+            alert('Product Added!');
+            history.push(`/product-list`);
+          })
+          .catch((error) => {
+            alert('Server Error');
+          });
+        }
+      }
+    // jika kondisi checkbox true (product sudah ada dalam cart) maka hanya akan menambahkan qty saja
+    } else if(checkBox === true) {
+      if(state.quantity < (qtyProduct + qtyProductCart)){
+        alert(`Maaf stock hanya tersedia tersedia ${state.quantity}`)
+      } else {
+        if(qtyProduct <= 0){
+          alert("Quantity tidak boleh 0 atau kurang")
+        } else {
+          Axios.put(`http://localhost:3300/api/cart/edit-cart/${id}`, data)
+          .then(() => {
+            alert('Quantity Added');
+            history.push(`/product-list`);
+          })
+          .catch((error) => {
+            console.log(error);
+            alert(error);
+          });
+        }
+      }
+    } 
+
+   
+    
+    }
+  
+ 
+  useEffect(() => {
+    fetchProducts();
+    getCart()
+  }, []);
+ 
   return (
     <div className="pd-wrap">
-      {console.log(singleProduct)}
       <Container maxWidth="xs" className="container-product-detail">
         <div className="product-img">
           <Link to="/">
@@ -37,13 +142,13 @@ export default function ProductDetail() {
           </Link>
           <img
             className="detail-img"
-            src={singleProduct.picture}
+            src={state.picture}
           />
         </div>
         <div className="product-spec">
           <div className="product-title">
             <div className="desc-1">
-              <span className="desc-name">{singleProduct.name}</span>
+              <span className="desc-name">{state.name}</span>
               <span className="desc-icon">
                 <FavoriteBorder />
               </span>
@@ -61,7 +166,7 @@ export default function ProductDetail() {
             <div>
               <div className="desc">Description</div>
               <div className="desc-word">
-                {singleProduct.product_detail}
+               {state.ProductDetail}
               </div>
             </div>
             <div className="spec-select">
@@ -95,9 +200,9 @@ export default function ProductDetail() {
             <div className="spec-qty">
               <div className="spec-qty-title">Quantity</div>
               <div className="spec-qty-selector">
-                <span className="sub-qty-select">-</span>
-                <span className="sub-qty">1</span>
-                <span className="sub-qty-select">+</span>
+                <span className="sub-qty-select" onClick={minQtyHandler}>-</span>
+                <span className="sub-qty">{qtyProduct}</span>
+                <span className="sub-qty-select" onClick={addQtyHandler}>+</span>
               </div>
             </div>
           </div>
@@ -105,10 +210,10 @@ export default function ProductDetail() {
           <div className="pay-segment">
             <div className="pricing">
               <div className="price-title">Total Price</div>
-              <div className="price">${singleProduct.price}</div>
+              <div className="price">{state.price}</div>
             </div>
             <div>
-              <button className="add-cart">Add to Cart</button>
+              <button className="add-cart" onClick={addToCart}>Add to Cart</button>
             </div>
           </div>
         </div>
