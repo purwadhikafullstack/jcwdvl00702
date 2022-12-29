@@ -1,4 +1,5 @@
 import React from 'react';
+import Axios from 'axios';
 import {
   Button,
   InputAdornment,
@@ -22,6 +23,11 @@ class StockHistory extends React.Component {
   state = {
     isSearch: false,
     isAdmin: true,
+    productList: [],
+    page: 0,
+    pages: 0,
+    sort: '',
+    search: '',
   };
 
   isSearchHandle = () => {
@@ -31,6 +37,49 @@ class StockHistory extends React.Component {
   isSearchHandleClose = () => {
     this.setState({ ...this.state, isSearch: false });
   };
+
+  searchHandler = (event) => {
+    this.setState({ ...this.state, search: event.target.value });
+  };
+
+  inputHandler = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    this.setState({ [name]: value });
+  };
+
+  detailBtnHandler = (id) => {
+    this.props.history.push(`/product-stock-history/${id}`);
+  };
+
+  // PRODUCT LIST SETUP
+
+  // SETUP RENDER LIST PRODUCT
+
+  fetchProducts = (page, sort, search) => {
+    Axios.get(
+      `http://localhost:3300/api/product/get-stock-history?page=${page}&sort=${sort ? sort : this.state.sort}&search=${
+        search ? search : this.state.search
+      }`
+    )
+      .then((result) => {
+        this.setState({
+          ...this.state,
+          productList: [...result.data.result],
+          pages: result.data.pages,
+          ...(sort && { sort: sort }),
+          ...(search && { search: search }),
+        });
+      })
+      .catch(() => {
+        alert('Terjadi kesalahan di server');
+      });
+  };
+
+  componentDidMount() {
+    this.fetchProducts(0);
+  }
 
   menuHandler = () => {
     return (
@@ -95,157 +144,136 @@ class StockHistory extends React.Component {
     );
   };
 
-  stockHistory = (product) => {
-    return (
-      <div className="shc-main">
-        <div className="shc-image">
-          <img
-            src="https://i.pinimg.com/originals/6f/df/bc/6fdfbc41d6a8e26d4b9073bc1afd899f.jpg"
-            className="shc-product"
-            alt="Product Image"
-          />
-        </div>
-        <div className="shc-detail">
-          <div className="shc-detail-name">{product}</div>
-          <div className="shc-detail-subname-3">Product ID: 701241</div>
+  stockHistory = () => {
+    return this.state.productList.map((val, index) => {
+      return (
+        <div className="shc-main">
+          <div className="shc-image">
+            <img src={val.picture} className="shc-product" alt="Product Image" />
+          </div>
+          <div className="shc-detail">
+            <div className="shc-detail-name">{val.name}</div>
+            <div className="shc-detail-subname-3">Product ID: {val.id}</div>
 
-          <div className="shc-detail-subname">
-            <div className="shc-detail-subname-1">
-              <SportsSoccerOutlined />
+            <div className="shc-detail-subname">
+              <div className="shc-detail-subname-1">
+                <SportsSoccerOutlined />
+              </div>
+              <div className="shc-detail-subname-2">{val.category}</div>
             </div>
-            <div className="shc-detail-subname-2">Sports</div>
-          </div>
 
-          <div className="shc-detail-bottom">
-            <Link to="/product-stock-history" className="pladmin-banner-menu-link">
-              <Button
-                sx={{
-                  borderRadius: '20px',
-                  backgroundColor: 'rgb(153,255,153,0.9)',
-                  fontSize: '8px',
-                  fontFamily: 'Lora',
-                  color: 'black',
-                }}
-                variant="contained"
-                className="shc-detail-bottom-detail">
-                Detail
-              </Button>
-            </Link>
+            <div className="shc-detail-bottom">
+              <Link to="/product-stock-history" className="pladmin-banner-menu-link">
+                <Button
+                  sx={{
+                    borderRadius: '20px',
+                    backgroundColor: 'rgb(153,255,153,0.9)',
+                    fontSize: '8px',
+                    fontFamily: 'Lora',
+                    color: 'black',
+                  }}
+                  variant="contained"
+                  className="shc-detail-bottom-detail"
+                  onClick={() => this.detailBtnHandler(val.id)}>
+                  Detail
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
-
-      // ALTERNATE 1
-      // <div className="shc-main">
-      //   <div className="shc-subdetail">
-      //     <div className="shc-detail-name">Product Name</div>
-      //     <div className="shc-detail-subname">Product ID</div>
-      //     <div className="shc-detail-subname">Periode</div>
-      //     <div className="shc-detail-subname">Location</div>
-      //     <div className="shc-detail-subname">Increment</div>
-      //     <div className="shc-detail-subname">Reduction</div>
-      //     <div className="shc-detail-subname">Final Stock</div>
-      //   </div>
-      //   <div className="shc-detail">
-      //     <div className="shc-detail-name">{product}</div>
-      //     <div className="shc-detail-subname">701241</div>
-      //     <div className="shc-detail-subname">December 2022</div>
-      //     <div className="shc-detail-subname">Warehouse A</div>
-      //     <div className="shc-detail-subname">15</div>
-      //     <div className="shc-detail-subname">3</div>
-      //     <div className="shc-detail-subname">21</div>
-      //   </div>
-      //   <div className="shc-detail-bottom">
-      //     <Link to="/products-management-detail" className="pladmin-banner-menu-link">
-      //       <Button
-      //         sx={{
-      //           borderRadius: '20px',
-      //           backgroundColor: 'rgb(153,255,153,0.9)',
-      //           fontSize: '8px',
-      //           fontFamily: 'Lora',
-      //           color: 'black',
-      //         }}
-      //         variant="contained"
-      //         className="shc-detail-bottom-detail">
-      //         Detail
-      //       </Button>
-      //     </Link>
-      //   </div>
-      // </div>
-    );
+      );
+    });
   };
 
   render() {
     return (
-      <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
-        <div className="stockhistory-main">
-          <div className="stockhistory-banner">
-            <div className="stockhistory-banner-logo">
-              <IconButton disabled>
-                <ManageSearch />
-              </IconButton>
-            </div>
-            {this.state.isSearch ? (
-              <>
-                <ClickAwayListener onClickAway={this.isSearchHandleClose}>
-                  <InputBase
-                    sx={{ ml: 1, flex: 1, fontFamily: 'Lora' }}
-                    placeholder="Product Name / ID"
-                    inputProps={{ 'aria-label': 'Search' }}
-                    className="stockhistory-search"
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton edge="end">
-                          <Search />
+      <>
+        <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
+          <div className="stockhistory-main">
+            <div className="stockhistory-banner">
+              <div className="stockhistory-banner-logo">
+                <IconButton disabled>
+                  <ManageSearch />
+                </IconButton>
+              </div>
+              {this.state.isSearch ? (
+                <>
+                  <ClickAwayListener onClickAway={this.isSearchHandleClose}>
+                    <InputBase
+                      sx={{ ml: 1, flex: 1, fontFamily: 'Lora' }}
+                      placeholder="Product Name / ID"
+                      inputProps={{ 'aria-label': 'Search' }}
+                      className="stockhistory-search"
+                      onChange={this.searchHandler}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton edge="end" onClick={() => this.fetchProducts(0, '', this.state.search)}>
+                            <Search />
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                  </ClickAwayListener>
+                </>
+              ) : (
+                <>
+                  <div className="stockhistory-banner-text">Stock History</div>
+                  <div className="stockhistory-banner-search">
+                    <IconButton onClick={this.isSearchHandle}>
+                      <Search />
+                    </IconButton>
+                  </div>
+                </>
+              )}
+              <div className="stockhistory-banner-add">
+                <PopupState variant="popover" popupId="demo-popup-menu">
+                  {(popupState) => (
+                    <React.Fragment>
+                      <button className="account-button" variant="contained" {...bindTrigger(popupState)}>
+                        <IconButton>
+                          <SortTwoTone />
                         </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                </ClickAwayListener>
-              </>
-            ) : (
-              <>
-                <div className="stockhistory-banner-text">Stock History</div>
-                <div className="stockhistory-banner-search">
-                  <IconButton onClick={this.isSearchHandle}>
-                    <Search />
-                  </IconButton>
-                </div>
-              </>
-            )}
-            <div className="stockhistory-banner-add">
-              <PopupState variant="popover" popupId="demo-popup-menu">
-                {(popupState) => (
-                  <React.Fragment>
-                    <button className="account-button" variant="contained" {...bindTrigger(popupState)}>
-                      <IconButton>
-                        <SortTwoTone />
-                      </IconButton>
-                    </button>
-                    <Menu {...bindMenu(popupState)}>
-                      <MenuItem onClick={popupState.close} sx={{ fontFamily: 'Lora' }}>
-                        <img src="https://img.icons8.com/fluency-systems-filled/22/null/sort-numeric-up.png" />A - Z
-                      </MenuItem>
-                      <MenuItem onClick={popupState.close} sx={{ fontFamily: 'Lora' }}>
-                        <img src="https://img.icons8.com/windows/24/null/sort-numeric-up-reversed.png" />Z - A
-                      </MenuItem>
-                    </Menu>
-                  </React.Fragment>
-                )}
-              </PopupState>
+                      </button>
+                      <Menu {...bindMenu(popupState)}>
+                        <MenuItem
+                          onClick={() => {
+                            this.fetchProducts(0, 'name', '');
+                            this.setState({ ...this.state, page: 0 });
+                          }}
+                          sx={{ fontFamily: 'Lora' }}>
+                          Name
+                        </MenuItem>
+                        <MenuItem onClick={() => this.fetchProducts(0, 'createdAt', '')} sx={{ fontFamily: 'Lora' }}>
+                          Created At
+                        </MenuItem>
+                      </Menu>
+                    </React.Fragment>
+                  )}
+                </PopupState>
+              </div>
+              <div className="stockhistory-banner-menu">{this.menuHandler()}</div>
             </div>
-            <div className="stockhistory-banner-menu">{this.menuHandler()}</div>
+            <div className="stockhistory-content">{this.stockHistory()}</div>
           </div>
-          <div className="stockhistory-content">
-            {this.stockHistory('Barang A')}
-            {this.stockHistory('Kocheng Kochengan Najkal Tapi Lucu Aja')}
-            {this.stockHistory('Sepatu sueve')}
-            <Stack spacing={1} sx={{ position: 'fixed', top: '78%', width: '110%', fontFamily: 'Lora' }}>
-              <Pagination count={10} />
-            </Stack>
-          </div>
-        </div>
-      </Container>
+        </Container>
+
+        <Container maxWidth="xs" className="mobile2">
+          <Stack
+            spacing={1}
+            sx={{
+              width: '110%',
+              fontFamily: 'Lora',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+            }}>
+            <Pagination
+              count={this.state.pages}
+              onChange={(e, value) => this.fetchProducts(value - 1, this.state.sort, '')}
+            />
+          </Stack>
+        </Container>
+      </>
     );
   }
 }

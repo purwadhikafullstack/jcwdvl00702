@@ -13,6 +13,7 @@ module.exports = {
   // user: 'root',
   // password: 'password',
   // database: 'db_ecom',
+
   port: 3306,
   multipleStatements: true,
   dialect: 'mysql',

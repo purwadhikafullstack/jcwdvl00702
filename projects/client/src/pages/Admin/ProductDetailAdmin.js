@@ -1,6 +1,5 @@
 import Axios from 'axios';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Add,
   ArrowBack,
@@ -20,12 +19,12 @@ import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 
 import '../../assets/styles/ProductDetailAdmin.css';
+import { useSelector } from 'react-redux';
 
 export default function ProductDetailAdmin() {
   const history = useHistory();
 
   const { id } = useParams();
-  // console.log("Ini ID Woi:", id)
 
   const goBack = () => {
     history.goBack();
@@ -35,23 +34,37 @@ export default function ProductDetailAdmin() {
   const [selectIcon, setSelectIcon] = useState(0);
   const [picture, setPicture] = useState('');
   const [preview, setPreview] = useState('');
-  const [state, setState] = useState([]);
+  const [state, setState] = useState({});
+  const [isSuperAdmin, setIsSuperAdmin] = useState(true);
 
   const [descript, setDescript] = useState('');
+
+  const [resStock, setResStock] = useState([]);
+  const [refreshStock, setRefreshStock] = useState([]);
+  const [stockChange, SetStockChange] = useState({
+    wh_id: '',
+    count: '',
+    number: 0,
+  });
+
+  const stateUsername = useSelector((state) => state.auth);
 
   const handleChange = (event) => {
     setDescript(event.target.value);
   };
 
+  useEffect(() => {
+    fetchProducts();
+  }, [refreshStock]);
+
   // Mengambil data product berdasarkan ID dari backend
   const fetchProducts = () => {
     Axios.get(`http://localhost:3300/api/product/get-product/${id}`)
       .then((result) => {
-        setState(result.data);
-        console.log('ini result data', result.data);
+        setState(result.data.getProduct);
+        setResStock(result.data.stockWh);
       })
-      .catch(() => {
-        console.log('ini id untuk dikrim ke backend', id);
+      .catch((err) => {
         alert('Terjadi kesalahan di server');
       });
   };
@@ -74,7 +87,6 @@ export default function ProductDetailAdmin() {
   };
 
   // edit Product Setup
-
   const loadPicture = (e) => {
     const image = e.target.files[0];
     setPicture(image);
@@ -112,33 +124,75 @@ export default function ProductDetailAdmin() {
           setIsEdit(false);
         })
         .catch((error) => {
-          console.log(error);
           alert(error);
         });
     },
   });
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const changeStock = (name, count, number, requester) => {
+    if (number >= 1) {
+      Axios.patch(`http://localhost:3300/api/product/update-stock/${id}`, {
+        wh_id: name + 1,
+        count: count,
+        number: number,
+        requester: stateUsername.user.fullname,
+      })
+        .then((data) => {
+          resStock[name] = data.data;
+          setRefreshStock(resStock);
+          alert('Stock Updated!');
+        })
+        .catch((error) => {
+          alert('gagal');
+        });
+    } else {
+      alert('Input stock amount first!');
+    }
+  };
 
-  const warehouseStock = (name) => {
+  const warehouseStock = (index, number) => {
     return (
       <div className="pdadmin-stock-wh">
-        <div className="pdadmin-stock-name">Warehouse {name}</div>
-        <div className="pdadmin-stock-qty">20 pcs</div>
-        <div className="pdadmin-stock-edit">
-          <InputBase sx={{ fontFamily: 'Lora' }} placeholder="0" className="pdadmin-stock-text" />
-          <IconButton className="pdadmin-stock-add">
-            <Add />
-          </IconButton>
-        </div>
-        <div className="pdadmin-stock-edit">
-          <InputBase sx={{ fontFamily: 'Lora' }} placeholder="0" className="pdadmin-stock-text" />
-          <IconButton className="pdadmin-stock-decrease">
-            <Remove />
-          </IconButton>
-        </div>
+        <div className="pdadmin-stock-name">Warehouse {index + 1}</div>
+        <div className="pdadmin-stock-qty">{resStock[index]} pcs</div>
+        {isSuperAdmin ? (
+          <>
+            <div className="pdadmin-stock-edit">
+              <InputBase
+                sx={{ fontFamily: 'Lora' }}
+                placeholder="0"
+                className="pdadmin-stock-text"
+                onChange={(e) => {
+                  number = e.target.value;
+                }}
+              />
+              <IconButton
+                className="pdadmin-stock-add"
+                onClick={() => {
+                  changeStock(index, 'add', number);
+                }}>
+                <Add />
+              </IconButton>
+            </div>
+            <div className="pdadmin-stock-edit">
+              <InputBase
+                sx={{ fontFamily: 'Lora' }}
+                placeholder="0"
+                className="pdadmin-stock-text"
+                onChange={(e) => {
+                  number = e.target.value;
+                }}
+              />
+              <IconButton
+                className="pdadmin-stock-decrease"
+                onClick={() => {
+                  changeStock(index, 'reduce', number);
+                }}>
+                <Remove />
+              </IconButton>
+            </div>
+          </>
+        ) : null}
       </div>
     );
   };
@@ -184,34 +238,38 @@ export default function ProductDetailAdmin() {
             </>
           ) : (
             <>
-              <Button
-                sx={{
-                  borderRadius: '20px',
-                  backgroundColor: 'rgb(255,153,153,0.9)',
-                  fontSize: '8px',
-                  fontFamily: 'Lora',
-                  color: 'black',
-                  marginRight: '5px',
-                  marginLeft: '210px',
-                }}
-                variant="contained"
-                onClick={deleteBtnHandler}
-                className="pdadmin-banner-delete">
-                Delete
-              </Button>
-              <Button
-                sx={{
-                  borderRadius: '20px',
-                  backgroundColor: 'rgb(255,204,153,0.9)',
-                  fontSize: '8px',
-                  fontFamily: 'Lora',
-                  color: 'black',
-                }}
-                variant="contained"
-                onClick={() => setIsEdit(true)}
-                className="pdadmin-banner-edit">
-                Edit
-              </Button>
+              {isSuperAdmin ? (
+                <>
+                  <Button
+                    sx={{
+                      borderRadius: '20px',
+                      backgroundColor: 'rgb(255,153,153,0.9)',
+                      fontSize: '8px',
+                      fontFamily: 'Lora',
+                      color: 'black',
+                      marginRight: '5px',
+                      marginLeft: '210px',
+                    }}
+                    variant="contained"
+                    onClick={deleteBtnHandler}
+                    className="pdadmin-banner-delete">
+                    Delete
+                  </Button>
+                  <Button
+                    sx={{
+                      borderRadius: '20px',
+                      backgroundColor: 'rgb(255,204,153,0.9)',
+                      fontSize: '8px',
+                      fontFamily: 'Lora',
+                      color: 'black',
+                    }}
+                    variant="contained"
+                    onClick={() => setIsEdit(true)}
+                    className="pdadmin-banner-edit">
+                    Edit
+                  </Button>
+                </>
+              ) : null}
             </>
           )}
         </div>
@@ -225,7 +283,7 @@ export default function ProductDetailAdmin() {
             </Button>
           </>
         ) : (
-          <img className="pdadmin-img" src={state.picture} alt="" />
+          <img className="pdadmin-img" src={state.picture} alt="Product" />
         )}
 
         {isEdit ? (
@@ -324,7 +382,7 @@ export default function ProductDetailAdmin() {
                 <div className="pdadmin-desc-title-1">
                   <span className="pdadmin-desc-name">{state.name}</span>
                 </div>
-                <div className="pdadmin-desc-title-4">Product ID: 701241</div>
+                <div className="pdadmin-desc-title-4">Product ID: {state.id}</div>
                 <div className="pdadmin-desc-title-2">
                   <SportsSoccerOutlined />
                   <div className="pdadmin-desc-title-3">{state.category}</div>
@@ -344,11 +402,7 @@ export default function ProductDetailAdmin() {
           </>
         )}
 
-        <div className="pdadmin-stock">
-          {warehouseStock('A')}
-          {warehouseStock('B')}
-          {warehouseStock('C')}
-        </div>
+        <div className="pdadmin-stock">{resStock.map((item, index) => warehouseStock(index))}</div>
       </div>
     </Container>
   );

@@ -4,29 +4,21 @@ import SearchIcon from '@mui/icons-material/Search';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../assets/styles/ProductLists.css';
 import { SortTwoTone } from '@mui/icons-material';
-import { Container, Stack, Pagination, IconButton, InputBase, Menu, MenuItem,  Button, } from '@mui/material';
+import { Container, Stack, Pagination, IconButton, InputBase, Menu, MenuItem, Button } from '@mui/material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-import { SportsSoccerOutlined} from '@mui/icons-material';
+import { URL_API } from '../redux/API';
 
 class ProductLists extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     dataProduct: [],
-  //     pages: 0,
-  //     sort: '',
-  //     search: '',
-  //   };
-  // }
-
-  state = {
-    productList: [],
-    page: 1,
-    maxPage: 0,
-    itemPerPage: 4,
-    keyWord: '',
-
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      dataProduct: [],
+      page: 0,
+      pages: 0,
+      sort: '',
+      search: '',
+    };
+  }
 
   componentDidMount() {
     this.getDataProduct(0);
@@ -52,49 +44,50 @@ class ProductLists extends React.Component {
     }
   };
 
-    // product detail
-    detailBtnHandler = (id) => {
-      this.props.history.push(`/product-detail/${id}`);
-    };
+  // product detail
+  detailBtnHandler = (id) => {
+    this.props.history.push(`/product-detail/${id}`);
+  };
 
-  getDataProduct = (/*page, sort, search*/) => {
-    Axios.get(`http://localhost:3300/api/product/get-product/?searchQuery=${this.state.keyWord}`)
-    .then((result) => {
-      this.setState({ productList: result.data, maxPage: Math.ceil(result.data.length / this.state.itemPerPage) });
-      console.log(this.state.productList);
-    })
-    .catch(() => {
-      alert('Terjadi kesalahan di server');
-    });
-
-    // Axios.get(`http://localhost:3300/api/product/get-product/?page=${page}&sort=${sort ? sort : this.state.sort}&search=${
-    //         search ? search : this.state.search
-    //       }`
-    //   )
-    //   .then((res) => {
-    //     this.setState({
-    //       ...this.state,
-    //       dataProduct: [...res.data.result],
-    //       pages: res.data.pages,
-    //       ...(sort && { sort: sort }),
-    //       ...(search && { search: search }),
-    //     });
-    //     //   sort
-    //     //     ? this.setState({
-    //     //         ...this.state,
-    //     //         dataProduct: [...res.data.result],
-    //     //         pages: res.data.pages,
-    //     //         sort: sort,
-    //     //       })
-    //     //     : this.setState({
-    //     //         ...this.state,
-    //     //         dataProduct: [...res.data.result],
-    //     //         pages: res.data.pages,
-    //     //       });
+  getDataProduct = (page, sort, search) => {
+    // Axios.get(`http://localhost:3300/api/product/get-product/?searchQuery=${this.state.keyWord}`)
+    //   .then((result) => {
+    //     this.setState({ productList: result.data, maxPage: Math.ceil(result.data.length / this.state.itemPerPage) });
+    //     console.log(this.state.productList);
     //   })
-    //   .catch((err) => {
-    //     console.log(err);
+    //   .catch(() => {
+    //     alert('Terjadi kesalahan di server');
     //   });
+
+    Axios.get(
+      `http://localhost:3300/api/product/get-product/?page=${page}&sort=${sort ? sort : this.state.sort}&search=${
+        search ? search : this.state.search
+      }`
+    )
+      .then((res) => {
+        this.setState({
+          ...this.state,
+          dataProduct: [...res.data.result],
+          pages: res.data.pages,
+          ...(sort && { sort: sort }),
+          ...(search && { search: search }),
+        });
+        //   sort
+        //     ? this.setState({
+        //         ...this.state,
+        //         dataProduct: [...res.data.result],
+        //         pages: res.data.pages,
+        //         sort: sort,
+        //       })
+        //     : this.setState({
+        //         ...this.state,
+        //         dataProduct: [...res.data.result],
+        //         pages: res.data.pages,
+        //       });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   searchHandler = (event) => {
@@ -175,14 +168,14 @@ class ProductLists extends React.Component {
                     <Menu {...bindMenu(popupState)}>
                       <MenuItem
                         onClick={() => {
-                          this.getDataProduct(0, 'name');
-                          // this.setState({ ...this.state, page: 0 });
+                          this.getDataProduct(0, 'name', '');
+                          this.setState({ ...this.state, page: 0 });
                         }}
                         sx={{ fontFamily: 'Lora' }}>
                         {/* <img src="https://img.icons8.com/fluency-systems-filled/22/null/sort-numeric-up.png" /> */}
                         Name
                       </MenuItem>
-                      <MenuItem onClick={() => this.getDataProduct(0, 'createdAt')} sx={{ fontFamily: 'Lora' }}>
+                      <MenuItem onClick={() => this.getDataProduct(0, 'createdAt', '')} sx={{ fontFamily: 'Lora' }}>
                         {/* <img src="https://img.icons8.com/windows/24/null/sort-numeric-up-reversed.png" /> */}
                         CreatedAt
                       </MenuItem>
@@ -191,16 +184,22 @@ class ProductLists extends React.Component {
                 )}
               </PopupState>
             </div>
-            <div className="product-card">
-            {this.renderProduct()}
-            </div>
+            <div className="product-card">{this.renderProduct()}</div>
           </div>
         </Container>
         <Container maxWidth="xs" className="mobile2">
-          <Stack spacing={1} sx={{ width: '110%', marginLeft: '110px', fontFamily: 'Lora' }}>
+          <Stack
+            spacing={1}
+            sx={{
+              width: '110%',
+              fontFamily: 'Lora',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+            }}>
             <Pagination
-              count={this.state.maxPage}
-              onChange={this.pageHandler}
+              count={this.state.pages}
+              onChange={(e, value) => this.getDataProduct(value - 1, this.state.sort, '')}
             />
           </Stack>
         </Container>
