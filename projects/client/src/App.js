@@ -35,6 +35,7 @@ import NewAddress from './pages/NewAddress';
 import EditAddress from './pages/EditAddress';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
+import Payment from './pages/Payment'
 import EditWarehouse from './pages/Admin/EditWarehouse';
 import HomeFunc from './pages/HomeFunc';
 import Main from './pages/Main';
@@ -120,6 +121,7 @@ export default function App() {
         <Route component={ChooseShipping} path="/choose-shipping" />
         <Route component={Cart} path="/cart/:id" />
         <Route component={Checkout} path="/checkout/:id/:orderId" />
+        <Route component={Payment} path="/payment/:id/:orderId" />
         <Route component={Main} path="/" />
       </Switch>
       <Footer />

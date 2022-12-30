@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
+      payment_picture: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
       //   payment: {
       //     allowNull: false,
       //     type: DataTypes.STRING,

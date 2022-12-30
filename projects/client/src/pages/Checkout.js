@@ -62,6 +62,11 @@ export default function Checkout(){
     const  shippingHandler = (id) => {
         history.push(`/address-list/${id}`);
       };
+
+      // product detail
+    const  paymentHandler = (id) => {
+        history.push(`/payment/${id}/${order.id}`);
+      };
   
 
   useEffect(() => {
@@ -141,7 +146,7 @@ const checkoutList = () => {
                 <div ClassName="dataBox-price">Rp {totalPrice + order.shipping_price}</div>
               </div>
             </div>
-            <button class="btn-lp">Continue Payment</button>
+            <button class="btn-lp" onClick={() => paymentHandler(id)}>Continue Payment</button>
            </div>
          </Container>
     </>
