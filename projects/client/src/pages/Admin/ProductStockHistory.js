@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import Axios from 'axios';
+import { useState, useEffect } from 'react';
 import { ArrowBack, Search, SportsSoccerOutlined } from '@mui/icons-material';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { Container, IconButton, Select, MenuItem } from '@mui/material';
 
 import '../../assets/styles/ProductStockHistory.css';
@@ -8,16 +9,78 @@ import '../../assets/styles/ProductStockHistory.css';
 export default function ProductStockHistory() {
   const history = useHistory();
 
+  const { id } = useParams();
+
   const goBack = () => {
     history.goBack();
   };
 
-  const [month, setMonth] = useState(0);
-  const [year, setYear] = useState(0);
+  const [month, setMonth] = useState('month');
+  const [year, setYear] = useState('year');
   const [admin, isAdmin] = useState(true);
   const [warehouse, setWarehouse] = useState(0);
 
-  const stockHistory = (year, month) => {
+  const [getProduct, setGetProduct] = useState({});
+  const [getHistory, setGetHistory] = useState([]);
+  const [refreshHistory, setRefreshHistory] = useState([]);
+
+  const [stockInitial, setStockInitial] = useState(0);
+  const [increment, setIncrement] = useState(0);
+  const [reduction, setReduction] = useState(0);
+  const [stockFinal, setStockFinal] = useState(0);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = (year, month) => {
+    Axios.get(`http://localhost:3300/api/product/product-stock-history/${id}?year=${year}&month=${month}`)
+      .then((result) => {
+        setGetProduct(result.data.getProduct);
+        setGetHistory(result.data.getHistory);
+        let initial;
+        let final;
+        const incrementArray = [];
+        const decrementArray = [];
+        const startArray = [];
+        const endArray = [];
+        for (let i = 0; i < result.data.getHistory.length; i++) {
+          if (parseInt(result.data.getHistory[i].warehouse_id) === warehouse) {
+            if (result.data.getHistory[i].math === '+') {
+              incrementArray.push(parseInt(result.data.getHistory[i].quantity));
+            } else if (parseInt(result.data.getHistory[i].warehouse_id) === warehouse) {
+              decrementArray.push(parseInt(result.data.getHistory[i].quantity));
+            }
+            startArray.push(parseInt(result.data.getHistory[i].start));
+            endArray.push(parseInt(result.data.getHistory[i].end));
+          }
+        }
+        if (startArray.length === 0) {
+          initial = 0;
+        } else {
+          initial = startArray[0];
+        }
+        if (endArray.length === 0) {
+          final = 0;
+        } else {
+          final = endArray[endArray.length - 1];
+        }
+
+        const increment = incrementArray.reduce((partialSum, a) => partialSum + a, 0);
+        const decrement = decrementArray.reduce((partialSum, a) => partialSum + a, 0);
+
+        setStockInitial(initial);
+        setIncrement(increment);
+        setReduction(decrement);
+        setStockFinal(final);
+        setRefreshHistory(getHistory);
+      })
+      .catch((err) => {
+        alert('Terjadi kesalahan di server');
+      });
+  };
+
+  const stockHistory = () => {
     return (
       <>
         <div className="prodsh-stock-period">
@@ -31,36 +94,56 @@ export default function ProductStockHistory() {
             <span classname="pswh-item-1">Stock Final</span>
           </div>
           <div className="pswh-item-right">
-            <span classname="pswh-item-2">21</span>
-            <span classname="pswh-item-2">12</span>
-            <span classname="pswh-item-2">2</span>
-            <span classname="pswh-item-2">31</span>
+            <span classname="pswh-item-2">{stockInitial}</span>
+            <span classname="pswh-item-2">{increment}</span>
+            <span classname="pswh-item-2">{reduction}</span>
+            <span classname="pswh-item-2">{stockFinal}</span>
           </div>
         </div>
       </>
     );
   };
 
-  const mutationHistory = (from, to, math, number) => {
-    return (
-      <div className="mhistory-main">
-        <div className="mhistory-subdetail">
-          <div className="mhistory-detail-name">From</div>
-          <div className="mhistory-detail-name">To</div>
-          <div className="mhistory-detail-subname">Date</div>
-          <div className="mhistory-detail-subname">Qty</div>
-        </div>
-        <div className="mhistory-detail">
-          <div className="mhistory-detail-name">{from}</div>
-          <div className="mhistory-detail-name">{to}</div>
-          <div className="mhistory-detail-subname">03-12-2022 17:59</div>
-          <div className="mhistory-detail-subname">{number}</div>
-        </div>
-        <div className="mhistory-detail-bottom">
-          {math} {number}
-        </div>
-      </div>
-    );
+  const mutationHistory = () => {
+    return getHistory.map((val, index) => {
+      let date = val.createdAt.slice(0, 10);
+      let time = val.createdAt.slice(11, 19);
+      if (parseInt(val.warehouse_id) === warehouse) {
+        return (
+          <>
+            <div className="mhistory-main">
+              <div className="mhistory-subdetail">
+                <div className="mhistory-detail-name">From</div>
+                <div className="mhistory-detail-name">To</div>
+                <div className="mhistory-detail-subname">Date</div>
+                <div className="mhistory-detail-subname">Qty</div>
+              </div>
+              <div className="mhistory-detail">
+                <div className="mhistory-detail-name">Warehouse {val.warehouse_id}</div>
+                {val.requester !== 'super_admin' ? (
+                  <>
+                    <div className="mhistory-detail-name">Warehouse {val.requester}</div>
+                  </>
+                ) : (
+                  <>
+                    <div className="mhistory-detail-name">{val.requester}</div>
+                  </>
+                )}
+                <div className="mhistory-detail-subname">
+                  {date} {time}
+                </div>
+                <div className="mhistory-detail-subname">{val.quantity}</div>
+              </div>
+              <div className="mhistory-detail-bottom">
+                {val.math} {val.quantity}
+              </div>
+            </div>
+          </>
+        );
+      } else {
+        return null;
+      }
+    });
   };
 
   return (
@@ -70,57 +153,25 @@ export default function ProductStockHistory() {
           <IconButton onClick={goBack}>
             <ArrowBack />
           </IconButton>
-          <div className="prodsh-banner-wh">
-            {admin ? (
-              <>
-                <Select
-                  sx={{ width: '140px', height: '38px', fontSize: '12px', padding: '0px', marginLeft: '200px' }}
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={warehouse}
-                  onChange={(e) => setWarehouse(e.target.value)}>
-                  <MenuItem value={0}>
-                    <em>Location</em>
-                  </MenuItem>
-                  <MenuItem value={1}>
-                    <span>Warehouse A</span>
-                  </MenuItem>
-                  <MenuItem value={2}>
-                    <span>Warehouse B</span>
-                  </MenuItem>
-                  <MenuItem value={3}>
-                    <span>Warehouse C</span>
-                  </MenuItem>
-                </Select>
-              </>
-            ) : (
-              <>
-                <div style={{ marginLeft: '220px', fontWeight: 'bolder', fontSize: 'large' }}>Warehouse A</div>
-              </>
-            )}
-          </div>
         </div>
 
-        <img
-          className="prodsh-img"
-          src="https://www.freepnglogos.com/uploads/shoes-png/mens-shoes-png-transparent-images-images-11.png"
-        />
+        <img className="prodsh-img" src={getProduct.picture} alt="Product" />
 
         <div className="prodsh-detail">
           <div className="prodsh-detail-title">
             <div className="prodsh-desc-title-1">
-              <span className="prodsh-desc-name">Suga Leather Shoes Ukuran Besar Ada Banyak Macam</span>
+              <span className="prodsh-desc-name">{getProduct.name}</span>
             </div>
-            <div className="prodsh-desc-title-4">Product ID: 701241</div>
+            <div className="prodsh-desc-title-4">Product ID: {getProduct.id}</div>
             <div className="prodsh-desc-title-2">
               <SportsSoccerOutlined />
-              <div className="prodsh-desc-title-3">Sports</div>
+              <div className="prodsh-desc-title-3">{getProduct.category}</div>
             </div>
           </div>
           <hr className="splitter" />
           <div className="prodsh-desc">
+            <div className="prodsh-desc-1-text">Stock History</div>
             <div className="prodsh-desc-1">
-              <div className="prodsh-desc-1-text">Stock History</div>
               <div className="prodsh-desc-1-select">
                 <Select
                   sx={{ width: '100%', height: '38px', fontSize: '12px', padding: '0px' }}
@@ -128,16 +179,16 @@ export default function ProductStockHistory() {
                   id="demo-simple-select"
                   value={year}
                   onChange={(e) => setYear(e.target.value)}>
-                  <MenuItem value={0}>
+                  <MenuItem value={'year'}>
                     <em>Year</em>
                   </MenuItem>
-                  <MenuItem value={1}>
+                  <MenuItem value={'2021'}>
                     <span>2021</span>
                   </MenuItem>
-                  <MenuItem value={2}>
+                  <MenuItem value={'2022'}>
                     <span>2022</span>
                   </MenuItem>
-                  <MenuItem value={3}>
+                  <MenuItem value={'2023'}>
                     <span>2023</span>
                   </MenuItem>
                 </Select>
@@ -149,64 +200,94 @@ export default function ProductStockHistory() {
                   id="demo-simple-select"
                   value={month}
                   onChange={(e) => setMonth(e.target.value)}>
-                  <MenuItem value={0}>
+                  <MenuItem value={'month'}>
                     <em>Month</em>
                   </MenuItem>
-                  <MenuItem value={1}>
-                    <span>Jan</span>
+                  <MenuItem value={'01'}>
+                    <span>01</span>
                   </MenuItem>
-                  <MenuItem value={2}>
-                    <span>Feb</span>
+                  <MenuItem value={'02'}>
+                    <span>02</span>
                   </MenuItem>
-                  <MenuItem value={3}>
-                    <span>Mar</span>
+                  <MenuItem value={'03'}>
+                    <span>03</span>
                   </MenuItem>
-                  <MenuItem value={4}>
-                    <span>Apr</span>
+                  <MenuItem value={'04'}>
+                    <span>04</span>
                   </MenuItem>
-                  <MenuItem value={5}>
-                    <span>May</span>
+                  <MenuItem value={'05'}>
+                    <span>05</span>
                   </MenuItem>
-                  <MenuItem value={6}>
-                    <span>Jun</span>
+                  <MenuItem value={'06'}>
+                    <span>06</span>
                   </MenuItem>
-                  <MenuItem value={7}>
-                    <span>Jul</span>
+                  <MenuItem value={'07'}>
+                    <span>07</span>
                   </MenuItem>
-                  <MenuItem value={8}>
-                    <span>Aug</span>
+                  <MenuItem value={'08'}>
+                    <span>08</span>
                   </MenuItem>
-                  <MenuItem value={9}>
-                    <span>Sep</span>
+                  <MenuItem value={'09'}>
+                    <span>09</span>
                   </MenuItem>
-                  <MenuItem value={10}>
-                    <span>Oct</span>
+                  <MenuItem value={'10'}>
+                    <span>10</span>
                   </MenuItem>
-                  <MenuItem value={11}>
-                    <span>Nov</span>
+                  <MenuItem value={'11'}>
+                    <span>11</span>
                   </MenuItem>
-                  <MenuItem value={12}>
-                    <span>Dec</span>
+                  <MenuItem value={'12'}>
+                    <span>12</span>
                   </MenuItem>
                 </Select>
               </div>
+            </div>
+            <div className="prodsh-desc-1">
+              <div className="prodsh-desc-1-select">
+                {admin ? (
+                  <>
+                    <Select
+                      sx={{ width: '140px', height: '38px', fontSize: '12px', padding: '0px' }}
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={warehouse}
+                      onChange={(e) => setWarehouse(e.target.value)}>
+                      <MenuItem value={0}>
+                        <em>Location</em>
+                      </MenuItem>
+                      <MenuItem value={1}>
+                        <span>Warehouse 1</span>
+                      </MenuItem>
+                      <MenuItem value={2}>
+                        <span>Warehouse 2</span>
+                      </MenuItem>
+                      <MenuItem value={3}>
+                        <span>Warehouse 3</span>
+                      </MenuItem>
+                    </Select>
+                  </>
+                ) : (
+                  <>
+                    <div style={{ marginLeft: '220px', fontWeight: 'bolder', fontSize: 'large' }}>Warehouse A</div>
+                  </>
+                )}
+              </div>
+
               <div className="prodsh-desc-1-icon">
-                <IconButton>
+                <IconButton onClick={() => fetchProducts(year, month)}>
                   <Search />
                 </IconButton>
               </div>
             </div>
-            <div className="prodsh-desc-2">{stockHistory('2022', 'Dec')}</div>
+            <div className="prodsh-desc-2">{stockHistory()}</div>
           </div>
-
           <hr className="splitter" />
         </div>
-
-        <div className="prodsh-stock">
-          {mutationHistory('WH001', '19450817235959', '-', '2')}
-          {mutationHistory('WH003', 'WH001', '+', '1')}
-          {mutationHistory('WH001', 'WH002', '-', '1')}
-        </div>
+        {warehouse !== 0 ? (
+          <>
+            <div className="prodsh-stock">{mutationHistory()}</div>
+          </>
+        ) : null}
       </div>
     </Container>
   );
