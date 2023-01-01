@@ -12,7 +12,7 @@ import {
 import Axios from "axios";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { Link, useParams, useHistory } from "react-router-dom";
-import "../assets/styles/Payment.css"
+import "../assets/styles/payment.css"
 
 
 
