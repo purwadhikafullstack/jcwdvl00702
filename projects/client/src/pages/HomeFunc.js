@@ -110,7 +110,7 @@ export default function HomeFunc() {
   ];
 
   const showProducts=()=>{
-    Axios.get(`http://localhost:3300/api/product/get-product`)
+    Axios.get(`http://localhost:3300/api/product/home-product`)
     .then(res=>{
       let homeProducts = res.data
       setProductShow(homeProducts)
@@ -124,7 +124,6 @@ export default function HomeFunc() {
     } else {
       alert("Mohon Login Untuk Melihat Cart Anda")
     }
-    
   } 
 
   useEffect(()=>{
@@ -266,17 +265,21 @@ export default function HomeFunc() {
             </div>
           </div>
           <div className="product-card">
-            {productShow.map((items) => (
-              <div>
-                <button onClick={()=>detailHandler(items.id)}>
-                  <div className="product-list">
-                    <img src={items.picture} />
-                    <div>{items.product_detail}</div>
-                    <div>{items.price}</div>
-                  </div>
-                </button>
-              </div>
-            ))}
+            {
+              productShow ? 
+              productShow.map((items) => (
+                <div>
+                  <button onClick={()=>detailHandler(items.id)}>
+                    <div className="product-list">
+                      <img src={items.picture} />
+                      <div>{items.product_detail}</div>
+                      <div>{items.price}</div>
+                    </div>
+                  </button>
+                </div>
+              ))
+              : null
+            }
           </div>
         </div>
       </Container>

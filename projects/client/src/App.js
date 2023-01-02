@@ -46,7 +46,6 @@ import { firebaseAuthentication } from './config/firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { loginUser } from './redux/actionCreators/authActionCreators';
-import EditAddress from './pages/EditAddress';
 import Axios from 'axios';
 
 export default function App() {
