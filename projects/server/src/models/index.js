@@ -69,5 +69,17 @@ db.models.Product.hasMany(db.models.Cart, {
 db.models.Cart.belongsTo(db.models.Product, {
   foreignKey: 'product_id',
 });
+db.models.Order.hasMany(db.models.Orderitem, {
+  foreignKey: "order_id",
+})
+db.models.Orderitem.belongsTo(db.models.Order, {
+  foreignKey: "order_id",
+});
+db.models.Product.hasMany(db.models.Orderitem, {
+  foreignKey: "product_id",
+})
+db.models.Orderitem.belongsTo(db.models.Product, {
+  foreignKey: "product_id",
+});
 
 module.exports = db;

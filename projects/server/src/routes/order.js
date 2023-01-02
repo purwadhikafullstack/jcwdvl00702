@@ -1,119 +1,237 @@
 const {
-    models: { Order },
-  } = require('../models');
+  models: { Order, Cart, Product, Orderitem },
+} = require('../models');
 
 const { where, Op } = require('sequelize');
 const router = require('express').Router();
+const multer = require('multer');
+const orderitem = require('../models/orderitem');
 
-  // ADD ORDER
+const storage = multer.diskStorage({
+destination: function (req, file, cb) {
+  cb(null, './public/productimages/');
+},
+filename: function (req, file, cb) {
+  cb(null, file.originalname);
+},
+});
+const upload = multer({ storage: storage });
 
-  router.post(`/add-order`, async (req, res) =>{
-    console.log("ini req body", req.body)
-    try {
-            const newOrder = await Order.create(
-                {
-                customer_uid: req.body.customer_uid,
-                cart_id: "",
-                status: false,
-                total_price: 0,
-                shipping_price: 0,
-                shipping_address: "",
-                shipping_courier: "",
-              }
-              );
-              
-            //   return res.status(200).json(newOrder.id)
+// ADD ORDER
+
+router.post(`/add-order`, async (req, res) =>{
+  console.log("ini req body", req.body)
+  try {
+          const newOrder = await Order.create(
+              {
+              customer_uid: req.body.customer_uid,
+              cart_id: "",
+              status: false,
+              total_price: 0,
+              shipping_price: 0,
+              shipping_address: "",
+              shipping_courier: "",
+              payment_picture:"",
+            }
+            );
+            
 
 
-              console.log('ini new Order:', newOrder);
-              const order = await newOrder.save()
-              res.status(200).json(order);
-    } catch (err) {
-        res.status(500).json(err);
-    }
-  })
-
-
-  // GET ORDER
-
-  router.get('/get-order/:id', async (req, res) => {
-    try {
-        const getOrder = await Order.findOne({
-            where: {
-              customer_uid: req.params.id,
-              // status false ini berarti hanya orderan yg belum selesai saja yg dikirim ke frontend
-              status: false
-            },
-          });
-
-      res.status(200).json(getOrder);
-    } catch (err) {
+            console.log('ini new Order:', newOrder);
+            const order = await newOrder.save()
+            res.status(200).json(order);
+  } catch (err) {
       res.status(500).json(err);
-    }
-  });
+  }
+})
+
+
+// GET ORDER by id
+
+router.get('/get-order/:id', async (req, res) => {
+  try {
+      const getOrder = await Order.findOne({
+          where: {
+            customer_uid: req.params.id,
+            // status false ini berarti hanya orderan yg belum selesai saja yg dikirim ke frontend
+            status: false
+          },
+        });
+    res.status(200).json(getOrder);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 // add Address shipping
 
 router.put('/edit-address/:id', async (req, res) => {
-  await Order.findOne({
-    where: {
-      customer_uid: req.params.id,
-      status: false
-    },
-  });
-
-  try {
-    let updateOrder = await Order.update(
-      {
-        shipping_address: req.body.shipping_address,
-      },
-      {
-        where: {
-          customer_uid: req.params.id,
-          status: false
-        },
-      }
-    );
-    res.status(201).json({
-      message: 'Success',
-      data: updateOrder,
-    });
-  } catch (error) {
-    console.log(error.message);
-  }
+await Order.findOne({
+  where: {
+    customer_uid: req.params.id,
+    status: false
+  },
 });
+
+try {
+  let updateOrder = await Order.update(
+    {
+      shipping_address: req.body.shipping_address,
+    },
+    {
+      where: {
+        customer_uid: req.params.id,
+        status: false
+      },
+    }
+  );
+  res.status(201).json({
+    message: 'Success',
+    data: updateOrder,
+  });
+} catch (error) {
+  console.log(error.message);
+}
+});
+
 // add shipping dan shipping price
 
 router.put('/edit-shipping/:id', async (req, res) => {
-  await Order.findOne({
-    where: {
-      customer_uid: req.params.id,
-      status: false
+await Order.findOne({
+  where: {
+    customer_uid: req.params.id,
+    status: false
+  },
+});
+
+try {
+
+  let updateOrder = await Order.update(
+    {
+      shipping_courier: req.body.shipping_courier,
+      shipping_price: req.body.shipping_price
     },
-  });
-
-  try {
-
-    let updateOrder = await Order.update(
-      {
-        shipping_courier: req.body.shipping_courier,
-        shipping_price: req.body.shipping_price
+    {
+      where: {
+        customer_uid: req.params.id,
+        status: false
       },
-      {
-        where: {
-          customer_uid: req.params.id,
-          status: false
-        },
-      }
-    );
-    res.status(201).json({
-      message: 'Success',
-      data: updateOrder,
-    });
-  } catch (error) {
-    console.log(error.message);
+    }
+  );
+  res.status(201).json({
+    message: 'Success',
+    data: updateOrder,
+  });
+} catch (error) {
+  console.log(error.message);
+}
+});
+
+// Upload Payment Proof
+
+router.put('/payment-proof/:id', upload.single('payment_picture'), async (req, res) => {
+await Order.findOne({
+  where: {
+    customer_uid: req.params.id,
+    status: false
+  },
+});
+
+try {
+  let updateOrder = await Order.update(
+    {
+      payment_picture: req.file.path,
+    },
+    {
+      where: {
+        customer_uid: req.params.id,
+        status: false
+      },
+    }
+  );
+  res.status(201).json({
+    message: 'Success',
+    data: updateOrder,
+  });
+} catch (error) {
+  console.log(error.message);
+}
+});
+
+// mengambil data order, cart dan product berdasarkan customer id
+
+router.get('/get-order-cart-product/:id', async (req, res) => {
+  try {
+      const getOrder = await Order.findOne({
+          where: {
+            customer_uid: req.params.id,
+          },
+          include: [
+            {
+              model: Orderitem,
+              required: true,
+              include: [
+                {
+                  model: Product,
+                  // required: true,
+                },
+              ],
+            },
+          ],
+        });
+    
+        let picPathArray = getOrder.payment_picture.split('\\');
+        let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
+        getOrder.payment_picture = picPath;
+
+        for(let j = 0; j < getOrder.orderitems.length; j++){
+          let picPathArrayJ = getOrder.orderitems[j].product.picture.split('\\');
+          let picPathJ = 'http://localhost:3300/' + picPathArrayJ[1] + '/' + picPathArrayJ[2]
+          getOrder.orderitems[j].product.picture = picPathJ;
+        }
+      
+
+    res.status(200).json(getOrder);
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
 
+// mengambil data order, cart dan product semua user
+
+router.get('/get-order-cart-product', async (req, res) => {
+  try {
+      const getOrder = await Order.findAll({
+          include: [
+            {
+              model: Orderitem,
+              required: true,
+              include: [
+                {
+                  model: Product,
+                  // required: true,
+                },
+              ],
+            },
+          ],
+        });
+      
+        for (let i = 0; i < getOrder.length; i++) {
+          let picPathArray = getOrder[i].payment_picture.split('\\');
+          let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
+          getOrder[i].payment_picture = picPath;
+
+          for(let j = 0; j < getOrder[i].orderitems.length; j++){
+            let picPathArrayJ = getOrder[i].orderitems[j].product.picture.split('\\');
+            let picPathJ = 'http://localhost:3300/' + picPathArrayJ[1] + '/' + picPathArrayJ[2]
+            getOrder[i].orderitems[j].product.picture = picPathJ;
+          }
+        }
+
+    res.status(200).json(getOrder);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 module.exports = router;
