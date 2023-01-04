@@ -82,7 +82,8 @@ router.post("/add-new-warehouse", upload.single('picture'), async (req, res) => 
       latitude: req.body.latitude,
       longitude: req.body.longitude,
       picture: req.file.path,
-      admin: req.body.admin
+      admin: req.body.admin,
+      city_id: req.body.city_id,
     });
     const warehouse = await newWarehouse.save();
     res.status(200).json(warehouse);

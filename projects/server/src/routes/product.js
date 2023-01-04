@@ -82,7 +82,6 @@ router.get('/home-product/', async (req, res) => {
     });
 
     console.log('ini get Product', getProduct[0].picture);
-    console.log('ini lenght get product', getProduct.length);
 
     for (let i = 0; i < getProduct.length; i++) {
       let picPathArray = getProduct[i].picture.split('\\');
