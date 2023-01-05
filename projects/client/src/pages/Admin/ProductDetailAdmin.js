@@ -35,14 +35,7 @@ export default function ProductDetailAdmin() {
   const [picture, setPicture] = useState('');
   const [preview, setPreview] = useState('');
   const [state, setState] = useState({});
-<<<<<<< HEAD
-<<<<<<< HEAD
   const [isSuperAdmin, setIsSuperAdmin] = useState(true);
-=======
->>>>>>> 5c462b23 (MWA 33)
-=======
-  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
->>>>>>> a9a833f5 (features MWA34)
 
   const [descript, setDescript] = useState('');
 
@@ -54,53 +47,27 @@ export default function ProductDetailAdmin() {
     number: 0,
   });
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   const stateUsername = useSelector((state) => state.auth);
 
-=======
->>>>>>> 5c462b23 (MWA 33)
-=======
-  const stateUsername = useSelector((state) => state.auth);
-
->>>>>>> cdbb567b (start MWA34)
   const handleChange = (event) => {
     setDescript(event.target.value);
   };
 
   useEffect(() => {
-    console.log('tes');
     fetchProducts();
   }, [refreshStock]);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  // useEffect(() => {
-  //   if (state.quantity_total !== resStock.reduce((partialSum, a) => partialSum + a, 0)) {
-  //     fetchProducts();
-  //   }
-  // }, [resStock]);
-
->>>>>>> 5c462b23 (MWA 33)
-=======
->>>>>>> a9a833f5 (features MWA34)
   // Mengambil data product berdasarkan ID dari backend
   const fetchProducts = () => {
     Axios.get(`http://localhost:3300/api/product/get-product/${id}`)
       .then((result) => {
         setState(result.data.getProduct);
         setResStock(result.data.stockWh);
-<<<<<<< HEAD
-      })
-      .catch((err) => {
-=======
         console.log('ini result data', result.data);
       })
       .catch((err) => {
         console.log(err);
         console.log('ini id untuk dikrim ke backend', id);
->>>>>>> 5c462b23 (MWA 33)
         alert('Terjadi kesalahan di server');
       });
   };
@@ -165,43 +132,22 @@ export default function ProductDetailAdmin() {
     },
   });
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   const changeStock = (name, count, number, requester) => {
-=======
-  const changeStock = (name, count, number) => {
->>>>>>> 5c462b23 (MWA 33)
-=======
-  const changeStock = (name, count, number, requester) => {
->>>>>>> cdbb567b (start MWA34)
     if (number >= 1) {
       Axios.patch(`http://localhost:3300/api/product/update-stock/${id}`, {
         wh_id: name + 1,
         count: count,
         number: number,
-<<<<<<< HEAD
-<<<<<<< HEAD
         requester: stateUsername.user.fullname,
-=======
->>>>>>> 5c462b23 (MWA 33)
-=======
-        requester: stateUsername.user.fullname,
->>>>>>> cdbb567b (start MWA34)
       })
         .then((data) => {
           resStock[name] = data.data;
           setRefreshStock(resStock);
-<<<<<<< HEAD
-          alert('Stock Updated!');
-        })
-        .catch((error) => {
-=======
           console.log('yes');
           alert('Stock Updated!');
         })
         .catch((error) => {
           console.log('gagal', error);
->>>>>>> 5c462b23 (MWA 33)
           alert('gagal');
         });
     } else {
@@ -214,10 +160,6 @@ export default function ProductDetailAdmin() {
       <div className="pdadmin-stock-wh">
         <div className="pdadmin-stock-name">Warehouse {index + 1}</div>
         <div className="pdadmin-stock-qty">{resStock[index]} pcs</div>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> a9a833f5 (features MWA34)
         {isSuperAdmin ? (
           <>
             <div className="pdadmin-stock-edit">
@@ -256,45 +198,6 @@ export default function ProductDetailAdmin() {
             </div>
           </>
         ) : null}
-<<<<<<< HEAD
-=======
-        <div className="pdadmin-stock-edit">
-          <InputBase
-            sx={{ fontFamily: 'Lora' }}
-            placeholder="0"
-            className="pdadmin-stock-text"
-            onChange={(e) => {
-              number = e.target.value;
-            }}
-          />
-          <IconButton
-            className="pdadmin-stock-add"
-            onClick={() => {
-              changeStock(index, 'add', number);
-            }}>
-            <Add />
-          </IconButton>
-        </div>
-        <div className="pdadmin-stock-edit">
-          <InputBase
-            sx={{ fontFamily: 'Lora' }}
-            placeholder="0"
-            className="pdadmin-stock-text"
-            onChange={(e) => {
-              number = e.target.value;
-            }}
-          />
-          <IconButton
-            className="pdadmin-stock-decrease"
-            onClick={() => {
-              changeStock(index, 'reduce', number);
-            }}>
-            <Remove />
-          </IconButton>
-        </div>
->>>>>>> 5c462b23 (MWA 33)
-=======
->>>>>>> a9a833f5 (features MWA34)
       </div>
     );
   };
@@ -504,20 +407,7 @@ export default function ProductDetailAdmin() {
           </>
         )}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         <div className="pdadmin-stock">{resStock.map((item, index) => warehouseStock(index))}</div>
-=======
-        <div className="pdadmin-stock">
-          {resStock.map((item, index) => warehouseStock(index))}
-          {/* {warehouseStock(1)}
-          {warehouseStock(2)}
-          {warehouseStock(3)} */}
-        </div>
->>>>>>> 5c462b23 (MWA 33)
-=======
-        <div className="pdadmin-stock">{resStock.map((item, index) => warehouseStock(index))}</div>
->>>>>>> a9a833f5 (features MWA34)
       </div>
     </Container>
   );

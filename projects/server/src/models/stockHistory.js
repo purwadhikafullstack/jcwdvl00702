@@ -34,7 +34,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
-<<<<<<< HEAD
       start: {
         allowNull: false,
         type: DataTypes.INTEGER,
@@ -43,13 +42,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
-=======
->>>>>>> a9a833f5 (features MWA34)
       requester: {
         allowNull: false,
         type: DataTypes.STRING,
       },
-<<<<<<< HEAD
       year: {
         allowNull: false,
         type: DataTypes.STRING,
@@ -58,8 +54,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
-=======
->>>>>>> a9a833f5 (features MWA34)
     },
     {}
   );

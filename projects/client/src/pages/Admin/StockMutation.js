@@ -49,28 +49,8 @@ class StockMutation extends React.Component {
     pages: 0,
     sort: '',
     search: '',
-<<<<<<< HEAD
     filter: 'manual',
     myWarehouse: '3',
-  };
-
-  componentDidMount() {
-    this.fetchMutation(0, '', '', this.state.value);
-  }
-
-  inputHandler = (event) => {
-    const value = event.target.value;
-    const name = event.target.name;
-
-    this.setState({ ...this.state, [name]: value });
-=======
-    filter: '',
-<<<<<<< HEAD
-    myWarehouse: '3',
->>>>>>> a9a833f5 (features MWA34)
-=======
-    myWarehouse: '1',
->>>>>>> 0aa7a103 (Features MWA34)
   };
 
   componentDidMount() {
@@ -106,10 +86,6 @@ class StockMutation extends React.Component {
   };
 
   askMutation = (from, to, product, quantity) => {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> a9a833f5 (features MWA34)
     Axios.post(`http://localhost:3300/api/product/stock-mutation`, {
       from,
       to,
@@ -117,27 +93,13 @@ class StockMutation extends React.Component {
       quantity: parseInt(quantity),
     })
       .then((data) => {
-<<<<<<< HEAD
-=======
-        console.log('result', data);
->>>>>>> a9a833f5 (features MWA34)
         alert('Permintaan mutasi stok berhasil dibuat');
         this.setState({ ...this.state, setAdd: false });
         this.fetchMutation(0, '', '', this.state.value);
       })
       .catch((error) => {
-<<<<<<< HEAD
         alert('gagal');
       });
-=======
-    console.log('result', from, to, product, quantity);
-    this.setState({ ...this.state, setAdd: false });
->>>>>>> cdbb567b (start MWA34)
-=======
-        console.log('gagal', error);
-        alert('gagal');
-      });
->>>>>>> a9a833f5 (features MWA34)
   };
 
   handleAskFromChange = (event) => {
@@ -173,15 +135,8 @@ class StockMutation extends React.Component {
           } else {
             alert('Mutasi berhasil!');
           }
-<<<<<<< HEAD
         } else {
           alert(data.data.message);
-=======
-          console.log('resp data', data);
-        } else {
-          alert(data.data.message);
-          console.log('resp data', data);
->>>>>>> a9a833f5 (features MWA34)
         }
         this.fetchMutation(0, '', '', this.state.value);
       })
@@ -197,10 +152,6 @@ class StockMutation extends React.Component {
       }&filter=${filter ? filter : this.state.value}&mywh=${this.state.myWarehouse}`
     )
       .then((result) => {
-<<<<<<< HEAD
-=======
-        console.log(result);
->>>>>>> a9a833f5 (features MWA34)
         this.setState({
           ...this.state,
           mutationList: [...result.data.result],
@@ -238,26 +189,15 @@ class StockMutation extends React.Component {
 
   mutationCard = () => {
     return this.state.mutationList.map((val, index) => {
-<<<<<<< HEAD
-<<<<<<< HEAD
       let picPathArray = val.product_picture.split('/');
       let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
       let productPicture = picPath;
-=======
->>>>>>> a9a833f5 (features MWA34)
-=======
-      let picPathArray = val.product_picture.split('/');
-      let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
-      let productPicture = picPath;
->>>>>>> 0aa7a103 (Features MWA34)
       if (this.state.myWarehouse !== val.warehouse_id && this.state.myWarehouse !== val.requester) {
         return null;
       } else {
         return (
           <div className="mutation-main">
             <div className="mutation-image">
-<<<<<<< HEAD
-<<<<<<< HEAD
               <img src={productPicture} className="mutation-product" alt="Product" />
             </div>
             <div className="mutation-detail">
@@ -268,28 +208,6 @@ class StockMutation extends React.Component {
               <div className="mutation-detail-subname">To: WH00{val.requester}</div>
               {this.mutationDetailStatus(val.status)}
 
-=======
-              <img
-                src={'/projects/server/public/productimages/profile1.jpeg'}
-                // src={`${val.product_picture}`}
-                className="mutation-product"
-                alt="Product"
-              />
-
-              {/* <img src={val.product_picture} className="mutation-product" alt="Product Image" /> */}
-=======
-              <img src={productPicture} className="mutation-product" alt="Product" />
->>>>>>> 0aa7a103 (Features MWA34)
-            </div>
-            <div className="mutation-detail">
-              <div className="mutation-detail-name">{val.product_name}</div>
-              <div className="mutation-detail-subname">Product ID: {val.product_id}</div>
-              <div className="mutation-detail-subname">From: WH00{val.warehouse_id}</div>
-              <div className="mutation-detail-subname">Qty: {val.quantity} pcs</div>
-              <div className="mutation-detail-subname">To: WH00{val.requester}</div>
-              {this.mutationDetailStatus(val.status)}
-
->>>>>>> a9a833f5 (features MWA34)
               {this.state.value === 'auto' ||
               this.state.myWarehouse === val.requester ||
               val.status === 'done' ||
@@ -513,7 +431,6 @@ class StockMutation extends React.Component {
                   )}
                 </PopupState>
               </div>
-<<<<<<< HEAD
 
               <div className="stockmutation-banner-add">
                 <IconButton onClick={this.addOpen}>
@@ -632,7 +549,6 @@ class StockMutation extends React.Component {
               <div className="stockmutation-banner-menu">{this.menuHandler()}</div>
             </div>
 
-<<<<<<< HEAD
             <div className="stockmutation-tab">
               <Box sx={{ width: '100%', typography: 'body1' }}>
                 <TabContext value={this.state.value}>
@@ -648,213 +564,6 @@ class StockMutation extends React.Component {
                   <TabPanel value="manual">{this.mutationCard()}</TabPanel>
                 </TabContext>
               </Box>
-=======
-            <div className="stockmutation-banner-add">
-              <IconButton onClick={this.addOpen}>
-                <NoteAdd />
-              </IconButton>
-              <Modal
-                open={this.state.setAdd}
-                onClose={this.addClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description">
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: 400,
-                    bgcolor: 'background.paper',
-                    border: '2px solid #000',
-                    boxShadow: 24,
-                    p: 4,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                  }}>
-                  <Select
-                    sx={{ width: '200px', marginBottom: '5px' }}
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={this.state.askFrom}
-                    className="apc-card-icon-select"
-                    onChange={this.handleAskFromChange}>
-                    <MenuItem value={0}>
-                      <em>From</em>
-                    </MenuItem>
-                    <MenuItem value={1}>Warehouse 1</MenuItem>
-                    <MenuItem value={2}>Warehouse 2</MenuItem>
-                    <MenuItem value={3}>Warehouse 3</MenuItem>
-                  </Select>
-                  <Select
-                    sx={{ width: '200px' }}
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={this.state.askTo}
-                    className="apc-card-icon-select"
-                    onChange={this.handleAskToChange}>
-                    <MenuItem value={0}>
-                      <em>To</em>
-                    </MenuItem>
-                    <MenuItem value={1}>Warehouse 1</MenuItem>
-                    <MenuItem value={2}>Warehouse 2</MenuItem>
-                    <MenuItem value={3}>Warehouse 3</MenuItem>
-                  </Select>
-                  <InputBase
-=======
-
-              <div className="stockmutation-banner-add">
-                <IconButton onClick={this.addOpen}>
-                  <NoteAdd />
-                </IconButton>
-                <Modal
-                  open={this.state.setAdd}
-                  onClose={this.addClose}
-                  aria-labelledby="modal-modal-title"
-                  aria-describedby="modal-modal-description">
-                  <Box
->>>>>>> a9a833f5 (features MWA34)
-                    sx={{
-                      position: 'absolute',
-                      top: '50%',
-                      left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                      width: 400,
-                      bgcolor: 'background.paper',
-                      border: '2px solid #000',
-                      boxShadow: 24,
-                      p: 4,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                    }}>
-<<<<<<< HEAD
-                    Ask
-                  </Button>
-                </Box>
-              </Modal>
->>>>>>> cdbb567b (start MWA34)
-=======
-                    <FormControl sx={{ width: '200px', marginBottom: '15px' }}>
-                      <InputLabel id="demo-multiple-name-label">From</InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={this.state.askFrom}
-                        className="apc-card-icon-select"
-                        onChange={this.handleAskFromChange}>
-                        <MenuItem value={0}>
-                          <em>From</em>
-                        </MenuItem>
-                        <MenuItem value={1}>Warehouse 1</MenuItem>
-                        <MenuItem value={2}>Warehouse 2</MenuItem>
-                        <MenuItem value={3}>Warehouse 3</MenuItem>
-                      </Select>
-                    </FormControl>
-                    <FormControl sx={{ width: '200px' }}>
-                      <InputLabel id="demo-multiple-name-label">To</InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={this.state.askTo}
-                        className="apc-card-icon-select"
-                        onChange={this.handleAskToChange}>
-                        <MenuItem value={0}>
-                          <em>To</em>
-                        </MenuItem>
-                        {/* THE RIGHT */}
-                        {/* <MenuItem value={this.state.myWarehouse}>Warehouse {this.state.myWarehouse}</MenuItem> */}
-                        {/* THE TEST */}
-                        <MenuItem value={1}>Warehouse 1</MenuItem>
-                        <MenuItem value={2}>Warehouse 2</MenuItem>
-                        <MenuItem value={3}>Warehouse 3</MenuItem>
-                      </Select>
-                    </FormControl>
-                    <InputBase
-                      sx={{
-                        border: '1px solid grey',
-                        backgroundColor: 'white',
-                        width: '200px',
-                        paddingLeft: '10px',
-                      }}
-                      placeholder="Product ID"
-                      name="productValue"
-                      // value={this.state.productValue}
-                      inputProps={{ 'aria-label': 'Search' }}
-                      className="apc-card-input"
-                      onChange={this.inputHandler}
-
-                      // onChange={(e) => {
-                      //   this.setState({ ...this.state, productValue: e.target.value });
-                      // }}
-                    />
-                    <InputBase
-                      sx={{
-                        border: '1px solid grey',
-                        backgroundColor: 'white',
-                        width: '200px',
-                        paddingLeft: '10px',
-                      }}
-                      placeholder="Amount"
-                      name="quantityValue"
-                      // value={this.state.quantityValue}
-                      inputProps={{ 'aria-label': 'Search' }}
-                      className="apc-card-input"
-                      onChange={this.inputHandler}
-
-                      // onChange={(e) => {
-                      //   this.setState({ ...this.state, quantityValue: e.target.value });
-                      // }}
-                    />
-
-                    <Button
-                      sx={{
-                        borderRadius: '20px',
-                        backgroundColor: 'rgb(153,255,255,0.9)',
-                        fontSize: '8px',
-                        fontFamily: 'Lora',
-                        color: 'black',
-                        marginLeft: '5px',
-                      }}
-                      variant="contained"
-                      className="apc-card-edit"
-                      onClick={() => {
-                        if (this.state.askFrom !== this.state.askTo) {
-                          this.askMutation(
-                            this.state.askFrom,
-                            this.state.askTo,
-                            this.state.productValue,
-                            this.state.quantityValue
-                          );
-                        } else {
-                          alert('Warehouse From dan Warehouse To tidak boleh sama!');
-                        }
-                      }}>
-                      Ask
-                    </Button>
-                  </Box>
-                </Modal>
-              </div>
-              <div className="stockmutation-banner-menu">{this.menuHandler()}</div>
-            </div>
-
-            <div className="stockmutation-tab">
-              <Box sx={{ width: '100%', typography: 'body1' }}>
-                <TabContext value={this.state.value}>
-                  <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <TabList onChange={this.handleChange} aria-label="lab API tabs example">
-                      <Tab sx={{ marginLeft: '0px', fontFamily: 'Lora' }} label="Sales (Auto)" value="auto" />
-                      <Tab sx={{ marginLeft: '120px', fontFamily: 'Lora' }} label="WH (Manual)" value="manual" />
-                    </TabList>
-                  </Box>
-
-                  <TabPanel value="auto">{this.mutationCard()}</TabPanel>
-
-                  <TabPanel value="manual">{this.mutationCard()}</TabPanel>
-                </TabContext>
-              </Box>
->>>>>>> a9a833f5 (features MWA34)
             </div>
           </div>
         </Container>

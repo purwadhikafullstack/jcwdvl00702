@@ -1,9 +1,5 @@
 const {
-<<<<<<< HEAD
   models: { Product, Stock, Stockmutation, Stockhistory },
-=======
-  models: { Product, Stock },
->>>>>>> 6b675599 (add stock done)
 } = require('../models');
 const router = require('express').Router();
 const multer = require('multer');
@@ -102,35 +98,6 @@ router.get('/home-product/', async (req, res) => {
 // GET PRODUCT LIST
 router.get('/get-product', async (req, res) => {
   try {
-=======
-// Get Product
-router.get('/get-product', async (req, res) => {
-  try {
-    // let searchQuery = req.query.searchQuery || '';
-    // console.log('req query ges', req.query.searchQuery);
-    // let getProduct = await Product.findAll({
-    //   where: {
-    //     name: { [Op.like]: '%' + searchQuery + '%' },
-    //   },
-    // });
-
-    // console.log('ini get Product', getProduct[0].picture);
-    // console.log('ini lenght get product', getProduct.length);
-
-    // for (let i = 0; i < getProduct.length; i++) {
-    //   let picPathArray = getProduct[i].picture.split('\\');
-    //   let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
-    //   getProduct[i].picture = picPath;
-    // }
-
-    // res.status(200).json(getProduct);
-
->>>>>>> 5c462b23 (MWA 33)
-=======
-// GET PRODUCT LIST
-router.get('/get-product', async (req, res) => {
-  try {
->>>>>>> 0aa7a103 (Features MWA34)
     const page = parseInt(req.query.page) || 0;
     const limit = 3;
     const search = req.query.search || '';
@@ -778,6 +745,7 @@ router.patch('/update-stock/:id', async (req, res) => {
       product_id: req.params.id,
     },
   });
+  const theDate = new Date();
 
   try {
     if (req.body.count === 'add') {
@@ -815,7 +783,11 @@ router.patch('/update-stock/:id', async (req, res) => {
         product_picture: theProduct.picture,
         math: '+',
         quantity: parseInt(req.body.number),
+        start: theStock.quantity,
+        end: parseInt(theStock.quantity) + parseInt(req.body.number),
         requester: 'super_admin',
+        year: theDate.getFullYear(),
+        month: theDate.getMonth() + 1,
       });
     } else {
       const updateStock = await Product.update(
@@ -843,6 +815,7 @@ router.patch('/update-stock/:id', async (req, res) => {
           plain: true,
         }
       );
+
       const newMutation = await Stockhistory.create({
         stock_id: theStock.id,
         stockmutation_id: 'update_stock',
@@ -852,7 +825,11 @@ router.patch('/update-stock/:id', async (req, res) => {
         product_picture: theProduct.picture,
         math: '-',
         quantity: parseInt(req.body.number),
+        start: theStock.quantity,
+        end: parseInt(theStock.quantity) - parseInt(req.body.number),
         requester: 'super_admin',
+        year: theDate.getFullYear(),
+        month: theDate.getMonth() + 1,
       });
     }
     const endStock = await Stock.findOne({
@@ -888,7 +865,7 @@ router.get('/get-mutation', async (req, res) => {
       ...(req.query.search && {
         where: {
           product_id: {
-            [Op.like]: `%${req.query.search}%`,
+            [Op.eq]: `%${req.query.search}%`,
           },
         },
       }),
@@ -904,7 +881,7 @@ router.get('/get-mutation', async (req, res) => {
       ...(req.query.search && {
         where: {
           product_id: {
-            [Op.like]: `%${req.query.search}%`,
+            [Op.eq]: `%${req.query.search}%`,
           },
         },
       }),
@@ -982,6 +959,12 @@ router.patch('/stock-mutation', async (req, res) => {
       warehouse_id: theMutation.requester,
     },
   });
+  const theProduct = await Product.findOne({
+    where: {
+      id: theMutation.product_id,
+    },
+  });
+  const theDate = new Date();
   const historyData = [
     {
       stock_id: theStockFrom.id,
@@ -992,7 +975,11 @@ router.patch('/stock-mutation', async (req, res) => {
       product_picture: theMutation.product_picture,
       math: '-',
       quantity: theMutation.quantity,
+      start: theStockFrom.quantity,
+      end: theStockFrom.quantity - parseInt(theMutation.quantity),
       requester: theMutation.requester,
+      year: theDate.getFullYear(),
+      month: theDate.getMonth() + 1,
     },
     {
       stock_id: theStockTo.id,
@@ -1003,7 +990,11 @@ router.patch('/stock-mutation', async (req, res) => {
       product_picture: theMutation.product_picture,
       math: '+',
       quantity: theMutation.quantity,
+      start: theStockTo.quantity,
+      end: theStockTo.quantity + parseInt(theMutation.quantity),
       requester: theMutation.requester,
+      year: theDate.getFullYear(),
+      month: theDate.getMonth() + 1,
     },
   ];
   const historyDataAlternate = [
@@ -1016,7 +1007,11 @@ router.patch('/stock-mutation', async (req, res) => {
       product_picture: theMutation.product_picture,
       math: '-',
       quantity: theStockFrom.quantity,
+      start: theStockFrom.quantity,
+      end: theStockFrom.quantity - parseInt(theStockFrom.quantity),
       requester: theMutation.requester,
+      year: theDate.getFullYear(),
+      month: theDate.getMonth() + 1,
     },
     {
       stock_id: theStockTo.id,
@@ -1027,7 +1022,11 @@ router.patch('/stock-mutation', async (req, res) => {
       product_picture: theMutation.product_picture,
       math: '+',
       quantity: theStockFrom.quantity,
+      start: theStockTo.quantity,
+      end: theStockTo.quantity + parseInt(theStockFrom.quantity),
       requester: theMutation.requester,
+      year: theDate.getFullYear(),
+      month: theDate.getMonth() + 1,
     },
   ];
 
@@ -1140,6 +1139,103 @@ router.patch('/stock-mutation', async (req, res) => {
         res.status(500).json(err);
       }
     }
+  }
+});
+
+// GET STOCK HISTORY LIST
+router.get('/get-stock-history', async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 0;
+    const limit = 3;
+    const search = req.query.search || '';
+    const offset = limit * page;
+    const productLength = await Product.findAll({});
+    const sort = req.query.sort || 'id';
+
+    const resultCount = await Product.findAll({
+      ...(req.query.search && {
+        where: {
+          [Op.or]: [
+            {
+              id: {
+                [Op.eq]: req.query.search,
+              },
+            },
+            {
+              name: {
+                [Op.like]: `%${req.query.search}%`,
+              },
+            },
+          ],
+        },
+      }),
+    });
+    const result = await Product.findAll({
+      limit: limit,
+      offset: page * limit,
+      order: [[sort, 'ASC']],
+      ...(req.query.search && {
+        where: {
+          [Op.or]: [
+            {
+              id: {
+                [Op.eq]: req.query.search,
+              },
+            },
+            {
+              name: {
+                [Op.like]: `%${req.query.search}%`,
+              },
+            },
+          ],
+        },
+      }),
+    });
+    const pages = Math.ceil(resultCount.length / limit);
+
+    res.status(200).json({
+      result: result,
+      pages: pages,
+      page: page,
+      order: sort,
+      search: search,
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// GET STOCK HISTORY DETAIL BY ID
+router.get('/product-stock-history/:id', async (req, res) => {
+  const theHistory = await Stockhistory.findAll({
+    where: {
+      product_id: req.params.id,
+    },
+  });
+  const getProduct = await Product.findOne({
+    where: {
+      id: req.params.id,
+    },
+  });
+  const theYear = req.query.year;
+  const theMonth = req.query.month;
+
+  try {
+    let picPathArray = getProduct.picture.split('/');
+    let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
+    getProduct.picture = picPath;
+
+    const getHistory = await Stockhistory.findAll({
+      where: {
+        product_id: req.params.id,
+        year: theYear,
+        month: theMonth,
+      },
+    });
+
+    res.status(200).json({ getProduct, getHistory });
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
 
@@ -1440,59 +1536,92 @@ module.exports = router;
 <<<<<<< HEAD
 =======
 
-// Maria Pagination - Search - Sort
+    const resultCount = await Product.findAll({
+      ...(req.query.search && {
+        where: {
+          [Op.or]: [
+            {
+              id: {
+                [Op.eq]: req.query.search,
+              },
+            },
+            {
+              name: {
+                [Op.like]: `%${req.query.search}%`,
+              },
+            },
+          ],
+        },
+      }),
+    });
+    const result = await Product.findAll({
+      limit: limit,
+      offset: page * limit,
+      order: [[sort, 'ASC']],
+      ...(req.query.search && {
+        where: {
+          [Op.or]: [
+            {
+              id: {
+                [Op.eq]: req.query.search,
+              },
+            },
+            {
+              name: {
+                [Op.like]: `%${req.query.search}%`,
+              },
+            },
+          ],
+        },
+      }),
+    });
+    const pages = Math.ceil(resultCount.length / limit);
 
-// const {
-//   models: { Example },
-// } = require('../models');
-// const router = require('express').Router();
-// const customer = require('../models/example');
-// // const { Sequelize, Op } = require('sequelize');
-// const Sequelize = require('sequelize');
-// const Op = Sequelize.Op;
+    res.status(200).json({
+      result: result,
+      pages: pages,
+      page: page,
+      order: sort,
+      search: search,
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
-// router.get('/get', async (req, res) => {
-//   const page = parseInt(req.query.page) || 0;
-//   const limit = 2;
-//   const search = req.query.search || '';
-//   const offset = limit * page;
-//   const exampleLength = await Example.findAll({});
+// GET STOCK HISTORY DETAIL BY ID
+router.get('/product-stock-history/:id', async (req, res) => {
+  const theHistory = await Stockhistory.findAll({
+    where: {
+      product_id: req.params.id,
+    },
+  });
+  const getProduct = await Product.findOne({
+    where: {
+      id: req.params.id,
+    },
+  });
+  const theYear = req.query.year;
+  const theMonth = req.query.month;
 
-//   const sort = req.query.sort || 'id';
+  try {
+    let picPathArray = getProduct.picture.split('/');
+    let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
+    getProduct.picture = picPath;
 
-//   const result = await Example.findAll({
-//     limit: limit,
-//     offset: page * limit,
-//     order: [[sort, 'ASC']],
-//     ...(req.query.search && {
-//       where: {
-//         name: {
-//           [Op.like]: `%${req.query.search}%`,
-//         },
-//       },
-//     }),
-//   });
-//   const resultCount = await Example.findAll({
-//     // offset: page * limit,
-//     // order: [[sort, 'ASC']],
-//     ...(req.query.search && {
-//       where: {
-//         name: {
-//           [Op.like]: `%${req.query.search}%`,
-//         },
-//       },
-//     }),
-//   });
-//   const pages = Math.ceil(resultCount.length / limit);
+    const getHistory = await Stockhistory.findAll({
+      where: {
+        product_id: req.params.id,
+        year: theYear,
+        month: theMonth,
+      },
+    });
 
-//   res.json({
-//     result: result,
-//     pages: pages,
-//     page: page,
-//     order: sort,
-//     search: search,
-//   });
-// });
+    res.status(200).json({ getProduct, getHistory });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 // module.exports = router;
 >>>>>>> 5c462b23 (MWA 33)
