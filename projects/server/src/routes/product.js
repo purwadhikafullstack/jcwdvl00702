@@ -102,11 +102,39 @@ router.get('/home-product/', async (req, res) => {
 // GET PRODUCT LIST
 router.get('/get-product', async (req, res) => {
   try {
+=======
+// Get Product
+router.get('/get-product', async (req, res) => {
+  try {
+    // let searchQuery = req.query.searchQuery || '';
+    // console.log('req query ges', req.query.searchQuery);
+    // let getProduct = await Product.findAll({
+    //   where: {
+    //     name: { [Op.like]: '%' + searchQuery + '%' },
+    //   },
+    // });
+
+    // console.log('ini get Product', getProduct[0].picture);
+    // console.log('ini lenght get product', getProduct.length);
+
+    // for (let i = 0; i < getProduct.length; i++) {
+    //   let picPathArray = getProduct[i].picture.split('\\');
+    //   let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
+    //   getProduct[i].picture = picPath;
+    // }
+
+    // res.status(200).json(getProduct);
+
+>>>>>>> 5c462b23 (MWA 33)
     const page = parseInt(req.query.page) || 0;
     const limit = 3;
     const search = req.query.search || '';
     const offset = limit * page;
     const productLength = await Product.findAll({});
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5c462b23 (MWA 33)
     const sort = req.query.sort || 'id';
 
     const result = await Product.findAll({
@@ -122,6 +150,11 @@ router.get('/get-product', async (req, res) => {
       }),
     });
     const resultCount = await Product.findAll({
+<<<<<<< HEAD
+=======
+      // offset: page * limit,
+      // order: [[sort, 'ASC']],
+>>>>>>> 5c462b23 (MWA 33)
       ...(req.query.search && {
         where: {
           name: {
@@ -163,9 +196,15 @@ router.get('/get-product/:id', async (req, res) => {
     });
     const stockWh = [getStock[0].quantity, getStock[1].quantity, getStock[2].quantity];
 
+<<<<<<< HEAD
+=======
+    // console.log('getstock', getStock);
+
+>>>>>>> 5c462b23 (MWA 33)
     res.status(200).json({ getProduct, stockWh });
   } catch (err) {
     res.status(500).json(err);
+    console.log('err', err);
   }
 });
 
@@ -722,4 +761,170 @@ router.get('/product-stock-history/:id', async (req, res) => {
   }
 });
 
+// UPDATE STOCK
+
+router.patch('/update-stock/:id', async (req, res) => {
+  const theProduct = await Product.findOne({
+    where: {
+      id: req.params.id,
+    },
+  });
+  const theStock = await Stock.findOne({
+    where: {
+      warehouse_id: req.body.wh_id,
+      product_id: req.params.id,
+    },
+  });
+  const stockId = await Stock.findOne({
+    where: {
+      warehouse_id: req.body.wh_id,
+      product_id: req.params.id,
+    },
+  });
+
+  try {
+    if (req.body.count === 'add') {
+      const updateStock = await Product.update(
+        {
+          quantity_total: theProduct.quantity_total + parseInt(req.body.number),
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+          returning: true,
+          plain: true,
+        }
+      );
+      const changeStock = await Stock.update(
+        {
+          quantity: theStock.quantity + parseInt(req.body.number),
+        },
+        {
+          where: {
+            warehouse_id: req.body.wh_id,
+            product_id: req.params.id,
+          },
+          returning: true,
+          plain: true,
+        }
+      );
+      const newMutation = await Stockmutation.create({
+        stock_id: stockId.id,
+        warehouse_id: stockId.warehouse_id,
+        product_id: stockId.product_id,
+        quantity: '+' + req.body.number,
+        requester: 'admin name',
+        status: 'accepted',
+        move_type: 'Update stock',
+      });
+    } else {
+      const updateStock = await Product.update(
+        {
+          quantity_total: theProduct.quantity_total - parseInt(req.body.number),
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+          returning: true,
+          plain: true,
+        }
+      );
+      const changeStock = await Stock.update(
+        {
+          quantity: theStock.quantity - parseInt(req.body.number),
+        },
+        {
+          where: {
+            warehouse_id: req.body.wh_id,
+            product_id: req.params.id,
+          },
+          returning: true,
+          plain: true,
+        }
+      );
+      const newMutation = await Stockmutation.create({
+        stock_id: stockId.id,
+        warehouse_id: stockId.warehouse_id,
+        product_id: stockId.product_id,
+        quantity: '+' + req.body.number,
+        requester: 'admin name',
+        status: 'accepted',
+        move_type: 'Update stock',
+      });
+    }
+    const endStock = await Stock.findOne({
+      where: {
+        warehouse_id: req.body.wh_id,
+        product_id: req.params.id,
+      },
+    });
+
+    res.status(201).json(endStock.dataValues.quantity);
+  } catch (err) {
+    res.status(500).json(err);
+    console.log('err', err);
+  }
+});
+
 module.exports = router;
+<<<<<<< HEAD
+=======
+
+// Maria Pagination - Search - Sort
+
+// const {
+//   models: { Example },
+// } = require('../models');
+// const router = require('express').Router();
+// const customer = require('../models/example');
+// // const { Sequelize, Op } = require('sequelize');
+// const Sequelize = require('sequelize');
+// const Op = Sequelize.Op;
+
+// router.get('/get', async (req, res) => {
+//   const page = parseInt(req.query.page) || 0;
+//   const limit = 2;
+//   const search = req.query.search || '';
+//   const offset = limit * page;
+//   const exampleLength = await Example.findAll({});
+
+//   const sort = req.query.sort || 'id';
+
+//   const result = await Example.findAll({
+//     limit: limit,
+//     offset: page * limit,
+//     order: [[sort, 'ASC']],
+//     ...(req.query.search && {
+//       where: {
+//         name: {
+//           [Op.like]: `%${req.query.search}%`,
+//         },
+//       },
+//     }),
+//   });
+//   const resultCount = await Example.findAll({
+//     // offset: page * limit,
+//     // order: [[sort, 'ASC']],
+//     ...(req.query.search && {
+//       where: {
+//         name: {
+//           [Op.like]: `%${req.query.search}%`,
+//         },
+//       },
+//     }),
+//   });
+//   const pages = Math.ceil(resultCount.length / limit);
+
+//   res.json({
+//     result: result,
+//     pages: pages,
+//     page: page,
+//     order: sort,
+//     search: search,
+//   });
+// });
+
+// module.exports = router;
+>>>>>>> 5c462b23 (MWA 33)

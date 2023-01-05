@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
+<<<<<<< HEAD
       product_name: {
         allowNull: false,
         type: DataTypes.STRING,
@@ -26,6 +27,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
+=======
+      quantity: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+>>>>>>> 5c462b23 (MWA 33)
       requester: {
         allowNull: false,
         type: DataTypes.STRING,

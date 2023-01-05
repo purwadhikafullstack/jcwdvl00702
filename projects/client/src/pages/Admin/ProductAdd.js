@@ -70,8 +70,11 @@ export default function ProductAdd() {
 <<<<<<< HEAD
 =======
       console.log('dataaa', data);
+<<<<<<< HEAD
       // Axios.post('http://localhost:3300/api/product/add-product', { ...data, quantity: qtyWh })
 >>>>>>> 6b675599 (add stock done)
+=======
+>>>>>>> 5c462b23 (MWA 33)
       Axios.post('http://localhost:3300/api/product/add-product', data)
 
         .then(() => {

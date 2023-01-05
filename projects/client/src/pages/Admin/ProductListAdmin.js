@@ -25,6 +25,13 @@ class ProductListAdmin extends React.Component {
     pages: 0,
     sort: '',
     search: '',
+<<<<<<< HEAD
+=======
+    // page: 1,
+    // maxPage: 0,
+    // itemPerPage: 4,
+    // keyWord: '',
+>>>>>>> 5c462b23 (MWA 33)
     isSearch: false,
   };
 
@@ -36,6 +43,14 @@ class ProductListAdmin extends React.Component {
     this.setState({ ...this.state, isSearch: false });
   };
 
+<<<<<<< HEAD
+=======
+  // filterHandler = () => {
+  //   this.fetchProducts();
+  //   this.setState({ ...this.state, keyWord: '' });
+  // };
+
+>>>>>>> 5c462b23 (MWA 33)
   searchHandler = (event) => {
     this.setState({ ...this.state, search: event.target.value });
   };
@@ -57,7 +72,17 @@ class ProductListAdmin extends React.Component {
         search ? search : this.state.search
       }`
     )
+<<<<<<< HEAD
       .then((result) => {
+=======
+
+      // Axios.get(`http://localhost:3300/api/product/get-product/
+      // ?searchQuery=${this.state.keyWord}`)
+
+      .then((result) => {
+        // this.setState({ productList: result.data, maxPage: Math.ceil(result.data.length / this.state.itemPerPage) });
+        console.log(result);
+>>>>>>> 5c462b23 (MWA 33)
         this.setState({
           ...this.state,
           productList: [...result.data.result],
@@ -92,6 +117,17 @@ class ProductListAdmin extends React.Component {
     this.props.history.push(`/products-management-detail/${id}`);
   };
 
+<<<<<<< HEAD
+=======
+  // pageHandler = () => {
+  //   if (this.state.page < this.state.maxPage) {
+  //     this.setState({ page: this.state.page + 1 });
+  //   } else if (this.state.page > 1) {
+  //     this.setState({ page: this.state.page - 1 });
+  //   }
+  // };
+
+>>>>>>> 5c462b23 (MWA 33)
   componentDidMount() {
     this.fetchProducts(0);
   }
@@ -160,6 +196,12 @@ class ProductListAdmin extends React.Component {
   };
 
   renderProduct = () => {
+<<<<<<< HEAD
+=======
+    // const beginningIndex = (this.state.page - 1) * this.state.itemPerPage;
+    // const currentData = this.state.productList.slice(beginningIndex, beginningIndex + this.state.itemPerPage);
+
+>>>>>>> 5c462b23 (MWA 33)
     return this.state.productList.map((val, index) => {
       return (
         <div className="plc-main">
@@ -170,9 +212,9 @@ class ProductListAdmin extends React.Component {
             <div className="plc-detail-name">{val.name}</div>
             <div className="plc-detail-subname-2">Product ID: {val.id}</div>
             <div className="plc-detail-subname">
-              <div className="plc-detail-subname-1">
+              {/* <div className="plc-detail-subname-1">
                 <SportsSoccerOutlined />
-              </div>
+              </div> */}
               <div className="plc-detail-subname-2">{val.category}</div>
             </div>
             <div className="plc-detail-bottom">
@@ -199,7 +241,11 @@ class ProductListAdmin extends React.Component {
                 }}
                 variant="contained"
                 className="plc-detail-bottom-detail"
+<<<<<<< HEAD
                 onClick={() => this.detailBtnHandler(val.id)}>
+=======
+                onClick={() => this.editBtnHandler(val.id)}>
+>>>>>>> 5c462b23 (MWA 33)
                 Detail
               </Button>
             </div>
@@ -210,9 +256,15 @@ class ProductListAdmin extends React.Component {
   };
 
   render() {
+    console.log('prodlist', this.state.productList);
+
     return (
       <>
         <Container maxWidth="xs" sx={{ backgroundColor: 'white' }} classname="mobile">
+<<<<<<< HEAD
+=======
+          {/* {console.log(this.state.productList)} */}
+>>>>>>> 5c462b23 (MWA 33)
           <div className="pladmin-main">
             <div className="pladmin-banner">
               <div className="pladmin-banner-logo">
@@ -229,9 +281,19 @@ class ProductListAdmin extends React.Component {
                       inputProps={{ 'aria-label': 'Search' }}
                       className="pladmin-search"
                       onChange={this.searchHandler}
+<<<<<<< HEAD
                       endAdornment={
                         <InputAdornment position="end">
                           <IconButton edge="end" onClick={() => this.fetchProducts(0, '', this.state.search)}>
+=======
+                      // name="keyWord"
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            edge="end"
+                            // onClick={this.filterHandler}
+                            onClick={() => this.fetchProducts(0, '', this.state.search)}>
+>>>>>>> 5c462b23 (MWA 33)
                             <Search />
                           </IconButton>
                         </InputAdornment>
@@ -286,7 +348,27 @@ class ProductListAdmin extends React.Component {
               </div>
               <div className="pladmin-banner-menu">{this.menuHandler()}</div>
             </div>
+<<<<<<< HEAD
             <div className="pladmin-content">{this.renderProduct()}</div>
+=======
+            <div className="pladmin-content">
+              {this.renderProduct()}
+              {/* {this.state.productList.map((ListProduct, index) => (
+                <div key={ListProduct.id}>
+                  <div
+                    className="
+                      product-list">
+                    <img src="https://cf.shopee.co.id/file/d7622a165c1b915b19e63e1ebd246ba4" alt="Product Image" />
+                    <div>{ListProduct.name}</div>
+                    <div>{ListProduct.price}</div>
+                  </div>
+                </div>
+              ))} */}
+              {/* <Stack spacing={1} sx={{ position: 'fixed', top: '78%', width: '110%', fontFamily: 'Lora' }}>
+              <Pagination count={10} onChange={this.pageHandler} />
+            </Stack> */}
+            </div>
+>>>>>>> 5c462b23 (MWA 33)
           </div>
         </Container>
 
