@@ -36,17 +36,11 @@ class ProductListAdmin extends React.Component {
     this.setState({ ...this.state, isSearch: false });
   };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
   // filterHandler = () => {
   //   this.fetchProducts();
   //   this.setState({ ...this.state, keyWord: '' });
   // };
 
->>>>>>> 5c462b23 (MWA 33)
-=======
->>>>>>> 0aa7a103 (Features MWA34)
   searchHandler = (event) => {
     this.setState({ ...this.state, search: event.target.value });
   };
@@ -103,7 +97,6 @@ class ProductListAdmin extends React.Component {
     this.props.history.push(`/products-management-detail/${id}`);
   };
 
->>>>>>> 0aa7a103 (Features MWA34)
   componentDidMount() {
     this.fetchProducts(0);
   }
@@ -225,13 +218,6 @@ class ProductListAdmin extends React.Component {
     return (
       <>
         <Container maxWidth="xs" sx={{ backgroundColor: 'white' }} classname="mobile">
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-          {/* {console.log(this.state.productList)} */}
->>>>>>> 5c462b23 (MWA 33)
-=======
->>>>>>> 0aa7a103 (Features MWA34)
           <div className="pladmin-main">
             <div className="pladmin-banner">
               <div className="pladmin-banner-logo">
@@ -306,7 +292,6 @@ class ProductListAdmin extends React.Component {
               <div className="pladmin-banner-menu">{this.menuHandler()}</div>
             </div>
             <div className="pladmin-content">{this.renderProduct()}</div>
->>>>>>> 0aa7a103 (Features MWA34)
           </div>
         </Container>
 

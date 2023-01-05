@@ -67,17 +67,8 @@ export default function ProductAdd() {
       data.append('wh_2', qtyWh[1].qty);
       data.append('wh_3', qtyWh[2].qty);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-      console.log('dataaa', data);
-<<<<<<< HEAD
       // Axios.post('http://localhost:3300/api/product/add-product', { ...data, quantity: qtyWh })
->>>>>>> 6b675599 (add stock done)
-=======
->>>>>>> 5c462b23 (MWA 33)
-=======
->>>>>>> 0aa7a103 (Features MWA34)
+
       Axios.post('http://localhost:3300/api/product/add-product', data)
         .then(() => {
           alert('Product Added!');
@@ -88,14 +79,7 @@ export default function ProductAdd() {
     },
   });
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   // UPDATE STOCK
-=======
->>>>>>> 6b675599 (add stock done)
-=======
-  // UPDATE STOCK
->>>>>>> 0aa7a103 (Features MWA34)
   const warehouseStock = (id) => {
     return (
       <div className="pdadd-stock-wh">
@@ -223,10 +207,7 @@ export default function ProductAdd() {
           <hr className="splitter" />
         </div>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         <div className="pdadd-stock">{qtyWh.map((item, index) => warehouseStock(index))}</div>
-=======
         <div className="pdadd-stock">
           {qtyWh.map((item, index) => warehouseStock(index))}
 
@@ -234,10 +215,7 @@ export default function ProductAdd() {
           {warehouseStock('B')}
           {warehouseStock('C')} */}
         </div>
->>>>>>> 6b675599 (add stock done)
-=======
         <div className="pdadd-stock">{qtyWh.map((item, index) => warehouseStock(index))}</div>
->>>>>>> a9a833f5 (features MWA34)
 
         <div className="pdadd-button">
           <button class="pdadd-button-2" type="submit" onClick={formik.handleSubmit}>
