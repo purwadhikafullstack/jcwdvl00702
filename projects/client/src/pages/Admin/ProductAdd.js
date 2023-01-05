@@ -68,6 +68,7 @@ export default function ProductAdd() {
       data.append('wh_3', qtyWh[2].qty);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
       console.log('dataaa', data);
 <<<<<<< HEAD
@@ -75,6 +76,8 @@ export default function ProductAdd() {
 >>>>>>> 6b675599 (add stock done)
 =======
 >>>>>>> 5c462b23 (MWA 33)
+=======
+>>>>>>> 0aa7a103 (Features MWA34)
       Axios.post('http://localhost:3300/api/product/add-product', data)
         .then(() => {
           alert('Product Added!');
@@ -86,9 +89,13 @@ export default function ProductAdd() {
   });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   // UPDATE STOCK
 =======
 >>>>>>> 6b675599 (add stock done)
+=======
+  // UPDATE STOCK
+>>>>>>> 0aa7a103 (Features MWA34)
   const warehouseStock = (id) => {
     return (
       <div className="pdadd-stock-wh">

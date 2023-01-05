@@ -26,12 +26,15 @@ class ProductListAdmin extends React.Component {
     sort: '',
     search: '',
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     // page: 1,
     // maxPage: 0,
     // itemPerPage: 4,
     // keyWord: '',
 >>>>>>> 5c462b23 (MWA 33)
+=======
+>>>>>>> 0aa7a103 (Features MWA34)
     isSearch: false,
   };
 
@@ -44,6 +47,7 @@ class ProductListAdmin extends React.Component {
   };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   // filterHandler = () => {
   //   this.fetchProducts();
@@ -51,6 +55,8 @@ class ProductListAdmin extends React.Component {
   // };
 
 >>>>>>> 5c462b23 (MWA 33)
+=======
+>>>>>>> 0aa7a103 (Features MWA34)
   searchHandler = (event) => {
     this.setState({ ...this.state, search: event.target.value });
   };
@@ -73,6 +79,7 @@ class ProductListAdmin extends React.Component {
       }`
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
       .then((result) => {
 =======
 
@@ -83,6 +90,9 @@ class ProductListAdmin extends React.Component {
         // this.setState({ productList: result.data, maxPage: Math.ceil(result.data.length / this.state.itemPerPage) });
         console.log(result);
 >>>>>>> 5c462b23 (MWA 33)
+=======
+      .then((result) => {
+>>>>>>> 0aa7a103 (Features MWA34)
         this.setState({
           ...this.state,
           productList: [...result.data.result],
@@ -113,6 +123,7 @@ class ProductListAdmin extends React.Component {
   };
 
   // EDIT BUTTON HANDLER
+<<<<<<< HEAD
   detailBtnHandler = (id) => {
     this.props.history.push(`/products-management-detail/${id}`);
   };
@@ -128,6 +139,12 @@ class ProductListAdmin extends React.Component {
   // };
 
 >>>>>>> 5c462b23 (MWA 33)
+=======
+  editBtnHandler = (id) => {
+    this.props.history.push(`/products-management-detail/${id}`);
+  };
+
+>>>>>>> 0aa7a103 (Features MWA34)
   componentDidMount() {
     this.fetchProducts(0);
   }
@@ -197,11 +214,14 @@ class ProductListAdmin extends React.Component {
 
   renderProduct = () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     // const beginningIndex = (this.state.page - 1) * this.state.itemPerPage;
     // const currentData = this.state.productList.slice(beginningIndex, beginningIndex + this.state.itemPerPage);
 
 >>>>>>> 5c462b23 (MWA 33)
+=======
+>>>>>>> 0aa7a103 (Features MWA34)
     return this.state.productList.map((val, index) => {
       return (
         <div className="plc-main">
@@ -212,9 +232,9 @@ class ProductListAdmin extends React.Component {
             <div className="plc-detail-name">{val.name}</div>
             <div className="plc-detail-subname-2">Product ID: {val.id}</div>
             <div className="plc-detail-subname">
-              {/* <div className="plc-detail-subname-1">
+              <div className="plc-detail-subname-1">
                 <SportsSoccerOutlined />
-              </div> */}
+              </div>
               <div className="plc-detail-subname-2">{val.category}</div>
             </div>
             <div className="plc-detail-bottom">
@@ -262,9 +282,12 @@ class ProductListAdmin extends React.Component {
       <>
         <Container maxWidth="xs" sx={{ backgroundColor: 'white' }} classname="mobile">
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
           {/* {console.log(this.state.productList)} */}
 >>>>>>> 5c462b23 (MWA 33)
+=======
+>>>>>>> 0aa7a103 (Features MWA34)
           <div className="pladmin-main">
             <div className="pladmin-banner">
               <div className="pladmin-banner-logo">
@@ -282,6 +305,7 @@ class ProductListAdmin extends React.Component {
                       className="pladmin-search"
                       onChange={this.searchHandler}
 <<<<<<< HEAD
+<<<<<<< HEAD
                       endAdornment={
                         <InputAdornment position="end">
                           <IconButton edge="end" onClick={() => this.fetchProducts(0, '', this.state.search)}>
@@ -294,6 +318,11 @@ class ProductListAdmin extends React.Component {
                             // onClick={this.filterHandler}
                             onClick={() => this.fetchProducts(0, '', this.state.search)}>
 >>>>>>> 5c462b23 (MWA 33)
+=======
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton edge="end" onClick={() => this.fetchProducts(0, '', this.state.search)}>
+>>>>>>> 0aa7a103 (Features MWA34)
                             <Search />
                           </IconButton>
                         </InputAdornment>
@@ -349,6 +378,7 @@ class ProductListAdmin extends React.Component {
               <div className="pladmin-banner-menu">{this.menuHandler()}</div>
             </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
             <div className="pladmin-content">{this.renderProduct()}</div>
 =======
             <div className="pladmin-content">
@@ -369,6 +399,9 @@ class ProductListAdmin extends React.Component {
             </Stack> */}
             </div>
 >>>>>>> 5c462b23 (MWA 33)
+=======
+            <div className="pladmin-content">{this.renderProduct()}</div>
+>>>>>>> 0aa7a103 (Features MWA34)
           </div>
         </Container>
 

@@ -65,8 +65,12 @@ class StockMutation extends React.Component {
     this.setState({ ...this.state, [name]: value });
 =======
     filter: '',
+<<<<<<< HEAD
     myWarehouse: '3',
 >>>>>>> a9a833f5 (features MWA34)
+=======
+    myWarehouse: '1',
+>>>>>>> 0aa7a103 (Features MWA34)
   };
 
   componentDidMount() {
@@ -235,17 +239,24 @@ class StockMutation extends React.Component {
   mutationCard = () => {
     return this.state.mutationList.map((val, index) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
       let picPathArray = val.product_picture.split('/');
       let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
       let productPicture = picPath;
 =======
 >>>>>>> a9a833f5 (features MWA34)
+=======
+      let picPathArray = val.product_picture.split('/');
+      let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
+      let productPicture = picPath;
+>>>>>>> 0aa7a103 (Features MWA34)
       if (this.state.myWarehouse !== val.warehouse_id && this.state.myWarehouse !== val.requester) {
         return null;
       } else {
         return (
           <div className="mutation-main">
             <div className="mutation-image">
+<<<<<<< HEAD
 <<<<<<< HEAD
               <img src={productPicture} className="mutation-product" alt="Product" />
             </div>
@@ -266,6 +277,9 @@ class StockMutation extends React.Component {
               />
 
               {/* <img src={val.product_picture} className="mutation-product" alt="Product Image" /> */}
+=======
+              <img src={productPicture} className="mutation-product" alt="Product" />
+>>>>>>> 0aa7a103 (Features MWA34)
             </div>
             <div className="mutation-detail">
               <div className="mutation-detail-name">{val.product_name}</div>
