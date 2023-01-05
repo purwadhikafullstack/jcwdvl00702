@@ -814,9 +814,9 @@ router.patch('/update-stock/:id', async (req, res) => {
         warehouse_id: stockId.warehouse_id,
         product_id: stockId.product_id,
         quantity: '+' + req.body.number,
-        requester: 'admin name',
-        status: 'accepted',
-        move_type: 'Update stock',
+        requester: req.body.requester,
+        status: 'done',
+        move_type: 'update stock',
       });
     } else {
       const updateStock = await Product.update(
@@ -848,10 +848,10 @@ router.patch('/update-stock/:id', async (req, res) => {
         stock_id: stockId.id,
         warehouse_id: stockId.warehouse_id,
         product_id: stockId.product_id,
-        quantity: '+' + req.body.number,
-        requester: 'admin name',
-        status: 'accepted',
-        move_type: 'Update stock',
+        quantity: '-' + req.body.number,
+        requester: req.body.requester,
+        status: 'done',
+        move_type: 'update stock',
       });
     }
     const endStock = await Stock.findOne({

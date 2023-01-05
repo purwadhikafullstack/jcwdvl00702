@@ -64,6 +64,13 @@ class StockMutation extends React.Component {
     this.setState({ ...this.state, [name]: value });
   };
 
+  inputHandler = (event) => {
+    const value = event.target.value;
+    const name = event.target.name;
+
+    this.setState({ ...this.state, [name]: value });
+  };
+
   handleChange = (event, value) => {
     this.setState({ ...this.state, value });
     this.fetchMutation(0, '', '', value);
@@ -86,6 +93,7 @@ class StockMutation extends React.Component {
   };
 
   askMutation = (from, to, product, quantity) => {
+<<<<<<< HEAD
     Axios.post(`http://localhost:3300/api/product/stock-mutation`, {
       from,
       to,
@@ -100,6 +108,10 @@ class StockMutation extends React.Component {
       .catch((error) => {
         alert('gagal');
       });
+=======
+    console.log('result', from, to, product, quantity);
+    this.setState({ ...this.state, setAdd: false });
+>>>>>>> cdbb567b (start MWA34)
   };
 
   handleAskFromChange = (event) => {
@@ -549,6 +561,7 @@ class StockMutation extends React.Component {
               <div className="stockmutation-banner-menu">{this.menuHandler()}</div>
             </div>
 
+<<<<<<< HEAD
             <div className="stockmutation-tab">
               <Box sx={{ width: '100%', typography: 'body1' }}>
                 <TabContext value={this.state.value}>
@@ -564,6 +577,120 @@ class StockMutation extends React.Component {
                   <TabPanel value="manual">{this.mutationCard()}</TabPanel>
                 </TabContext>
               </Box>
+=======
+            <div className="stockmutation-banner-add">
+              <IconButton onClick={this.addOpen}>
+                <NoteAdd />
+              </IconButton>
+              <Modal
+                open={this.state.setAdd}
+                onClose={this.addClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description">
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 400,
+                    bgcolor: 'background.paper',
+                    border: '2px solid #000',
+                    boxShadow: 24,
+                    p: 4,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}>
+                  <Select
+                    sx={{ width: '200px', marginBottom: '5px' }}
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={this.state.askFrom}
+                    className="apc-card-icon-select"
+                    onChange={this.handleAskFromChange}>
+                    <MenuItem value={0}>
+                      <em>From</em>
+                    </MenuItem>
+                    <MenuItem value={1}>Warehouse 1</MenuItem>
+                    <MenuItem value={2}>Warehouse 2</MenuItem>
+                    <MenuItem value={3}>Warehouse 3</MenuItem>
+                  </Select>
+                  <Select
+                    sx={{ width: '200px' }}
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={this.state.askTo}
+                    className="apc-card-icon-select"
+                    onChange={this.handleAskToChange}>
+                    <MenuItem value={0}>
+                      <em>To</em>
+                    </MenuItem>
+                    <MenuItem value={1}>Warehouse 1</MenuItem>
+                    <MenuItem value={2}>Warehouse 2</MenuItem>
+                    <MenuItem value={3}>Warehouse 3</MenuItem>
+                  </Select>
+                  <InputBase
+                    sx={{
+                      border: '1px solid grey',
+                      backgroundColor: 'white',
+                      width: '200px',
+                      paddingLeft: '10px',
+                    }}
+                    placeholder="Product ID"
+                    name="productValue"
+                    // value={this.state.productValue}
+                    inputProps={{ 'aria-label': 'Search' }}
+                    className="apc-card-input"
+                    onChange={this.inputHandler}
+
+                    // onChange={(e) => {
+                    //   this.setState({ ...this.state, productValue: e.target.value });
+                    // }}
+                  />
+                  <InputBase
+                    sx={{
+                      border: '1px solid grey',
+                      backgroundColor: 'white',
+                      width: '200px',
+                      paddingLeft: '10px',
+                    }}
+                    placeholder="Amount"
+                    name="quantityValue"
+                    // value={this.state.quantityValue}
+                    inputProps={{ 'aria-label': 'Search' }}
+                    className="apc-card-input"
+                    onChange={this.inputHandler}
+
+                    // onChange={(e) => {
+                    //   this.setState({ ...this.state, quantityValue: e.target.value });
+                    // }}
+                  />
+
+                  <Button
+                    sx={{
+                      borderRadius: '20px',
+                      backgroundColor: 'rgb(153,255,255,0.9)',
+                      fontSize: '8px',
+                      fontFamily: 'Lora',
+                      color: 'black',
+                      marginLeft: '5px',
+                    }}
+                    variant="contained"
+                    className="apc-card-edit"
+                    onClick={() => {
+                      this.askMutation(
+                        this.state.askFrom,
+                        this.state.askTo,
+                        this.state.productValue,
+                        this.state.quantityValue
+                      );
+                    }}>
+                    Ask
+                  </Button>
+                </Box>
+              </Modal>
+>>>>>>> cdbb567b (start MWA34)
             </div>
           </div>
         </Container>

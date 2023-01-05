@@ -51,10 +51,15 @@ export default function ProductDetailAdmin() {
   });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   const stateUsername = useSelector((state) => state.auth);
 
 =======
 >>>>>>> 5c462b23 (MWA 33)
+=======
+  const stateUsername = useSelector((state) => state.auth);
+
+>>>>>>> cdbb567b (start MWA34)
   const handleChange = (event) => {
     setDescript(event.target.value);
   };
@@ -153,19 +158,27 @@ export default function ProductDetailAdmin() {
   });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   const changeStock = (name, count, number, requester) => {
 =======
   const changeStock = (name, count, number) => {
 >>>>>>> 5c462b23 (MWA 33)
+=======
+  const changeStock = (name, count, number, requester) => {
+>>>>>>> cdbb567b (start MWA34)
     if (number >= 1) {
       Axios.patch(`http://localhost:3300/api/product/update-stock/${id}`, {
         wh_id: name + 1,
         count: count,
         number: number,
 <<<<<<< HEAD
+<<<<<<< HEAD
         requester: stateUsername.user.fullname,
 =======
 >>>>>>> 5c462b23 (MWA 33)
+=======
+        requester: stateUsername.user.fullname,
+>>>>>>> cdbb567b (start MWA34)
       })
         .then((data) => {
           resStock[name] = data.data;
