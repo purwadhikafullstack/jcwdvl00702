@@ -4,8 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import { ArrowBack, FavoriteBorder, StarHalf } from "@mui/icons-material";
 import { Link, useParams, useHistory } from "react-router-dom";
 import { Container } from "@mui/material";
-import { AuthContext } from "../context/AuthProvider";
-import {shallowEqual, useDispatch,useSelector} from 'react-redux'
+import {useDispatch,useSelector} from 'react-redux'
 
 export default function ProductDetail() {
 
@@ -15,7 +14,7 @@ export default function ProductDetail() {
     }),
   );
 
-  console.log("ini user UID:", user.customer_uid)
+  console.log("ini user UID:", user?.customer_uid)
 
 
   const { id } = useParams();
@@ -26,7 +25,7 @@ export default function ProductDetail() {
   const [qtyProduct, setQtyProduct] = useState(0)
  
    // Mengambil data product berdasarkan ID dari backend
-   const fetchProducts = () => {
+  const fetchProducts = () => {
     Axios.get(`http://localhost:3300/api/product/get-product/${id}`)
       .then((result) => {
         setState(result.data);
@@ -49,7 +48,7 @@ export default function ProductDetail() {
   // mengambil data untuk bikin kondisi add cart
 
   const getCart = () => {
-    Axios.get(`http://localhost:3300/api/cart/get-cart/${user.customer_uid}`)
+    Axios.get(`http://localhost:3300/api/cart/get-cart/${user?.customer_uid}`)
     .then((result) => {
       setCart(result.data);
       console.log('ini result data', result.data);
@@ -122,19 +121,19 @@ export default function ProductDetail() {
         }
       }
     } 
-
-   
-    
     }
-  
- 
+
   useEffect(() => {
     fetchProducts();
+  }, []);
+
+  useEffect(() => {
     getCart()
   }, []);
  
   return (
     <div className="pd-wrap">
+      {console.log(state,'render data')}
       <Container maxWidth="xs" className="container-product-detail">
         <div className="product-img">
           <Link to="/">
@@ -142,13 +141,13 @@ export default function ProductDetail() {
           </Link>
           <img
             className="detail-img"
-            src={state.picture}
+            src={state.getProduct?.picture}
           />
         </div>
         <div className="product-spec">
           <div className="product-title">
             <div className="desc-1">
-              <span className="desc-name">{state.name}</span>
+              <span className="desc-name">{state.getProduct?.name}</span>
               <span className="desc-icon">
                 <FavoriteBorder />
               </span>
@@ -166,17 +165,15 @@ export default function ProductDetail() {
             <div>
               <div className="desc">Description</div>
               <div className="desc-word">
-               {state.ProductDetail}
+               {state.getProduct?.product_detail}
               </div>
             </div>
             <div className="spec-select">
               <div className="spec-1">
                 <div className="spec-size">Size</div>
                 <div className="spec-selector">
-                  <button className="spec-size-select">39</button>
-                  <button className="spec-size-select">40</button>
-                  <button className="spec-size-select">41</button>
-                  <button className="spec-size-select">42</button>
+                  <div>Current Stock :</div>
+                  <div className="spec-size-select">{state.getProduct?.quantity_total}</div>
                 </div>
               </div>
               <div className="spec-2">
@@ -199,21 +196,27 @@ export default function ProductDetail() {
             </div>
             <div className="spec-qty">
               <div className="spec-qty-title">Quantity</div>
-              <div className="spec-qty-selector">
-                <span className="sub-qty-select" onClick={minQtyHandler}>-</span>
-                <span className="sub-qty">{qtyProduct}</span>
-                <span className="sub-qty-select" onClick={addQtyHandler}>+</span>
-              </div>
+              {
+                state.getProduct?.quantity_total==0 ?
+                <div>Out of stock, please wait for our restock! </div>
+                : 
+                <div className="spec-qty-selector">
+                  <span className="sub-qty-select" onClick={minQtyHandler}>-</span>
+                  <span className="sub-qty">{qtyProduct}</span>
+                  <span className="sub-qty-select" onClick={addQtyHandler}>+</span>
+                </div>
+              }
+              
             </div>
           </div>
           <hr className="splitter" />
           <div className="pay-segment">
             <div className="pricing">
               <div className="price-title">Total Price</div>
-              <div className="price">{state.price}</div>
+              <div className="price">{state.getProduct?.price}</div>
             </div>
             <div>
-              <button className="add-cart" onClick={addToCart}>Add to Cart</button>
+              <button disabled={state.getProduct?.quantity_total==0} className="add-cart" onClick={addToCart}>Add to Cart</button>
             </div>
           </div>
         </div>

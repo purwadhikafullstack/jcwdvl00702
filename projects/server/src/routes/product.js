@@ -148,7 +148,7 @@ router.get('/get-product/:id', async (req, res) => {
         id: req.params.id,
       },
     });
-    let picPathArray = getProduct.picture.split('/');
+    let picPathArray = getProduct.picture.split('\\');
     let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
     getProduct.picture = picPath;
 

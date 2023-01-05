@@ -63,11 +63,21 @@ export default function Checkout(){
         history.push(`/address-list/${id}`);
       };
 
+    const updateTotalPay=()=>{
+      const data = {
+        total_price : totalPrice + order.shipping_price
+      }
+      Axios.put(`http://localhost:3300/api/order/final-payment/${id}`,data)
+      .then(res=>{
+        console.log(res.data)
+      })
+    }
+
       // product detail
     const  paymentHandler = (id) => {
+        updateTotalPay()
         history.push(`/payment/${id}/${order.id}`);
       };
-  
 
   useEffect(() => {
     cartProduct();

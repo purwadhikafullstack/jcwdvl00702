@@ -63,7 +63,6 @@ export default function ChooseShipping(){
         .then(res=>{
             setHomeLat(res.data.latitude)
             setHomeLon(res.data.longitude)
-            console.log('titik home', res.data.latitude, res.data.longitude)
         })
     }
 
@@ -74,13 +73,10 @@ export default function ChooseShipping(){
                 allWH[x].totalDistance=mathDist[x]
         }
         allWH.sort(compareDist) //now allWh are sorted from nearest to furthest
-        console.log(allWH)
     }
 
     const ongkirCount=()=>{
-        console.log(courier,'yg antar')
         distanceCheck()
-        console.log(allWH)
         let courierCode = ""
         if(courier.length>2){
             courierCode = courier.split(" ")
@@ -99,6 +95,7 @@ export default function ChooseShipping(){
             const rajaongkirData = JSON.parse(res.data)
             const rajaongkirCost = rajaongkirData.rajaongkir.results[0]
             setOngkir(rajaongkirCost)
+            console.log(rajaongkirCost)
         })
     }
 
@@ -115,7 +112,7 @@ export default function ChooseShipping(){
   }
 
     useEffect(()=>{
-        // getOrder()
+        getOrder()
         fetchLocations()
     },[])
 
@@ -176,7 +173,9 @@ export default function ChooseShipping(){
                 <div className="ship-topside">
                     <div className="ship-arrowwrap">
                         <Link to ={`/address-list/${user?.customer_uid}`}>
-                            <button className="ship-arrowback"><ArrowBack/></button>
+                            <button className="ship-arrowback">
+                                <ArrowBack/>
+                            </button>
                         </Link>
                     </div>
                     <div className="ship-title">Choose Shipping</div>

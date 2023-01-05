@@ -24,7 +24,7 @@ import { AuthContext } from "../context/AuthProvider";
 import { useState, useEffect, useContext } from "react";
 import { firebaseAuthentication } from "../config/firebase";
 import {Login} from '@mui/icons-material'
-import {shallowEqual, useDispatch,useSelector} from 'react-redux'
+import { useDispatch,useSelector} from 'react-redux'
 import { logoutUser } from "../redux/actionCreators/authActionCreators";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import Axios from 'axios'
