@@ -1,5 +1,9 @@
 const {
+<<<<<<< HEAD
   models: { Product, Stock, Stockmutation, Stockhistory },
+=======
+  models: { Product, Stock },
+>>>>>>> 6b675599 (add stock done)
 } = require('../models');
 const router = require('express').Router();
 const multer = require('multer');

@@ -11,7 +11,7 @@ import {
   FitnessCenterOutlined,
 } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
-import { Container, Button, IconButton, InputBase, Select, MenuItem, Box, TextField } from '@mui/material';
+import { Container, Button, IconButton, InputBase, Select, MenuItem, TextField } from '@mui/material';
 import '../../assets/styles/ProductAdd.css';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -67,7 +67,13 @@ export default function ProductAdd() {
       data.append('wh_2', qtyWh[1].qty);
       data.append('wh_3', qtyWh[2].qty);
 
+<<<<<<< HEAD
+=======
+      console.log('dataaa', data);
+      // Axios.post('http://localhost:3300/api/product/add-product', { ...data, quantity: qtyWh })
+>>>>>>> 6b675599 (add stock done)
       Axios.post('http://localhost:3300/api/product/add-product', data)
+
         .then(() => {
           alert('Product Added!');
         })
@@ -77,7 +83,10 @@ export default function ProductAdd() {
     },
   });
 
+<<<<<<< HEAD
   // UPDATE STOCK
+=======
+>>>>>>> 6b675599 (add stock done)
   const warehouseStock = (id) => {
     return (
       <div className="pdadd-stock-wh">
@@ -99,6 +108,8 @@ export default function ProductAdd() {
       </div>
     );
   };
+
+  console.log('qtywh', qtyWh);
 
   return (
     <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
@@ -205,7 +216,17 @@ export default function ProductAdd() {
           <hr className="splitter" />
         </div>
 
+<<<<<<< HEAD
         <div className="pdadd-stock">{qtyWh.map((item, index) => warehouseStock(index))}</div>
+=======
+        <div className="pdadd-stock">
+          {qtyWh.map((item, index) => warehouseStock(index))}
+
+          {/* {warehouseStock('A')}
+          {warehouseStock('B')}
+          {warehouseStock('C')} */}
+        </div>
+>>>>>>> 6b675599 (add stock done)
 
         <div className="pdadd-button">
           <button class="pdadd-button-2" type="submit" onClick={formik.handleSubmit}>
