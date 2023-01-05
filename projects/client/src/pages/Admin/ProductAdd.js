@@ -76,7 +76,6 @@ export default function ProductAdd() {
 =======
 >>>>>>> 5c462b23 (MWA 33)
       Axios.post('http://localhost:3300/api/product/add-product', data)
-
         .then(() => {
           alert('Product Added!');
         })
@@ -111,8 +110,6 @@ export default function ProductAdd() {
       </div>
     );
   };
-
-  console.log('qtywh', qtyWh);
 
   return (
     <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
@@ -220,6 +217,7 @@ export default function ProductAdd() {
         </div>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         <div className="pdadd-stock">{qtyWh.map((item, index) => warehouseStock(index))}</div>
 =======
         <div className="pdadd-stock">
@@ -230,6 +228,9 @@ export default function ProductAdd() {
           {warehouseStock('C')} */}
         </div>
 >>>>>>> 6b675599 (add stock done)
+=======
+        <div className="pdadd-stock">{qtyWh.map((item, index) => warehouseStock(index))}</div>
+>>>>>>> a9a833f5 (features MWA34)
 
         <div className="pdadd-button">
           <button class="pdadd-button-2" type="submit" onClick={formik.handleSubmit}>

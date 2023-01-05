@@ -36,9 +36,13 @@ export default function ProductDetailAdmin() {
   const [preview, setPreview] = useState('');
   const [state, setState] = useState({});
 <<<<<<< HEAD
+<<<<<<< HEAD
   const [isSuperAdmin, setIsSuperAdmin] = useState(true);
 =======
 >>>>>>> 5c462b23 (MWA 33)
+=======
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+>>>>>>> a9a833f5 (features MWA34)
 
   const [descript, setDescript] = useState('');
 
@@ -65,9 +69,11 @@ export default function ProductDetailAdmin() {
   };
 
   useEffect(() => {
+    console.log('tes');
     fetchProducts();
   }, [refreshStock]);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
   // useEffect(() => {
@@ -77,6 +83,8 @@ export default function ProductDetailAdmin() {
   // }, [resStock]);
 
 >>>>>>> 5c462b23 (MWA 33)
+=======
+>>>>>>> a9a833f5 (features MWA34)
   // Mengambil data product berdasarkan ID dari backend
   const fetchProducts = () => {
     Axios.get(`http://localhost:3300/api/product/get-product/${id}`)
@@ -207,6 +215,9 @@ export default function ProductDetailAdmin() {
         <div className="pdadmin-stock-name">Warehouse {index + 1}</div>
         <div className="pdadmin-stock-qty">{resStock[index]} pcs</div>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a9a833f5 (features MWA34)
         {isSuperAdmin ? (
           <>
             <div className="pdadmin-stock-edit">
@@ -245,6 +256,7 @@ export default function ProductDetailAdmin() {
             </div>
           </>
         ) : null}
+<<<<<<< HEAD
 =======
         <div className="pdadmin-stock-edit">
           <InputBase
@@ -281,6 +293,8 @@ export default function ProductDetailAdmin() {
           </IconButton>
         </div>
 >>>>>>> 5c462b23 (MWA 33)
+=======
+>>>>>>> a9a833f5 (features MWA34)
       </div>
     );
   };
@@ -491,6 +505,7 @@ export default function ProductDetailAdmin() {
         )}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         <div className="pdadmin-stock">{resStock.map((item, index) => warehouseStock(index))}</div>
 =======
         <div className="pdadmin-stock">
@@ -500,6 +515,9 @@ export default function ProductDetailAdmin() {
           {warehouseStock(3)} */}
         </div>
 >>>>>>> 5c462b23 (MWA 33)
+=======
+        <div className="pdadmin-stock">{resStock.map((item, index) => warehouseStock(index))}</div>
+>>>>>>> a9a833f5 (features MWA34)
       </div>
     </Container>
   );

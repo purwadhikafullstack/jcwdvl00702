@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
 <<<<<<< HEAD
+<<<<<<< HEAD
       product_name: {
         allowNull: false,
         type: DataTypes.STRING,
@@ -33,6 +34,20 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
 >>>>>>> 5c462b23 (MWA 33)
+=======
+      product_name: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      product_picture: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      quantity: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
+>>>>>>> a9a833f5 (features MWA34)
       requester: {
         allowNull: false,
         type: DataTypes.STRING,
