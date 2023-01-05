@@ -132,6 +132,7 @@ export default function Cart(){
     const  checkoutHandler = (id) => {
       const data = {
         customer_uid: id,
+        
       }
       console.log("ini data", data)
 
@@ -140,38 +141,16 @@ export default function Cart(){
         .then((result) => {
           console.log("ini result", result)
          setOrderId(result.data)
-           history.push(`/checkout/${id}/${orderId.id}`)
+          //  history.push(`/checkout/${id}/${orderId.id}`)
         })
         .catch((error) => {
           alert(error);
         });
+
+
       } else if(orderState) {
         history.push(`/checkout/${id}/${orderState.id}`)
       }
-      //     // checkBox untuk mencari apakah cus_uid sudah ada dalam 
-      // let checkBox = false
-
-    // for (let i = 0; i < orderState.length; i++){
-    //   if(id === orderState[i].customer_uid){
-    //     checkBox = true
-    //     break
-    //   }
-    // }
-    // console.log("ini checkbox", checkBox)
-
-    // if(checkBox === true){
-    //   history.push(`/checkout/${id}`);
-    // } else if (checkBox === false){
-    //   Axios.post('http://localhost:3300/api/order/add-order', data)
-    //   .then((result) => {
-    //     console.log("ini result", result)
-    //    setOrderId(result.data)
-    //      history.push(`/checkout/${id}/${orderState.id}`)
-    //   })
-    //   .catch((error) => {
-    //     alert(error);
-    //   });
-    // }
   };
   
   

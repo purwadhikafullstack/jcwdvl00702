@@ -1,8 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
-  const Stockmutation = sequelize.define(
-    'stockmutation',
+  const Stockhistory = sequelize.define(
+    'stockhistory',
     {
       stock_id: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      stockmutation_id: {
         allowNull: false,
         type: DataTypes.STRING,
       },
@@ -22,7 +26,19 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
+      math: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
       quantity: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
+      start: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
+      end: {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
@@ -30,16 +46,16 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
-      status: {
+      year: {
         allowNull: false,
         type: DataTypes.STRING,
       },
-      move_type: {
+      month: {
         allowNull: false,
         type: DataTypes.STRING,
       },
     },
     {}
   );
-  return Stockmutation;
+  return Stockhistory;
 };
