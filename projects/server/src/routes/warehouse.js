@@ -117,6 +117,30 @@ router.get("/warehouse-list", async (req, res) => {
   }
 });
 
+// Get All WH Locations for choose address
+router.get("/wh-all",async(req,res)=>{
+  try{
+    const result = await Warehouse.findAll()
+    return res.status(200).send(result)
+  } catch(err){
+    return res.status(500).json({message:err.toString()})
+  }
+})
+
+// get warehouse by city id
+router.get('/wh-city-id', async (req, res) => {
+  try {
+    const response = await Warehouse.findOne({
+      where: {
+        city_id: req.body.city_id
+      },
+    });
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 // get warehouse by id
 router.get("/warehouse-list/:id", async (req, res) => {
   try {

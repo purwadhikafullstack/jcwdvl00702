@@ -34,9 +34,9 @@ db.models.Customer.hasMany(db.models.Address, {
 db.models.Address.belongsTo(db.models.Customer, {
   foreignKey: 'customer_uid',
 });
-db.models.Product.hasMany(db.models.Warehouse, {
-  foreignKey: 'warehouse_id',
-});
+// db.models.Product.hasMany(db.models.Warehouse, {
+//   foreignKey: 'warehouse_id',
+// });
 db.models.Product.hasMany(db.models.Stock, {
   foreignKey: 'product_id',
 });
@@ -47,13 +47,13 @@ db.models.Stockmutation.belongsTo(db.models.Stock, {
   foreignKey: 'stock_id',
 });
 
-db.models.Customer.hasMany(db.models.Warehouse, {
-  foreignKey: 'customer_uid',
-  sourceKey: 'customer_uid',
-});
-db.models.Warehouse.belongsTo(db.models.Customer, {
-  foreignKey: 'customer_uid',
-});
+// db.models.Customer.hasMany(db.models.Warehouse, {
+//   foreignKey: 'customer_uid',
+//   sourceKey: 'customer_uid',
+// });
+// db.models.Warehouse.belongsTo(db.models.Customer, {
+//   foreignKey: 'customer_uid',
+// });
 
 db.models.Customer.hasMany(db.models.Address, {
   foreignKey: 'customer_uid',
