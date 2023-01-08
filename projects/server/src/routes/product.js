@@ -79,12 +79,16 @@ router.delete('/delete-category/:id', async (req, res) => {
 // EDIT CATEGORY
 router.patch('/edit-category/:id', async (req, res) => {
   try {
+    console.log('id', req.params.id);
     let categoryName = await Category.findAll();
     let checkBox = false;
 
     for (let i = 0; i < categoryName.length; i++) {
       if (req.body.name.toLowerCase() === categoryName[i].name.toLowerCase()) {
         checkBox = true;
+        if (req.params.id == categoryName[i].id) {
+          checkBox = false;
+        }
         break;
       }
     }

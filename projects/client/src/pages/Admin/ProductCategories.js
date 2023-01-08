@@ -1,16 +1,6 @@
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import {
-  MoreHoriz,
-  Sell,
-  SportsSoccerOutlined,
-  BusinessCenterOutlined,
-  DirectionsBikeOutlined,
-  HikingOutlined,
-  HandymanOutlined,
-  MonitorHeartOutlined,
-  FitnessCenterOutlined,
-} from '@mui/icons-material';
+import { MoreHoriz, Sell } from '@mui/icons-material';
 import { useHistory, Link } from 'react-router-dom';
 import {
   IconButton,
@@ -19,7 +9,6 @@ import {
   Menu,
   MenuItem,
   Button,
-  Select,
   Modal,
   Box,
   Dialog,
@@ -81,17 +70,31 @@ export default function ProductCategory() {
       });
   };
 
-  const saveBtnHandler = (id) => {
-    Axios.patch(`http://localhost:3300/api/product/edit-category/${id}`, {
-      name: editName,
-    })
-      .then(() => {
-        setEditedIndex('');
-        fetchCategories();
+  const saveBtnHandler = (id, ifempty) => {
+    if (editName === '') {
+      setEditName(ifempty);
+      Axios.patch(`http://localhost:3300/api/product/edit-category/${id}`, {
+        name: ifempty,
       })
-      .catch(() => {
-        alert('Nama sudah terpakai');
-      });
+        .then(() => {
+          setEditedIndex('');
+          fetchCategories();
+        })
+        .catch(() => {
+          alert('Nama sudah terpakai');
+        });
+    } else {
+      Axios.patch(`http://localhost:3300/api/product/edit-category/${id}`, {
+        name: editName,
+      })
+        .then(() => {
+          setEditedIndex('');
+          fetchCategories();
+        })
+        .catch(() => {
+          alert('Nama sudah terpakai');
+        });
+    }
   };
 
   YupPassword(Yup);
@@ -202,34 +205,14 @@ export default function ProductCategory() {
             {editedIndex === index ? (
               <>
                 <img className="apc-card-icon" src={val.picture} alt="icon" />
-                {/* <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={setIcon}
-                  className="apc-card-icon-select"
-                  onChange={handleIconChange}>
-                  <MenuItem value={0}>
-                    <em>
-                      <img src={val.picture} />
-                    </em>
-                  </MenuItem>
-                  {categoryList.map((val, index) => {
-                    return (
-                      <>
-                        <MenuItem value={val.id}>
-                          {val.name}
-                          <img src={val.picture} />
-                        </MenuItem>
-                      </>
-                    );
-                  })}
-                </Select> */}
                 <InputBase
                   sx={{ ml: 1, width: '250px', border: '1px solid grey' }}
                   placeholder={val.name}
                   inputProps={{ 'aria-label': 'Search' }}
                   className="apc-card-input"
-                  onChange={(e) => setEditName(e.target.value)}
+                  onChange={(e) => {
+                    setEditName(e.target.value);
+                  }}
                 />
                 <Button
                   sx={{
@@ -242,13 +225,21 @@ export default function ProductCategory() {
                   }}
                   variant="contained"
                   className="apc-card-edit"
-                  onClick={() => saveBtnHandler(val.id)}>
+                  // onClick={() => {
+                  //   console.log('edit', editName);
+                  //   if (editName === '') {
+                  //     setEditName(val.name);
+                  //     saveBtnHandler(val.id);
+                  //   } else {
+                  //     saveBtnHandler(val.id);
+                  //   }
+                  // }}>
+                  onClick={() => saveBtnHandler(val.id, val.name)}>
                   Save
                 </Button>
               </>
             ) : (
               <>
-                {/* {val.picture} */}
                 <img className="apc-card-icon" src={val.picture} alt="icon" />
                 <div className="apc-card-text">{val.name}</div>
                 <Button
@@ -313,14 +304,7 @@ export default function ProductCategory() {
           <div className="apc-banner-text">Product Category</div>
           <div className="apc-banner-menu">{menuHandler()}</div>
         </div>
-        <div className="apc-content">
-          {/* {categoryCard(<SportsSoccerOutlined />, 'Sports', 0)}
-          {categoryCard(<BusinessCenterOutlined />, 'Bags', 1)}
-          {categoryCard(<DirectionsBikeOutlined />, 'Bikes', 2)}
-          {categoryCard(<HikingOutlined />, 'Sportswear', 3)}
-          {categoryCard(<HandymanOutlined />, 'Accessories', 4)} */}
-          {categoryCard()}
-        </div>
+        <div className="apc-content">{categoryCard()}</div>
 
         <button className="apc-add" onClick={() => setSetAdd(true)}>
           Add New Category
@@ -343,42 +327,9 @@ export default function ProductCategory() {
               p: 4,
             }}>
             <Button variant="contained" component="label" sx={{ marginLeft: '130px', marginTop: '100px ' }}>
-              Upload
+              Upload (24px)
               <input hidden accept="image/*" multiple type="file" id="uploadImg" onChange={loadPicture} />
             </Button>
-            {/* <Select
-              sx={{ width: '80px' }}
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={setIcon}
-              className="apc-card-icon-select"
-              onChange={handleIconChange}>
-              <MenuItem value={0}>
-                <em>Icon</em>
-              </MenuItem>
-              <MenuItem value={1}>
-                <SportsSoccerOutlined />
-              </MenuItem>
-              <MenuItem value={2}>
-                <BusinessCenterOutlined />
-              </MenuItem>
-              <MenuItem value={3}>
-                <DirectionsBikeOutlined />
-              </MenuItem>
-              <MenuItem value={4}>
-                <HikingOutlined />
-              </MenuItem>
-              <MenuItem value={5}>
-                <HandymanOutlined />
-              </MenuItem>
-              <MenuItem value={6}>
-                <MonitorHeartOutlined />
-              </MenuItem>
-              <MenuItem value={7}>
-                <FitnessCenterOutlined />
-              </MenuItem>
-            </Select> */}
-
             <InputBase
               sx={{ ml: 1, border: '1px solid grey', backgroundColor: 'white', width: '220px' }}
               placeholder="Category Name"
