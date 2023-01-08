@@ -33,6 +33,8 @@ app.use('/orderimages', express.static(path.join(__dirname, '../public/orderimag
   await db.sequelize.sync();
 })();
 
+// db.sequelize.sync();
+
 app.use('/api/customer', customerRoute);
 app.use('/api/admin', adminRoute);
 app.use('/api/product', productRoute);

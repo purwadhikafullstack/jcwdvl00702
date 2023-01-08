@@ -24,8 +24,8 @@ db.models.Transaction = require('./transaction')(sequelize, Sequelize.DataTypes)
 db.models.History = require('./history')(sequelize, Sequelize.DataTypes);
 db.models.Orderitem = require('./orderitem')(sequelize, Sequelize.DataTypes);
 db.models.Role = require('./role')(sequelize, Sequelize.DataTypes);
-db.models.Example = require('./example')(sequelize, Sequelize.DataTypes);
 db.models.Stock = require('./stock')(sequelize, Sequelize.DataTypes);
+db.models.Category = require('./category')(sequelize, Sequelize.DataTypes);
 
 db.models.Customer.hasMany(db.models.Address, {
   foreignKey: 'customer_uid',
@@ -87,6 +87,12 @@ db.models.Product.hasMany(db.models.Orderitem, {
 });
 db.models.Orderitem.belongsTo(db.models.Product, {
   foreignKey: 'product_id',
+});
+db.models.Category.hasMany(db.models.Product, {
+  foreignKey: 'category_id',
+});
+db.models.Product.belongsTo(db.models.Category, {
+  foreignKey: 'category_id',
 });
 
 module.exports = db;

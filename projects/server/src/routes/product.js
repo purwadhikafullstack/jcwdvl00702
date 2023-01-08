@@ -1,10 +1,10 @@
 const {
-  models: { Product, Stock, Stockmutation, Stockhistory },
+  models: { Category, Product, Stock, Stockmutation, Stockhistory },
 } = require('../models');
 const router = require('express').Router();
 const multer = require('multer');
 const { where, Op } = require('sequelize');
-const stockhistory = require('../models/stockhistory');
+// const stockhistory = require('../models/stockhistory');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -15,6 +15,102 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
+
+// ADD CATEGORY
+router.post('/add-category', upload.single('image'), async (req, res) => {
+  try {
+    let categoryName = await Category.findAll();
+    let checkBox = false;
+
+    for (let i = 0; i < categoryName.length; i++) {
+      if (req.body.name.toLowerCase() === categoryName[i].name.toLowerCase()) {
+        checkBox = true;
+        break;
+      }
+    }
+    if (checkBox === true) {
+      res.status(500).json(err);
+    } else {
+      let picPathArray = req.file.path.split('/');
+      let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
+
+      const newCategory = await Category.create({
+        name: req.body.name,
+        alt_name: req.body.name.toLowerCase(),
+        picture: picPath,
+      });
+      const categoryId = await Category.findOne({
+        where: {
+          name: req.body.name,
+        },
+      });
+      res.status(200).json(newCategory);
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// GET CATEGORY LIST
+router.get('/get-category', async (req, res) => {
+  try {
+    const result = await Category.findAll();
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// DELETE CATEGORY
+router.delete('/delete-category/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const deleteCategory = await Category.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.status(200).json(deleteCategory);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// EDIT CATEGORY
+router.patch('/edit-category/:id', async (req, res) => {
+  try {
+    let categoryName = await Category.findAll();
+    let checkBox = false;
+
+    for (let i = 0; i < categoryName.length; i++) {
+      if (req.body.name.toLowerCase() === categoryName[i].name.toLowerCase()) {
+        checkBox = true;
+        break;
+      }
+    }
+    if (checkBox === true) {
+      res.status(500).json(err);
+    } else {
+      let updateCategory = await Category.update(
+        {
+          name: req.body.name,
+          alt_name: req.body.name.toLowerCase(),
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+        }
+      );
+      res.status(201).json({
+        message: 'Success',
+        data: updateCategory,
+      });
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 // ADD PRODUCT
 router.post('/add-product', upload.single('picture'), async (req, res) => {
@@ -37,7 +133,7 @@ router.post('/add-product', upload.single('picture'), async (req, res) => {
         price: req.body.price,
         quantity_total: req.body.quantity_total,
         product_detail: req.body.product_detail,
-        category: req.body.category,
+        category_id: req.body.category_id,
         picture: req.file.path,
       });
       const productId = await Product.findOne({
@@ -103,13 +199,10 @@ router.get('/get-product', async (req, res) => {
     const search = req.query.search || '';
     const offset = limit * page;
     const productLength = await Product.findAll({});
-<<<<<<< HEAD
-=======
-
->>>>>>> 5c462b23 (MWA 33)
     const sort = req.query.sort || 'id';
 
     const result = await Product.findAll({
+      include: [Category],
       limit: limit,
       offset: page * limit,
       order: [[sort, 'ASC']],
@@ -122,11 +215,6 @@ router.get('/get-product', async (req, res) => {
       }),
     });
     const resultCount = await Product.findAll({
-<<<<<<< HEAD
-=======
-      // offset: page * limit,
-      // order: [[sort, 'ASC']],
->>>>>>> 5c462b23 (MWA 33)
       ...(req.query.search && {
         where: {
           name: {
@@ -153,6 +241,7 @@ router.get('/get-product', async (req, res) => {
 router.get('/get-product/:id', async (req, res) => {
   try {
     const getProduct = await Product.findOne({
+      include: [Category],
       where: {
         id: req.params.id,
       },
@@ -201,7 +290,6 @@ router.put('/edit-product/:id', upload.single('picture'), async (req, res) => {
       id: req.params.id,
     },
   });
-  const pages = Math.ceil(resultCount.length / limit);
 
   try {
     let updateProduct = await Product.update(
@@ -209,7 +297,7 @@ router.put('/edit-product/:id', upload.single('picture'), async (req, res) => {
         name: req.body.name,
         price: req.body.price,
         product_detail: req.body.product_detail,
-        category: req.body.category,
+        category_id: req.body.category,
         picture: req.file.path,
       },
       {
@@ -664,6 +752,7 @@ router.get('/get-stock-history', async (req, res) => {
       }),
     });
     const result = await Product.findAll({
+      include: [Category],
       limit: limit,
       offset: page * limit,
       order: [[sort, 'ASC']],
@@ -706,6 +795,7 @@ router.get('/product-stock-history/:id', async (req, res) => {
     },
   });
   const getProduct = await Product.findOne({
+    include: [Category],
     where: {
       id: req.params.id,
     },
@@ -1240,388 +1330,3 @@ router.get('/product-stock-history/:id', async (req, res) => {
 });
 
 module.exports = router;
-<<<<<<< HEAD
-=======
-
-router.get('/get-mutation', async (req, res) => {
-  try {
-    const page = parseInt(req.query.page) || 0;
-    const limit = 3;
-    const search = req.query.search || '';
-    const offset = limit * page;
-    const productLength = await Stockmutation.findAll({});
-
-    const sort = req.query.sort || 'DESC';
-    const filter = req.query.filter || '';
-    const myWh = req.query.mywh;
-
-    const result = await Stockmutation.findAll({
-      where: {
-        move_type: filter,
-        [Op.or]: [{ warehouse_id: myWh }, { requester: myWh }],
-      },
-      limit: limit,
-      offset: page * limit,
-      order: [['createdAt', sort]],
-      ...(req.query.search && {
-        where: {
-          product_id: {
-            [Op.like]: `%${req.query.search}%`,
-          },
-        },
-      }),
-    });
-    const resultCount = await Stockmutation.findAll({
-      where: {
-        move_type: filter,
-        [Op.or]: [{ warehouse_id: myWh }, { requester: myWh }],
-      },
-      // offset: page * limit,
-      // order: [[sort, 'ASC']],
-      ...(req.query.search && {
-        where: {
-          product_id: {
-            [Op.like]: `%${req.query.search}%`,
-          },
-        },
-      }),
-    });
-    const pages = Math.ceil(resultCount.length / limit);
-
-    res.status(200).json({
-      result: result,
-      pages: pages,
-      page: page,
-      order: sort,
-      search: search,
-      filter: filter,
-    });
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-// STOCK MUTATION
-
-router.post('/stock-mutation', async (req, res) => {
-  const stockFrom = await Stock.findOne({
-    where: {
-      warehouse_id: req.body.from,
-      product_id: req.body.product,
-    },
-  });
-  const stockTo = await Stock.findOne({
-    where: {
-      warehouse_id: req.body.to,
-      product_id: req.body.product,
-    },
-  });
-  const theProduct = await Product.findOne({
-    where: {
-      id: req.body.product,
-    },
-  });
-
-  const mutationData = {
-    stock_id: stockFrom.id,
-    warehouse_id: req.body.from,
-    product_id: req.body.product,
-    product_name: theProduct.name,
-    // product_picture: '/projects/server/' + theProduct.picture,
-    product_picture: theProduct.picture,
-    quantity: parseInt(req.body.quantity),
-    requester: req.body.to,
-    status: 'waiting',
-    move_type: 'manual',
-  };
-
-  try {
-    const newMutation = await Stockmutation.create(mutationData);
-    res.status(200).json({ theProduct, stockFrom });
-    console.log('res be', res);
-  } catch (err) {
-    res.status(500).json(err);
-    console.log('err be', err);
-  }
-});
-
-// RESPOND MUTATION - MANUAL
-
-router.patch('/stock-mutation', async (req, res) => {
-  const theMutation = await Stockmutation.findOne({
-    where: {
-      id: req.body.mutation,
-    },
-  });
-  const theStockFrom = await Stock.findOne({
-    where: {
-      product_id: theMutation.product_id,
-      warehouse_id: theMutation.warehouse_id,
-    },
-  });
-  const theStockTo = await Stock.findOne({
-    where: {
-      product_id: theMutation.product_id,
-      warehouse_id: theMutation.requester,
-    },
-  });
-  const historyData = [
-    {
-      stock_id: theStockFrom.id,
-      stockmutation_id: theMutation.id,
-      warehouse_id: theStockFrom.warehouse_id,
-      product_id: theMutation.product_id,
-      product_name: theMutation.product_name,
-      product_picture: theMutation.product_picture,
-      math: '-',
-      quantity: theMutation.quantity,
-      requester: theMutation.requester,
-    },
-    {
-      stock_id: theStockTo.id,
-      stockmutation_id: theMutation.id,
-      warehouse_id: theStockTo.warehouse_id,
-      product_id: theMutation.product_id,
-      product_name: theMutation.product_name,
-      product_picture: theMutation.product_picture,
-      math: '+',
-      quantity: theMutation.quantity,
-      requester: theMutation.requester,
-    },
-  ];
-  const historyDataAlternate = [
-    {
-      stock_id: theStockFrom.id,
-      stockmutation_id: theMutation.id,
-      warehouse_id: theStockFrom.warehouse_id,
-      product_id: theMutation.product_id,
-      product_name: theMutation.product_name,
-      product_picture: theMutation.product_picture,
-      math: '-',
-      quantity: theStockFrom.quantity,
-      requester: theMutation.requester,
-    },
-    {
-      stock_id: theStockTo.id,
-      stockmutation_id: theMutation.id,
-      warehouse_id: theStockTo.warehouse_id,
-      product_id: theMutation.product_id,
-      product_name: theMutation.product_name,
-      product_picture: theMutation.product_picture,
-      math: '+',
-      quantity: theStockFrom.quantity,
-      requester: theMutation.requester,
-    },
-  ];
-
-  if (req.body.respond === 'reject') {
-    try {
-      const changeMutation = await Stockmutation.update(
-        {
-          status: 'canceled',
-        },
-        {
-          where: {
-            id: req.body.mutation,
-          },
-          returning: true,
-          plain: true,
-        }
-      );
-      res.status(200).json({ historyData });
-      console.log('accept res', res);
-    } catch (err) {
-      res.status(500).json(err);
-      console.log('err', err);
-    }
-  } else if (req.body.respond === 'accept') {
-    if (theStockFrom.quantity >= theMutation.quantity) {
-      try {
-        const changeMutation = await Stockmutation.update(
-          {
-            status: 'done',
-          },
-          {
-            where: {
-              id: req.body.mutation,
-            },
-            returning: true,
-            plain: true,
-          }
-        );
-        const changeStockFrom = await Stock.update(
-          {
-            quantity: theStockFrom.quantity - theMutation.quantity,
-          },
-          {
-            where: {
-              id: theStockFrom.id,
-            },
-            returning: true,
-            plain: true,
-          }
-        );
-        const changeStockTo = await Stock.update(
-          {
-            quantity: theStockTo.quantity + theMutation.quantity,
-          },
-          {
-            where: {
-              id: theStockTo.id,
-            },
-            returning: true,
-            plain: true,
-          }
-        );
-        const newHistory = await Stockhistory.bulkCreate(historyData, { returning: true });
-        res.status(200).json({ historyData });
-        console.log('accept res', res);
-      } catch (err) {
-        res.status(500).json(err);
-        console.log('err', err);
-      }
-    } else {
-      try {
-        const changeMutation = await Stockmutation.update(
-          {
-            status: 'done',
-            quantity: theStockFrom.quantity,
-          },
-          {
-            where: {
-              id: req.body.mutation,
-            },
-            returning: true,
-            plain: true,
-          }
-        );
-        const changeStockFrom = await Stock.update(
-          {
-            quantity: theStockFrom.quantity - theStockFrom.quantity,
-          },
-          {
-            where: {
-              id: theStockFrom.id,
-            },
-            returning: true,
-            plain: true,
-          }
-        );
-        const changeStockTo = await Stock.update(
-          {
-            quantity: theStockTo.quantity + theStockFrom.quantity,
-          },
-          {
-            where: {
-              id: theStockTo.id,
-            },
-            returning: true,
-            plain: true,
-          }
-        );
-
-        const newHistory = await Stockhistory.bulkCreate(historyDataAlternate, { returning: true });
-
-        const message = `Mutation success but amount available is only ` + theStockFrom.quantity + ` pcs.`;
-        res.status(200).json({ historyDataAlternate, message });
-      } catch (err) {
-        res.status(500).json(err);
-        console.log('err', err);
-      }
-    }
-  }
-});
-
-module.exports = router;
-<<<<<<< HEAD
-=======
-
-    const resultCount = await Product.findAll({
-      ...(req.query.search && {
-        where: {
-          [Op.or]: [
-            {
-              id: {
-                [Op.eq]: req.query.search,
-              },
-            },
-            {
-              name: {
-                [Op.like]: `%${req.query.search}%`,
-              },
-            },
-          ],
-        },
-      }),
-    });
-    const result = await Product.findAll({
-      limit: limit,
-      offset: page * limit,
-      order: [[sort, 'ASC']],
-      ...(req.query.search && {
-        where: {
-          [Op.or]: [
-            {
-              id: {
-                [Op.eq]: req.query.search,
-              },
-            },
-            {
-              name: {
-                [Op.like]: `%${req.query.search}%`,
-              },
-            },
-          ],
-        },
-      }),
-    });
-    const pages = Math.ceil(resultCount.length / limit);
-
-    res.status(200).json({
-      result: result,
-      pages: pages,
-      page: page,
-      order: sort,
-      search: search,
-    });
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-// GET STOCK HISTORY DETAIL BY ID
-router.get('/product-stock-history/:id', async (req, res) => {
-  const theHistory = await Stockhistory.findAll({
-    where: {
-      product_id: req.params.id,
-    },
-  });
-  const getProduct = await Product.findOne({
-    where: {
-      id: req.params.id,
-    },
-  });
-  const theYear = req.query.year;
-  const theMonth = req.query.month;
-
-  try {
-    let picPathArray = getProduct.picture.split('/');
-    let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
-    getProduct.picture = picPath;
-
-    const getHistory = await Stockhistory.findAll({
-      where: {
-        product_id: req.params.id,
-        year: theYear,
-        month: theMonth,
-      },
-    });
-
-    res.status(200).json({ getProduct, getHistory });
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-// module.exports = router;
->>>>>>> 5c462b23 (MWA 33)
