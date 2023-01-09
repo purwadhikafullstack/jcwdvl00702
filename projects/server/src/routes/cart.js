@@ -33,7 +33,6 @@ router.get("/get-cart/:id", async (req, res) => {
         customer_uid: req.params.id,
       },
     });
-
     res.status(200).json(getCart);
   } catch (err) {
     res.status(500).json(err);
@@ -45,6 +44,7 @@ router.get("/get-cart/:id", async (req, res) => {
 router.delete("/delete-cart-customer/:id", async (req, res) => {
   try {
     console.log("ini id", req.params.id);
+
     const customer_uid = req.params.id;
     const deleteCart = await Cart.destroy({
       where: {
@@ -100,6 +100,7 @@ router.put("/edit-cart/:id", async (req, res) => {
 
 // mengambil product yang telah dimasukan ke dalam cart berdasarkan customer uid
 
+
 router.get("/get-cart-product/:id", async (req, res) => {
   try {
     const getProduct = await Cart.findAll({
@@ -126,6 +127,7 @@ router.get("/get-cart-product/:id", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
 
 // add / min quantity di cart
 router.put("/edit-qty/:id", async (req, res) => {

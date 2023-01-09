@@ -70,6 +70,7 @@ router.post('/add-product', upload.single('picture'), async (req, res) => {
   }
 });
 
+// Show Product @Homepage
 router.get('/home-product/', async (req, res) => {
   try {
     let searchQuery = req.query.searchQuery || '';

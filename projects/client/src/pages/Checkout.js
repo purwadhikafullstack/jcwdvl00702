@@ -58,6 +58,7 @@ export default function Checkout() {
     history.push(`/address-list/${id}`);
   };
 
+
   const updateTotalPay = () => {
     const data = {
       total_price: totalPrice + order.shipping_price,

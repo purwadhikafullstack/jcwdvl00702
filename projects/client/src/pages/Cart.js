@@ -140,6 +140,7 @@ export default function Cart() {
           console.log("ini result", result);
           setOrderId(result.data);
           history.push(`/checkout/${id}/${orderId.id}`);
+
         })
         .catch((error) => {
           alert(error);

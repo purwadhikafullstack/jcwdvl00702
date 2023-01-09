@@ -126,6 +126,7 @@ export default function HomeFunc() {
     }
   };
 
+
   useEffect(() => {
     showProducts();
   }, []);
@@ -287,6 +288,7 @@ export default function HomeFunc() {
                   </div>
                 ))
               : null}
+
           </div>
         </div>
       </Container>

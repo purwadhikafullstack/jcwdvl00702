@@ -10,7 +10,6 @@ export default function ProductDetail() {
   const { user } = useSelector((state) => ({
     user: state.auth.user,
   }));
-
   console.log("ini user UID:", user?.customer_uid);
 
   const { id } = useParams();
@@ -130,13 +129,17 @@ export default function ProductDetail() {
 
   return (
     <div className="pd-wrap">
+
       {console.log(state, "render data")}
+
       <Container maxWidth="xs" className="container-product-detail">
         <div className="product-img">
           <Link to="/">
             <ArrowBack />
           </Link>
+
           <img className="detail-img" src={state.getProduct?.picture} />
+
         </div>
         <div className="product-spec">
           <div className="product-title">

@@ -149,6 +149,33 @@ router.put("/final-payment/:id", async (req, res) => {
   }
 });
 
+// Update Final Payment
+router.put('/final-payment/:id',async(req,res)=>{
+  await Order.findOne({
+    where:{
+      customer_uid: req.params.id,
+      status : false,
+    }
+  })
+
+  try {
+    let updatePay = await Order.update(
+      {
+        total_price : req.body.total_price,
+      },
+      {
+        where:{
+          customer_uid: req.params.id,
+          status : false,
+        }
+      }
+    )
+    res.status(200).json({message:'Success',data:updatePay})
+  } catch(err){
+    console.log(err.message)
+  }
+})
+
 // Upload Payment Proof
 
 router.put(
