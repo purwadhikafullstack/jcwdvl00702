@@ -188,7 +188,7 @@ router.get('/home-product/', async (req, res) => {
       let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
       getProduct[i].picture = picPath;
     }
-    console.log('url check', getProduct[0].picture)
+    console.log('url check', getProduct[0].picture);
     res.status(200).json(getProduct);
   } catch (err) {
     res.status(500).json(err);
@@ -261,11 +261,6 @@ router.get('/get-product/:id', async (req, res) => {
     });
     const stockWh = [getStock[0].quantity, getStock[1].quantity, getStock[2].quantity];
 
-<<<<<<< HEAD
-=======
-    // console.log('getstock', getStock);
-
->>>>>>> 5c462b23 (MWA 33)
     res.status(200).json({ getProduct, stockWh });
   } catch (err) {
     res.status(500).json(err);
