@@ -6,6 +6,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
+      fullname: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
       cart_id: {
         allowNull: false,
         type: DataTypes.STRING,
