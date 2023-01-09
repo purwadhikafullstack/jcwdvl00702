@@ -5160,11 +5160,7 @@
   "resolved" "https://registry.npmjs.org/cli-width/-/cli-width-3.0.0.tgz"
   "version" "3.0.0"
 
-<<<<<<< HEAD
-"client@file:D:\\Purwadhika\\Group\\jcwdvl00702\\projects\\client":
-=======
-"client@file:/Users/andrew/Code/maria/Purwadhika/MWA/jcwdvl00702/projects/client":
->>>>>>> 3ee76bfc (tes)
+"client@file:E:\\Purwadhika\\Bootcamp Progress\\Update 4 Jan 2023\\jcwdvl00702\\projects\\client":
   "resolved" "file:projects/client"
   "version" "0.1.0"
   dependencies:
@@ -7362,11 +7358,6 @@
   "integrity" "sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw=="
   "resolved" "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   "version" "1.0.0"
-
-"fsevents@^2.3.2", "fsevents@~2.3.2":
-  "integrity" "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA=="
-  "resolved" "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz"
-  "version" "2.3.2"
 
 "function-bind@^1.1.1":
   "integrity" "sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A=="
@@ -13038,11 +13029,7 @@
   "resolved" "https://registry.npmjs.org/server-destroy/-/server-destroy-1.0.1.tgz"
   "version" "1.0.1"
 
-<<<<<<< HEAD
-"server@file:D:\\Purwadhika\\Group\\jcwdvl00702\\projects\\server":
-=======
-"server@file:/Users/andrew/Code/maria/Purwadhika/MWA/jcwdvl00702/projects/server":
->>>>>>> 3ee76bfc (tes)
+"server@file:E:\\Purwadhika\\Bootcamp Progress\\Update 4 Jan 2023\\jcwdvl00702\\projects\\server":
   "resolved" "file:projects/server"
   "version" "0.1.0"
   dependencies:
