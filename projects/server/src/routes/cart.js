@@ -40,6 +40,23 @@ router.get('/get-cart/:id', async (req, res) => {
     }
   });
 
+//delete cart
+
+router.delete('/delete-cart-customer/:id', async (req, res) => {
+  try {
+    console.log('ini id', req.params.id);
+    const customer_uid = req.params.id;
+    const deleteCart = await Cart.destroy({
+      where: {
+        customer_uid,
+      },
+    });
+    res.status(200).json(deleteCart);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 
 // Add Quantity product di product detail
 
@@ -110,21 +127,7 @@ router.put('/edit-cart/:id',  async (req, res) => {
     }
   });
 
-//delete cart
-router.delete('/delete-cart/:id', async (req, res) => {
-  try {
-    console.log('ini id', req.params.id);
-    const id = req.params.id;
-    const deleteCart = await Cart.destroy({
-      where: {
-        id,
-      },
-    });
-    res.status(200).json(deleteCart);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+
 
 // add / min quantity di cart
 router.put('/edit-qty/:id',  async (req, res) => {

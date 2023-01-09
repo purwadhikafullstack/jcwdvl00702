@@ -3,7 +3,7 @@ import Axios from 'axios';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../assets/styles/ProductLists.css';
-import { SortTwoTone } from '@mui/icons-material';
+import { SortTwoTone, SportsSoccerOutlined } from '@mui/icons-material';
 import { Container, Stack, Pagination, IconButton, InputBase, Menu, MenuItem, Button } from '@mui/material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 import { URL_API } from '../redux/API';
