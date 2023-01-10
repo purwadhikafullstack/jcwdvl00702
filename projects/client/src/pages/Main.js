@@ -34,6 +34,10 @@ export default function Main(){
                 user ? user.approle?.role === "superadmin" && <Dashboard/> :
                 null
             }
+            {
+                user ? user.approle?.role === "adminTBA" && <Dashboard/> :
+                null
+            }
         </div>
     )
 }

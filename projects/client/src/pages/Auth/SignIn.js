@@ -60,9 +60,8 @@ export default function SignIn() {
           if (res.user.emailVerified) {
             history.push('/');
           } else {
-            alert('Please Verify your Email First!');
-            firebaseAuthentication.signOut();
-            dispatch(logoutUser());
+            alert("Don't Forget to Verify Your Email !");
+            history.push('/')
           }
         })
         .catch((err) => {
