@@ -1,4 +1,4 @@
-const {models: { Customer }} = require("../models");
+const {models: { Customer,Approle }} = require("../models");
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const customer = require("../models/customer");
@@ -19,6 +19,7 @@ router.get("/get-user",async(req,res)=>{
 router.get("/get-user-one/:customer_uid",async(req,res)=>{
     try{
         const result = await Customer.findOne({
+            include:[Approle],
             where:{
                 customer_uid:req.params.customer_uid
             }

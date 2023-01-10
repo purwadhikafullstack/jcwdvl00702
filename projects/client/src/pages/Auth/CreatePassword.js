@@ -35,7 +35,7 @@ function CreatePassword() {
           .then(() => {
             alert('Silahkan periksa email anda untuk mengubah password');
             firebaseAuthentication.signOut();
-            //  history.push('/sign-in')
+             history.push('/sign-in')
 
             const data = {
               is_verified: user.emailVerified,

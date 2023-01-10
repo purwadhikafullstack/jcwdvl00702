@@ -1,5 +1,5 @@
 const {
-  models: { Customer, Address },
+  models: { Customer, Address, Approle },
 } = require('../models');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
@@ -28,14 +28,14 @@ router.post('/register', async (req, res) => {
       password: hashedPassword,
       is_verified: req.body.is_verified,
       is_banned: false,
-      role: 'user',
+      // role: 'user',
       fullname: req.body.fullname,
-      token: '',
-      expired_time: 0,
+      // token: '',
+      // expired_time: 0,
       picture: '',
       social_login: false,
       customer_uid: req.body.customer_uid,
-      role: 'user',
+      // approle_id: req.body.approle_id
     });
 
     const customer = await newCustomer.save();
@@ -44,6 +44,20 @@ router.post('/register', async (req, res) => {
     res.status(500).json(err);
   }
 });
+router.post('/approle', async (req, res) => {
+  try{
+    const newRole = new Approle({
+      customer_uid: req.body.customer_uid,
+      role: "user",
+      warehouse_id: "",
+    })
+
+    const roleApp = await newRole.save();
+    res.status(200).json(roleApp);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+})
 
 //REGISTER VIA SOCIAL
 router.post('/register-social', async (req, res) => {
@@ -88,6 +102,7 @@ router.post('/login', async (req, res) => {
 router.get('/profile/:customer_uid', async (req, res) => {
   try {
     const response = await Customer.findOne({
+      include:[Approle],
       where: {
         customer_uid: req.params.customer_uid,
       },
@@ -97,6 +112,20 @@ router.get('/profile/:customer_uid', async (req, res) => {
     let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
     response.picture = picPath;
     // localhost:3300/profileimages/newzealand.jpg
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// GET ROLE BY ID
+router.get('/get-role/:customer_uid', async (req, res) => {
+  try {
+    const response = await Approle.findOne({
+      where: {
+        customer_uid: req.params.customer_uid,
+      },
+    });
     res.json(response);
   } catch (error) {
     console.log(error);

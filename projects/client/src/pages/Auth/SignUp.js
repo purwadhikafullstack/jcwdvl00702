@@ -25,13 +25,6 @@ function SignUp() {
   let history = useHistory();
   const dispatch = useDispatch();
 
-  // const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  // useEffect(() => {
-  //   if (!isLoggedIn) {
-  //     history.push('/');
-  //   }
-  // });
-
   const [isCheck, setIscheck] = useState(true);
   const changeIsCheck = () => {
     setIscheck(!isCheck);
@@ -87,11 +80,7 @@ function SignUp() {
             is_verified: user.emailVerified,
             customer_uid: user.uid,
           };
-          const reduxData = {
-            user: user.providerData[0],
-            id: user.uid,
-          };
-          console.log(reduxData);
+          console.log(data.customer_uid)
           return data;
         })
         .catch((err) => {
@@ -105,15 +94,23 @@ function SignUp() {
           // ...
         })
         .then((data) => {
-          Axios.post('http://localhost:3300/api/customer/register', data)
-            .then(() => {
-              return;
+          Axios.post('http://localhost:3300/api/customer/approle', {customer_uid: data.customer_uid})
+          .then(res=>{
+            Axios.post('http://localhost:3300/api/customer/register', {
+              email: data.email,
+              fullname: data.fullname,
+              password: data.password,
+              is_verified: data.is_verified,
+              customer_uid: data.customer_uid,
+              // approle_id: res.data.id,
             })
-            .catch((error) => {
+              .then(()=>{
+                console.log(res,': user register response')
+            })
+              .catch((error) => {
               console.log(error);
-              alert(error);
             });
-          // dispatch(loginUser(reduxData))
+          })
         });
     },
   });

@@ -28,7 +28,6 @@ import ResetPassword from './pages/Auth/PasswordChange/ResetPassword';
 import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
 import Footer from './components/Footer';
-import HomePage from './pages/HomePage';
 import ProductLists from './pages/ProductLists';
 import ChooseShipping from './pages/ChooseShipping';
 import AddressList from './pages/AddressList';
@@ -38,14 +37,10 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Payment from './pages/Payment';
 import EditWarehouse from './pages/Admin/EditWarehouse';
-import HomeFunc from './pages/HomeFunc';
 import Main from './pages/Main';
-import { AuthProvider } from './context/AuthProvider';
-import { ToastContainer } from 'react-toastify';
 import { useEffect } from 'react';
 import { firebaseAuthentication } from './config/firebase';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
 import { loginUser } from './redux/actionCreators/authActionCreators';
 import Axios from 'axios';
 
@@ -58,9 +53,11 @@ export default function App() {
         user: user.providerData[0],
         id: user.uid,
       };
+      console.log(data.id)
       Axios.get(`http://localhost:3300/api/admin/get-user-one/${data.id}`)
         .then((res) => {
           const getRes = res.data;
+          console.log('get res', getRes)
           const dataPersist = {
             user: getRes.result,
             id: getRes.result.customer_uid,

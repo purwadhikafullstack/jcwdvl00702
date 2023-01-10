@@ -26,6 +26,15 @@ db.models.Orderitem = require('./orderitem')(sequelize, Sequelize.DataTypes);
 db.models.Role = require('./role')(sequelize, Sequelize.DataTypes);
 db.models.Stock = require('./stock')(sequelize, Sequelize.DataTypes);
 db.models.Category = require('./category')(sequelize, Sequelize.DataTypes);
+db.models.Approle = require('./approle')(sequelize, Sequelize.DataTypes);
+
+db.models.Customer.hasOne(db.models.Approle,{
+  foreignKey: 'customer_uid',
+  sourceKey: 'customer_uid',
+})
+db.models.Approle.belongsTo(db.models.Customer,{
+  foreignKey: 'customer_uid',
+})
 
 db.models.Customer.hasMany(db.models.Address, {
   foreignKey: 'customer_uid',

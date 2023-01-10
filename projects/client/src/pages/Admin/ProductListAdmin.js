@@ -182,9 +182,9 @@ class ProductListAdmin extends React.Component {
             <div className="plc-detail-subname-2">Product ID: {val.id}</div>
             <div className="plc-detail-subname">
               <div className="plc-detail-subname-1">
-                <img src={val.category.picture} />
+                <img src={val.category?.picture} />
               </div>
-              <div className="plc-detail-subname-2">{val.category.name}</div>
+              <div className="plc-detail-subname-2">{val.category?.name}</div>
             </div>
             <div className="plc-detail-bottom">
               <Button
