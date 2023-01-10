@@ -1,4 +1,5 @@
 import React from 'react';
+import Axios from 'axios'
 import { IconButton, Container, Avatar, Menu, MenuItem } from '@mui/material';
 import {
   AccountBox,
@@ -19,10 +20,12 @@ import { Link } from 'react-router-dom';
 import '../../assets/styles/Dashboard.css';
 import { logoutUser } from '../../redux/actionCreators/authActionCreators';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from "react";
 import { firebaseAuthentication } from '../../config/firebase';
 
 export default function Dashboard() {
   const dispatch = useDispatch();
+  const [adminFullData,setAdminFullData] = useState()
 
   const { isLoggedIn, user } = useSelector(
     (state) => ({
@@ -31,7 +34,17 @@ export default function Dashboard() {
     }),
     shallowEqual
   );
-  console.log(user.customer_uid);
+
+  const getUser=()=>{
+    Axios.get(`http://localhost:3300/api/customer/profile/${user?.customer_uid}`)
+    .then(res=>{
+      setAdminFullData(res.data)
+      console.log('data getuser',res.data)
+    })
+    .catch(err=>{
+      console.log(err)
+    })
+  }
 
   const handleLogout = () => {
     firebaseAuthentication
@@ -45,6 +58,10 @@ export default function Dashboard() {
         alert(error);
       });
   };
+
+  useEffect(() => {
+    getUser()
+  }, []);
 
   const menuHandler = () => {
     return (
@@ -145,7 +162,7 @@ export default function Dashboard() {
             </PopupState>
           </div>
           <div className="dashboard-top-text">
-            <div className="dashboard-top-text-1">{isLoggedIn ? user?.role : 'Restricted'}</div>
+            <div className="dashboard-top-text-1">{isLoggedIn ? user?.approle.role : 'Restricted'}</div>
             <div className="dashboard-top-text-2">{isLoggedIn ? user?.fullname : 'Access'}</div>
           </div>
           <div className="dashboard-top-icon">

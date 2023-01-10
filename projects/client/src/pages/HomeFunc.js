@@ -31,6 +31,7 @@ import Axios from "axios";
 export default function HomeFunc() {
   const [productShow, setProductShow] = useState([]);
   const [userRole, setUserRole] = useState()
+  const [fullUserData, setFullUserData] = useState()
   const dispatch = useDispatch();
   let history = useHistory();
   const verifiedCheck = firebaseAuthentication.currentUser?.emailVerified
@@ -41,20 +42,11 @@ export default function HomeFunc() {
   }));
   const userUID = user?.customer_uid;
 
-  const roleCheck=()=>{
-    Axios.get(`http://localhost:3300/api/customer/get-role/${userUID}`)
-    .then(res=>{
-      setUserRole(res.data.role)
-    })
-    .catch(err=>{
-      console.log(err)
-    })
-  }
-
-  const testUser=()=>{
+  const getUser=()=>{
     Axios.get(`http://localhost:3300/api/customer/profile/${userUID}`)
     .then(res=>{
-      console.log(res.data)
+      setFullUserData(res.data)
+      setUserRole(res.data.approle.role)
     })
     .catch(err=>{
       console.log(err)
@@ -104,9 +96,8 @@ export default function HomeFunc() {
 
 
   useEffect(() => {
-    roleCheck()
-    // showProducts()
-    testUser()
+    getUser()
+    showProducts()
   }, []);
 
   return (

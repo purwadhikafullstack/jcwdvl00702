@@ -28,14 +28,10 @@ router.post('/register', async (req, res) => {
       password: hashedPassword,
       is_verified: req.body.is_verified,
       is_banned: false,
-      // role: 'user',
       fullname: req.body.fullname,
-      // token: '',
-      // expired_time: 0,
       picture: '',
       social_login: false,
       customer_uid: req.body.customer_uid,
-      // approle_id: req.body.approle_id
     });
 
     const customer = await newCustomer.save();
@@ -48,7 +44,7 @@ router.post('/approle', async (req, res) => {
   try{
     const newRole = new Approle({
       customer_uid: req.body.customer_uid,
-      role: "user",
+      role: req.body.role,
       warehouse_id: "",
     })
 

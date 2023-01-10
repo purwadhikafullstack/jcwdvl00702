@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton, Container, FormControl, Input, InputAdornment } from '@mui/material';
+import { IconButton, Container, FormControl, Input, InputAdornment, Select, MenuItem } from '@mui/material';
 import { ArrowBack, Person, Email, Lock, AddAPhoto, Visibility, VisibilityOff } from '@mui/icons-material';
 import '../../assets/styles/AddUser.css';
 import '../../assets/styles/DetailUser.css';
@@ -15,6 +15,7 @@ export default function AddUser() {
   let history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
   const [showRepassword, setShowRepassword] = useState(false);
+  const [roleSelect,setRoleSelect] = useState("")
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -27,6 +28,10 @@ export default function AddUser() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  const alertRole=()=>{
+    console.log(roleSelect)
+  }
 
   YupPassword(Yup);
   const formik = useFormik({
@@ -69,7 +74,7 @@ export default function AddUser() {
             email: values.email,
             fullname: values.fullname,
             password: values.password,
-            is_verified: user.emailVerified,
+            is_verified: true,
             customer_uid: user.uid,
           };
           return data;
@@ -82,14 +87,29 @@ export default function AddUser() {
           var credential = err.credential;
         })
         .then((data) => {
-          Axios.post('http://localhost:3300/api/customer/register', data)
-            .then(() => {
-              return;
+          Axios.post('http://localhost:3300/api/customer/approle',{
+            customer_uid:data.customer_uid,
+            role:"adminTBA"
+          })
+          .then(res=>{
+            Axios.post('http://localhost:3300/api/customer/register', {
+              email: data.email,
+              fullname: data.fullname,
+              password: data.password,
+              is_verified: data.is_verified,
+              customer_uid: data.customer_uid,
             })
-            .catch((error) => {
+              .then(()=>{
+                console.log(res,': user register response')
+                // history.push('/something')
+            })
+              .catch((error) => {
               console.log(error);
-              alert(error);
             });
+          })
+          .catch(err=>{
+            console.log(err)
+          })
         });
     },
   });
@@ -206,11 +226,23 @@ export default function AddUser() {
             />
           </FormControl>
         </div>
-
+        {/* <div>
+          <span className='role-span'>Select Role :</span>
+          <Select 
+            className='role-selector' 
+            value={roleSelect} 
+            onChange={e=>setRoleSelect(e.target.value)}
+          >
+            <MenuItem value={`Admin Warehouse A`}>Admin Warehouse A</MenuItem>
+            <MenuItem value={`Admin Warehouse B`}>Admin Warehouse B</MenuItem>
+            <MenuItem value={`Admin Warehouse C`}>Admin Warehouse C</MenuItem>
+          </Select>
+        </div> */}
         <div className="adduser-button">
           <button class="adduser-button-2" onClick={formik.handleSubmit}>
             Add User
           </button>
+          {/* <button onClick={alertRole}>Check role</button> */}
         </div>
       </div>
     </Container>

@@ -94,7 +94,10 @@ function SignUp() {
           // ...
         })
         .then((data) => {
-          Axios.post('http://localhost:3300/api/customer/approle', {customer_uid: data.customer_uid})
+          Axios.post('http://localhost:3300/api/customer/approle', {
+            customer_uid: data.customer_uid,
+            role:"user"
+          })
           .then(res=>{
             Axios.post('http://localhost:3300/api/customer/register', {
               email: data.email,
@@ -102,7 +105,6 @@ function SignUp() {
               password: data.password,
               is_verified: data.is_verified,
               customer_uid: data.customer_uid,
-              // approle_id: res.data.id,
             })
               .then(()=>{
                 console.log(res,': user register response')
@@ -110,6 +112,9 @@ function SignUp() {
               .catch((error) => {
               console.log(error);
             });
+          })
+          .catch(err=>{
+            console.log(err)
           })
         });
     },

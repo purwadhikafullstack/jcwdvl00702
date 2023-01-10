@@ -17,7 +17,7 @@ import Axios from 'axios';
 import '../../assets/styles/SignIn.css';
 import { useHistory } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
-import { useFormik, yupToFormErrors } from 'formik';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import { useDispatch } from 'react-redux';

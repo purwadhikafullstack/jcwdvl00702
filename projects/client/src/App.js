@@ -38,6 +38,7 @@ import Checkout from './pages/Checkout';
 import Payment from './pages/Payment';
 import EditWarehouse from './pages/Admin/EditWarehouse';
 import Main from './pages/Main';
+import Reconfirm from './pages/Admin/Reconfirm';
 import { useEffect } from 'react';
 import { firebaseAuthentication } from './config/firebase';
 import { useDispatch, useSelector } from 'react-redux';
@@ -120,6 +121,7 @@ export default function App() {
         <Route component={Cart} path="/cart/:id" />
         <Route component={Checkout} path="/checkout/:id/:orderId" />
         <Route component={Payment} path="/payment/:id/:orderId" />
+        <Route component={Reconfirm} path="/reconfirm-admin"/>
         <Route component={Main} path="/" />
       </Switch>
       <Footer />
