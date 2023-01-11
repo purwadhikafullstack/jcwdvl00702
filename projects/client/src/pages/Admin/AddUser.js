@@ -101,7 +101,7 @@ export default function AddUser() {
             })
               .then(()=>{
                 console.log(res,': user register response')
-                // history.push('/something')
+                history.push('/reconfirm-admin')
             })
               .catch((error) => {
               console.log(error);
