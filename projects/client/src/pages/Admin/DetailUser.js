@@ -1,5 +1,12 @@
-import React from 'react';
-import { Button, IconButton, Container, Select, MenuItem, InputBase } from '@mui/material';
+import React from "react";
+import {
+  Button,
+  IconButton,
+  Container,
+  Select,
+  MenuItem,
+  InputBase,
+} from "@mui/material";
 import {
   ArrowBack,
   Person,
@@ -12,17 +19,17 @@ import {
   Lock,
   PhotoCamera,
   Work,
-} from '@mui/icons-material';
-import { Link } from 'react-router-dom';
-import '../../assets/styles/DetailUser.css';
-import Axios from 'axios';
-import { useHistory } from 'react-router-dom';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import YupPassword from 'yup-password';
-import { firebaseAuthentication } from '../../config/firebase';
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+} from "@mui/icons-material";
+import { Link } from "react-router-dom";
+import "../../assets/styles/DetailUser.css";
+import Axios from "axios";
+import { useHistory } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import YupPassword from "yup-password";
+import { firebaseAuthentication } from "../../config/firebase";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 export default function DetailUser() {
   let history = useHistory();
@@ -63,15 +70,20 @@ export default function DetailUser() {
   YupPassword(Yup);
   const formik = useFormik({
     initialValues: {
-      email: '',
-      fullname: '',
+      email: "",
+      fullname: "",
     },
     validationSchema: Yup.object().shape({
-      email: Yup.string().required('No email entered').email('Not an email format'),
+      email: Yup.string()
+        .required("No email entered")
+        .email("Not an email format"),
       fullname: Yup.string()
-        .required('No fullname entered')
-        .matches(/^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi, 'Name can only contain Latin letters.')
-        .matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms, 'Please enter your full name.'),
+        .required("No fullname entered")
+        .matches(
+          /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+          "Name can only contain Latin letters."
+        )
+        .matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms, "Please enter your full name."),
     }),
     validateOnChange: false,
     onSubmit: async (values) => {
@@ -79,10 +91,13 @@ export default function DetailUser() {
         email: values.email,
         fullname: values.fullname,
       };
-      Axios.put(`http://localhost:3300/api/admin/update/${detailUser.customer_uid}`, data)
+      Axios.put(
+        `${process.env.REACT_APP_API_BASE_URL}/admin/update/${detailUser.customer_uid}`,
+        data
+      )
         .then(() => {
           fetchDetail();
-          history.push('/user-list');
+          history.push("/user-list");
         })
         .catch((error) => {
           console.log(error);
@@ -91,7 +106,7 @@ export default function DetailUser() {
   });
 
   return (
-    <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
+    <Container maxWidth="xs" sx={{ backgroundColor: "white" }}>
       <div className="detailuser-main">
         <div className="detailuser-banner">
           <IconButton onClick={goBack}>
@@ -104,28 +119,30 @@ export default function DetailUser() {
               <Button
                 disabled
                 sx={{
-                  borderRadius: '20px',
-                  backgroundColor: 'rgb(255,153,153,0.9)',
-                  fontSize: '8px',
-                  fontFamily: 'Lora',
-                  color: 'black',
-                  marginRight: '5px',
+                  borderRadius: "20px",
+                  backgroundColor: "rgb(255,153,153,0.9)",
+                  fontSize: "8px",
+                  fontFamily: "Lora",
+                  color: "black",
+                  marginRight: "5px",
                 }}
                 variant="contained"
-                className="detailuser-banner-delete">
+                className="detailuser-banner-delete"
+              >
                 Delete
               </Button>
               <Button
                 sx={{
-                  borderRadius: '20px',
-                  backgroundColor: 'rgb(153,255,255,0.9)',
-                  fontSize: '8px',
-                  fontFamily: 'Lora',
-                  color: 'black',
+                  borderRadius: "20px",
+                  backgroundColor: "rgb(153,255,255,0.9)",
+                  fontSize: "8px",
+                  fontFamily: "Lora",
+                  color: "black",
                 }}
                 variant="contained"
                 onClick={saveHandler}
-                className="detailuser-banner-edit">
+                className="detailuser-banner-edit"
+              >
                 Save
               </Button>
             </>
@@ -133,28 +150,30 @@ export default function DetailUser() {
             <>
               <Button
                 sx={{
-                  borderRadius: '20px',
-                  backgroundColor: 'rgb(255,153,153,0.9)',
-                  fontSize: '8px',
-                  fontFamily: 'Lora',
-                  color: 'black',
-                  marginRight: '5px',
+                  borderRadius: "20px",
+                  backgroundColor: "rgb(255,153,153,0.9)",
+                  fontSize: "8px",
+                  fontFamily: "Lora",
+                  color: "black",
+                  marginRight: "5px",
                 }}
                 variant="contained"
-                className="detailuser-banner-delete">
+                className="detailuser-banner-delete"
+              >
                 Delete
               </Button>
               <Button
                 sx={{
-                  borderRadius: '20px',
-                  backgroundColor: 'rgb(255,204,153,0.9)',
-                  fontSize: '8px',
-                  fontFamily: 'Lora',
-                  color: 'black',
+                  borderRadius: "20px",
+                  backgroundColor: "rgb(255,204,153,0.9)",
+                  fontSize: "8px",
+                  fontFamily: "Lora",
+                  color: "black",
                 }}
                 variant="contained"
                 onClick={editHandler}
-                className="detailuser-banner-edit">
+                className="detailuser-banner-edit"
+              >
                 Edit
               </Button>
             </>
@@ -167,7 +186,12 @@ export default function DetailUser() {
                 color="primary"
                 aria-label="upload picture"
                 component="label"
-                sx={{ marginLeft: '250px', width: '40px', marginBottom: '-30px' }}>
+                sx={{
+                  marginLeft: "250px",
+                  width: "40px",
+                  marginBottom: "-30px",
+                }}
+              >
                 <input hidden accept="image/*" type="file" />
                 <PhotoCamera />
               </IconButton>
@@ -195,7 +219,9 @@ export default function DetailUser() {
               <li className="du-c-d-item">
                 <Badge className="profileIcon" />
                 <span className="du-c-d-item-1">ID User</span>
-                <span className="du-c-d-item-2">{detailUser?.customer_uid}</span>
+                <span className="du-c-d-item-2">
+                  {detailUser?.customer_uid}
+                </span>
               </li>
 
               {isEdit ? (
@@ -204,20 +230,24 @@ export default function DetailUser() {
                     <Person className="profileIcon" />
                     <span className="du-c-d-item-1">Username</span>
                     <InputBase
-                      sx={{ fontFamily: 'Lora', fontSize: '12px' }}
+                      sx={{ fontFamily: "Lora", fontSize: "12px" }}
                       placeholder={detailUser.fullname}
                       className="du-c-d-item-2-input"
-                      onChange={(e) => formik.setFieldValue('fullname', e.target.value)}
+                      onChange={(e) =>
+                        formik.setFieldValue("fullname", e.target.value)
+                      }
                     />
                   </li>
                   <li className="du-c-d-item">
                     <Email className="profileIcon" />
                     <span className="du-c-d-item-1">Email</span>
                     <InputBase
-                      sx={{ fontFamily: 'Lora', fontSize: '12px' }}
+                      sx={{ fontFamily: "Lora", fontSize: "12px" }}
                       placeholder={detailUser.email}
                       className="du-c-d-item-2-input"
-                      onChange={(e) => formik.setFieldValue('email', e.target.value)}
+                      onChange={(e) =>
+                        formik.setFieldValue("email", e.target.value)
+                      }
                     />
                   </li>
                 </>
@@ -226,7 +256,9 @@ export default function DetailUser() {
                   <li className="du-c-d-item">
                     <Person className="profileIcon" />
                     <span className="du-c-d-item-1">Fullname</span>
-                    <span className="du-c-d-item-2">{detailUser?.fullname}</span>
+                    <span className="du-c-d-item-2">
+                      {detailUser?.fullname}
+                    </span>
                   </li>
                   <li className="du-c-d-item">
                     <Email className="profileIcon" />
@@ -244,7 +276,9 @@ export default function DetailUser() {
               <li className="du-c-d-item">
                 <VerifiedUser className="profileIcon" />
                 <span className="du-c-d-item-1">Status</span>
-                <span className="du-c-d-item-2">{detailUser?.is_verified ? 'Verifed' : 'Not Verified'}</span>
+                <span className="du-c-d-item-2">
+                  {detailUser?.is_verified ? "Verifed" : "Not Verified"}
+                </span>
               </li>
               <li className="du-c-d-item">
                 {isEdit ? (
@@ -252,12 +286,13 @@ export default function DetailUser() {
                     <Lock className="profileIcon" />
                     <span className="du-c-d-item-1">Security</span>
                     <Select
-                      sx={{ fontSize: '10px' }}
+                      sx={{ fontSize: "10px" }}
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={securityValue}
                       className="du-c-d-item-2-select"
-                      onChange={handleSecurityChange}>
+                      onChange={handleSecurityChange}
+                    >
                       <MenuItem value={0}>
                         <em>Security Status</em>
                       </MenuItem>
@@ -273,7 +308,9 @@ export default function DetailUser() {
                   </>
                 )}
               </li>
-              {isEdit ? <button onClick={formik.handleSubmit}>Submit Changes</button> : null}
+              {isEdit ? (
+                <button onClick={formik.handleSubmit}>Submit Changes</button>
+              ) : null}
             </ul>
           </div>
           <div className="detailuser-content-option">

@@ -40,7 +40,7 @@ export default function MyOrderDetail() {
   useEffect(() => {
     const getOrderList = async () => {
       const response = await Axios.get(
-        `http://localhost:3300/api/order/get-order-cart-product/${userUID}`
+        `${process.env.REACT_APP_API_BASE_URL}/order/get-order-cart-product/${userUID}`
       );
       console.log(response?.data);
       console.log(response?.data.orderitems, "ini orderitems");

@@ -111,7 +111,9 @@ export default function HomeFunc() {
   ];
 
   const showProducts = () => {
-    Axios.get(`http://localhost:3300/api/product/home-product`).then((res) => {
+    Axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/product/home-product`
+    ).then((res) => {
       let homeProducts = res.data;
       setProductShow(homeProducts);
       console.log(homeProducts);
@@ -125,7 +127,6 @@ export default function HomeFunc() {
       alert("Mohon Login Untuk Melihat Cart Anda");
     }
   };
-
 
   useEffect(() => {
     showProducts();
@@ -288,7 +289,6 @@ export default function HomeFunc() {
                   </div>
                 ))
               : null}
-
           </div>
         </div>
       </Container>

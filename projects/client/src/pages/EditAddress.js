@@ -11,7 +11,7 @@ function EditAddress() {
   const [provinces, setProvinces] = useState();
   const [cities, setCities] = useState();
   const [postals, setPostals] = useState();
-//   const { user: currentUser } = useContext(AuthContext);
+  //   const { user: currentUser } = useContext(AuthContext);
   const [address_name, setAddress_name] = useState();
   const [address, setAddress] = useState();
   const [province, setProvince] = useState();
@@ -20,21 +20,21 @@ function EditAddress() {
   const [latitude, setLatitude] = useState();
   const [longitude, setLongitude] = useState();
   const { id } = useParams();
-//  console.log(currentUser);
-//   const userUID = currentUser?.uid;
-//   console.log(userUID);
-const { isLoggedIn, user } = useSelector((state) => ({
-  isLoggedIn: state.auth.isLoggedIn,
-  user: state.auth.user,
-}));
-const userUID = user?.customer_uid;
-console.log(user);
+  //  console.log(currentUser);
+  //   const userUID = currentUser?.uid;
+  //   console.log(userUID);
+  const { isLoggedIn, user } = useSelector((state) => ({
+    isLoggedIn: state.auth.isLoggedIn,
+    user: state.auth.user,
+  }));
+  const userUID = user?.customer_uid;
+  console.log(user);
 
   useEffect(() => {
     const provinceDetails = async () => {
       try {
         const response = await Axios.get(
-          "http://localhost:3300/api/address/provinces"
+          `${process.env.REACT_APP_API_BASE_URL}/address/provinces`
         );
         let provincesArr = JSON.parse(response.data);
         setProvinces(provincesArr);
@@ -49,7 +49,7 @@ console.log(user);
     const locationDetail = async () => {
       try {
         const response = await Axios.get(
-          "http://localhost:3300/api/address/cities"
+          `${process.env.REACT_APP_API_BASE_URL}/address/cities`
         );
         let citiesArr = JSON.parse(response.data);
         setCities(citiesArr);
@@ -64,7 +64,7 @@ console.log(user);
     const postalsDetail = async () => {
       try {
         const response = await Axios.get(
-          "http://localhost:3300/api/address/postal-code"
+          `${process.env.REACT_APP_API_BASE_URL}/address/postal-code`
         );
         let postalsArr = JSON.parse(response.data);
         setPostals(postalsArr);
@@ -79,7 +79,7 @@ console.log(user);
     if (userUID) {
       const getAddressById = async (userUID) => {
         const getAddress = await Axios.get(
-          `http://localhost:3300/api/address/address-list/${userUID}/${id}`
+          `${process.env.REACT_APP_API_BASE_URL}/address/address-list/${userUID}/${id}`
         );
         console.log(getAddress);
         setAddress_name(getAddress.data.address_name);
@@ -100,7 +100,7 @@ console.log(user);
     };
     try {
       const response = await Axios.post(
-        "http://localhost:3300/api/address/lat-long",
+        `${process.env.REACT_APP_API_BASE_URL}/address/lat-long`,
         data
       );
       console.log(response, "latlong");
@@ -125,7 +125,7 @@ console.log(user);
     };
     try {
       await Axios.put(
-        `http://localhost:3300/api/address/edit-address/${userUID}/${id}`,
+        `${process.env.REACT_APP_API_BASE_URL}/address/edit-address/${userUID}/${id}`,
         data
       );
       console.log(id, "ini id nya");

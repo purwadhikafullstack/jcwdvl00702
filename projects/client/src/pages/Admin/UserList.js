@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Button,
   InputAdornment,
@@ -10,17 +10,23 @@ import {
   InputBase,
   Stack,
   Pagination,
-} from '@mui/material';
-import { MoreHoriz, People, Search, PersonAdd, SortTwoTone } from '@mui/icons-material';
-import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-import { Link } from 'react-router-dom';
-import '../../assets/styles/UserList.css';
-import { useState, useEffect, useContext } from 'react';
-import { firebaseAuthentication } from '../../config/firebase';
-import { useDispatch, useSelector } from 'react-redux';
-import Axios from 'axios';
-import { getUserData } from '../../redux/actionCreators/userDataActions';
-import { getUserDetail } from '../../redux/actionCreators/userDetailActions';
+} from "@mui/material";
+import {
+  MoreHoriz,
+  People,
+  Search,
+  PersonAdd,
+  SortTwoTone,
+} from "@mui/icons-material";
+import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
+import { Link } from "react-router-dom";
+import "../../assets/styles/UserList.css";
+import { useState, useEffect, useContext } from "react";
+import { firebaseAuthentication } from "../../config/firebase";
+import { useDispatch, useSelector } from "react-redux";
+import Axios from "axios";
+import { getUserData } from "../../redux/actionCreators/userDataActions";
+import { getUserDetail } from "../../redux/actionCreators/userDetailActions";
 
 export default function UserList() {
   const [isSearch, setIsSearch] = useState(false);
@@ -28,13 +34,15 @@ export default function UserList() {
   const dispatch = useDispatch();
 
   const processUsers = () => {
-    Axios.get(`http://localhost:3300/api/admin/get-user`).then((res) => {
-      const getRes = res.data.allUser;
-      console.log(res.data)
-      console.log(getRes);
-      dispatch(getUserData(getRes));
-      setUserBox(getRes);
-    });
+    Axios.get(`${process.env.REACT_APP_API_BASE_URL}/admin/get-user`).then(
+      (res) => {
+        const getRes = res.data.allUser;
+        console.log(res.data);
+        console.log(getRes);
+        dispatch(getUserData(getRes));
+        setUserBox(getRes);
+      }
+    );
   };
 
   useEffect(() => {
@@ -60,7 +68,7 @@ export default function UserList() {
     const data = {
       is_banned: true,
     };
-    Axios.put(`http://localhost:3300/api/admin/update/${id}`, data)
+    Axios.put(`${process.env.REACT_APP_API_BASE_URL}/admin/update/${id}`, data)
       .then(() => {
         processUsers();
       })
@@ -78,7 +86,11 @@ export default function UserList() {
       <PopupState variant="popover" popupId="demo-popup-menu">
         {(popupState) => (
           <React.Fragment>
-            <button className="account-button" variant="contained" {...bindTrigger(popupState)}>
+            <button
+              className="account-button"
+              variant="contained"
+              {...bindTrigger(popupState)}
+            >
               <IconButton>
                 <MoreHoriz />
               </IconButton>
@@ -95,22 +107,34 @@ export default function UserList() {
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/warehouse-management" className="userlist-banner-menu-link">
+                <Link
+                  to="/warehouse-management"
+                  className="userlist-banner-menu-link"
+                >
                   Warehouse Mng.
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/products-management-list" className="userlist-banner-menu-link">
+                <Link
+                  to="/products-management-list"
+                  className="userlist-banner-menu-link"
+                >
                   Product List
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/products-management-category" className="userlist-banner-menu-link">
+                <Link
+                  to="/products-management-category"
+                  className="userlist-banner-menu-link"
+                >
                   Product Category
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/stock-mutation" className="userlist-banner-menu-link">
+                <Link
+                  to="/stock-mutation"
+                  className="userlist-banner-menu-link"
+                >
                   Stock Mutation
                 </Link>
               </MenuItem>
@@ -152,7 +176,7 @@ export default function UserList() {
           <div className="ulc-detail-subname">{userBox[abc]?.email}</div>
           <div className="ulc-detail-subname">{userBox[abc]?.role}</div>
           {userBox[abc]?.is_banned == true ? (
-            <div className="ulc-detail-subname" style={{ color: 'darkred' }}>
+            <div className="ulc-detail-subname" style={{ color: "darkred" }}>
               Banned
             </div>
           ) : (
@@ -163,28 +187,30 @@ export default function UserList() {
             <Button
               onClick={() => deleteHandler(userBox[abc]?.customer_uid)}
               sx={{
-                borderRadius: '20px',
-                backgroundColor: 'rgb(255,153,153,0.9)',
-                fontSize: '8px',
-                fontFamily: 'Lora',
-                color: 'black',
+                borderRadius: "20px",
+                backgroundColor: "rgb(255,153,153,0.9)",
+                fontSize: "8px",
+                fontFamily: "Lora",
+                color: "black",
               }}
               variant="contained"
-              className="ulc-detail-bottom-delete">
+              className="ulc-detail-bottom-delete"
+            >
               Delete
             </Button>
             <Link to="/detail-user" className="userlist-banner-menu-link">
               <Button
                 onClick={() => handleDetail(dataUser[abc])}
                 sx={{
-                  borderRadius: '20px',
-                  backgroundColor: 'rgb(153,255,153,0.9)',
-                  fontSize: '8px',
-                  fontFamily: 'Lora',
-                  color: 'black',
+                  borderRadius: "20px",
+                  backgroundColor: "rgb(153,255,153,0.9)",
+                  fontSize: "8px",
+                  fontFamily: "Lora",
+                  color: "black",
                 }}
                 variant="contained"
-                className="ulc-detail-bottom-detail">
+                className="ulc-detail-bottom-detail"
+              >
                 Detail
               </Button>
             </Link>
@@ -195,7 +221,7 @@ export default function UserList() {
   };
 
   return (
-    <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
+    <Container maxWidth="xs" sx={{ backgroundColor: "white" }}>
       <div className="userlist-main">
         <div className="userlist-banner">
           <div className="userlist-banner-logo">
@@ -207,9 +233,9 @@ export default function UserList() {
             <>
               <ClickAwayListener onClickAway={isSearchHandleClose}>
                 <InputBase
-                  sx={{ ml: 1, flex: 1, fontFamily: 'Lora' }}
+                  sx={{ ml: 1, flex: 1, fontFamily: "Lora" }}
                   placeholder="Search"
-                  inputProps={{ 'aria-label': 'Search' }}
+                  inputProps={{ "aria-label": "Search" }}
                   className="userlist-search"
                   endAdornment={
                     <InputAdornment position="end">
@@ -244,7 +270,15 @@ export default function UserList() {
           {Object.keys(userBox).map((i) => {
             return userlistCard(i);
           })}
-          <Stack spacing={1} sx={{ position: 'fixed', top: '78%', width: '110%', fontFamily: 'Lora' }}>
+          <Stack
+            spacing={1}
+            sx={{
+              position: "fixed",
+              top: "78%",
+              width: "110%",
+              fontFamily: "Lora",
+            }}
+          >
             <Pagination count={10} />
           </Stack>
         </div>

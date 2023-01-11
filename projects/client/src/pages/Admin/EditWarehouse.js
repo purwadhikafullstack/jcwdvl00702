@@ -24,9 +24,9 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 function DetailWarehouse() {
-    const [provinces, setProvinces] = useState();
-    const [cities, setCities] = useState();
-    const [postals, setPostals] = useState();
+  const [provinces, setProvinces] = useState();
+  const [cities, setCities] = useState();
+  const [postals, setPostals] = useState();
   const [warehouse_name, setWarehouse_name] = useState();
   const [warehouse_address, setWarehouse_address] = useState();
   const [province, setProvince] = useState();
@@ -58,7 +58,7 @@ function DetailWarehouse() {
     const provinceDetails = async () => {
       try {
         const response = await Axios.get(
-          "http://localhost:3300/api/warehouse/provinces"
+          `${process.env.REACT_APP_API_BASE_URL}/warehouse/provinces`
         );
         let provincesArr = JSON.parse(response.data);
         setProvinces(provincesArr);
@@ -73,7 +73,7 @@ function DetailWarehouse() {
     const locationDetail = async () => {
       try {
         const response = await Axios.get(
-          "http://localhost:3300/api/warehouse/cities"
+          `${process.env.REACT_APP_API_BASE_URL}/warehouse/cities`
         );
         let citiesArr = JSON.parse(response.data);
         setCities(citiesArr);
@@ -88,7 +88,7 @@ function DetailWarehouse() {
     const postalsDetail = async () => {
       try {
         const response = await Axios.get(
-          "http://localhost:3300/api/warehouse/postal-code"
+          `${process.env.REACT_APP_API_BASE_URL}/warehouse/postal-code`
         );
         let postalsArr = JSON.parse(response.data);
         setPostals(postalsArr);
@@ -103,7 +103,7 @@ function DetailWarehouse() {
     if (userUID) {
       const getUserById = async (userUID) => {
         const getId = await Axios.get(
-          `http://localhost:3300/api/customer/user/${userUID}`
+          `${process.env.REACT_APP_API_BASE_URL}/customer/user/${userUID}`
         );
         console.log(getId);
       };
@@ -115,7 +115,7 @@ function DetailWarehouse() {
     if (userUID) {
       const getWarehouseById = async () => {
         const getWarehouse = await Axios.get(
-          `http://localhost:3300/api/warehouse/warehouse-list/${id}`
+          `${process.env.REACT_APP_API_BASE_URL}/warehouse/warehouse-list/${id}`
         );
         console.log(getWarehouse);
         setWarehouse_name(getWarehouse.data.warehouse_name);
@@ -138,7 +138,7 @@ function DetailWarehouse() {
     };
     try {
       const response = await Axios.post(
-        "http://localhost:3300/api/warehouse/lat-long",
+        `${process.env.REACT_APP_API_BASE_URL}/warehouse/lat-long`,
         data
       );
       console.log(response, "latlong");
@@ -165,7 +165,7 @@ function DetailWarehouse() {
 
     try {
       await Axios.put(
-        `http://localhost:3300/api/warehouse/edit-warehouse/${id}`,
+        `${process.env.REACT_APP_API_BASE_URL}/warehouse/edit-warehouse/${id}`,
         formData,
         {
           headers: {

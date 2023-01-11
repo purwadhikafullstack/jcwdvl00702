@@ -24,7 +24,9 @@ export default function Cart() {
 
   // mengambil cart dan product
   const cartProduct = () => {
-    Axios.get(`http://localhost:3300/api/cart/get-cart-product/${id}`)
+    Axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/cart/get-cart-product/${id}`
+    )
       .then((result) => {
         setState(result.data);
         console.log("ini cart-product data", result.data);
@@ -36,7 +38,9 @@ export default function Cart() {
 
   // mengambil total harga pada cart
   const getTotalPrice = () => {
-    Axios.get(`http://localhost:3300/api/cart/get-total-price/${id}`)
+    Axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/cart/get-total-price/${id}`
+    )
       .then((result) => {
         setTotalPrice(result.data);
       })
@@ -47,7 +51,7 @@ export default function Cart() {
 
   // mengambil data order
   const getOrder = () => {
-    Axios.get(`http://localhost:3300/api/order/get-order/${id}`)
+    Axios.get(`${process.env.REACT_APP_API_BASE_URL}/order/get-order/${id}`)
       .then((result) => {
         setOrderState(result.data);
         console.log("ini get order", result.data);
@@ -61,7 +65,9 @@ export default function Cart() {
   const deleteBtnHandler = (productId) => {
     const confirmDelete = window.confirm("Delete Product?");
     if (confirmDelete) {
-      Axios.delete(`http://localhost:3300/api/cart/delete-cart/${productId}`)
+      Axios.delete(
+        `${process.env.REACT_APP_API_BASE_URL}/cart/delete-cart/${productId}`
+      )
         .then(() => {
           cartProduct();
           getTotalPrice();
@@ -85,7 +91,10 @@ export default function Cart() {
     if (val.quantity === val.product.quantity) {
       alert(`Stock Hanya tersedia ${val.product.quantity}`);
     } else {
-      Axios.put(`http://localhost:3300/api/cart/edit-qty/${val.id}`, data)
+      Axios.put(
+        `${process.env.REACT_APP_API_BASE_URL}/cart/edit-qty/${val.id}`,
+        data
+      )
         .then(() => {
           cartProduct();
           getTotalPrice();
@@ -103,7 +112,9 @@ export default function Cart() {
     if (val.quantity <= 0) {
       const confirmDelete = window.confirm("Delete Product?");
       if (confirmDelete) {
-        Axios.delete(`http://localhost:3300/api/cart/delete-cart/${val.id}`)
+        Axios.delete(
+          `${process.env.REACT_APP_API_BASE_URL}/cart/delete-cart/${val.id}`
+        )
           .then(() => {
             cartProduct();
             getTotalPrice();
@@ -115,7 +126,10 @@ export default function Cart() {
         alert("Cancel Delete Product");
       }
     } else {
-      Axios.put(`http://localhost:3300/api/cart/edit-qty/${val.id}`, data)
+      Axios.put(
+        `${process.env.REACT_APP_API_BASE_URL}/cart/edit-qty/${val.id}`,
+        data
+      )
         .then(() => {
           cartProduct();
           getTotalPrice();
@@ -135,12 +149,11 @@ export default function Cart() {
     console.log("ini data", data);
 
     if (!orderState) {
-      Axios.post("http://localhost:3300/api/order/add-order", data)
+      Axios.post(`${process.env.REACT_APP_API_BASE_URL}/order/add-order`, data)
         .then((result) => {
           console.log("ini result", result);
           setOrderId(result.data);
           history.push(`/checkout/${id}/${orderId.id}`);
-
         })
         .catch((error) => {
           alert(error);
