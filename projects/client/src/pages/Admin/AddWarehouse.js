@@ -33,13 +33,13 @@ function AddWarehouse() {
   const [latitude, setLatitude] = useState();
   const [longitude, setLongitude] = useState();
   const [city, setCity] = useState();
-  const [cityData, setCityData] = useState()
-  const [city_id, setCity_id] = useState()
+  const [cityData, setCityData] = useState();
+  const [city_id, setCity_id] = useState();
   const [postal_code, setPostal_code] = useState();
   const [picture, setPicture] = useState();
   const [admin, setAdmin] = useState();
   const [preview, setPreview] = useState("");
-  const [dataCity, setDataCity] = useState()
+  const [dataCity, setDataCity] = useState();
   //  console.log(currentUser);
   // const userUID = currentUser?.uid;
   // console.log(userUID);
@@ -55,7 +55,7 @@ function AddWarehouse() {
     const provinceDetails = async () => {
       try {
         const response = await Axios.get(
-          "http://localhost:3300/api/warehouse/provinces"
+          `${process.env.REACT_APP_API_BASE_URL}/warehouse/provinces`
         );
         let provincesArr = JSON.parse(response.data);
         setProvinces(provincesArr);
@@ -70,7 +70,7 @@ function AddWarehouse() {
     const locationDetail = async () => {
       try {
         const response = await Axios.get(
-          "http://localhost:3300/api/warehouse/cities"
+          `${process.env.REACT_APP_API_BASE_URL}/warehouse/cities`
         );
         let citiesArr = JSON.parse(response.data);
         setCities(citiesArr);
@@ -85,7 +85,7 @@ function AddWarehouse() {
     const postalsDetail = async () => {
       try {
         const response = await Axios.get(
-          "http://localhost:3300/api/warehouse/postal-code"
+          `${process.env.REACT_APP_API_BASE_URL}/warehouse/postal-code`
         );
         let postalsArr = JSON.parse(response.data);
         setPostals(postalsArr);
@@ -100,7 +100,7 @@ function AddWarehouse() {
     if (userUID) {
       const getUserById = async (userUID) => {
         const getId = await Axios.get(
-          `http://localhost:3300/api/customer/user/${userUID}`
+          `${process.env.REACT_APP_API_BASE_URL}/customer/user/${userUID}`
         );
         console.log(getId);
       };
@@ -114,21 +114,21 @@ function AddWarehouse() {
     setPreview(URL.createObjectURL(image));
   };
 
-  const cityCheck=(e)=>{
-    setCityData(e)
-    const splitCity = cityData.split(" ")
-    let cityName = ""
-    if(splitCity.length>2){
-      for(let x=0;x<(splitCity.length-1);x++){
-        cityName = cityName + splitCity[x] + " "
+  const cityCheck = (e) => {
+    setCityData(e);
+    const splitCity = cityData.split(" ");
+    let cityName = "";
+    if (splitCity.length > 2) {
+      for (let x = 0; x < splitCity.length - 1; x++) {
+        cityName = cityName + splitCity[x] + " ";
       }
-      setCity(cityName)
-      console.log(city)
+      setCity(cityName);
+      console.log(city);
     } else {
-      setCity(splitCity[0])
+      setCity(splitCity[0]);
     }
-    setCity_id(splitCity[splitCity.length-1])
-  }
+    setCity_id(splitCity[splitCity.length - 1]);
+  };
 
   const postLatLong = async () => {
     const data = {
@@ -136,7 +136,7 @@ function AddWarehouse() {
     };
     try {
       const response = await Axios.post(
-        "http://localhost:3300/api/warehouse/lat-long",
+        `${process.env.REACT_APP_API_BASE_URL}/warehouse/lat-long`,
         data
       );
       console.log(response, "latlong");
@@ -150,7 +150,7 @@ function AddWarehouse() {
 
   const addWarehouse = async (e) => {
     e.preventDefault();
-    
+
     const formData = new FormData();
     formData.append("warehouse_name", warehouse_name);
     formData.append("warehouse_address", warehouse_address);
@@ -161,10 +161,10 @@ function AddWarehouse() {
     formData.append("longitude", longitude);
     formData.append("picture", picture);
     formData.append("admin", admin);
-    formData.append("city_id", city_id)
+    formData.append("city_id", city_id);
     try {
       await Axios.post(
-        `http://localhost:3300/api/warehouse/add-new-warehouse`,
+        `${process.env.REACT_APP_API_BASE_URL}/warehouse/add-new-warehouse`,
         formData,
         {
           headers: {

@@ -26,7 +26,7 @@ function Payment() {
 
   // mengambil data order
   const getOrder = () => {
-    Axios.get(`http://localhost:3300/api/order/get-order/${id}/`)
+    Axios.get(`${process.env.REACT_APP_API_BASE_URL}/order/get-order/${id}/`)
       .then((result) => {
         setOrder(result.data);
         console.log("ini order list:", result.data);
@@ -38,7 +38,9 @@ function Payment() {
 
   // mengambil cart dan product
   const cartProduct = () => {
-    Axios.get(`http://localhost:3300/api/cart/get-cart-product/${id}`)
+    Axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/cart/get-cart-product/${id}`
+    )
       .then((result) => {
         setCart(result.data);
         console.log("ini cart-product data", result.data);
@@ -50,7 +52,9 @@ function Payment() {
 
   // mengambil total harga pada cart
   const getCartPrice = () => {
-    Axios.get(`http://localhost:3300/api/cart/get-total-price/${id}`)
+    Axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/cart/get-total-price/${id}`
+    )
       .then((result) => {
         setCartPrice(result.data);
       })
@@ -73,7 +77,10 @@ function Payment() {
     data.append("payment_picture", picture);
 
     console.log(data);
-    Axios.put(`http://localhost:3300/api/order/payment-proof/${id}`, data)
+    Axios.put(
+      `${process.env.REACT_APP_API_BASE_URL}/order/payment-proof/${id}`,
+      data
+    )
       .then(() => {
         alert("Payment proof uploaded!");
       })
@@ -90,7 +97,10 @@ function Payment() {
         warehouse_id: "A",
         quantity: cart[i].quantity,
       };
-      Axios.post(`http://localhost:3300/api/orderitem/add-orderitem`, cartData)
+      Axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/orderitem/add-orderitem`,
+        cartData
+      )
         .then((response) => console.log(response.data))
         .catch((error) => console.error(error));
     }

@@ -12,7 +12,7 @@ import Container from "@mui/material/Container";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import Axios from "axios";
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 function Profile() {
   // const { user: currentUser } = useContext(AuthContext);
@@ -20,14 +20,12 @@ function Profile() {
   // const user = currentUser?.uid;
   // console.log(user);
 
-  const { isLoggedIn, user } = useSelector(
-    (state) => ({
-      isLoggedIn: state.auth.isLoggedIn,
-      user: state.auth.user,
-    }),
-  );
-  const userUID = user?.customer_uid
-  console.log(user)
+  const { isLoggedIn, user } = useSelector((state) => ({
+    isLoggedIn: state.auth.isLoggedIn,
+    user: state.auth.user,
+  }));
+  const userUID = user?.customer_uid;
+  console.log(user);
 
   const [fullname, setFullname] = useState("");
   const [picture, setPicture] = useState("");
@@ -38,7 +36,7 @@ function Profile() {
     if (userUID) {
       const getUserById = async (userUID) => {
         const response = await Axios.get(
-          `http://localhost:3300/api/customer/profile/${userUID}`
+          `${process.env.REACT_APP_API_BASE_URL}/customer/profile/${userUID}`
         );
         console.log(JSON.stringify(response));
         setPicture(response.data.picture);

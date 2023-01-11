@@ -34,9 +34,9 @@ function WarehouseManagement() {
     if (userUID) {
       const getWarehouseList = async () => {
         const response = await Axios.get(
-          `http://localhost:3300/api/warehouse/warehouse-list`
+          `${process.env.REACT_APP_API_BASE_URL}/warehouse/warehouse-list`
         );
-        console.log(response.data)
+        console.log(response.data);
         setWarehouseDetails(response.data);
       };
       getWarehouseList();
@@ -55,7 +55,6 @@ function WarehouseManagement() {
   // };
 
   const menuHandler = () => {
-    
     return (
       <PopupState variant="popover" popupId="demo-popup-menu">
         {(popupState) => (
@@ -203,8 +202,8 @@ function WarehouseManagement() {
               {/* {this.whManagementCard("A")}
             {this.whManagementCard("B")}
             {this.whManagementCard("C")} */}
-                {WarehouseDetails?.map((WarehouseDetail) => (
-                  <>
+              {WarehouseDetails?.map((WarehouseDetail) => (
+                <>
                   <div className="wmc-main">
                     <div className="wmc-image">
                       <img
@@ -214,7 +213,9 @@ function WarehouseManagement() {
                       />
                     </div>
                     <div className="wmc-detail">
-                      <div className="wmc-detail-name">{WarehouseDetail.warehouse_name}</div>
+                      <div className="wmc-detail-name">
+                        {WarehouseDetail.warehouse_name}
+                      </div>
                       <div className="wmc-detail-subname">
                         Admin: {WarehouseDetail.admin}
                       </div>
@@ -256,8 +257,8 @@ function WarehouseManagement() {
                       </div>
                     </div>
                   </div>
-                  </>
-                ))}
+                </>
+              ))}
               <Stack
                 spacing={1}
                 sx={{

@@ -23,7 +23,6 @@ function EditProfile() {
   const userUID = user?.customer_uid;
   console.log(user);
 
-
   const [fullname, setFullname] = useState("");
   const [picture, setPicture] = useState("");
   const [preview, setPreview] = useState("");
@@ -33,7 +32,7 @@ function EditProfile() {
     if (userUID) {
       const getUserById = async (userUID) => {
         const response = await Axios.get(
-          `http://localhost:3300/api/customer/profile/${userUID}`
+          `${process.env.REACT_APP_API_BASE_URL}/customer/profile/${userUID}`
         );
         console.log(response, "halo");
         setFullname(response.data.fullname);
@@ -44,7 +43,7 @@ function EditProfile() {
   }, [userUID]);
 
   // const getUserById = async(userUID) => {
-  //     const response = await Axios.get(`http://localhost:3300/api/customer/profile/${userUID}`);
+  //     const response = await Axios.get(`${process.env.REACT_APP_API_BASE_URL}/customer/profile/${userUID}`);
   //     console.log(response)
   //     setFullname(response.data.fullname);
   //     setPicture(response.data.picture);
@@ -63,7 +62,7 @@ function EditProfile() {
     formData.append("picture", picture);
     try {
       await Axios.put(
-        `http://localhost:3300/api/customer/edit-profile/${userUID}`,
+        `${process.env.REACT_APP_API_BASE_URL}/customer/edit-profile/${userUID}`,
         formData,
         {
           headers: {

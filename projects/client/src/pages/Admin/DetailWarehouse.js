@@ -33,7 +33,7 @@ function DetailWarehouse() {
   const [postal_code, setPostal_code] = useState();
   const [picture, setPicture] = useState();
   const [admin, setAdmin] = useState();
-  const {id} = useParams();
+  const { id } = useParams();
 
   const { isLoggedIn, user } = useSelector((state) => ({
     isLoggedIn: state.auth.isLoggedIn,
@@ -48,7 +48,7 @@ function DetailWarehouse() {
     if (userUID) {
       const getWarehouseById = async () => {
         const getWarehouse = await Axios.get(
-          `http://localhost:3300/api/warehouse/warehouse-list/${id}`
+          `${process.env.REACT_APP_API_BASE_URL}/warehouse/warehouse-list/${id}`
         );
         console.log(getWarehouse);
         setWarehouse_name(getWarehouse.data.warehouse_name);
@@ -59,7 +59,7 @@ function DetailWarehouse() {
         setLatitude(getWarehouse.data.latitude);
         setLongitude(getWarehouse.data.longitude);
         setPicture(getWarehouse.data.picture);
-        setAdmin(getWarehouse.data.admin)
+        setAdmin(getWarehouse.data.admin);
       };
       getWarehouseById();
     }
@@ -115,22 +115,24 @@ function DetailWarehouse() {
           >
             Delete
           </Button>
-          <Link to={`/edit-warehouse/${id}`} className="whmanagement-banner-menu-link">
-
-          <Button
-            sx={{
-              borderRadius: "20px",
-              backgroundColor: "rgb(255,204,153,0.9)",
-              fontSize: "8px",
-              fontFamily: "Lora",
-              color: "black",
-            }}
-            variant="contained"
-            // onClick={this.editHandler}
-            className="detailwh-banner-edit"
+          <Link
+            to={`/edit-warehouse/${id}`}
+            className="whmanagement-banner-menu-link"
           >
-            Edit
-          </Button>
+            <Button
+              sx={{
+                borderRadius: "20px",
+                backgroundColor: "rgb(255,204,153,0.9)",
+                fontSize: "8px",
+                fontFamily: "Lora",
+                color: "black",
+              }}
+              variant="contained"
+              // onClick={this.editHandler}
+              className="detailwh-banner-edit"
+            >
+              Edit
+            </Button>
           </Link>
         </div>
         <div className="detailwh-content">
