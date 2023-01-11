@@ -7,7 +7,9 @@ const { user } = require("../config/db-config");
 //GET ALL USER
 router.get("/get-user",async(req,res)=>{
     try{
-        const allUser = await Customer.findAll()
+        const allUser = await Customer.findAll({
+            include:[Approle]
+        })
         return res.status(200).send({allUser})
     } catch(err){
         console.log(err)

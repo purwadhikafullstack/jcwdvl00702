@@ -45,13 +45,27 @@ router.post('/approle', async (req, res) => {
     const newRole = new Approle({
       customer_uid: req.body.customer_uid,
       role: req.body.role,
-      warehouse_id: "",
+      warehouse_id: req.body.warehouse_id,
     })
 
     const roleApp = await newRole.save();
     res.status(200).json(roleApp);
   } catch (err) {
     res.status(500).json(err);
+  }
+})
+
+//UPDATE APPROLE
+router.put("/update-role/:id", async (req, res)=>{
+  const customer_uid=req.params.id
+  try{
+      await Approle.update(
+          req.body,
+          {where:{customer_uid}}
+      )
+      return res.status(200).send({message:"updated"})
+  } catch(err){
+      return res.status(500).json({message:err.toString()})
   }
 })
 

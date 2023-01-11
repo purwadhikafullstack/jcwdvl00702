@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   InputAdornment,
@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { MoreHoriz, Search, AddBusiness, Warehouse } from "@mui/icons-material";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 import Axios from "axios";
 import "../../assets/styles/WarehouseManagement.css";
@@ -24,11 +24,23 @@ function WarehouseManagement() {
     user: state.auth.user,
   }));
   const userUID = user?.customer_uid;
-  console.log(user);
-  const userData = user?.role;
-  console.log(userData);
 
   const [WarehouseDetails, setWarehouseDetails] = useState();
+  const [adminRole,setAdminRole] = useState()
+
+  const userCheck=()=>{
+    Axios.get(`http://localhost:3300/api/customer/profile/${user?.customer_uid}`)
+    .then(res=>{
+      setAdminRole(res.data.approle.role)
+    })
+    .catch(err=>{
+      console.log(err)
+    })
+  }
+
+  useEffect(()=>{
+    userCheck()
+  },[])
 
   useEffect(() => {
     if (userUID) {
@@ -82,8 +94,8 @@ function WarehouseManagement() {
               </MenuItem>
               <MenuItem>
                 <Link
-                  to="/warehouse-management"
-                  className="whmanagement-banner-menu-link"
+                to="/warehouse-management"
+                className="whmanagement-banner-menu-link"
                 >
                   Warehouse Mng.
                 </Link>
@@ -145,7 +157,7 @@ function WarehouseManagement() {
 
   return (
     <>
-      {userData === "admin" ? (
+      {adminRole !== 'user' ? (
         <Container maxWidth="xs" sx={{ backgroundColor: "white" }}>
           {console.log(WarehouseDetails)}
           <div className="whmanagement-main">
@@ -191,11 +203,18 @@ function WarehouseManagement() {
               </div>
 
               <div className="whmanagement-banner-add">
-                <Link to="/add-warehouse">
-                  <IconButton>
-                    <AddBusiness />
+                {
+                  adminRole === 'superadmin' ?
+                  <Link to="/add-warehouse">
+                    <IconButton>
+                      <AddBusiness />
+                    </IconButton>
+                  </Link>
+                  :
+                  <IconButton disabled={adminRole !== 'superadmin'}>
+                      <AddBusiness />
                   </IconButton>
-                </Link>
+                }
               </div>
               <div className="whmanagement-banner-menu">{menuHandler()}</div>
             </div>

@@ -54,7 +54,8 @@ export default function ProductAdd() {
     validationSchema: Yup.object().shape({
       name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'),
       product_detail: Yup.string().min(2, 'Too Short!').max(100, 'Too Long!'),
-      category_id: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'),
+      category_id: Yup.string()
+      // .min(2, 'Too Short!').max(50, 'Too Long!'),
     }),
     validateOnChange: false,
     onSubmit: async (values) => {
