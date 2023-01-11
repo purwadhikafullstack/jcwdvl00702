@@ -1,0 +1,121 @@
+@import url(https://fonts.googleapis.com/css?family=Lora);
+
+body {
+  font-family: 'Lora', serif;
+}
+
+.userlist-main {
+  position: relative;
+  margin: auto;
+  height: 83vh;
+  /* height: 87vh; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userlist-banner {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.userlist-banner-text {
+  font-size: 20px;
+  padding-top: 2px;
+  margin-left: 5px;
+  width: 100px;
+}
+
+.userlist-banner-search {
+  margin-left: 75px;
+}
+
+.userlist-banner-add {
+}
+
+.userlist-banner-menu-link {
+  color: black;
+  text-decoration: none;
+}
+
+.userlist-search {
+  display: flex;
+  flex-direction: row;
+  height: 33px;
+  margin-top: 6px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgb(234, 234, 234);
+}
+
+.userlist-content {
+  margin-top: 20px;
+}
+
+.ulc-main {
+  width: 350px;
+  height: 150px;
+  /* border: 1px darkgray solid; */
+  background-color: rgba(211, 211, 211, 0.19);
+  margin-bottom: 13px;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-right: 5px;
+  display: flex;
+  flex-direction: row;
+}
+
+.ulc-image {
+  height: 140px;
+  border-radius: 10px;
+  margin-top: 2.5px;
+  width: 110px;
+}
+
+.ulc-product {
+  height: 140px;
+  border-radius: 10px;
+}
+
+.ulc-detail {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 240px;
+}
+
+.ulc-detail.name {
+  height: 40%;
+  font-size: 12px;
+  font-weight: bolder;
+}
+
+.ulc-detail-subname {
+  /* height: 15%; */
+  margin-top: 5px;
+  font-size: 10px;
+  color: grey;
+}
+
+.ulc-detail-bottom {
+  height: 30%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  font-size: 10px;
+  margin-top: 6px;
+  margin-left: 60px;
+}
+
+.ulc-detail-bottom-delete,
+.ulc-detail-bottom-edit,
+.ulc-detail-bottom-detail {
+  height: 80%;
+  width: 65px;
+  font-size: 8px;
+  padding: 6px;
+}

@@ -1,0 +1,188 @@
+@import url(https://fonts.googleapis.com/css?family=Lora);
+
+body {
+  font-family: 'Lora', serif;
+}
+
+.sign-in-main {
+  position: relative;
+  margin: auto;
+  /* height: 100vh; */
+  height: 82.1vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* padding-left: 20px; */
+  /* padding-right: 20px; */
+}
+
+.sign-in-submain {
+  height: 90%;
+}
+
+.sign-in-social-submain {
+  height: 90%;
+  width: 100%;
+}
+
+.sign-in-picture {
+  height: 30%;
+  margin-left: 105px;
+  margin-top: 30px;
+}
+
+.sign-in-label {
+  font-size: 45px;
+  padding-top: 30px;
+  height: 15%;
+}
+
+.sign-in-social-label {
+  font-size: 45px;
+  /* padding-top: 30px; */
+  height: 15%;
+  width: 100%;
+  text-align: center;
+}
+
+.sign-in-social-form {
+  height: 10%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.sign-in-form {
+  width: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+  height: 45%;
+  justify-content: space-around;
+}
+
+.sign-up-form {
+  width: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 25px;
+  height: 34%;
+  justify-content: space-around;
+}
+
+.create-pass-form {
+  width: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+  height: 22%;
+  justify-content: space-evenly;
+}
+
+.sign-in-form-input {
+  width: 100%;
+  background-color: rgba(224, 219, 219, 0.251);
+  border-radius: 5px;
+  padding: 12px;
+}
+
+.sign-in-form-check {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+
+.sign-in-form-check-text {
+  text-decoration: none;
+  color: darkgray;
+}
+
+.sign-in-form-button {
+  width: 100%;
+}
+
+.sign-in-form-forgot {
+  text-decoration: none;
+  color: darkgray;
+}
+
+.sign-in-social {
+  height: 20%;
+  width: 100%;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.sign-up-social {
+  height: 20%;
+  width: 100%;
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.sign-in-social-social {
+  height: 40%;
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-evenly;
+}
+
+.sign-in-social-1 {
+  text-align: center;
+}
+
+.sign-in-social-2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.sign-in-social-2-2 {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.sign-in-register {
+  margin-top: 15px;
+  height: 10%;
+  width: 68%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.sign-up-register {
+  margin-top: 60px;
+  height: 10%;
+  width: 70%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.sign-in-register-1 {
+  color: grey;
+}
+
+.sign-in-register-2 {
+  text-decoration: none;
+  color: black;
+}
+
+alert.alert-danger {
+  color: rgba(114, 28, 36,1);
+  font-size: 20px;
+  font-weight: 600;
+  align-self:center
+}
