@@ -25,7 +25,8 @@ import { firebaseAuthentication } from '../../config/firebase';
 
 export default function Dashboard() {
   const dispatch = useDispatch();
-  const [adminFullData,setAdminFullData] = useState()
+
+  const [roleTest,setRoleTest]=useState()
 
   const { isLoggedIn, user } = useSelector(
     (state) => ({
@@ -34,17 +35,21 @@ export default function Dashboard() {
     }),
     shallowEqual
   );
-
-  const getUser=()=>{
+  
+  const userCheck=()=>{
     Axios.get(`http://localhost:3300/api/customer/profile/${user?.customer_uid}`)
     .then(res=>{
-      setAdminFullData(res.data)
-      console.log('data getuser',res.data)
+      console.log(res.data)
+      setRoleTest(res.data)
     })
     .catch(err=>{
       console.log(err)
     })
   }
+
+  useEffect(()=>{
+    userCheck()
+  },[])
 
   const handleLogout = () => {
     firebaseAuthentication
@@ -58,10 +63,6 @@ export default function Dashboard() {
         alert(error);
       });
   };
-
-  useEffect(() => {
-    getUser()
-  }, []);
 
   const menuHandler = () => {
     return (
@@ -162,7 +163,8 @@ export default function Dashboard() {
             </PopupState>
           </div>
           <div className="dashboard-top-text">
-            <div className="dashboard-top-text-1">{isLoggedIn ? user?.approle.role : 'Restricted'}</div>
+            {/* <div className="dashboard-top-text-1">{isLoggedIn ? user?.approle.role : 'Restricted'}</div> */}
+            <div className="dashboard-top-text-1">{isLoggedIn ? roleTest?.approle?.role : 'Restricted'}</div>
             <div className="dashboard-top-text-2">{isLoggedIn ? user?.fullname : 'Access'}</div>
           </div>
           <div className="dashboard-top-icon">

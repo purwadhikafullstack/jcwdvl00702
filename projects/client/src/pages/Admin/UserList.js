@@ -8,12 +8,10 @@ import {
   MenuItem,
   ClickAwayListener,
   InputBase,
-  Stack,
-  Pagination,
 } from '@mui/material';
 import { MoreHoriz, People, Search, PersonAdd, SortTwoTone } from '@mui/icons-material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-import { Link } from 'react-router-dom';
+import { Link ,Redirect} from 'react-router-dom';
 import '../../assets/styles/UserList.css';
 import { useState, useEffect, useContext } from 'react';
 import { firebaseAuthentication } from '../../config/firebase';
@@ -25,13 +23,22 @@ import { getUserDetail } from '../../redux/actionCreators/userDetailActions';
 export default function UserList() {
   const [isSearch, setIsSearch] = useState(false);
   const [userBox, setUserBox] = useState([]);
+  
+  let pageIndex = 0;
+  let itemsPerPage = 3; 
+
   const dispatch = useDispatch();
+
+  const { isLoggedIn, user, dataUser } = useSelector((state) => ({
+    isLoggedIn: state.auth.isLoggedIn,
+    user: state.auth.user,
+    dataUser: state.userData.userData,
+  }));
+  const adminSup = user?.approle?.role
 
   const processUsers = () => {
     Axios.get(`http://localhost:3300/api/admin/get-user`).then((res) => {
       const getRes = res.data.allUser;
-      console.log(res.data)
-      console.log(getRes);
       dispatch(getUserData(getRes));
       setUserBox(getRes);
     });
@@ -40,13 +47,6 @@ export default function UserList() {
   useEffect(() => {
     processUsers();
   }, []);
-
-  const { isLoggedIn, user, dataUser } = useSelector((state) => ({
-    isLoggedIn: state.auth.isLoggedIn,
-    user: state.auth.user,
-    dataUser: state.userData.userData,
-  }));
-  console.log(dataUser);
 
   const isSearchHandle = () => {
     setIsSearch(true);
@@ -137,7 +137,6 @@ export default function UserList() {
   };
 
   const userlistCard = (abc) => {
-    console.log(userBox);
     return (
       <div className="ulc-main">
         <div className="ulc-image">
@@ -150,8 +149,8 @@ export default function UserList() {
         <div className="ulc-detail">
           <div className="ulc-detail-name">{userBox[abc]?.fullname}</div>
           <div className="ulc-detail-subname">{userBox[abc]?.email}</div>
-          <div className="ulc-detail-subname">{userBox[abc]?.role}</div>
-          {userBox[abc]?.is_banned == true ? (
+          <div className="ulc-detail-subname">{userBox[abc]?.approle?.role}</div>
+          {userBox[abc]?.is_banned === true ? (
             <div className="ulc-detail-subname" style={{ color: 'darkred' }}>
               Banned
             </div>
@@ -196,7 +195,9 @@ export default function UserList() {
 
   return (
     <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
+      {adminSup !== 'superadmin' ? <Redirect to="/"/> : null}
       <div className="userlist-main">
+        {console.log('userbox',userBox)}
         <div className="userlist-banner">
           <div className="userlist-banner-logo">
             <IconButton disabled>
@@ -223,7 +224,7 @@ export default function UserList() {
             </>
           ) : (
             <>
-              <div className="userlist-banner-text">User List</div>
+              <div className="userlist-banner-text">User List {adminSup}</div>
               <div className="userlist-banner-search">
                 <IconButton onClick={isSearchHandle}>
                   <Search />
@@ -244,9 +245,9 @@ export default function UserList() {
           {Object.keys(userBox).map((i) => {
             return userlistCard(i);
           })}
-          <Stack spacing={1} sx={{ position: 'fixed', top: '78%', width: '110%', fontFamily: 'Lora' }}>
+          {/* <Stack spacing={1} sx={{ position: 'fixed', top: '78%', width: '110%', fontFamily: 'Lora' }}>
             <Pagination count={10} />
-          </Stack>
+          </Stack> */}
         </div>
       </div>
     </Container>

@@ -27,11 +27,13 @@ function WarehouseManagement() {
 
   const [WarehouseDetails, setWarehouseDetails] = useState();
   const [adminRole,setAdminRole] = useState()
+  const [adminData,setAdminData] = useState()
 
   const userCheck=()=>{
     Axios.get(`http://localhost:3300/api/customer/profile/${user?.customer_uid}`)
     .then(res=>{
       setAdminRole(res.data.approle.role)
+      setAdminData(res.data)
     })
     .catch(err=>{
       console.log(err)
@@ -251,33 +253,58 @@ function WarehouseManagement() {
                           }}
                           variant="contained"
                           className="wmc-detail-bottom-delete"
+                          disabled={adminRole!=='superadmin'}
                         >
                           Delete
                         </Button>
-                        <Link
-                          to={`/detail-warehouse/${WarehouseDetail.id}`}
-                          className="whmanagement-banner-menu-link"
-                        >
-                          <Button
-                            sx={{
-                              borderRadius: "20px",
-                              backgroundColor: "rgb(153,255,153,0.9)",
-                              fontSize: "8px",
-                              fontFamily: "Lora",
-                              color: "black",
-                            }}
-                            variant="contained"
-                            className="wmc-detail-bottom-detail"
+                        {
+                          adminData?.approle?.warehouse_id === WarehouseDetail.id ?
+                          <Link
+                            to={`/detail-warehouse/${WarehouseDetail.id}`}
+                            className="whmanagement-banner-menu-link"
                           >
-                            Detail
-                          </Button>
-                        </Link>
+                            <Button
+                              sx={{
+                                borderRadius: "20px",
+                                backgroundColor: "rgb(153,255,153,0.9)",
+                                fontSize: "8px",
+                                fontFamily: "Lora",
+                                color: "black",
+                              }}
+                              variant="contained"
+                              className="wmc-detail-bottom-detail"
+                            >
+                              Detail
+                            </Button>
+                          </Link>
+                            :
+                          <Link
+                            to={`/detail-warehouse/${WarehouseDetail.id}`}
+                            className="whdetail-disabled"
+                          >
+                            <Button
+                              sx={{
+                                borderRadius: "20px",
+                                backgroundColor: "rgb(153,255,153,0.9)",
+                                fontSize: "8px",
+                                fontFamily: "Lora",
+                                color: "black",
+                              }}
+                              variant="contained"
+                              className="wmc-detail-bottom-detail"
+                              disabled={adminRole!=='superadmin'}
+                            >
+                              Detail
+                            </Button>
+                          </Link>
+                        }
+                        
                       </div>
                     </div>
                   </div>
                   </>
                 ))}
-              <Stack
+              {/* <Stack
                 spacing={1}
                 sx={{
                   position: "fixed",
@@ -287,7 +314,7 @@ function WarehouseManagement() {
                 }}
               >
                 <Pagination count={10} />
-              </Stack>
+              </Stack> */}
             </div>
           </div>
         </Container>

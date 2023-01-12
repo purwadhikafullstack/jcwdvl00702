@@ -52,17 +52,24 @@ export default function SignIn() {
             user: res.user.providerData[0],
             id: res.user.uid,
           };
-          dispatch(loginUser(data));
-          // Axios.get(`http://localhost:3300/api/admin/get-user-one/${data.id}`).then((res) => {
-          //   const getRes = res.data.result;
-          //   return getRes
-          // });
-          if (res.user.emailVerified) {
-            history.push('/');
-          } else {
-            alert("Don't Forget to Verify Your Email !");
+          // dispatch(loginUser(data));
+          Axios.get(`http://localhost:3300/api/customer/profile/${data.id}`)
+          .then(res=>{
+            console.log('data axios setelah firebase login',res.data)
+            const globalData = {
+              user: res.data,
+              id: res.data.customer_uid,
+            }
+            if(globalData.user.approle.role == 'adminTBA'){
+              //logout
+              alert(`Account not ready yet`)
+              firebaseAuthentication.signOut()
+              dispatch(logoutUser())
+            } else {
+              dispatch(loginUser(globalData))
             history.push('/')
-          }
+            }
+          })
         })
         .catch((err) => {
           alert('Error Submitting Data');

@@ -64,8 +64,6 @@ function SignUp() {
                 .catch((err) => {
                   console.log(err);
                 });
-              alert('Mohon verifikasi email anda');
-              history.push('/create-password');
             })
             .catch((error) => {
               alert(error.message);
@@ -96,7 +94,8 @@ function SignUp() {
         .then((data) => {
           Axios.post('http://localhost:3300/api/customer/approle', {
             customer_uid: data.customer_uid,
-            role:"user"
+            role:"user",
+            warehouse_id:0,
           })
           .then(res=>{
             Axios.post('http://localhost:3300/api/customer/register', {
@@ -107,7 +106,8 @@ function SignUp() {
               customer_uid: data.customer_uid,
             })
               .then(()=>{
-                console.log(res,': user register response')
+                alert('Mohon verifikasi email anda');
+                history.push('/create-password');
             })
               .catch((error) => {
               console.log(error);

@@ -73,6 +73,7 @@ export default function ChooseShipping(){
                 allWH[x].totalDistance=mathDist[x]
         }
         allWH.sort(compareDist) //now allWh are sorted from nearest to furthest
+        console.log(`gudang dekat`,allWH)
     }
 
     const ongkirCount=()=>{

@@ -276,7 +276,7 @@ export default function DetailUser() {
               {isEdit ? <button onClick={formik.handleSubmit}>Submit Changes</button> : null}
             </ul>
           </div>
-          <div className="detailuser-content-option">
+          {/* <div className="detailuser-content-option">
             <Link to="/address-list" className="du-c-o-button">
               <button className="du-c-o">
                 <Edit />
@@ -291,7 +291,7 @@ export default function DetailUser() {
                 <ArrowForwardIos />
               </button>
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </Container>
