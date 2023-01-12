@@ -57,6 +57,24 @@ router.delete("/delete-cart-customer/:id", async (req, res) => {
   }
 });
 
+//delete semua cart user
+
+router.delete("/delete-all-cart/:id", async (req, res) => {
+  try {
+    console.log("ini uid", req.params.id);
+
+    const id = req.params.id;
+    const deleteCart = await Cart.destroy({
+      where: {
+        customer_uid: id,
+      },
+    });
+    res.status(200).json(deleteCart);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 // Add Quantity product di product detail
 
 router.put("/edit-cart/:id", async (req, res) => {

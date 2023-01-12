@@ -42,28 +42,76 @@ export default function OrderDetailAdmin() {
   const userCalledId = location?.state;
   console.log(userCalledId);
 
+  const getOrderList = async () => {
+    const response = await Axios.get(`http://localhost:3300/api/order/get-order-cart-product/${userCalledId}`);
+    console.log(response?.data);
+    console.log(response?.data.orderitems, 'ini orderitems');
+    setOrderDetails(response?.data);
+    setOrderitemDet(response?.data.orderitems);
+    setActiveStep(response?.data.status_detail)
+  };
+
+  const handleApprove = () => {
+    const data = {
+      status_detail: 2
+    }
+    console.log("ini user:", user)
+    Axios.put(`http://localhost:3300/api/order/approve-reject-send/${user.customer_uid}`, data)
+    .then(() => {
+      alert("approved!");
+      getOrderList()
+    })
+    .catch((error) => {
+      console.log(error);
+      alert(error);
+    });
+  };
+
+  const handleReject = () => {
+    const data = {
+      status_detail: 0
+    }
+    Axios.put(`http://localhost:3300/api/order/approve-reject-send/${user.customer_uid}`, data)
+    .then(() => {
+      alert("rejected!");
+      getOrderList()
+    })
+    .catch((error) => {
+      console.log(error);
+      alert(error);
+    });
+  };
+
+  const handleSendOrder = () => {
+    const data = {
+      status_detail: 3
+    }
+    Axios.put(`http://localhost:3300/api/order/approve-reject-send/${user.customer_uid}`, data)
+    .then(() => {
+      alert("send product!");
+      getOrderList()
+    })
+    .catch((error) => {
+      console.log(error);
+      alert(error);
+    });
+  };
+
   useEffect(() => {
-    const getOrderList = async () => {
-      const response = await Axios.get(`http://localhost:3300/api/order/get-order-cart-product/${userCalledId}`);
-      console.log(response?.data);
-      console.log(response?.data.orderitems, 'ini orderitems');
-      setOrderDetails(response?.data);
-      setOrderitemDet(response?.data.orderitems);
-    };
     getOrderList();
   }, []);
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
+  // const handleNext = () => {
+  //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  // };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
+  // const handleBack = () => {
+  //   setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  // };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
+  // const handleReset = () => {
+  //   setActiveStep(0);
+  // };
 
   const steps = [
     {
@@ -186,7 +234,7 @@ export default function OrderDetailAdmin() {
                           <>
                             <Button
                               variant="contained"
-                              onClick={handleNext}
+                              onClick={handleApprove}
                               sx={{
                                 mt: 1,
                                 mr: 1,
@@ -197,7 +245,7 @@ export default function OrderDetailAdmin() {
                             </Button>
                             <Button
                               variant="contained"
-                              onClick={handleNext}
+                              onClick={handleReject}
                               sx={{
                                 mt: 1,
                                 mr: 1,
@@ -212,7 +260,7 @@ export default function OrderDetailAdmin() {
                           <>
                             <Button
                               variant="contained"
-                              onClick={handleNext}
+                              onClick={handleSendOrder}
                               sx={{
                                 mt: 1,
                                 mr: 1,

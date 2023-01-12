@@ -334,4 +334,60 @@ router.get("/get-order-cart-user-product/:customer_uid", async (req, res) => {
   }
 });
 
+// Approve Reject and Send
+router.put('/approve-reject-send/:id',async(req,res)=>{
+  console.log("ini req body",req.body)
+  await Order.findOne({
+    where:{
+      customer_uid: req.params.id,
+      status : false,
+    }
+  })
+
+  try {
+    let updateStatusDetail = await Order.update(
+      {
+        status_detail : req.body.status_detail,
+      },
+      {
+        where:{
+          customer_uid: req.params.id,
+          status : false,
+        }
+      }
+    )
+    res.status(200).json({message:'Success',data:updateStatusDetail})
+  } catch(err){
+    console.log(err.message)
+  }
+})
+// Received Order 
+router.put('/approve-reject-send/:id',async(req,res)=>{
+  console.log("ini req body",req.body)
+  await Order.findOne({
+    where:{
+      customer_uid: req.params.id,
+      status : false,
+    }
+  })
+
+  try {
+    let updateStatusDetail = await Order.update(
+      {
+        status_detail : req.body.status_detail,
+        status: true
+      },
+      {
+        where:{
+          customer_uid: req.params.id,
+          status : false,
+        }
+      }
+    )
+    res.status(200).json({message:'Success',data:updateStatusDetail})
+  } catch(err){
+    console.log(err.message)
+  }
+})
+
 module.exports = router;

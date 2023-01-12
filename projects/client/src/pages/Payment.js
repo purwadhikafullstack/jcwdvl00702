@@ -94,6 +94,14 @@ function Payment() {
         .then((response) => console.log(response.data))
         .catch((error) => console.error(error));
     }
+
+        // delete semua cart agar user bisa order kembali
+        Axios.delete(`http://localhost:3300/api/cart/delete-all-cart/${id}`)
+        .then(() => {
+        })
+        .catch(() => {
+          alert("Server Error!");
+        });
   };
 
   useEffect(() => {

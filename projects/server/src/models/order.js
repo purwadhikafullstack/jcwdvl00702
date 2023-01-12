@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.BOOLEAN,
       },
+      status_detail: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
       total_price: {
         allowNull: false,
         type: DataTypes.INTEGER,
