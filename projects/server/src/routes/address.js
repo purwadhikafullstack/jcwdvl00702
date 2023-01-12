@@ -141,6 +141,7 @@ router.put('/edit-address/:customer_uid/:id', async (req, res) => {
         postal_code: req.body.postal_code,
         latitude: req.body.latitude,
         longitude: req.body.longitude,
+        city_id: req.body.city_id,
       },
       {
         where: {
