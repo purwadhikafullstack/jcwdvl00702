@@ -27,11 +27,13 @@ router.post(`/add-order`, async (req, res) => {
       fullname: req.body.fullname,
       cart_id: "",
       status: false,
+      status_detail:0,
       total_price: 0,
       shipping_price: 0,
       shipping_address: "",
       shipping_courier: "",
       payment_picture: "",
+      warehouse_id:"",
     });
 
     console.log("ini new Order:", newOrder);
@@ -105,6 +107,7 @@ router.put("/edit-shipping/:id", async (req, res) => {
       {
         shipping_courier: req.body.shipping_courier,
         shipping_price: req.body.shipping_price,
+        warehouse_id: req.body.warehouse_id
       },
       {
         where: {
@@ -193,6 +196,7 @@ router.put(
       let updateOrder = await Order.update(
         {
           payment_picture: req.file.path,
+          status_detail: 1
         },
         {
           where: {
@@ -362,7 +366,7 @@ router.put('/approve-reject-send/:id',async(req,res)=>{
   }
 })
 // Received Order 
-router.put('/approve-reject-send/:id',async(req,res)=>{
+router.put('/received/:id',async(req,res)=>{
   console.log("ini req body",req.body)
   await Order.findOne({
     where:{

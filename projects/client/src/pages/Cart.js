@@ -61,7 +61,7 @@ export default function Cart() {
   const deleteBtnHandler = (productId) => {
     const confirmDelete = window.confirm("Delete Product?");
     if (confirmDelete) {
-      Axios.delete(`http://localhost:3300/api/cart/delete-cart/${productId}`)
+      Axios.delete(`http://localhost:3300/api/cart/delete-cart-customer/${productId}`)
         .then(() => {
           cartProduct();
           getTotalPrice();
@@ -100,10 +100,10 @@ export default function Cart() {
       customer_uid: id,
       action: "min",
     };
-    if (val.quantity <= 0) {
+    if (val.quantity < 1) {
       const confirmDelete = window.confirm("Delete Product?");
       if (confirmDelete) {
-        Axios.delete(`http://localhost:3300/api/cart/delete-cart/${val.id}`)
+        Axios.delete(`http://localhost:3300/api/cart/delete-cart-customer/${val.id}`)
           .then(() => {
             cartProduct();
             getTotalPrice();

@@ -45,10 +45,10 @@ router.delete("/delete-cart-customer/:id", async (req, res) => {
   try {
     console.log("ini id", req.params.id);
 
-    const customer_uid = req.params.id;
+    const id = req.params.id;
     const deleteCart = await Cart.destroy({
       where: {
-        customer_uid,
+        id,
       },
     });
     res.status(200).json(deleteCart);

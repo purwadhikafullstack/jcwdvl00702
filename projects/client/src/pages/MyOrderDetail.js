@@ -70,7 +70,7 @@ export default function MyOrderDetail() {
     }
     Axios.put(`http://localhost:3300/api/order/received/${user.customer_uid}`, data)
     .then(() => {
-      alert("send product!");
+      alert("received!");
       getOrderList()
     })
     .catch((error) => {

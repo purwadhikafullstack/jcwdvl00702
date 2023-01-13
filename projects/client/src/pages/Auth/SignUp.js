@@ -65,7 +65,6 @@ function SignUp() {
                   console.log(err);
                 });
               alert('Mohon verifikasi email anda');
-              history.push('/create-password');
             })
             .catch((error) => {
               alert(error.message);
@@ -109,6 +108,7 @@ function SignUp() {
             })
               .then(()=>{
                 console.log(res,': user register response')
+                history.push('/create-password');
             })
               .catch((error) => {
               console.log(error);

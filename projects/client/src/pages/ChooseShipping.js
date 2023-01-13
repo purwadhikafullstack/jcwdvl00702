@@ -73,6 +73,8 @@ export default function ChooseShipping(){
                 allWH[x].totalDistance=mathDist[x]
         }
         allWH.sort(compareDist) //now allWh are sorted from nearest to furthest
+        console.log("ini wh terdekat", allWH)
+        console.log("ini home terdekat", homeId)
     }
 
     const ongkirCount=()=>{
@@ -149,6 +151,7 @@ export default function ChooseShipping(){
         const data = {
             shipping_courier: courier,
             shipping_price: costSelect,
+            warehouse_id: allWH[0].id
           }
           Axios.put(`http://localhost:3300/api/order/edit-shipping/${user.customer_uid}`, data)
           .then(() => {
