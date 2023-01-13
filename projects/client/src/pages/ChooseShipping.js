@@ -73,7 +73,6 @@ export default function ChooseShipping(){
                 allWH[x].totalDistance=mathDist[x]
         }
         allWH.sort(compareDist) //now allWh are sorted from nearest to furthest
-        console.log(`gudang dekat`,allWH)
         console.log("ini wh terdekat", allWH)
         console.log("ini home terdekat", homeId)
     }
@@ -173,7 +172,7 @@ export default function ChooseShipping(){
     return(
         <div className="ship-wrapper">
             <Container className="ship-container" maxWidth="xs">
-                {detectCityId()}
+                {/* {detectCityId()} */}
                 <div className="ship-topside">
                     <div className="ship-arrowwrap">
                         <Link to ={`/address-list/${user?.customer_uid}`}>
