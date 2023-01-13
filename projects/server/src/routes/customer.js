@@ -112,7 +112,10 @@ router.post('/login', async (req, res) => {
 router.get('/profile/:customer_uid', async (req, res) => {
   try {
     const response = await Customer.findOne({
-      include:[Approle],
+      include:[{
+        model:Approle,
+        required:true,
+      }],
       where: {
         customer_uid: req.params.customer_uid,
       },

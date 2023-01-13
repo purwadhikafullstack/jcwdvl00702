@@ -40,7 +40,8 @@ export default function SignIn() {
     },
     validationSchema: Yup.object().shape({
       email: Yup.string().required('Email Invalid').email('Format is not Email'),
-      // password: Yup.string().required('Please Enter your password').matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,"Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"),
+      password: Yup.string().required('Please Enter your password')
+      // .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,"Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"),
     }),
     validateOnChange: false,
     onSubmit: async (values) => {
@@ -52,17 +53,23 @@ export default function SignIn() {
             user: res.user.providerData[0],
             id: res.user.uid,
           };
-          dispatch(loginUser(data));
-          // Axios.get(`http://localhost:3300/api/admin/get-user-one/${data.id}`).then((res) => {
-          //   const getRes = res.data.result;
-          //   return getRes
-          // });
-          if (res.user.emailVerified) {
-            history.push('/');
-          } else {
-            alert("Don't Forget to Verify Your Email !");
+          Axios.get(`http://localhost:3300/api/customer/profile/${data.id}`)
+          .then(res=>{
+            console.log('data axios setelah firebase login',res.data)
+            const globalData = {
+              user: res.data,
+              id: res.data.customer_uid,
+            }
+            if(globalData.user.approle.role == 'adminTBA'){
+              //logout
+              alert(`Account not ready yet`)
+              firebaseAuthentication.signOut()
+              dispatch(logoutUser())
+            } else {
+              dispatch(loginUser(globalData))
             history.push('/')
-          }
+            }
+          })
         })
         .catch((err) => {
           alert('Error Submitting Data');

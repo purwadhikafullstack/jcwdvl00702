@@ -53,6 +53,14 @@ export default function HomeFunc() {
     })
   }
 
+  const verifyCheck=()=>{
+    if(isLoggedIn){
+      if(!verifiedCheck){
+        return <div className="font-name2">Please Verify Your Account</div>
+      }
+    }
+  }
+
   const handleLogout = () => {
     firebaseAuthentication
       .signOut()
@@ -171,10 +179,12 @@ export default function HomeFunc() {
             <div className="name-bar">
               <div className="font-size">Welcome</div>
               <div className="font-name">
-                {isLoggedIn ? `${user?.fullname} as ${userRole}` : "Guest"}
+                {isLoggedIn ? `${user?.fullname}` : "Guest"}
               </div>
+              {verifyCheck()}
             </div>
             <div className="cart-icon">
+              {isLoggedIn ? null : <div className="login-text">Login</div>}
               <Link
                 to="/sign-in"
                 onClick={isLoggedIn ? (event) => event.preventDefault() : null}

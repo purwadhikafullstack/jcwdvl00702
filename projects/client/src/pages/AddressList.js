@@ -16,21 +16,16 @@ function AddressList() {
     user: state.auth.user,
   }));
   const userUID = user?.customer_uid;
-  console.log(user);
 
   const [AddressDetails, setAddressDetails] = useState();
   const [addressFinal, setAddressFinal] = useState([])
-  console.log("address detail", AddressDetails)
-  console.log("address final", addressFinal)
 
   useEffect(() => {
     if (userUID) {
       const getAddressById = async (userUID) => {
-        console.log(userUID, "test");
         const response = await Axios.get(
           `http://localhost:3300/api/address/address-list/${userUID}`
         );
-        //  console.log(response.data)
         setAddressDetails(response.data);
       };
       getAddressById(userUID);
@@ -38,7 +33,7 @@ function AddressList() {
   }, [userUID]);
 
   const activeSelect=()=>{
-    if(!addressFinal){
+    if(addressFinal.length==0){
       alert('Choose Address!')
     } else{
       const data = {
@@ -46,14 +41,13 @@ function AddressList() {
       }
       Axios.put(`http://localhost:3300/api/order/edit-address/${userUID}`, data)
       .then(() => {
-      history.push({
-        pathname: '/choose-shipping',
-        state: addressFinal.city_id
-      })
+        history.push({
+          pathname: '/choose-shipping',
+          state: addressFinal.city_id
+        })
       })
       .catch((error) => {
         console.log(error);
-        alert(error);
       });
     }
     
@@ -63,6 +57,7 @@ function AddressList() {
     <>
       <Container maxWidth="xs" className="mobile">
         <div className="address-page">
+          {console.log(addressFinal,'selected address')}
           <div className="address-arrow-detail">
             <Link to ="/">
               <button className="back-btn">
@@ -75,8 +70,7 @@ function AddressList() {
             {AddressDetails?.map((addressDetail) => (
               <div className="address">
                 <input type="radio" 
-                name="locradio" className="loc-radio"
-                // value={addressDetail.city_id}                
+                name="locradio" className="loc-radio"       
                 onChange={()=>setAddressFinal(addressDetail)}
                 />
                 <LocationOnOutlinedIcon />
@@ -90,7 +84,7 @@ function AddressList() {
                   </div>
                 </div>
                 <Link to={`/edit-address/${userUID}/${addressDetail.id}`}>
-                  <ModeEditOutlineOutlinedIcon className="radio-css" />
+                  <ModeEditOutlineOutlinedIcon className="radio-css"/>
                 </Link>
               </div>
             ))}
