@@ -162,9 +162,6 @@ export default function UserList() {
   const renderCard=()=>{
     const beginningIndex = (page-1)*itemsPerPage
     const slicedData = userBox.slice(beginningIndex,beginningIndex+itemsPerPage)
-    // setUserPages(slicedData)
-    // const newMaxPage = Math.ceil(userBox.length/itemsPerPage)
-    // setMaxPage(newMaxPage)
 
     return slicedData.map(val=>{
       return (
@@ -263,7 +260,7 @@ export default function UserList() {
             </>
           ) : (
             <>
-              <div className="userlist-banner-text">User List {adminSup}</div>
+              <div className="userlist-banner-text">User List</div>
               <div className="userlist-banner-search">
                 <IconButton onClick={isSearchHandle}>
                   <Search />
@@ -281,12 +278,6 @@ export default function UserList() {
           <div className="userlist-banner-menu">{menuHandler()}</div>
         </div>
         <div className="userlist-content">
-          {/* {Object.keys(userBox).map((i) => {
-            return userlistCard(i);
-          })} */}
-          {/* {Object.keys(userPages).map((i) => {
-            return userlistCard(i);
-          })} */}
           {/* <Stack spacing={1} sx={{ position: 'fixed', top: '78%', width: '110%', fontFamily: 'Lora' }}>
             <Pagination count={maxPage} 
           />
