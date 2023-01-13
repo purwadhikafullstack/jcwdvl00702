@@ -64,6 +64,7 @@ function SignUp() {
                 .catch((err) => {
                   console.log(err);
                 });
+              alert('Mohon verifikasi email anda');
             })
             .catch((error) => {
               alert(error.message);
@@ -95,8 +96,6 @@ function SignUp() {
           Axios.post('http://localhost:3300/api/customer/approle', {
             customer_uid: data.customer_uid,
             role:"user",
-            warehouse_id:0,
-            role:"user",
             warehouse_id:0
           })
           .then(res=>{
@@ -108,7 +107,7 @@ function SignUp() {
               customer_uid: data.customer_uid,
             })
               .then(()=>{
-                alert('Mohon verifikasi email anda');
+                console.log(res,': user register response')
                 history.push('/create-password');
             })
               .catch((error) => {
