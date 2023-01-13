@@ -10674,7 +10674,7 @@
   "resolved" "https://registry.npmjs.org/server-destroy/-/server-destroy-1.0.1.tgz"
   "version" "1.0.1"
 
-"server@file:C:\\Users\\EDDY\\OneDrive\\Documents\\WebDev\\finalsprint\\jcwdvl00702\\projects\\server":
+"server@file:C:\\Users\\EDDY\\OneDrive\\Documents\\WebDev\\backupFinal\\jcwdvl00702\\projects\\server":
   "resolved" "file:projects/server"
   "version" "0.1.0"
   dependencies:
