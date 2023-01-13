@@ -31,7 +31,7 @@ router.post('/add-category', upload.single('image'), async (req, res) => {
     if (checkBox === true) {
       res.status(500).json(err);
     } else {
-      let picPathArray = req.file.path.split('/');
+      let picPathArray = req.file.path.split('\\');
       let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
 
       const newCategory = await Category.create({
@@ -1328,4 +1328,43 @@ router.get('/product-stock-history/:id', async (req, res) => {
   }
 });
 
+
+// STOCK MUTATION OTOMATIS
+router.post('/qty-handler', async (req, res) => {
+  const stockFrom = await Stock.findOne({
+    where: {
+      warehouse_id: req.body.from,
+      product_id: req.body.product,
+    },
+  });
+  const stockTo = await Stock.findOne({
+    where: {
+      warehouse_id: req.body.to,
+      product_id: req.body.product,
+    },
+  });
+  const theProduct = await Product.findOne({
+    where: {
+      id: req.body.product,
+    },
+  });
+  const mutationData = {
+    stock_id: stockFrom.id,
+    warehouse_id: req.body.from,
+    product_id: req.body.product,
+    product_name: theProduct.name,
+    product_picture: theProduct.picture,
+    quantity: parseInt(req.body.quantity),
+    requester: req.body.to,
+    status: 'done',
+    move_type: 'auto',
+  };
+
+  try {
+    const newMutation = await Stockmutation.create(mutationData);
+    res.status(200).json({ theProduct, stockFrom });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 module.exports = router;

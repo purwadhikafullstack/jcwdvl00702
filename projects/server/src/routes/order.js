@@ -1,5 +1,5 @@
 const {
-  models: { Order, Cart, Product, Orderitem },
+  models: { Order, Cart, Product, Orderitem, Stock, Stockhistory },
 } = require("../models");
 
 const { where, Op } = require("sequelize");
@@ -27,11 +27,13 @@ router.post(`/add-order`, async (req, res) => {
       fullname: req.body.fullname,
       cart_id: "",
       status: false,
+      status_detail:0,
       total_price: 0,
       shipping_price: 0,
       shipping_address: "",
       shipping_courier: "",
       payment_picture: "",
+      warehouse_id:"",
     });
 
     console.log("ini new Order:", newOrder);
@@ -105,6 +107,7 @@ router.put("/edit-shipping/:id", async (req, res) => {
       {
         shipping_courier: req.body.shipping_courier,
         shipping_price: req.body.shipping_price,
+        warehouse_id: req.body.warehouse_id
       },
       {
         where: {
@@ -193,6 +196,7 @@ router.put(
       let updateOrder = await Order.update(
         {
           payment_picture: req.file.path,
+          status_detail: 1
         },
         {
           where: {
@@ -329,6 +333,169 @@ router.get("/get-order-cart-user-product/:customer_uid", async (req, res) => {
     }
 
     res.status(200).json(getOrder);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// Approve Reject and Send
+router.put('/approve-reject-send/:id',async(req,res)=>{
+  console.log("ini req body",req.body)
+  await Order.findOne({
+    where:{
+      customer_uid: req.params.id,
+      status : false,
+    }
+  })
+
+  try {
+    let updateStatusDetail = await Order.update(
+      {
+        status_detail : req.body.status_detail,
+      },
+      {
+        where:{
+          customer_uid: req.params.id,
+          status : false,
+        }
+      }
+    )
+    res.status(200).json({message:'Success',data:updateStatusDetail})
+  } catch(err){
+    console.log(err.message)
+  }
+})
+// Received Order 
+router.put('/received/:id',async(req,res)=>{
+  console.log("ini req body",req.body)
+  await Order.findOne({
+    where:{
+      customer_uid: req.params.id,
+      status : false,
+    }
+  })
+
+  try {
+    let updateStatusDetail = await Order.update(
+      {
+        status_detail : req.body.status_detail,
+        status: true
+      },
+      {
+        where:{
+          customer_uid: req.params.id,
+          status : false,
+        }
+      }
+    )
+    res.status(200).json({message:'Success',data:updateStatusDetail})
+  } catch(err){
+    console.log(err.message)
+  }
+})
+
+// cancel order
+router.put('/cancel-order/:id', async(req,res)=> {
+  let orderData = await Order.findOne({
+    where: {
+      // customer_uid: req.params.customer_uid,
+      id: req.params.id,
+    },
+    include: [
+      {
+        model: Orderitem,
+        required: true,
+        include: [
+          {
+            model: Product,
+            // required: true,
+          },
+        ],
+      },
+    ],
+  });
+  try {
+    let updateStatusDetail = await Order.update(
+      {
+        status_detail: req.body.status_detail,
+      },
+      {
+        where: {
+          id: req.params.id
+        }
+      }
+    )
+    res.status(200).json({message:"Success", data: orderData})
+  } catch (error) {
+    console.log(error.message)
+  }
+})
+
+// get back stock after cancel
+router.patch("/update-stock/:id", async (req, res) => {
+  const theProduct = await Product.findOne({
+    where: {
+      id: req.params.id,
+    },
+  });
+  const theStock = await Stock.findOne({
+    where: {
+      warehouse_id: req.body.wh_id,
+      product_id: req.params.id,
+    },
+  });
+  const theDate = new Date();
+
+  try {
+      const updateStock = await Product.update(
+        {
+          quantity_total: theProduct.quantity_total + parseInt(req.body.number),
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+          returning: true,
+          plain: true,
+        }
+      );
+      const changeStock = await Stock.update(
+        {
+          quantity: theStock.quantity + parseInt(req.body.number),
+        },
+        {
+          where: {
+            warehouse_id: req.body.wh_id,
+            product_id: req.params.id,
+          },
+          returning: true,
+          plain: true,
+        }
+      );
+      const newMutation = await Stockhistory.create({
+        stock_id: theStock.id,
+        stockmutation_id: "return_stock",
+        warehouse_id: theStock.warehouse_id,
+        product_id: theStock.product_id,
+        product_name: theProduct.name,
+        product_picture: theProduct.picture,
+        math: "+",
+        quantity: parseInt(req.body.number),
+        start: theStock.quantity,
+        end: parseInt(theStock.quantity) + parseInt(req.body.number),
+        requester: "super_admin",
+        year: theDate.getFullYear(),
+        month: theDate.getMonth() + 1,
+      });
+
+      const endStock = await Stock.findOne({
+        where: {
+          warehouse_id: req.body.wh_id,
+          product_id: req.params.id,
+        },
+      });
+
+    res.status(201).json(endStock.dataValues.quantity);
   } catch (err) {
     res.status(500).json(err);
   }

@@ -96,6 +96,8 @@ function SignUp() {
             customer_uid: data.customer_uid,
             role:"user",
             warehouse_id:0,
+            role:"user",
+            warehouse_id:0
           })
           .then(res=>{
             Axios.post('http://localhost:3300/api/customer/register', {

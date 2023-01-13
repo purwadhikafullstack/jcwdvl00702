@@ -19,6 +19,20 @@ import Axios from 'axios';
 
 export default function OrderDetailAdmin() {
   const history = useHistory();
+  const location = useLocation();
+
+  const [activeStep, setActiveStep] = useState();
+  const [paymentIsDone, setPaymentIsDone] = useState(false);
+  const [orderDetails, setOrderDetails] = useState();
+  const [orderitemDet, setOrderitemDet] = useState();
+  const [userId, setUserId] = useState();
+  const [destination, setDestination] = useState()
+
+  const [allWH,setAllWH]=useState("")
+  const [homeLat,setHomeLat]=useState()
+  const [homeLon,setHomeLon]=useState()
+  const [homeId,setHomeId]=useState()
+
   const goBack = () => {
     history.goBack();
   };
@@ -32,38 +46,165 @@ export default function OrderDetailAdmin() {
   const userData = user?.role;
   console.log(userData);
 
-  const [activeStep, setActiveStep] = useState(5);
-  const [paymentIsDone, setPaymentIsDone] = useState(false);
-  const [orderDetails, setOrderDetails] = useState();
-  const [orderitemDet, setOrderitemDet] = useState();
-  const [userId, setUserId] = useState();
-  const location = useLocation();
-
   const userCalledId = location?.state;
   console.log(userCalledId);
 
+ 
+
   useEffect(() => {
-    const getOrderList = async () => {
-      const response = await Axios.get(`http://localhost:3300/api/order/get-order-cart-product/${userCalledId}`);
-      console.log(response?.data);
-      console.log(response?.data.orderitems, 'ini orderitems');
-      setOrderDetails(response?.data);
-      setOrderitemDet(response?.data.orderitems);
-    };
     getOrderList();
+    fetchWH()
+    fetchHome()
+    // homeCoordinate()
+    // distanceCheck()
   }, []);
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  const getDistance=(lat1,lon1,lat2,lon2)=>{
+    let R = 6371 //in km
+    let dLat = toRad(lat2-lat1);
+    let dLon = toRad(lon2-lon1);
+    lat1 = toRad(lat1);
+    lat2 = toRad(lat2);
+
+    let a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    let d = R * c;
+    return d;
+}
+const toRad=(val)=>{
+    return val * Math.PI / 180
+}
+
+const fetchWH=()=>{
+    Axios.get(`http://localhost:3300/api/warehouse/warehouse-list`)
+    .then(res=>{
+        setAllWH(res.data)
+        console.log("ini uid", userUID)
+        console.log("ini destinasi", destination)
+    })
+}
+const fetchHome=()=>{
+    Axios.get(`http://localhost:3300/api/address/address-city-id-order/${userUID}/${destination}`)
+    .then(res=>{
+          setHomeId(res.data.city_id)
+          console.log("ini home id", homeId)
+        })
+}
+
+const compareDist=(a,b)=>{
+    if(a.totalDistance < b.totalDistance){
+        return -1
+    }
+    if(a.totalDistance > b.totalDistance){
+        return 1
+    }
+    return 0
+}
+
+const homeCoordinate=()=>{
+    Axios.get(`http://localhost:3300/api/address/address-city-id/${homeId}`)
+    .then(res=>{
+        setHomeLat(res.data.latitude)
+        setHomeLon(res.data.longitude)
+    })
+}
+
+const distanceCheck=()=>{
+    let mathDist=[]
+    for (let x=0; x<allWH.length; x++){
+            mathDist.push(getDistance(parseInt(homeLat),parseInt(homeLon),parseInt(allWH[x].latitude),parseInt(allWH[x].longitude)))
+            allWH[x].totalDistance=mathDist[x]
+    }
+    allWH.sort(compareDist) //now allWh are sorted from nearest to furthest
+    console.log("ini wh terdekat", allWH)
+}
+
+  const getOrderList = async () => {
+    const response = await Axios.get(`http://localhost:3300/api/order/get-order-cart-product/${userCalledId}`);
+    console.log("ini data order",response?.data);
+    console.log(response?.data.orderitems, 'ini orderitems');
+    setOrderDetails(response?.data);
+    setOrderitemDet(response?.data.orderitems);
+    setActiveStep(response?.data.status_detail)
+    setDestination(response?.data.shipping_address)
   };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  const handleApprove = () => {
+    const data = {
+      status_detail: 2
+    }
+    console.log("ini user:", user)
+    Axios.put(`http://localhost:3300/api/order/approve-reject-send/${user.customer_uid}`, data)
+    .then(() => {
+      alert("approved!");
+      getOrderList()
+    })
+    .catch((error) => {
+      console.log(error);
+      alert(error);
+    });
+
+    const stockData = {
+      whList: allWH,
+      // to: allWH[0].id,
+
+    }
+
+    Axios.post('http://localhost:3300/api/product/qty-handler', stockData)
+    .then(() => {
+      // alert('Product Added!');
+    })
+    .catch((error) => {
+      // alert('Nama Sudah Terpakai Atau Server Error');
+    });
+
+
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
+  const handleReject = () => {
+    const data = {
+      status_detail: 0
+    }
+    Axios.put(`http://localhost:3300/api/order/approve-reject-send/${user.customer_uid}`, data)
+    .then(() => {
+      alert("rejected!");
+      getOrderList()
+    })
+    .catch((error) => {
+      console.log(error);
+      alert(error);
+    });
   };
+
+  const handleSendOrder = () => {
+    const data = {
+      status_detail: 3
+    }
+    Axios.put(`http://localhost:3300/api/order/approve-reject-send/${user.customer_uid}`, data)
+    .then(() => {
+      alert("send product!");
+      getOrderList()
+    })
+    .catch((error) => {
+      console.log(error);
+      alert(error);
+    });
+  };
+
+
+
+  // const handleNext = () => {
+  //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  // };
+
+  // const handleBack = () => {
+  //   setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  // };
+
+  // const handleReset = () => {
+  //   setActiveStep(0);
+  // };
 
   const steps = [
     {
@@ -186,7 +327,7 @@ export default function OrderDetailAdmin() {
                           <>
                             <Button
                               variant="contained"
-                              onClick={handleNext}
+                              onClick={handleApprove}
                               sx={{
                                 mt: 1,
                                 mr: 1,
@@ -197,7 +338,7 @@ export default function OrderDetailAdmin() {
                             </Button>
                             <Button
                               variant="contained"
-                              onClick={handleNext}
+                              onClick={handleReject}
                               sx={{
                                 mt: 1,
                                 mr: 1,
@@ -212,7 +353,7 @@ export default function OrderDetailAdmin() {
                           <>
                             <Button
                               variant="contained"
-                              onClick={handleNext}
+                              onClick={handleSendOrder}
                               sx={{
                                 mt: 1,
                                 mr: 1,

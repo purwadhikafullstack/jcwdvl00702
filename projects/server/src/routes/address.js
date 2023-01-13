@@ -123,6 +123,21 @@ router.get('/address-city-id/:city_id', async (req, res) => {
   }
 });
 
+// get customer city id for order
+router.get('/address-city-id-order/:customer_uid/:destination', async (req, res) => {
+  try {
+    const response = await Address.findOne({
+      where: {
+        customer_uid: req.params.customer_uid,
+        address_name: req.body.destination
+      },
+    });
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 // update address
 router.put('/edit-address/:customer_uid/:id', async (req, res) => {
   await Address.findOne({

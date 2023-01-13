@@ -46,9 +46,6 @@ export default function UserList() {
     Axios.get(`http://localhost:3300/api/admin/get-user`).then((res) => {
       const getRes = res.data.allUser;
       setUserBox(getRes);
-      // const beginningIndex = (page-1)*itemsPerPage
-      // const slicedData = getRes.slice(beginningIndex,beginningIndex+itemsPerPage)
-      // setUserPages(slicedData)
       const newMaxPage = Math.ceil(getRes.length/itemsPerPage)
       setMaxPage(newMaxPage)
     });
