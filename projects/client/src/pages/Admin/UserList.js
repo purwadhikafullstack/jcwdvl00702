@@ -8,10 +8,12 @@ import {
   MenuItem,
   ClickAwayListener,
   InputBase,
+  Stack,
+  Pagination,
 } from '@mui/material';
-import { MoreHoriz, People, Search, PersonAdd, SortTwoTone } from '@mui/icons-material';
+import { MoreHoriz, People, Search, PersonAdd, SortTwoTone} from '@mui/icons-material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-import { Link ,Redirect} from 'react-router-dom';
+import { Link ,Redirect,useHistory} from 'react-router-dom';
 import '../../assets/styles/UserList.css';
 import { useState, useEffect, useContext } from 'react';
 import { firebaseAuthentication } from '../../config/firebase';
@@ -21,31 +23,52 @@ import { getUserData } from '../../redux/actionCreators/userDataActions';
 import { getUserDetail } from '../../redux/actionCreators/userDetailActions';
 
 export default function UserList() {
+  let history = useHistory()
+  const dispatch = useDispatch();
   const [isSearch, setIsSearch] = useState(false);
   const [userBox, setUserBox] = useState([]);
-  
-  let pageIndex = 0;
-  let itemsPerPage = 3; 
-
-  const dispatch = useDispatch();
+  const [userPages, setUserPages] = useState([])
+  const [page,setPage]=useState(1)
+  // const [pages,setPages]=useState(0)
+  const [maxPage,setMaxPage]=useState(0)
+  const [sort,setSort]=useState('')
+  const [search,setSearch]=useState('')
+  const [itemsPerPage,setItemsPerPage]=useState(3)
 
   const { isLoggedIn, user, dataUser } = useSelector((state) => ({
     isLoggedIn: state.auth.isLoggedIn,
     user: state.auth.user,
-    dataUser: state.userData.userData,
+    // dataUser: state.userData.userData,
   }));
   const adminSup = user?.approle?.role
 
   const processUsers = () => {
     Axios.get(`http://localhost:3300/api/admin/get-user`).then((res) => {
       const getRes = res.data.allUser;
-      dispatch(getUserData(getRes));
       setUserBox(getRes);
+      // const beginningIndex = (page-1)*itemsPerPage
+      // const slicedData = getRes.slice(beginningIndex,beginningIndex+itemsPerPage)
+      // setUserPages(slicedData)
+      const newMaxPage = Math.ceil(getRes.length/itemsPerPage)
+      setMaxPage(newMaxPage)
     });
   };
 
+  const nextPageHandler=()=>{
+    if(page<maxPage){
+      setPage(page+1)
+    }
+  }
+
+  const prevPageHandler=()=>{
+    if(page>1){
+      setPage(page-1)
+    }
+  }
+
   useEffect(() => {
     processUsers();
+    // renderCard()
   }, []);
 
   const isSearchHandle = () => {
@@ -69,8 +92,8 @@ export default function UserList() {
       });
   };
 
-  const handleDetail = (datadetail) => {
-    dispatch(getUserDetail(datadetail));
+  const handleDetail = (id) => {
+    history.push(`/detail-user/${id}`);
   };
 
   const menuHandler = () => {
@@ -136,62 +159,78 @@ export default function UserList() {
     );
   };
 
-  const userlistCard = (abc) => {
-    return (
-      <div className="ulc-main">
-        <div className="ulc-image">
-          <img
-            src="https://i.pinimg.com/originals/6f/df/bc/6fdfbc41d6a8e26d4b9073bc1afd899f.jpg"
-            className="ulc-product"
-            alt="Product Image"
-          />
-        </div>
-        <div className="ulc-detail">
-          <div className="ulc-detail-name">{userBox[abc]?.fullname}</div>
-          <div className="ulc-detail-subname">{userBox[abc]?.email}</div>
-          <div className="ulc-detail-subname">{userBox[abc]?.approle?.role}</div>
-          {userBox[abc]?.is_banned === true ? (
-            <div className="ulc-detail-subname" style={{ color: 'darkred' }}>
-              Banned
-            </div>
-          ) : (
-            <div className="ulc-detail-subname">Safe User</div>
-          )}
-          <div className="ulc-detail-subname">{userBox[abc]?.createdAt}</div>
-          <div className="ulc-detail-bottom">
-            <Button
-              onClick={() => deleteHandler(userBox[abc]?.customer_uid)}
-              sx={{
-                borderRadius: '20px',
-                backgroundColor: 'rgb(255,153,153,0.9)',
-                fontSize: '8px',
-                fontFamily: 'Lora',
-                color: 'black',
-              }}
-              variant="contained"
-              className="ulc-detail-bottom-delete">
-              Delete
-            </Button>
-            <Link to="/detail-user" className="userlist-banner-menu-link">
+  const renderCard=()=>{
+    const beginningIndex = (page-1)*itemsPerPage
+    const slicedData = userBox.slice(beginningIndex,beginningIndex+itemsPerPage)
+    // setUserPages(slicedData)
+    // const newMaxPage = Math.ceil(userBox.length/itemsPerPage)
+    // setMaxPage(newMaxPage)
+
+    return slicedData.map(val=>{
+      return (
+        <div className="ulc-main">
+          <div className="ulc-image">
+            <img
+              src="https://i.pinimg.com/originals/6f/df/bc/6fdfbc41d6a8e26d4b9073bc1afd899f.jpg"
+              className="ulc-product"
+              alt="Product Image"
+            />
+          </div>
+          <div className="ulc-detail">
+            <div className="ulc-detail-name">{val?.fullname}</div>
+            <div className="ulc-detail-subname">{val?.email}</div>
+            <div className="ulc-detail-subname">{val?.approle?.role}</div>
+            {val?.is_banned === true ? (
+              <div className="ulc-detail-subname" style={{ color: 'darkred' }}>
+                Banned
+              </div>
+            ) : (
+              <div className="ulc-detail-subname">Safe User</div>
+            )}
+            <div className="ulc-detail-subname">{val?.createdAt}</div>
+            <div className="ulc-detail-bottom">
               <Button
-                onClick={() => handleDetail(dataUser[abc])}
+                onClick={() => deleteHandler(val?.customer_uid)}
                 sx={{
                   borderRadius: '20px',
-                  backgroundColor: 'rgb(153,255,153,0.9)',
+                  backgroundColor: 'rgb(255,153,153,0.9)',
                   fontSize: '8px',
                   fontFamily: 'Lora',
                   color: 'black',
                 }}
                 variant="contained"
-                className="ulc-detail-bottom-detail">
-                Detail
+                className="ulc-detail-bottom-delete">
+                Delete
               </Button>
-            </Link>
+              {/* <Link to="/detail-user" className="userlist-banner-menu-link"> */}
+              <div className="userlist-banner-menu-link">
+                <Button
+                  onClick={() => handleDetail(val.customer_uid)}
+                  sx={{
+                    borderRadius: '20px',
+                    backgroundColor: 'rgb(153,255,153,0.9)',
+                    fontSize: '8px',
+                    fontFamily: 'Lora',
+                    color: 'black',
+                  }}
+                  variant="contained"
+                  className="ulc-detail-bottom-detail"
+                  disabled={val?.approle?.role === 'user'}
+                >
+                  Detail
+                </Button>
+              </div>
+              {/* </Link> */}
+            </div>
           </div>
         </div>
-      </div>
-    );
-  };
+      );
+    })
+  }
+
+  const userlistCard = (abc) => {}
+    
+  
 
   return (
     <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
@@ -242,12 +281,27 @@ export default function UserList() {
           <div className="userlist-banner-menu">{menuHandler()}</div>
         </div>
         <div className="userlist-content">
-          {Object.keys(userBox).map((i) => {
+          {/* {Object.keys(userBox).map((i) => {
             return userlistCard(i);
-          })}
+          })} */}
+          {/* {Object.keys(userPages).map((i) => {
+            return userlistCard(i);
+          })} */}
           {/* <Stack spacing={1} sx={{ position: 'fixed', top: '78%', width: '110%', fontFamily: 'Lora' }}>
-            <Pagination count={10} />
+            <Pagination count={maxPage} 
+          />
           </Stack> */}
+          {renderCard()}
+          <div className='pagination-wrapper'>
+            <button className='button-page' onClick={prevPageHandler}>
+              {"<"}
+            </button>
+            <div className='page-numbering'>{page} of {maxPage}</div>
+            <button className='button-page' onClick={nextPageHandler}>
+              {">"}
+            </button>
+          </div>
+
         </div>
       </div>
     </Container>

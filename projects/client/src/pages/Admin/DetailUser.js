@@ -4,7 +4,7 @@ import {
   ArrowBack,
   Person,
   Email,
-  Edit,
+  Password,
   ArrowForwardIos,
   Badge,
   Schedule,
@@ -13,7 +13,7 @@ import {
   PhotoCamera,
   Work,
 } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link , useParams } from 'react-router-dom';
 import '../../assets/styles/DetailUser.css';
 import Axios from 'axios';
 import { useHistory } from 'react-router-dom';
@@ -22,26 +22,31 @@ import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import { firebaseAuthentication } from '../../config/firebase';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { logoutUser } from '../../redux/actionCreators/authActionCreators';
 
 export default function DetailUser() {
+  const dispatch = useDispatch()
   let history = useHistory();
+  const{id} = useParams()
 
   const [isEdit, setIsEdit] = useState(false);
   const [securityValue, setSecurityValue] = useState(0);
   const [editDetail, setEditDetail] = useState([]);
+  const [currentEmail, setCurrentEmail] = useState()
+  const [dataFullname,setDataFullname] = useState()
+  const [currentPass, setCurrentPass] = useState()
 
-  const { detailUser } = useSelector((state) => ({
-    detailUser: state.userDetail.detailData,
-  }));
-  console.log(`detail user`, editDetail);
-
-  const fetchDetail = () => {
-    setEditDetail(detailUser);
-  };
+  const detailListing=()=>{
+    Axios.get(`http://localhost:3300/api/customer/profile/${id}`) //fetch user detail
+    .then(res=>{
+      setEditDetail(res.data)
+      setCurrentEmail(res.data.email)
+    })
+  }
 
   useEffect(() => {
-    fetchDetail();
+    detailListing();
   }, []);
 
   const editHandler = () => {
@@ -50,6 +55,7 @@ export default function DetailUser() {
 
   const saveHandler = () => {
     setIsEdit(false);
+    window.location.reload()
   };
 
   const handleSecurityChange = (event) => {
@@ -64,29 +70,71 @@ export default function DetailUser() {
   const formik = useFormik({
     initialValues: {
       email: '',
+      newEmail: '',
       fullname: '',
+      oldPass: '',
+      newPass: '',
     },
     validationSchema: Yup.object().shape({
-      email: Yup.string().required('No email entered').email('Not an email format'),
-      fullname: Yup.string()
-        .required('No fullname entered')
-        .matches(/^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi, 'Name can only contain Latin letters.')
-        .matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms, 'Please enter your full name.'),
+      email: Yup.string()
+      .required('No email entered').email('Not an email format'),
+      newEmail: Yup.string()
+      .email('Not an email format'),
+      fullname: Yup.string(),
+      //   .matches(/^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi, 'Name can only contain Latin letters.')
+      //   .matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms, 'Please enter your full name.'),
+      oldPass: Yup.string().required('Please Enter your password'),
+      newPass: Yup.string()
     }),
     validateOnChange: false,
     onSubmit: async (values) => {
-      const data = {
-        email: values.email,
-        fullname: values.fullname,
-      };
-      Axios.put(`http://localhost:3300/api/admin/update/${detailUser.customer_uid}`, data)
-        .then(() => {
-          fetchDetail();
-          history.push('/user-list');
+      firebaseAuthentication
+        .signInWithEmailAndPassword(values.email, values.oldPass)
+        .then((res)=>{
+          // console.log(res.user.providerData[0],'habis login')
+          // if(!values.fullname){ 
+          //   setDataFullname(editDetail.fullname) 
+          // } else {
+          //   setDataFullname(values.fullname) 
+          // }
+
+          // if(!values.newEmail){
+          //   setCurrentEmail(editDetail.email)
+          // } else{
+          //   setCurrentEmail(values.newEmail)
+          // }
+
+          // if(!values.newPass){
+          //   setCurrentPass(values.oldPass)
+          // } else{
+          //   setCurrentPass(values.newPass)
+          // }
+          const newData = {
+            email:values.newEmail,
+            fullname:values.fullname,
+            password:values.oldPass,
+          }
+          
+          firebaseAuthentication.currentUser.updateEmail(newData.email)
+          .then((res)=>{
+            Axios.put(`http://localhost:3300/api/admin/update-detail/${editDetail.customer_uid}`,newData)
+                .then((res) => {
+                  console.log(res.data)
+                  // firebaseAuthentication.signOut()
+                  // dispatch(logoutUser())
+                })
+                .catch((error) => {
+                  console.log(error);
+            });
+          })
+          .catch(err=>{
+            alert(err)
+          })
+
+        }) 
+        .catch((err)=>{
+          alert(err)
         })
-        .catch((error) => {
-          console.log(error);
-        });
     },
   });
 
@@ -101,7 +149,7 @@ export default function DetailUser() {
 
           {isEdit ? (
             <>
-              <Button
+              {/* <Button
                 disabled
                 sx={{
                   borderRadius: '20px',
@@ -114,7 +162,7 @@ export default function DetailUser() {
                 variant="contained"
                 className="detailuser-banner-delete">
                 Delete
-              </Button>
+              </Button> */}
               <Button
                 sx={{
                   borderRadius: '20px',
@@ -126,12 +174,12 @@ export default function DetailUser() {
                 variant="contained"
                 onClick={saveHandler}
                 className="detailuser-banner-edit">
-                Save
+                Exit Edit
               </Button>
             </>
           ) : (
             <>
-              <Button
+              {/* <Button
                 sx={{
                   borderRadius: '20px',
                   backgroundColor: 'rgb(255,153,153,0.9)',
@@ -143,7 +191,7 @@ export default function DetailUser() {
                 variant="contained"
                 className="detailuser-banner-delete">
                 Delete
-              </Button>
+              </Button> */}
               <Button
                 sx={{
                   borderRadius: '20px',
@@ -195,43 +243,73 @@ export default function DetailUser() {
               <li className="du-c-d-item">
                 <Badge className="profileIcon" />
                 <span className="du-c-d-item-1">ID User</span>
-                <span className="du-c-d-item-2">{detailUser?.customer_uid}</span>
+                <span className="du-c-d-item-2">{editDetail?.customer_uid}</span>
               </li>
 
               {isEdit ? (
                 <>
                   <li className="du-c-d-item">
                     <Person className="profileIcon" />
-                    <span className="du-c-d-item-1">Username</span>
+                    <span className="du-c-d-item-1">Fullname</span>
                     <InputBase
                       sx={{ fontFamily: 'Lora', fontSize: '12px' }}
-                      placeholder={detailUser.fullname}
+                      placeholder={editDetail.fullname}
                       className="du-c-d-item-2-input"
                       onChange={(e) => formik.setFieldValue('fullname', e.target.value)}
+                      // value={editDetail.fullname}
                     />
                   </li>
                   <li className="du-c-d-item">
                     <Email className="profileIcon" />
-                    <span className="du-c-d-item-1">Email</span>
+                    <span className="du-c-d-item-1">Old Email</span>
                     <InputBase
                       sx={{ fontFamily: 'Lora', fontSize: '12px' }}
-                      placeholder={detailUser.email}
+                      placeholder={editDetail.email}
                       className="du-c-d-item-2-input"
                       onChange={(e) => formik.setFieldValue('email', e.target.value)}
+                      // value={editDetail.email}
                     />
                   </li>
+                  <li className="du-c-d-item">
+                    <Email className="profileIcon" />
+                    <span className="du-c-d-item-1">New Email</span>
+                    <InputBase
+                      sx={{ fontFamily: 'Lora', fontSize: '12px' }}
+                      className="du-c-d-item-2-input"
+                      onChange={(e) => formik.setFieldValue('newEmail', e.target.value)} //values.newemail bisa kepanggil
+                    />
+                  </li>
+                  <li className="du-c-d-item">
+                    <Password className="profileIcon" />
+                    <span className="du-c-d-item-1">Old Password</span>
+                    <InputBase
+                      sx={{ fontFamily: 'Lora', fontSize: '12px' }}
+                      className="du-c-d-item-2-input"
+                      placeholder={`Old password must be filled`}
+                      onChange={(e) => formik.setFieldValue('oldPass', e.target.value)}
+                    />
+                  </li>
+                  {/* <li className="du-c-d-item">
+                    <Password className="profileIcon" />
+                    <span className="du-c-d-item-1">New Password</span>
+                    <InputBase
+                      sx={{ fontFamily: 'Lora', fontSize: '12px' }}
+                      className="du-c-d-item-2-input"
+                      onChange={(e) => formik.setFieldValue('newPass', e.target.value)}
+                    />
+                  </li> */}
                 </>
               ) : (
                 <>
                   <li className="du-c-d-item">
                     <Person className="profileIcon" />
                     <span className="du-c-d-item-1">Fullname</span>
-                    <span className="du-c-d-item-2">{detailUser?.fullname}</span>
+                    <span className="du-c-d-item-2">{editDetail?.fullname}</span>
                   </li>
                   <li className="du-c-d-item">
                     <Email className="profileIcon" />
                     <span className="du-c-d-item-1">Email</span>
-                    <span className="du-c-d-item-2">{detailUser?.email}</span>
+                    <span className="du-c-d-item-2">{editDetail?.email}</span>
                   </li>
                 </>
               )}
@@ -239,12 +317,12 @@ export default function DetailUser() {
               <li className="du-c-d-item">
                 <Schedule className="profileIcon" />
                 <span className="du-c-d-item-1">Member since</span>
-                <span className="du-c-d-item-2">{detailUser?.createdAt}</span>
+                <span className="du-c-d-item-2">{editDetail?.createdAt}</span>
               </li>
               <li className="du-c-d-item">
                 <VerifiedUser className="profileIcon" />
                 <span className="du-c-d-item-1">Status</span>
-                <span className="du-c-d-item-2">{detailUser?.is_verified ? 'Verifed' : 'Not Verified'}</span>
+                <span className="du-c-d-item-2">{editDetail?.is_verified ? 'Verifed' : 'Not Verified'}</span>
               </li>
               <li className="du-c-d-item">
                 {isEdit ? (
@@ -273,7 +351,7 @@ export default function DetailUser() {
                   </>
                 )}
               </li>
-              {isEdit ? <button onClick={formik.handleSubmit}>Submit Changes</button> : null}
+              {isEdit ? <button type="submit" onClick={formik.handleSubmit}>Submit Changes</button> : null}
             </ul>
           </div>
           {/* <div className="detailuser-content-option">

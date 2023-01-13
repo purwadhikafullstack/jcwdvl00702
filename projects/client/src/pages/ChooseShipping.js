@@ -170,7 +170,7 @@ export default function ChooseShipping(){
     return(
         <div className="ship-wrapper">
             <Container className="ship-container" maxWidth="xs">
-                {/* {detectCityId()} */}
+                {detectCityId()}
                 <div className="ship-topside">
                     <div className="ship-arrowwrap">
                         <Link to ={`/address-list/${user?.customer_uid}`}>

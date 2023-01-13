@@ -92,7 +92,7 @@ export default function App() {
         <Route path="/dashboard">{mainUser?.role == 'user' ? <Redirect to="/" /> : <Dashboard />}</Route>
         <Route component={Dashboard} path="/dashboard" />
         <Route component={UserList} path="/user-list" />
-        <Route component={DetailUser} path="/detail-user" />
+        <Route component={DetailUser} path="/detail-user/:id" />
         <Route component={AddUser} path="/add-user" />
         <Route component={ProductCategory} path="/products-management-category" />
         <Route component={ProductListAdmin} path="/products-management-list" />
