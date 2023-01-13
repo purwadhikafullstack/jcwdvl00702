@@ -1,5 +1,5 @@
 const {
-  models: { Order, Cart, Product, Orderitem },
+  models: { Order, Cart, Product, Orderitem, Stock, Stockhistory },
 } = require("../models");
 
 const { where, Op } = require("sequelize");
@@ -393,5 +393,112 @@ router.put('/received/:id',async(req,res)=>{
     console.log(err.message)
   }
 })
+
+// cancel order
+router.put('/cancel-order/:id', async(req,res)=> {
+  let orderData = await Order.findOne({
+    where: {
+      // customer_uid: req.params.customer_uid,
+      id: req.params.id,
+    },
+    include: [
+      {
+        model: Orderitem,
+        required: true,
+        include: [
+          {
+            model: Product,
+            // required: true,
+          },
+        ],
+      },
+    ],
+  });
+  try {
+    let updateStatusDetail = await Order.update(
+      {
+        status_detail: req.body.status_detail,
+      },
+      {
+        where: {
+          id: req.params.id
+        }
+      }
+    )
+    res.status(200).json({message:"Success", data: orderData})
+  } catch (error) {
+    console.log(error.message)
+  }
+})
+
+// get back stock after cancel
+router.patch("/update-stock/:id", async (req, res) => {
+  const theProduct = await Product.findOne({
+    where: {
+      id: req.params.id,
+    },
+  });
+  const theStock = await Stock.findOne({
+    where: {
+      warehouse_id: req.body.wh_id,
+      product_id: req.params.id,
+    },
+  });
+  const theDate = new Date();
+
+  try {
+      const updateStock = await Product.update(
+        {
+          quantity_total: theProduct.quantity_total + parseInt(req.body.number),
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+          returning: true,
+          plain: true,
+        }
+      );
+      const changeStock = await Stock.update(
+        {
+          quantity: theStock.quantity + parseInt(req.body.number),
+        },
+        {
+          where: {
+            warehouse_id: req.body.wh_id,
+            product_id: req.params.id,
+          },
+          returning: true,
+          plain: true,
+        }
+      );
+      const newMutation = await Stockhistory.create({
+        stock_id: theStock.id,
+        stockmutation_id: "return_stock",
+        warehouse_id: theStock.warehouse_id,
+        product_id: theStock.product_id,
+        product_name: theProduct.name,
+        product_picture: theProduct.picture,
+        math: "+",
+        quantity: parseInt(req.body.number),
+        start: theStock.quantity,
+        end: parseInt(theStock.quantity) + parseInt(req.body.number),
+        requester: "super_admin",
+        year: theDate.getFullYear(),
+        month: theDate.getMonth() + 1,
+      });
+
+      const endStock = await Stock.findOne({
+        where: {
+          warehouse_id: req.body.wh_id,
+          product_id: req.params.id,
+        },
+      });
+
+    res.status(201).json(endStock.dataValues.quantity);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 module.exports = router;

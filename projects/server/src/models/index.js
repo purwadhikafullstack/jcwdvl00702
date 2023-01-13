@@ -45,7 +45,6 @@ db.models.Address.belongsTo(db.models.Customer, {
 });
 
 //close
-
 // db.models.Product.hasMany(db.models.Warehouse, {
 //   foreignKey: 'warehouse_id',
 // });
@@ -62,7 +61,6 @@ db.models.Stockmutation.belongsTo(db.models.Stock, {
 });
 
 //close
-
 // db.models.Customer.hasMany(db.models.Warehouse, {
 //   foreignKey: 'customer_uid',
 //   sourceKey: 'customer_uid',
