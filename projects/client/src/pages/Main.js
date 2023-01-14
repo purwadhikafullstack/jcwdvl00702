@@ -29,11 +29,7 @@ export default function Main() {
       {user ? user.approle?.role === 'user' && <HomeFunc /> : <HomeFunc />}
       {user ? user.approle?.role === 'superadmin' && <Dashboard /> : null}
       {user ? user.approle?.role === 'admin_wh' && <Dashboard /> : null}
-      {user ? user.approle?.role === 'admin_wh" && <Dashboard/> :
-                null
-            }
-            {
-                user ? user.approle?.role === "admin_TBA' && <Dashboard /> : null}
+      {user ? user.approle?.role === 'admin_TBA' && <Dashboard /> : null}
     </div>
   );
 }
