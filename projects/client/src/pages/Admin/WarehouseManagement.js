@@ -23,7 +23,6 @@ function WarehouseManagement() {
     isLoggedIn: state.auth.isLoggedIn,
     user: state.auth.user,
   }));
-  const userUID = user?.customer_uid;
 
   const [WarehouseDetails, setWarehouseDetails] = useState();
   const [adminRole,setAdminRole] = useState()
@@ -158,7 +157,7 @@ function WarehouseManagement() {
 
   return (
     <>
-      {adminRole !== "user" ? (
+      {user?.approle?.role !== "user" ? (
         <Container maxWidth="xs" sx={{ backgroundColor: "white" }}>
           {console.log(WarehouseDetails)}
           <div className="whmanagement-main">
@@ -243,7 +242,8 @@ function WarehouseManagement() {
                         {WarehouseDetail.warehouse_address}
                       </div>
                       <div className="wmc-detail-bottom">
-                        <Button
+                        {user?.approle?.role === 'superadmin' ? 
+                          <Button
                           sx={{
                             borderRadius: "20px",
                             backgroundColor: "rgb(255,153,153,0.9)",
@@ -254,12 +254,30 @@ function WarehouseManagement() {
                           onClick={() => deleteWarehouse(WarehouseDetail.id)}
                           variant="contained"
                           className="wmc-detail-bottom-delete"
-                          disabled={adminRole !== "superadmin"}
-                        >
-                          Delete
-                        </Button>
-                        {adminData?.approle?.warehouse_id ===
-                        WarehouseDetail.id ? (
+                          // disabled={adminRole !== "superadmin"}
+                          >
+                            Delete
+                          </Button>
+                          :
+                          <Button
+                          sx={{
+                            borderRadius: "20px",
+                            backgroundColor: "rgb(255,153,153,0.9)",
+                            fontSize: "8px",
+                            fontFamily: "Lora",
+                            color: "black",
+                          }}
+                          onClick={() => deleteWarehouse(WarehouseDetail.id)}
+                          variant="contained"
+                          className="wmc-detail-bottom-delete"
+                          disabled
+                          >
+                            Delete
+                          </Button>
+                        }
+                        {/* {adminData?.approle?.warehouse_id ===
+                        WarehouseDetail.id ? ( */}
+                        {user?.approle?.role === 'superadmin' ? (
                           <Link
                             to={`/detail-warehouse/${WarehouseDetail.id}`}
                             className="whmanagement-banner-menu-link"
