@@ -162,12 +162,8 @@ export default function ProductDetailAdmin() {
       });
   };
 
-  // const warehouseStock = (index, number) => {
   const warehouseStock = (number) => {
-    console.log('as', whList);
-
     return whList.map((val, idx) => {
-      // return resStock.map((item, index) => {
       return (
         <div className="pdadmin-stock-wh">
           <div className="pdadmin-stock-name">Warehouse {val}</div>
@@ -212,7 +208,6 @@ export default function ProductDetailAdmin() {
           ) : null}
         </div>
       );
-      // });
     });
   };
 
@@ -401,7 +396,6 @@ export default function ProductDetailAdmin() {
           </>
         )}
 
-        {/* <div className="pdadmin-stock">{resStock.map((item, index) => warehouseStock(index))}</div> */}
         <div className="pdadmin-stock">{warehouseStock()}</div>
       </div>
     </Container>
