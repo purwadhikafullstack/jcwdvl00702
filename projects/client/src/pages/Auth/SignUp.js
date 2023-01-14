@@ -79,7 +79,7 @@ function SignUp() {
             is_verified: user.emailVerified,
             customer_uid: user.uid,
           };
-          console.log(data.customer_uid)
+          console.log(data.customer_uid);
           return data;
         })
         .catch((err) => {
@@ -95,28 +95,28 @@ function SignUp() {
         .then((data) => {
           Axios.post('http://localhost:3300/api/customer/approle', {
             customer_uid: data.customer_uid,
-            role:"user",
-            warehouse_id:0
+            role: 'user',
+            warehouse_id: 0,
           })
-          .then(res=>{
-            Axios.post('http://localhost:3300/api/customer/register', {
-              email: data.email,
-              fullname: data.fullname,
-              password: data.password,
-              is_verified: data.is_verified,
-              customer_uid: data.customer_uid,
+            .then((res) => {
+              Axios.post('http://localhost:3300/api/customer/register', {
+                email: data.email,
+                fullname: data.fullname,
+                password: data.password,
+                is_verified: data.is_verified,
+                customer_uid: data.customer_uid,
+              })
+                .then(() => {
+                  alert('Mohon verifikasi email anda');
+                  history.push('/create-password');
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
             })
-              .then(()=>{
-                console.log(res,': user register response')
-                history.push('/create-password');
-            })
-              .catch((error) => {
-              console.log(error);
+            .catch((err) => {
+              console.log(err);
             });
-          })
-          .catch(err=>{
-            console.log(err)
-          })
         });
     },
   });

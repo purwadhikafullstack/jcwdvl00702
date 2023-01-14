@@ -54,11 +54,11 @@ export default function App() {
         user: user.providerData[0],
         id: user.uid,
       };
-      console.log(data.id)
+      console.log(data.id);
       Axios.get(`http://localhost:3300/api/admin/get-user-one/${data.id}`)
         .then((res) => {
           const getRes = res.data;
-          console.log('get res', getRes)
+          console.log('get res', getRes);
           const dataPersist = {
             user: getRes.result,
             id: getRes.result.customer_uid,
@@ -89,7 +89,7 @@ export default function App() {
         <Route component={CreatePassword} path="/create-password" />
         <Route component={MyOrder} path="/my-order/:userUID" />
         <Route component={MyOrderDetail} path="/my-order-detail/:userUID" />
-        <Route path="/dashboard">{mainUser?.role == 'user' ? <Redirect to="/" /> : <Dashboard />}</Route>
+        {/* <Route path="/dashboard">{mainUser?.role == 'user' ? <Redirect to="/" /> : <Dashboard />}</Route> */}
         <Route component={Dashboard} path="/dashboard" />
         <Route component={UserList} path="/user-list" />
         <Route component={DetailUser} path="/detail-user/:id" />
@@ -121,7 +121,7 @@ export default function App() {
         <Route component={Cart} path="/cart/:id" />
         <Route component={Checkout} path="/checkout/:id/:orderId" />
         <Route component={Payment} path="/payment/:id/:orderId" />
-        <Route component={Reconfirm} path="/reconfirm-admin"/>
+        <Route component={Reconfirm} path="/reconfirm-admin" />
         <Route component={Main} path="/" />
       </Switch>
       <Footer />
