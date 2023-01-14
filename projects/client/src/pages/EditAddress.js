@@ -4,7 +4,7 @@ import { Container, FormControl, Input, Button } from "@mui/material";
 import "../assets/styles/NewAddress.css";
 import { AuthContext } from "../context/AuthProvider";
 import Axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 function EditAddress() {
@@ -21,12 +21,17 @@ function EditAddress() {
   const [cityId, setCityId] = useState()
   const [cityData, setCityData] = useState()
   const { id } = useParams();
+  const history = useHistory();
 
   const { isLoggedIn, user } = useSelector((state) => ({
     isLoggedIn: state.auth.isLoggedIn,
     user: state.auth.user,
   }));
   const userUID = user?.customer_uid;
+
+  const goBack = () => {
+    history.goBack();
+  };
 
   useEffect(() => {
     const provinceDetails = async () => {
@@ -155,7 +160,7 @@ function EditAddress() {
       <Container maxWidth="xs" className="mobile">
         <div className="new-address-page">
           <div className="new-address-detail">
-            <ArrowBackIcon />
+            <ArrowBackIcon onClick={goBack} />
             <div>Edit Address</div>
           </div>
           <div className="margin-size">Address Label</div>

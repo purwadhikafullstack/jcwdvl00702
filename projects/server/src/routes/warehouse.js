@@ -194,6 +194,20 @@ router.put("/edit-warehouse/:id", upload.single('picture'), async (req, res) => 
   }
 });
 
+// delete warehouse
+router.delete('/delete-warehouse/:id', async(req,res) => {
+  try {
+    const deleteWarehouse = await Warehouse.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
+    res.status(200).json({message:"Warehouse Deleted", deleteWarehouse})
+  } catch (error) {
+    res.status(500).json(error)
+  }
+})
+
 // post latitude longitude from city
 router.post("/lat-long", async (req, res) => {
   try {
