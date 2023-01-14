@@ -55,8 +55,7 @@ router.put("/update-detail/:customer_uid", async (req, res)=>{
         let dataUpdate = await Customer.update({
             email:req.body.email,
             fullname:req.body.fullname,
-            password:req.body.password,
-            
+            // password:req.body.password,
         },
         {
             where:{customer_uid}
@@ -108,27 +107,6 @@ router.get('/pagination-user',async(req,res)=>{
         res.status(500).json(err)
     }
 })
-
-
-// //DELETE USER (is_banned)
-// router.put("/:customer_uid", async (req, res)=>{
-//     if(req.body.role === "admin"){
-//         await Customer.findOne({
-//             where:{customer_uid:req.params.customer_uid}
-//         })
-//         try{
-//             await Customer.update(
-//                 {is_banned:req.body.is_banned},
-//                 {
-//                     where:{customer_uid:req.params.customer_uid}
-//                 }
-//             )
-//             res.status(201).json({message:"Account Banned"})
-//         } catch(error){
-//             console.log(error.message)
-//         }
-//     }
-// })
 
 
 module.exports = router

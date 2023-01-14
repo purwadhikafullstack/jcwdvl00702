@@ -79,7 +79,7 @@ export default function DetailUser() {
       email: Yup.string()
       .required('No email entered').email('Not an email format'),
       newEmail: Yup.string()
-      .email('Not an email format'),
+      .required('No email entered').email('Not an email format'),
       fullname: Yup.string(),
       //   .matches(/^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi, 'Name can only contain Latin letters.')
       //   .matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms, 'Please enter your full name.'),
@@ -112,7 +112,7 @@ export default function DetailUser() {
           const newData = {
             email:values.newEmail,
             fullname:values.fullname,
-            password:values.oldPass,
+            // password:values.oldPass,
           }
           
           firebaseAuthentication.currentUser.updateEmail(newData.email)
@@ -120,8 +120,10 @@ export default function DetailUser() {
             Axios.put(`http://localhost:3300/api/admin/update-detail/${editDetail.customer_uid}`,newData)
                 .then((res) => {
                   console.log(res.data)
-                  // firebaseAuthentication.signOut()
-                  // dispatch(logoutUser())
+                  alert(`Relog Superadmin Credentials to Continue Use Dashboard`)
+                  firebaseAuthentication.signOut()
+                  dispatch(logoutUser())
+                  history.push('/sign-in')
                 })
                 .catch((error) => {
                   console.log(error);
@@ -351,7 +353,22 @@ export default function DetailUser() {
                   </>
                 )}
               </li>
-              {isEdit ? <button type="submit" onClick={formik.handleSubmit}>Submit Changes</button> : null}
+              {isEdit ? <button className='submit-btn' type="submit" onClick={formik.handleSubmit}>Submit Changes</button> :
+                <Button
+                  sx={{
+                    borderRadius: '20px',
+                    backgroundColor: 'rgb(153,255,255,0.9)',
+                    fontSize: '8px',
+                    fontFamily: 'Lora',
+                    color: 'black',
+                  }}
+                  variant="contained"
+                  onClick={formik.handleSubmit}
+                  type="submit"
+                  className="detailuser-banner-edit">
+                  Exit Edit
+                </Button>
+              }
             </ul>
           </div>
           {/* <div className="detailuser-content-option">

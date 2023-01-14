@@ -116,7 +116,7 @@ function DetailWarehouse() {
         const getWarehouse = await Axios.get(
           `http://localhost:3300/api/warehouse/warehouse-list/${id}`
         );
-        console.log(getWarehouse);
+        console.log(getWarehouse.data ,'data warehouse');
         setWarehouse_name(getWarehouse.data.warehouse_name);
         setWarehouse_address(getWarehouse.data.warehouse_address);
         setProvince(getWarehouse.data.province);
@@ -387,6 +387,7 @@ function DetailWarehouse() {
                     onClick={postLatLong}
                     className="dw-c-d-item-2-select"
                   >
+                    {console.log(cityData)}
                     {cities?.rajaongkir.results.map((cityDetail) => {
                       return (
                         <option>{`${cityDetail.city_name} ${cityDetail.city_id}`}</option>

@@ -157,3 +157,12 @@ body {
   text-decoration: none;
   color: black;
 }
+
+.submit-btn{
+  background-color: transparent;
+  color: gray;
+  font-weight: 500;
+  border-radius: 10%;
+  border: 1px solid gray;
+  font-size: 13px;
+}

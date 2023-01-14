@@ -132,12 +132,13 @@ function AddWarehouse() {
     setCityData(e)
     const splitCity = cityData.split(" ")
     let cityName = ""
+    let cityArr = []
     if(splitCity.length>2){
       for(let x=0;x<(splitCity.length-1);x++){
-        cityName = cityName + splitCity[x] + " "
+        cityArr.push(splitCity[x])
       }
+      cityName = cityArr.join(" ")
       setCity(cityName)
-      console.log(city)
     } else {
       setCity(splitCity[0])
     }

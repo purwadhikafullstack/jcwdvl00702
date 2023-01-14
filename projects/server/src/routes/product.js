@@ -62,7 +62,7 @@ router.get('/get-category', async (req, res) => {
       let picPathArray = result[i].picture.split('\\');
       let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
       result[i].picture = picPath;
-      res.status(200).json(result);
+    res.status(200).json(result);
     }
   } catch (err) {
     res.status(500).json(err);
@@ -1391,6 +1391,7 @@ router.get('/product-stock-history/:id', async (req, res) => {
     res.status(500).json(err);
   }
 });
+
 
 // STOCK MUTATION OTOMATIS
 router.post('/qty-handler', async (req, res) => {

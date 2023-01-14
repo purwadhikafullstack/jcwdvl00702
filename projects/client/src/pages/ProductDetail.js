@@ -90,7 +90,8 @@ export default function ProductDetail() {
           Axios.post("http://localhost:3300/api/cart/add-to-cart", data)
             .then(() => {
               alert("Product Added!");
-              history.push(`/product-list`);
+              // history.push(`/product-list`);
+              history.push('/')
             })
             .catch((error) => {
               alert("Server Error");
