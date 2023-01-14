@@ -36,17 +36,16 @@ function DetailWarehouse() {
   const [postal_code, setPostal_code] = useState();
   const [picture, setPicture] = useState();
   const [preview, setPreview] = useState();
-  const [admin, setAdmin] = useState();
+  // const [admin, setAdmin] = useState();
+  const [cityId,setCityId] = useState()
+  const [cityData,setCityData] = useState()
   const { id } = useParams();
 
   const { isLoggedIn, user } = useSelector((state) => ({
     isLoggedIn: state.auth.isLoggedIn,
     user: state.auth.user,
   }));
-  const userUID = user?.customer_uid;
-  console.log(user);
-  const userData = user?.role;
-  console.log(userData);
+  const userUID = user?.customer_uid
 
   const loadPicture = (e) => {
     const image = e.target.files[0];
@@ -126,11 +125,26 @@ function DetailWarehouse() {
         setLatitude(getWarehouse.data.latitude);
         setLongitude(getWarehouse.data.longitude);
         setPicture(getWarehouse.data.picture);
-        setAdmin(getWarehouse.data.admin);
+        setCityId(getWarehouse.data.cityId)
       };
       getWarehouseById();
     }
   }, [userUID]);
+
+  const cityCheck=(e)=>{
+    setCityData(e)
+    const splitCity = cityData.split(" ")
+    let cityName = ""
+    if(splitCity.length>2){
+      for(let x=0;x<(splitCity.length-1);x++){
+        cityName = cityName + splitCity[x] + " "
+      }
+      setCity(cityName)
+    } else {
+      setCity(splitCity[0])
+    }
+    setCityId(splitCity[splitCity.length-1])
+  }
 
   const postLatLong = async () => {
     const data = {
@@ -161,7 +175,8 @@ function DetailWarehouse() {
     formData.append("latitude", latitude);
     formData.append("longitude", longitude);
     formData.append("picture", picture);
-    formData.append("admin", admin);
+    formData.append("city_id", cityId)
+    // formData.append("admin", admin);
 
     try {
       await Axios.put(
@@ -289,7 +304,7 @@ function DetailWarehouse() {
                       className="dw-c-d-item-2-input"
                     />
                   </li> */}
-              <li className="dw-c-d-item">
+              {/* <li className="dw-c-d-item">
                 <Work className="profileIcon" />
                 <span className="dw-c-d-item-1">Admin</span>
                 <label>
@@ -315,7 +330,7 @@ function DetailWarehouse() {
                     </option>
                   </select>
                 </label>
-              </li>
+              </li> */}
 
               {/* <li className="dw-c-d-item">
                 <VerifiedUser className="profileIcon" />
@@ -367,24 +382,46 @@ function DetailWarehouse() {
                     sx={{ fontSize: "10px", width: "150px" }}
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
+                    value={cityData}
+                    onChange={(e) => cityCheck(e.target.value)}
                     onClick={postLatLong}
                     className="dw-c-d-item-2-select"
                   >
                     {cities?.rajaongkir.results.map((cityDetail) => {
                       return (
-                        <option
-                          key={cityDetail.city_name}
-                          value={cityDetail.city_name}
-                        >
-                          {cityDetail.city_name}
-                        </option>
+                        <option>{`${cityDetail.city_name} ${cityDetail.city_id}`}</option>
                       );
                     })}
                   </select>
                 </label>
               </li>
+
+              {/* <li className="dw-c-d-item">
+                <LocationOn className="profileIcon" />
+                <span className="dw-c-d-item-1">City ID</span>
+                <label>
+                <select
+                  sx={{ fontSize: "10px", width: "150px" }}
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={cityId}
+                  onChange={(e) => setCityId(e.target.value)}
+                  className="dw-c-d-item-2-select"
+                >
+                  {cities?.rajaongkir.results.map((cityDetail) => {
+                    return (
+                      <option
+                        key={cityDetail.city_id}
+                        value={cityDetail.city_id}
+                      >
+                        {cityDetail.city_id}
+                      </option>
+                    );
+                  })}
+                </select>
+                </label>
+              </li> */}
+
               <li className="dw-c-d-item">
                 <LocationOn className="profileIcon" sx={{ color: "white" }} />
                 <span className="dw-c-d-item-1">Latitude</span>

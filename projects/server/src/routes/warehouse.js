@@ -177,7 +177,7 @@ router.put("/edit-warehouse/:id", upload.single('picture'), async (req, res) => 
         latitude: req.body.latitude,
         longitude: req.body.longitude,
         picture: req.file.path,
-        admin: req.body.admin
+        city_id: req.body.city_id,
       },
       {
         where: {
