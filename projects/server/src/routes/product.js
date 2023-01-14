@@ -32,7 +32,7 @@ router.post('/add-category', upload.single('image'), async (req, res) => {
     if (checkBox === true) {
       res.status(500).json(err);
     } else {
-      let picPathArray = req.file.path.split('/');
+      let picPathArray = req.file.path.split('\\');
       let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
 
       const newCategory = await Category.create({

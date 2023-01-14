@@ -91,7 +91,7 @@ export default function ProductAdd() {
           const wrapper = { qty: 0 };
           qtyWh.push(wrapper);
         }
-        console.log('90', qtyWh);
+        console.log('90', qtyWh[0].qty);
       })
       .catch((err) => {
         alert('Terjadi kesalahan di server');
@@ -100,6 +100,8 @@ export default function ProductAdd() {
 
   // UPDATE STOCK
   const warehouseStock = (id) => {
+    console.log(whList)
+    console.log(qtyWh, 'qtywh')
     return whList.map((val, index) => {
       return (
         <>
@@ -110,12 +112,12 @@ export default function ProductAdd() {
                 sx={{ fontFamily: 'Lora', width: '100px' }}
                 placeholder="Amount"
                 className="pdadd-stock-qty-input"
-                value={qtyWh[val - 1].qty}
+                value={qtyWh[index]?.qty}
                 onChange={(e) => {
                   const copyQtyWh = [...qtyWh];
                   // const copyQtyWh = qtyWh;
 
-                  copyQtyWh[val - 1].qty = e.target.value;
+                  copyQtyWh[index].qty = e.target.value;
                   setQtyWh(copyQtyWh);
                 }}
               />
