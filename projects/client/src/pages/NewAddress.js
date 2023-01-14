@@ -92,7 +92,6 @@ function NewAddress() {
         cityName = cityName + splitCity[x] + " "
       }
       setCity(cityName)
-      console.log(city)
     } else {
       setCity(splitCity[0])
     }

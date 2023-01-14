@@ -53,6 +53,7 @@ router.get("/get-order/:id", async (req, res) => {
         customer_uid: req.params.id,
         // status false ini berarti hanya orderan yg belum selesai saja yg dikirim ke frontend
         status: false,
+        status_detail: 0
       },
     });
     res.status(200).json(getOrder);

@@ -177,7 +177,7 @@ router.put("/edit-warehouse/:id", upload.single('picture'), async (req, res) => 
         latitude: req.body.latitude,
         longitude: req.body.longitude,
         picture: req.file.path,
-        admin: req.body.admin
+        city_id: req.body.city_id,
       },
       {
         where: {
@@ -235,6 +235,38 @@ router.post("/lat-long", async (req, res) => {
       res.json({ message: "Warehouse Deleted" });
     } catch (error) {}
   });
+});
+
+// get warehouse list stock
+router.get("/warehouse-list-stock", async (req, res) => {
+  try {
+    const response = await Warehouse.findAll({
+      include: [
+        {
+          model: Stock,
+          required: true,
+        }
+      ]
+    });
+
+    console.log("ini test", response.length)
+    for(let i = 0; i<response.length; i++)
+    {
+      let picPathArray = response[i].picture.split("\\");
+      let picPath =
+        "http://localhost:3300/" + picPathArray[1] + "/" + picPathArray[2];
+      response[i].picture = picPath;
+    }
+    //  let picPathArray = response.picture.split("\\");
+    //  let picPath =
+    //    "http://localhost:3300/" + picPathArray[1] + "/" + picPathArray[2];
+    // //  response.picture = picPath;
+    // console.log(picPath)
+    // console.log(JSON.stringify(response.picture))
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 module.exports = router;

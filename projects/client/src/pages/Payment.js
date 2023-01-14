@@ -71,7 +71,13 @@ function Payment() {
 
   // finish submit
   const uploadPicture = () => {
-    // Upload bukti pembayaran ke tabel order
+    if(!bank){
+      alert("mohon pilih bank terlebih dahulu")
+    } else {
+      if(!picture){
+        alert("mohon upload bukti pembayaran")
+      } else {
+        // Upload bukti pembayaran ke tabel order
     const data = new FormData();
     data.append("payment_picture", picture);
 
@@ -98,14 +104,16 @@ function Payment() {
         .catch((error) => console.error(error));
     }
 
-        // delete semua cart agar user bisa order kembali
-        Axios.delete(`http://localhost:3300/api/cart/delete-all-cart/${id}`)
-        .then(() => {
-          history.push(`/`);
-        })
-        .catch(() => {
-          alert("Server Error!");
-        });
+        // // delete semua cart agar user bisa order kembali
+        // Axios.delete(`http://localhost:3300/api/cart/delete-all-cart/${id}`)
+        // .then(() => {
+        //   history.push(`/`);
+        // })
+        // .catch(() => {
+        //   alert("Server Error!");
+        // });
+      }
+    }
   };
 
   useEffect(() => {

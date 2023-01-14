@@ -60,14 +60,14 @@ export default function SignIn() {
               user: res.data,
               id: res.data.customer_uid,
             }
-            if(globalData.user.approle.role == 'adminTBA'){
-              //logout
-              alert(`Account not ready yet`)
+            if(globalData.user.is_banned === true){
+              alert(`Account not found`)
               firebaseAuthentication.signOut()
               dispatch(logoutUser())
+              window.location.reload()
             } else {
               dispatch(loginUser(globalData))
-            history.push('/')
+              history.push('/')
             }
           })
         })
