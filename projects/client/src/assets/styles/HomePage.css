@@ -158,3 +158,11 @@
   text-decoration: none;
   color: black;
 }
+
+.app-name{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 5px;
+  padding: 5px;
+}

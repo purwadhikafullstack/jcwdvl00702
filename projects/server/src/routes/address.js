@@ -124,12 +124,12 @@ router.get('/address-city-id/:city_id', async (req, res) => {
 });
 
 // get customer city id for order
-router.get('/address-city-id-order/:customer_uid/:destination', async (req, res) => {
+router.get('/address-city-id-order/:customer_uid/:loc', async (req, res) => {
   try {
     const response = await Address.findOne({
       where: {
         customer_uid: req.params.customer_uid,
-        address_name: req.body.destination
+        address_name: req.body.loc
       },
     });
     res.json(response);

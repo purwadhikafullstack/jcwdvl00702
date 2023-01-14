@@ -89,5 +89,11 @@ db.models.Category.hasMany(db.models.Product, {
 db.models.Product.belongsTo(db.models.Category, {
   foreignKey: 'category_id',
 });
+db.models.Warehouse.hasMany(db.models.Stock, {
+  foreignKey: 'warehouse_id',
+});
+db.models.Stock.belongsTo(db.models.Warehouse, {
+  foreignKey: 'warehouse_id',
+});
 
 module.exports = db;

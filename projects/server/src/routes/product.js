@@ -1395,40 +1395,318 @@ router.get('/product-stock-history/:id', async (req, res) => {
 
 // STOCK MUTATION OTOMATIS
 router.post('/qty-handler', async (req, res) => {
+  console.log("ini re body", req.body)
+  
   const stockFrom = await Stock.findOne({
     where: {
-      warehouse_id: req.body.from,
-      product_id: req.body.product,
+      warehouse_id: req.body.whList[1].id,
+      product_id: req.body.orderitem.product_id,
     },
   });
+
+  const secStockFrom = await Stock.findOne({
+    where: {
+      warehouse_id: req.body.whList[2].id,
+      product_id: req.body.orderitem.product_id,
+    },
+  });
+
+
   const stockTo = await Stock.findOne({
     where: {
-      warehouse_id: req.body.to,
-      product_id: req.body.product,
+      warehouse_id: req.body.whList[0].id,
+      product_id: req.body.orderitem.product_id,
+    },
+  });
+
+  const needQty = req.body.orderitem.quantity - stockTo.quantity
+
+  const theProduct = await Product.findOne({
+    where: {
+      id: req.body.orderitem.product_id
+    },
+  });
+
+  if(stockTo.quantity >= req.body.orderitem.quantity){
+    try {
+      const updateStock = await Product.update(
+        {
+          quantity_total: theProduct.quantity_total - req.body.orderitem.quantity,
+        },
+        {
+          where: {
+            id: req.body.orderitem.product_id,
+          },
+          returning: true,
+          plain: true,
+        }
+      );
+      const changeStock = await Stock.update(
+        {
+          quantity: stockTo.quantity - req.body.orderitem.quantity ,
+        },
+        {
+          where: {
+            warehouse_id: req.body.whList[0].id,
+            product_id: req.body.orderitem.product_id
+          },
+          returning: true,
+          plain: true,
+        }
+      );
+
+      const mutationData = {
+        stock_id: stockTo.id,
+        warehouse_id: req.body.whList[0].id,
+        product_id: req.body.orderitem.product_id,
+        product_name: theProduct.name,
+        product_picture: theProduct.picture,
+        quantity: req.body.orderitem.quantity,
+        requester: req.body.whList[0].id,
+        status: 'done',
+        move_type: 'auto',
+      }
+
+      const newMutation = await Stockmutation.create(mutationData);
+
+      res.status(201).json(newMutation);
+    } catch (err){
+      res.status(500).json(err);
+    }
+  } else if (stockTo.quantity < req.body.orderitem.quantity){
+    if (stockFrom.quantity >= needQty){
+      const mutationData = {
+        stock_id: stockFrom.id,
+        warehouse_id: req.body.whList[1].id,
+        product_id: req.body.orderitem.product_id,
+        product_name: theProduct.name,
+        product_picture: theProduct.picture,
+        quantity: needQty,
+        requester: req.body.whList[0].id,
+        status: 'done',
+        move_type: 'auto',
+      }
+
+    
+      try {
+        const updateStock = await Product.update(
+          {
+            quantity_total: theProduct.quantity_total - req.body.orderitem.quantity,
+          },
+          {
+            where: {
+              id: req.body.orderitem.product_id,
+            },
+            returning: true,
+            plain: true,
+          }
+        );
+
+        const changeStock = await Stock.update(
+          {
+            quantity: (stockTo.quantity + needQty ) - req.body.orderitem.quantity ,
+          },
+          {
+            where: {
+              warehouse_id: req.body.whList[0].id,
+              product_id: req.body.orderitem.product_id
+            },
+            returning: true,
+            plain: true,
+          }
+        );
+
+        const changeStockFrom = await Stock.update(
+          {
+            quantity: stockFrom.quantity - needQty ,
+          },
+          {
+            where: {
+              warehouse_id: req.body.whList[1].id,
+              product_id: req.body.orderitem.product_id
+            },
+            returning: true,
+            plain: true,
+          }
+        );
+
+
+  
+        const newMutation = await Stockmutation.create(mutationData);
+
+        res.status(200).json(newMutation);
+      } catch (err) {
+        res.status(500).json(err);
+      }
+    } else if (stockFrom.quantity < needQty){
+      const mutationData = {
+        stock_id: secStockFrom.id,
+        warehouse_id: req.body.whList[2].id,
+        product_id: req.body.orderitem.product_id,
+        product_name: theProduct.name,
+        product_picture: theProduct.picture,
+        quantity: needQty,
+        requester: req.body.whList[0].id,
+        status: 'done',
+        move_type: 'auto',
+      }
+
+    
+      try {
+        const updateStock = await Product.update(
+          {
+            quantity_total: theProduct.quantity_total - req.body.orderitem.quantity,
+          },
+          {
+            where: {
+              id: req.body.orderitem.product_id,
+            },
+            returning: true,
+            plain: true,
+          }
+        );
+
+        const changeStock = await Stock.update(
+          {
+            quantity: (stockTo.quantity + needQty ) - req.body.orderitem.quantity ,
+          },
+          {
+            where: {
+              warehouse_id: req.body.whList[0].id,
+              product_id: req.body.orderitem.product_id
+            },
+            returning: true,
+            plain: true,
+          }
+        );
+
+        const changeStockFrom = await Stock.update(
+          {
+            quantity: stockFrom.quantity - needQty ,
+          },
+          {
+            where: {
+              warehouse_id: req.body.whList[2].id,
+              product_id: req.body.orderitem.product_id
+            },
+            returning: true,
+            plain: true,
+          }
+        );
+
+
+  
+        const newMutation = await Stockmutation.create(mutationData);
+
+        res.status(200).json(newMutation);
+      } catch (err) {
+        res.status(500).json(err);
+      } 
+    }
+  }
+
+});
+
+
+
+// RESPOND MUTATION - AUTO
+router.post('/qty-handler-history', async (req, res) => {
+  const theMutation = await Stockmutation.findOne({
+    where: {
+      id: req.body.stockmutation_id,
+    },
+  });
+  const theStockFrom = await Stock.findOne({
+    where: {
+      product_id: theMutation.product_id,
+      warehouse_id: theMutation.warehouse_id,
+    },
+  });
+  const theStockTo = await Stock.findOne({
+    where: {
+      product_id: theMutation.product_id,
+      warehouse_id: theMutation.requester,
     },
   });
   const theProduct = await Product.findOne({
     where: {
-      id: req.body.product,
+      id: theMutation.product_id,
     },
   });
-  const mutationData = {
-    stock_id: stockFrom.id,
-    warehouse_id: req.body.from,
-    product_id: req.body.product,
-    product_name: theProduct.name,
-    product_picture: theProduct.picture,
-    quantity: parseInt(req.body.quantity),
-    requester: req.body.to,
-    status: 'done',
-    move_type: 'auto',
-  };
+  const theDate = new Date();
+  const historyData = [
+    {
+      stock_id: theStockFrom.id,
+      stockmutation_id: theMutation.id,
+      warehouse_id: theStockFrom.warehouse_id,
+      product_id: theMutation.product_id,
+      product_name: theMutation.product_name,
+      product_picture: theMutation.product_picture,
+      math: '-',
+      quantity: theMutation.quantity,
+      start: theStockFrom.quantity,
+      end: theStockFrom.quantity - parseInt(theMutation.quantity),
+      requester: theMutation.requester,
+      year: theDate.getFullYear(),
+      month: theDate.getMonth() + 1,
+    },
+    {
+      stock_id: theStockTo.id,
+      stockmutation_id: theMutation.id,
+      warehouse_id: theStockTo.warehouse_id,
+      product_id: theMutation.product_id,
+      product_name: theMutation.product_name,
+      product_picture: theMutation.product_picture,
+      math: '+',
+      quantity: theMutation.quantity,
+      start: theStockTo.quantity,
+      end: theStockTo.quantity + parseInt(theMutation.quantity),
+      requester: theMutation.requester,
+      year: theDate.getFullYear(),
+      month: theDate.getMonth() + 1,
+    },
+  ];
+  const historyDataAlternate = [
+    {
+      stock_id: theStockFrom.id,
+      stockmutation_id: theMutation.id,
+      warehouse_id: theStockFrom.warehouse_id,
+      product_id: theMutation.product_id,
+      product_name: theMutation.product_name,
+      product_picture: theMutation.product_picture,
+      math: '-',
+      quantity: theStockFrom.quantity,
+      start: theStockFrom.quantity,
+      end: theStockFrom.quantity - parseInt(theStockFrom.quantity),
+      requester: theMutation.requester,
+      year: theDate.getFullYear(),
+      month: theDate.getMonth() + 1,
+    },
+    {
+      stock_id: theStockTo.id,
+      stockmutation_id: theMutation.id,
+      warehouse_id: theStockTo.warehouse_id,
+      product_id: theMutation.product_id,
+      product_name: theMutation.product_name,
+      product_picture: theMutation.product_picture,
+      math: '+',
+      quantity: theStockFrom.quantity,
+      start: theStockTo.quantity,
+      end: theStockTo.quantity + parseInt(theStockFrom.quantity),
+      requester: theMutation.requester,
+      year: theDate.getFullYear(),
+      month: theDate.getMonth() + 1,
+    },
+  ];
 
-  try {
-    const newMutation = await Stockmutation.create(mutationData);
-    res.status(200).json({ theProduct, stockFrom });
-  } catch (err) {
-    res.status(500).json(err);
-  }
+  
+      try{
+        const newHistory = await Stockhistory.bulkCreate(historyDataAlternate, { returning: true });
+        // const message = `Mutation success but amount available is only ` + theStockFrom.quantity + ` pcs.`;
+        
+        res.status(200).json( newHistory );
+      } catch (err) {
+        res.status(500).json(err);
+      }
 });
 module.exports = router;

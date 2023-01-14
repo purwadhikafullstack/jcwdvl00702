@@ -35,6 +35,7 @@ function AddressList() {
   };
 
   const activeSelect=()=>{
+    console.log(addressFinal)
     if(addressFinal.length==0){
       alert('Choose Address!')
     } else{
@@ -52,7 +53,6 @@ function AddressList() {
         console.log(error);
       });
     }
-    
   }
 
   const deleteAddress = (id) => {

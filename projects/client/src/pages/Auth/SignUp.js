@@ -135,14 +135,14 @@ function SignUp() {
         // The signed-in user info.
         var user = result.user;
 
-        const data = {
-          email: user.email,
-          fullname: user.displayName,
-          is_verified: user.emailVerified,
-          customer_uid: user.uid,
-        };
-
-        return data;
+        // const data = {
+        //   email: values.email,
+        //   fullname: values.fullname,
+        //   password: values.password,
+        //   is_verified: user.emailVerified,
+        //   customer_uid: user.uid,
+        // };
+        // return data;
       })
       .catch((error) => {
         // Handle Errors here.
@@ -155,15 +155,29 @@ function SignUp() {
         // ...
       })
       .then((data) => {
-        console.log('here', data);
-
-        Axios.post('http://localhost:3300/api/customer/register-social', data)
-          .then(() => {
-            history.push('/');
+        Axios.post('http://localhost:3300/api/customer/approle', {
+          customer_uid: data.customer_uid,
+          role: 'user',
+          warehouse_id: 0,
+        })
+          .then((res) => {
+            Axios.post('http://localhost:3300/api/customer/register', {
+              email: data.email,
+              fullname: data.fullname,
+              password: data.password,
+              is_verified: data.is_verified,
+              customer_uid: data.customer_uid,
+            })
+              .then(() => {
+                alert('Mohon verifikasi email anda');
+                history.push('/create-password');
+              })
+              .catch((error) => {
+                console.log(error);
+              });
           })
-          .catch((error) => {
-            console.log(error);
-            alert(error);
+          .catch((err) => {
+            console.log(err);
           });
       });
   };
