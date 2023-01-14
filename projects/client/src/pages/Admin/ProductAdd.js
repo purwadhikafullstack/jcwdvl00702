@@ -100,7 +100,10 @@ export default function ProductAdd() {
 
   // UPDATE STOCK
   const warehouseStock = (id) => {
+    console.log('103', whList);
     return whList.map((val, index) => {
+      console.log(qtyWh);
+
       return (
         <>
           <div className="pdadd-stock-wh">
@@ -110,12 +113,12 @@ export default function ProductAdd() {
                 sx={{ fontFamily: 'Lora', width: '100px' }}
                 placeholder="Amount"
                 className="pdadd-stock-qty-input"
-                value={qtyWh[val - 1].qty}
+                value={qtyWh[index].qty}
                 onChange={(e) => {
                   const copyQtyWh = [...qtyWh];
                   // const copyQtyWh = qtyWh;
 
-                  copyQtyWh[val - 1].qty = e.target.value;
+                  copyQtyWh[index].qty = e.target.value;
                   setQtyWh(copyQtyWh);
                 }}
               />
