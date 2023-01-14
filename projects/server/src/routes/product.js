@@ -32,14 +32,14 @@ router.post('/add-category', upload.single('image'), async (req, res) => {
     if (checkBox === true) {
       res.status(500).json(err);
     } else {
-      // let picPathArray = req.file.path.split('/');
-      // let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
+      let picPathArray = req.file.path.split('/');
+      let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
 
       const newCategory = await Category.create({
         name: req.body.name,
         alt_name: req.body.name.toLowerCase(),
-        // picture: picPath,
-        picture: req.file.path,
+        picture: picPath,
+        // picture: req.file.path,
       });
       const categoryId = await Category.findOne({
         where: {
@@ -58,12 +58,12 @@ router.get('/get-category', async (req, res) => {
   try {
     const result = await Category.findAll();
 
-    for (let i = 0; i < result.length; i++) {
-      let picPathArray = result[i].picture.split('\\');
-      let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
-      result[i].picture = picPath;
-      res.status(200).json(result);
-    }
+    // for (let i = 0; i < result.length; i++) {
+    //   let picPathArray = result[i].picture.split('\\');
+    //   let picPath = 'http://localhost:3300//' + picPathArray[1] + '/' + picPathArray[2];
+    //   result[i].picture = picPath;
+    res.status(200).json(result);
+    // }
   } catch (err) {
     res.status(500).json(err);
   }
