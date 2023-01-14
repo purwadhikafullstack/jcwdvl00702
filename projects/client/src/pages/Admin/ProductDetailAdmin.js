@@ -133,7 +133,7 @@ export default function ProductDetailAdmin() {
   const changeStock = (name, count, number, requester) => {
     if (number >= 1) {
       Axios.patch(`http://localhost:3300/api/product/update-stock/${id}`, {
-        wh_id: name + 1,
+        wh_id: name,
         count: count,
         number: number,
         requester: stateUsername.user.fullname,
@@ -162,12 +162,16 @@ export default function ProductDetailAdmin() {
       });
   };
 
-  const warehouseStock = (index, number) => {
-    return whList.map((val, index) => {
+  // const warehouseStock = (index, number) => {
+  const warehouseStock = (number) => {
+    console.log('as', whList);
+
+    return whList.map((val, idx) => {
+      // return resStock.map((item, index) => {
       return (
         <div className="pdadmin-stock-wh">
           <div className="pdadmin-stock-name">Warehouse {val}</div>
-          <div className="pdadmin-stock-qty">{resStock[index]} pcs</div>
+          <div className="pdadmin-stock-qty">{resStock[idx]} pcs</div>
           {isSuperAdmin ? (
             <>
               <div className="pdadmin-stock-edit">
@@ -182,7 +186,7 @@ export default function ProductDetailAdmin() {
                 <IconButton
                   className="pdadmin-stock-add"
                   onClick={() => {
-                    changeStock(index, 'add', number);
+                    changeStock(val, 'add', number);
                   }}>
                   <Add />
                 </IconButton>
@@ -199,7 +203,7 @@ export default function ProductDetailAdmin() {
                 <IconButton
                   className="pdadmin-stock-decrease"
                   onClick={() => {
-                    changeStock(index, 'reduce', number);
+                    changeStock(val, 'reduce', number);
                   }}>
                   <Remove />
                 </IconButton>
@@ -208,6 +212,7 @@ export default function ProductDetailAdmin() {
           ) : null}
         </div>
       );
+      // });
     });
   };
 
