@@ -6,7 +6,7 @@ import Container from "@mui/material/Container";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import { AuthContext } from "../context/AuthProvider";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import Axios from "axios";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
@@ -27,6 +27,7 @@ function EditProfile() {
   const [fullname, setFullname] = useState("");
   const [picture, setPicture] = useState("");
   const [preview, setPreview] = useState("");
+  const history = useHistory();
 
   useEffect(() => {
     console.log(userUID, "useeffect check");
@@ -42,6 +43,10 @@ function EditProfile() {
       getUserById(userUID);
     }
   }, [userUID]);
+
+  const goBack = () => {
+    history.goBack();
+  };
 
   // const getUserById = async(userUID) => {
   //     const response = await Axios.get(`http://localhost:3300/api/customer/profile/${userUID}`);
@@ -81,7 +86,7 @@ function EditProfile() {
     <Container maxWidth="xs">
       <div className="editProfilePage">
         <div className="backPage">
-          <ArrowBackIcon /> Profile
+          <ArrowBackIcon onClick={goBack} /> Profile
         </div>
         <div className="profilePic">
           <label for="uploadImg">

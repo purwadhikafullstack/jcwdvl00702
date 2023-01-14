@@ -9,7 +9,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Container from "@mui/material/Container";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import Axios from "axios";
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
@@ -32,6 +32,7 @@ function Profile() {
   const [fullname, setFullname] = useState("");
   const [picture, setPicture] = useState("");
   const [email, setEmail] = useState("");
+  const history = useHistory();
 
   useEffect(() => {
     console.log(userUID, "useeffect check");
@@ -48,11 +49,16 @@ function Profile() {
       getUserById(userUID);
     }
   }, [userUID]);
+
+  const goBack = () => {
+    history.goBack();
+  };
+
   return (
     <Container maxWidth="xs">
       <div className="profilePage">
         <div className="backPage">
-          <ArrowBackIcon /> Homepage
+          <ArrowBackIcon onClick={goBack} /> Homepage
         </div>
         <div className="profilePic">
           <img className="profileUserImg" src={picture} alt="" />
