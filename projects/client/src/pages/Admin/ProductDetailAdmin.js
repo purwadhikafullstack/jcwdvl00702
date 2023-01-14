@@ -1,17 +1,6 @@
 import Axios from 'axios';
 import { useEffect, useState } from 'react';
-import {
-  Add,
-  ArrowBack,
-  Remove,
-  SportsSoccerOutlined,
-  BusinessCenterOutlined,
-  DirectionsBikeOutlined,
-  HikingOutlined,
-  HandymanOutlined,
-  MonitorHeartOutlined,
-  FitnessCenterOutlined,
-} from '@mui/icons-material';
+import { Add, ArrowBack, Remove } from '@mui/icons-material';
 import { useHistory, useParams } from 'react-router-dom';
 import { Container, Button, IconButton, InputBase, Select, MenuItem, TextField } from '@mui/material';
 import { useFormik } from 'formik';
