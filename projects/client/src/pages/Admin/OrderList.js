@@ -118,16 +118,19 @@ function OrderList() {
         // <Redirect to="/my-order/:customer_uid" />
       })
       .then((result) => {
-        console.log(result)
-        result.data.data.orderitems.forEach(product => {
+        console.log(result);
+        result.data.data.orderitems.forEach((product) => {
           const prodId = product.product_id;
           const qtId = product.quantity;
           const whId = product.warehouse_id;
-          Axios.patch(`http://localhost:3300/api/order/update-stock/${prodId}`, {
-            wh_id: whId,
-            number: qtId
-          });
-        })
+          Axios.patch(
+            `http://localhost:3300/api/order/update-stock/${prodId}`,
+            {
+              wh_id: whId,
+              number: qtId,
+            }
+          );
+        });
         getOrderList();
       })
       .catch((error) => {
@@ -273,45 +276,47 @@ function OrderList() {
   };
 
   const defaultOngoing = () => {
-      <div className="orderlist-og">
-        <img
-          src="https://i.pinimg.com/originals/6f/df/bc/6fdfbc41d6a8e26d4b9073bc1afd899f.jpg"
-          className="orderlist-og-logo"
-          alt="No Order"
-        />
-        <div className="orderlist-og-text-1">You don't have an order yet</div>
-        <div className="orderlist-og-text-2">
-          You don't have On Going orders at this time
-        </div>
+    <div className="orderlist-og">
+      <img
+        src="https://i.pinimg.com/originals/6f/df/bc/6fdfbc41d6a8e26d4b9073bc1afd899f.jpg"
+        className="orderlist-og-logo"
+        alt="No Order"
+      />
+      <div className="orderlist-og-text-1">You don't have an order yet</div>
+      <div className="orderlist-og-text-2">
+        You don't have On Going orders at this time
       </div>
-  }
+    </div>;
+  };
 
   const defaultComplete = () => {
-      <div className="orderlist-og">
-        <img
-          src="https://i.pinimg.com/originals/6f/df/bc/6fdfbc41d6a8e26d4b9073bc1afd899f.jpg"
-          className="orderlist-og-logo"
-          alt="No Order"
-        />
-        <div className="orderlist-og-text-1">You don't have any completed order yet</div>
-        <div className="orderlist-og-text-2">
-          You don't have any complete orders at this time
-        </div>
+    <div className="orderlist-og">
+      <img
+        src="https://i.pinimg.com/originals/6f/df/bc/6fdfbc41d6a8e26d4b9073bc1afd899f.jpg"
+        className="orderlist-og-logo"
+        alt="No Order"
+      />
+      <div className="orderlist-og-text-1">
+        You don't have any completed order yet
       </div>
-  }
+      <div className="orderlist-og-text-2">
+        You don't have any complete orders at this time
+      </div>
+    </div>;
+  };
 
   const orderListCard = (input) => {
     console.log("ini orderdetail", orderDetails);
     let orderCheck = [];
-    console.log(input, "ini input")
-    if(input === 2) {
+    console.log(input, "ini input");
+    if (input === 2) {
       orderCheck = [];
-      orderDetails?.forEach(function(order) {
+      orderDetails?.forEach(function (order) {
         if (order.status_detail === 4) {
           orderCheck.push(order);
         }
-      })
-    } else if (input === 1){
+      });
+    } else if (input === 1) {
       orderCheck = [];
       orderDetails?.forEach(function (order) {
         if (
@@ -325,7 +330,7 @@ function OrderList() {
         }
       });
     }
-    console.log('order check', orderCheck);
+    console.log("order check", orderCheck);
     return (
       <>
         {orderCheck?.map((orderDetail, index) => (
@@ -339,10 +344,7 @@ function OrderList() {
               {olistcDetailStatus(orderDetail?.status_detail)}
             </div>
             <div className="olistc-detail">
-
-              <div className="olistc-detail-name">
-                {orderDetail?.id}
-              </div>
+              <div className="olistc-detail-name">{orderDetail?.id}</div>
               <div className="olistc-detail-subname">
                 {orderDetail?.createdAt}
               </div>
@@ -357,7 +359,8 @@ function OrderList() {
               </div>
 
               <div className="olistc-detail-bottom">
-                {orderDetail?.status_detail === 6 || 4 ? null : (
+                {orderDetail?.status_detail === 6 ||
+                orderDetail?.status_detail === 4 ? null : (
                   <>
                     <Button
                       sx={{
@@ -548,7 +551,6 @@ function OrderList() {
               </Box>
 
               <TabPanel value="1">
-
                 {orderListCard(1)}
                 {orderListCard(1) ? null : defaultOngoing()}
 

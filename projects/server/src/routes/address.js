@@ -174,10 +174,10 @@ router.put('/edit-address/:customer_uid/:id', async (req, res) => {
 });
 
 // post latitude longitude from city
-router.post('/lat-long', async (req, res) => {
+router.post("/lat-long", async (req, res) => {
   try {
     const options = {
-      method: 'GET',
+      method: "GET",
       url: `https://api.opencagedata.com/geocode/v1/json?q=${req.body.city}&key=c4e13262d8e24d78b12cbbaee4ba9f39`,
     };
     console.log(options);
@@ -188,20 +188,23 @@ router.post('/lat-long', async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+});
 
-  // delete address
+// delete address
   router.delete('/delete-address/:customer_uid/:id', async (req, res) => {
     try {
-      await Address.destroy({
+      const deleteAddress = await Address.destroy({
         where: {
           customer_uid: req.params.customer_uid,
           id: req.params.id,
         },
       });
-      res.json({ message: 'Address Deleted' });
-    } catch (error) {}
+      res.status(200).json({ message: 'Address Deleted', deleteAddress });
+    } catch (err) {
+      res.status(500).json(err)
+    }
   });
-});
+
 
 // Get Ongkir 
 router.post("/ongkir-type",async(req,res)=>{

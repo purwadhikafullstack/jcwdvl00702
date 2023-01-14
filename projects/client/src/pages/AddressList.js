@@ -3,6 +3,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import "../assets/styles/AddressList.css";
 import { Container } from "@mui/material";
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import Axios from "axios";
 import { Link } from "react-router-dom";
@@ -21,16 +22,17 @@ function AddressList() {
   const [addressFinal, setAddressFinal] = useState([])
 
   useEffect(() => {
-    if (userUID) {
-      const getAddressById = async (userUID) => {
-        const response = await Axios.get(
-          `http://localhost:3300/api/address/address-list/${userUID}`
-        );
-        setAddressDetails(response.data);
-      };
-      getAddressById(userUID);
-    }
+    getAddressById(userUID);
   }, [userUID]);
+
+  const getAddressById = async (userUID) => {
+    console.log(userUID, "test");
+    const response = await Axios.get(
+      `http://localhost:3300/api/address/address-list/${userUID}`
+    );
+    //  console.log(response.data)
+    setAddressDetails(response.data);
+  };
 
   const activeSelect=()=>{
     if(addressFinal.length==0){
@@ -53,13 +55,26 @@ function AddressList() {
     
   }
 
+  const deleteAddress = (id) => {
+    Axios.delete(
+      `http://localhost:3300/api/address/delete-address/${userUID}/${id}`
+    )
+      .then(() => {
+        alert("Address Deleted");
+        getAddressById(userUID);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
   return (
     <>
       <Container maxWidth="xs" className="mobile">
         <div className="address-page">
-          {console.log(addressFinal,'selected address')}
+          {console.log(addressFinal, "selected address")}
           <div className="address-arrow-detail">
-            <Link to ="/">
+            <Link to="/">
               <button className="back-btn">
                 <ArrowBackIcon />
               </button>
@@ -69,9 +84,11 @@ function AddressList() {
           <div className="address-list">
             {AddressDetails?.map((addressDetail) => (
               <div className="address">
-                <input type="radio" 
-                name="locradio" className="loc-radio"       
-                onChange={()=>setAddressFinal(addressDetail)}
+                <input
+                  type="radio"
+                  name="locradio"
+                  className="loc-radio"
+                  onChange={() => setAddressFinal(addressDetail)}
                 />
                 <LocationOnOutlinedIcon />
                 <div className="address-info">
@@ -84,18 +101,18 @@ function AddressList() {
                   </div>
                 </div>
                 <Link to={`/edit-address/${userUID}/${addressDetail.id}`}>
-                  <ModeEditOutlineOutlinedIcon className="radio-css"/>
+                  <ModeEditOutlineOutlinedIcon className="radio-css" />
                 </Link>
+                <DeleteForeverOutlinedIcon
+                  onClick={() => deleteAddress(addressDetail.id)}
+                />
               </div>
             ))}
           </div>
           <Link to={`/add-address/${userUID}`}>
             <button className="button-new-address">Add New Address</button>
           </Link>
-          <button 
-          className="button-confirm"
-          onClick={activeSelect}
-          >
+          <button className="button-confirm" onClick={activeSelect}>
             Confirm
           </button>
         </div>
