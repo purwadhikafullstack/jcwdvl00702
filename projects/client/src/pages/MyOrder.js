@@ -47,6 +47,9 @@ function MyOrder() {
   const [isSearch, setIsSearch] = useState(false);
   const [openC, setOpenC] = useState(false);
   const [cancelIndex, setCancelIndex] = useState();
+  const [page, setPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(3);
   // state = {
   //   isOnGoing: true,
   //   isCompleted: false,
@@ -94,10 +97,24 @@ function MyOrder() {
       .then((result) => {
         console.log(result.data);
         setOrderDetails(result.data);
+        const newMaxPage = Math.ceil(result.data.length / itemsPerPage);
+        setMaxPage(newMaxPage);
       })
       .catch((error) => {
         alert("Terjadi kesalahan di server");
       });
+  };
+
+  const nextPageHandler = () => {
+    if (page < maxPage) {
+      setPage(page + 1);
+    }
+  };
+
+  const prevPageHandler = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
   };
 
 
@@ -284,6 +301,7 @@ function MyOrder() {
   }
 
   const orderListCard = (input) => {
+    const beginningIndex = (page - 1) * itemsPerPage;
     console.log("ini orderdetail", orderDetails);
     let orderCheck = [];
     console.log(input, "ini input")
@@ -309,9 +327,13 @@ function MyOrder() {
       });
     }
     console.log('order check', orderCheck);
+    const slicedData = orderCheck.slice(
+      beginningIndex,
+      beginningIndex + itemsPerPage
+    );
     return (
       <>
-        {orderCheck?.map((orderDetail, index) => (
+        {slicedData?.map((orderDetail, index) => (
           <>
             <div className="olistc-main">
               <div className="olistc-subdetail">
@@ -535,37 +557,37 @@ function MyOrder() {
                   />
                 </TabList>
               </Box>
-                    <TabPanel value="1">
-                      {orderListCard(1)}
+              <TabPanel value="1">
+                {orderListCard(1)}
 
-                      <Stack
-                        spacing={1}
-                        sx={{
-                          position: "fixed",
-                          top: "78%",
-                          width: "110%",
-                          fontFamily: "Lora",
-                        }}
-                      >
-                        <Pagination count={10} />
-                      </Stack>
-                    </TabPanel>
-              
-                    <TabPanel value="2">
-                      {orderListCard(2)}
+                <div className="pagination-wrapper">
+                  <button className="button-page" onClick={prevPageHandler}>
+                    {"<"}
+                  </button>
+                  <div className="page-numbering">
+                    {page} of {maxPage}
+                  </div>
+                  <button className="button-page" onClick={nextPageHandler}>
+                    {">"}
+                  </button>
+                </div>
+              </TabPanel>
 
-                      <Stack
-                        spacing={1}
-                        sx={{
-                          position: "fixed",
-                          top: "78%",
-                          width: "110%",
-                          fontFamily: "Lora",
-                        }}
-                      >
-                        <Pagination count={10} />
-                      </Stack>
-                    </TabPanel>
+              <TabPanel value="2">
+                {orderListCard(2)}
+
+                <div className="pagination-wrapper">
+                  <button className="button-page" onClick={prevPageHandler}>
+                    {"<"}
+                  </button>
+                  <div className="page-numbering">
+                    {page} of {maxPage}
+                  </div>
+                  <button className="button-page" onClick={nextPageHandler}>
+                    {">"}
+                  </button>
+                </div>
+              </TabPanel>
             </TabContext>
           </Box>
         </div>
