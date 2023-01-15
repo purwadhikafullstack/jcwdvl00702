@@ -1,5 +1,5 @@
 const {
-  models: { Warehouse,Stock },
+  models: { Warehouse, Stock },
 } = require("../models");
 const router = require("express").Router();
 const request = require("request");
@@ -244,7 +244,7 @@ router.get("/warehouse-list-stock", async (req, res) => {
       // include: [
       //   {
       //     model: Stock,
-      //     required: true,
+      //     required: true
       //   }
       // ]
     });
