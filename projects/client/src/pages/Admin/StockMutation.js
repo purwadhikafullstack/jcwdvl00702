@@ -57,6 +57,7 @@ class StockMutation extends React.Component {
 
   componentDidMount() {
     this.getWh();
+    this.userCheck();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -74,7 +75,7 @@ class StockMutation extends React.Component {
 
   handleChange = (event, value) => {
     this.setState({ ...this.state, value });
-    this.fetchMutation(0, '', '', value);
+    this.fetchMutation(0, '', '', value, this.state.myWarehouse);
   };
 
   isSearchHandle = () => {
@@ -103,7 +104,7 @@ class StockMutation extends React.Component {
         } else if (res.data.approle.warehouse_id) {
           this.setState({ ...this.state, myWarehouse: res.data.approle.warehouse_id.toString() });
         }
-        this.fetchMutation(0, '', '', this.state.value);
+        this.fetchMutation(0, '', '', this.state.value, this.state.myWarehouse);
       })
       .catch((err) => {
         console.log(err);
@@ -114,7 +115,6 @@ class StockMutation extends React.Component {
   getWh = () => {
     Axios.get('http://localhost:3300/api/product/get-wh')
       .then((result) => {
-        // setWhList(result.data);
         this.setState({ ...this.state, whList: result.data });
       })
       .catch((err) => {
@@ -132,7 +132,7 @@ class StockMutation extends React.Component {
       .then((data) => {
         alert('Permintaan mutasi stok berhasil dibuat');
         this.setState({ ...this.state, setAdd: false });
-        this.fetchMutation(0, '', '', this.state.value);
+        this.fetchMutation(0, '', '', this.state.value, this.state.myWarehouse);
       })
       .catch((error) => {
         alert('gagal');
@@ -175,7 +175,7 @@ class StockMutation extends React.Component {
         } else {
           alert(data.data.message);
         }
-        this.fetchMutation(0, '', '', this.state.value);
+        this.fetchMutation(0, '', '', this.state.value, this.state.myWarehouse);
       })
       .catch((error) => {
         alert('Mutasi gagal!');
@@ -324,7 +324,6 @@ class StockMutation extends React.Component {
           </div>
         </div>
       );
-      // }
     });
   };
 
@@ -564,12 +563,16 @@ class StockMutation extends React.Component {
                       className="apc-card-edit"
                       onClick={() => {
                         if (this.state.askFrom !== this.state.askTo) {
-                          this.askMutation(
-                            this.state.askFrom,
-                            this.state.askTo,
-                            this.state.productValue,
-                            this.state.quantityValue
-                          );
+                          if (this.state.myWarehouse == this.state.askTo) {
+                            this.askMutation(
+                              this.state.askFrom,
+                              this.state.askTo,
+                              this.state.productValue,
+                              this.state.quantityValue
+                            );
+                          } else {
+                            alert('Warehouse To dan Warehouse Admin harus sama!');
+                          }
                         } else {
                           alert('Warehouse From dan Warehouse To tidak boleh sama!');
                         }
