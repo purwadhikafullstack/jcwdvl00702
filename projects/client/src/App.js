@@ -89,7 +89,7 @@ export default function App() {
         <Route component={CreatePassword} path="/create-password" />
         <Route component={MyOrder} path="/my-order/:userUID" />
         <Route component={MyOrderDetail} path="/my-order-detail/:userUID" />
-        {/* <Route path="/dashboard">{mainUser?.role == 'user' ? <Redirect to="/" /> : <Dashboard />}</Route> */}
+        <Route path="/dashboard">{mainUser?.role == 'user' ? <Redirect to="/" /> : <Dashboard />}</Route>
         <Route component={Dashboard} path="/dashboard" />
         <Route component={UserList} path="/user-list" />
         <Route component={DetailUser} path="/detail-user/:id" />
