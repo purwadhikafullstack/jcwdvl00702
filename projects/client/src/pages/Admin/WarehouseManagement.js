@@ -58,7 +58,7 @@ function WarehouseManagement() {
   const deleteWarehouse = (id) => {
     Axios.delete(`http://localhost:3300/api/warehouse/delete-warehouse/${id}`)
       .then(() => {
-        alert("Address Deleted");
+        alert("Warehouse Deleted");
         getWarehouseList();
       })
       .catch((error) => {
