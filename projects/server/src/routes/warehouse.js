@@ -102,7 +102,7 @@ router.get("/warehouse-list", async (req, res) => {
     {
       let picPathArray = response[i].picture.split("\\");
       let picPath =
-        "http://localhost:3300/" + picPathArray[1] + "/" + picPathArray[2];
+        "http://localhost:8000/" + picPathArray[1] + "/" + picPathArray[2];
       response[i].picture = picPath;
     }
     //  let picPathArray = response.picture.split("\\");
@@ -151,7 +151,7 @@ router.get("/warehouse-list/:id", async (req, res) => {
     });
        let picPathArray = response.picture.split("\\");
        let picPath =
-         "http://localhost:3300/" + picPathArray[1] + "/" + picPathArray[2];
+         "http://localhost:8000/" + picPathArray[1] + "/" + picPathArray[2];
        response.picture = picPath;
     res.json(response);
   } catch (error) {
@@ -254,7 +254,7 @@ router.get("/warehouse-list-stock", async (req, res) => {
     {
       let picPathArray = response[i].picture.split("\\");
       let picPath =
-        "http://localhost:3300/" + picPathArray[1] + "/" + picPathArray[2];
+        "http://localhost:8000/" + picPathArray[1] + "/" + picPathArray[2];
       response[i].picture = picPath;
     }
     //  let picPathArray = response.picture.split("\\");

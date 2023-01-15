@@ -61,7 +61,7 @@ class ProductLists extends React.Component {
   };
 
   fetchCategories = () => {
-    Axios.get('http://localhost:3300/api/product/get-category')
+    Axios.get(`${process.env.REACT_APP_API_BASE_URL}/product/get-category`)
       .then((result) => {
         this.setState({ ...this.state, categoryList: result.data });
       })

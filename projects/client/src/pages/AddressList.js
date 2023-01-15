@@ -28,7 +28,7 @@ function AddressList() {
   const getAddressById = async (userUID) => {
     console.log(userUID, "test");
     const response = await Axios.get(
-      `http://localhost:3300/api/address/address-list/${userUID}`
+      `${process.env.REACT_APP_API_BASE_URL}/address/address-list/${userUID}`
     );
     //  console.log(response.data)
     setAddressDetails(response.data);
@@ -42,7 +42,7 @@ function AddressList() {
       const data = {
         shipping_address: addressFinal.address_name
       }
-      Axios.put(`http://localhost:3300/api/order/edit-address/${userUID}`, data)
+      Axios.put(`${process.env.REACT_APP_API_BASE_URL}/order/edit-address/${userUID}`, data)
       .then(() => {
         history.push({
           pathname: '/choose-shipping',
@@ -57,7 +57,7 @@ function AddressList() {
 
   const deleteAddress = (id) => {
     Axios.delete(
-      `http://localhost:3300/api/address/delete-address/${userUID}/${id}`
+      `${process.env.REACT_APP_API_BASE_URL}/address/delete-address/${userUID}/${id}`
     )
       .then(() => {
         alert("Address Deleted");

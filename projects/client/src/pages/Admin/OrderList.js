@@ -27,7 +27,7 @@ import {
 import { TabPanel, TabList, TabContext } from "@mui/lab";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import "../../assets/styles/OrderList.css";
 import Axios from "axios";
@@ -76,7 +76,7 @@ function OrderList() {
   }, []);
 
   const getOrderList = () => {
-    Axios.get(`http://localhost:3300/api/order/get-order-cart-product`)
+    Axios.get(`${process.env.REACT_APP_API_BASE_URL}/order/get-order-cart-product`)
       .then((result) => {
         console.log(result.data);
         setOrderDetails(result.data);
@@ -128,7 +128,7 @@ function OrderList() {
     const data = {
       status_detail: 6,
     };
-    Axios.put(`http://localhost:3300/api/order/cancel-order/${id}`, data)
+    Axios.put(`${process.env.REACT_APP_API_BASE_URL}/order/cancel-order/${id}`, data)
       .then((result) => {
         alert("Berhasil");
         return result;
@@ -142,7 +142,7 @@ function OrderList() {
           const qtId = product.quantity;
           const whId = product.warehouse_id;
           Axios.patch(
-            `http://localhost:3300/api/order/update-stock/${prodId}`,
+            `${process.env.REACT_APP_API_BASE_URL}/order/update-stock/${prodId}`,
             {
               wh_id: whId,
               number: qtId,

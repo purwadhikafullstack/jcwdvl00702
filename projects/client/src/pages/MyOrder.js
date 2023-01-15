@@ -92,7 +92,7 @@ function MyOrder() {
 
   const getOrderList = () => {
     Axios.get(
-      `http://localhost:3300/api/order/get-order-cart-user-product/${userUID}`
+      `${process.env.REACT_APP_API_BASE_URL}/order/get-order-cart-user-product/${userUID}`
     )
       .then((result) => {
         console.log(result.data);
@@ -123,7 +123,7 @@ function MyOrder() {
       status_detail: 6,
     };
     // for(i=0; i<=orderDetails.length; i++)
-    Axios.put(`http://localhost:3300/api/order/cancel-order/${id}`, data)
+    Axios.put(`${process.env.REACT_APP_API_BASE_URL}/order/cancel-order/${id}`, data)
       .then(() => {
         alert("Berhasil");
         getOrderList();
@@ -142,19 +142,11 @@ function MyOrder() {
           className="moc-detail-status-1"
           sx={{ backgroundColor: "rgb(255,165,0,0.4)" }}
         >
-        <Box
-          className="moc-detail-status-1"
-          sx={{ backgroundColor: "rgb(255,165,0,0.4)" }}
-        >
           Waiting for payment
         </Box>
       );
     } else if (status === 1) {
       return (
-        <Box
-          className="moc-detail-status-2"
-          sx={{ backgroundColor: "rgb(255,215,0,0.4)" }}
-        >
         <Box
           className="moc-detail-status-2"
           sx={{ backgroundColor: "rgb(255,215,0,0.4)" }}
@@ -168,19 +160,11 @@ function MyOrder() {
           className="moc-detail-status-3"
           sx={{ backgroundColor: "rgb(152,251,152,0.4)" }}
         >
-        <Box
-          className="moc-detail-status-3"
-          sx={{ backgroundColor: "rgb(152,251,152,0.4)" }}
-        >
           In process
         </Box>
       );
     } else if (status === 3) {
       return (
-        <Box
-          className="moc-detail-status-4"
-          sx={{ backgroundColor: "rgba(127, 255, 212, 0.4)" }}
-        >
         <Box
           className="moc-detail-status-4"
           sx={{ backgroundColor: "rgba(127, 255, 212, 0.4)" }}
@@ -194,19 +178,11 @@ function MyOrder() {
           className="moc-detail-status-5"
           sx={{ backgroundColor: "rgb(72,209,204,0.4)" }}
         >
-        <Box
-          className="moc-detail-status-5"
-          sx={{ backgroundColor: "rgb(72,209,204,0.4)" }}
-        >
           Received
         </Box>
       );
     } else {
       return (
-        <Box
-          className="moc-detail-status-6"
-          sx={{ backgroundColor: "rgb(220,20,60,0.4)" }}
-        >
         <Box
           className="moc-detail-status-6"
           sx={{ backgroundColor: "rgb(220,20,60,0.4)" }}

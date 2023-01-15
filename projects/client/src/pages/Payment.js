@@ -115,7 +115,7 @@ function Payment() {
     }
 
         // delete semua cart agar user bisa order kembali
-        Axios.delete(`http://localhost:3300/api/cart/delete-all-cart/${id}`)
+        Axios.delete(`${process.env.REACT_APP_API_BASE_URL}/cart/delete-all-cart/${id}`)
         .then(() => {
           history.push(`/`);
         })

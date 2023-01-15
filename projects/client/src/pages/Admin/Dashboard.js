@@ -37,7 +37,7 @@ export default function Dashboard() {
   );
   
   const userCheck=()=>{
-    Axios.get(`http://localhost:3300/api/customer/profile/${user?.customer_uid}`)
+    Axios.get(`${process.env.REACT_APP_API_BASE_URL}/customer/profile/${user?.customer_uid}`)
     .then(res=>{
       console.log(res.data)
       setRoleTest(res.data)

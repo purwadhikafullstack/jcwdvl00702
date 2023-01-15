@@ -54,7 +54,7 @@ export default function SignIn() {
             user: res.user.providerData[0],
             id: res.user.uid,
           };
-          Axios.get(`http://localhost:3300/api/customer/profile/${data.id}`)
+          Axios.get(`${process.env.REACT_APP_API_BASE_URL}/customer/profile/${data.id}`)
           .then(res=>{
             console.log('data axios setelah firebase login',res.data)
             const globalData = {

@@ -58,7 +58,7 @@ export default function OrderDetailAdmin() {
 
 
 const getOrderList = async () => {
-  const response = await Axios.get(`http://localhost:3300/api/order/get-order-cart-product/${userCalledId}`);
+  const response = await Axios.get(`${process.env.REACT_APP_API_BASE_URL}/order/get-order-cart-product/${userCalledId}`);
   console.log("ini data order",response?.data);
   console.log(response?.data.orderitems, 'ini orderitems');
   setOrderDetails(response?.data);
@@ -67,18 +67,18 @@ const getOrderList = async () => {
   setDestination(response?.data.shipping_address)
  
   // Mengambil data WH untuk dirutkan 
-  Axios.get(`http://localhost:3300/api/warehouse/warehouse-list-stock`)
+  Axios.get(`${process.env.REACT_APP_API_BASE_URL}/warehouse/warehouse-list-stock`)
   .then(res=>{
     console.log("ini WH DATA", res.data)
       setAllWH(res.data)
   })
   
   // get home lat & long
-  Axios.get(`http://localhost:3300/api/address/address-city-id-order/${userCalledId}/${response.data.shipping_address}`)
+  Axios.get(`${process.env.REACT_APP_API_BASE_URL}/address/address-city-id-order/${userCalledId}/${response.data.shipping_address}`)
   .then(res=>{
     console.log("ini Homeid", res.data)
         // setHomeId(res.data.city_id)
-        Axios.get(`http://localhost:3300/api/address/address-city-id/${res.data.city_id}`)
+        Axios.get(`${process.env.REACT_APP_API_BASE_URL}/address/address-city-id/${res.data.city_id}`)
         .then(res=>{
             setHomeLat(res.data.latitude)
             setHomeLon(res.data.longitude)
@@ -138,14 +138,14 @@ const distanceCheck=()=>{
     }
      
     console.log("stock data", stockData)
-    Axios.post('http://localhost:3300/api/product/qty-handler', stockData)
+    Axios.post('${process.env.REACT_APP_API_BASE_URL}/product/qty-handler', stockData)
     .then((res) => {
       console.log("ini res data stock mut", res.data)
       const stockDataHistory = {
         stockmutation_id: res.data.id,
         respond: `accept`,
       }
-      Axios.post('http://localhost:3300/api/product/qty-handler-history', stockDataHistory)
+      Axios.post('${process.env.REACT_APP_API_BASE_URL}/product/qty-handler-history', stockDataHistory)
       .then(() => {
       })
       .catch((error) => {
@@ -159,7 +159,7 @@ const distanceCheck=()=>{
     status_detail: 2
   }
   console.log("ini user:", orderDetails?.customer_uid)
-  Axios.put(`http://localhost:3300/api/order/approve-reject-send/${orderDetails?.customer_uid}`, data)
+  Axios.put(`${process.env.REACT_APP_API_BASE_URL}/order/approve-reject-send/${orderDetails?.customer_uid}`, data)
   .then(() => {
     alert("approved!");
     getOrderList()
@@ -177,7 +177,7 @@ const distanceCheck=()=>{
       status_detail: 0
     }
     Axios.put(
-      `http://localhost:3300/api/order/approve-reject-send/${orderDetails?.customer_uid}`,
+      `${process.env.REACT_APP_API_BASE_URL}/order/approve-reject-send/${orderDetails?.customer_uid}`,
       data
     )
       .then(() => {
@@ -195,7 +195,7 @@ const distanceCheck=()=>{
       status_detail: 3
     }
     Axios.put(
-      `http://localhost:3300/api/order/approve-reject-send/${orderDetails?.customer_uid}`,
+      `${process.env.REACT_APP_API_BASE_URL}/order/approve-reject-send/${orderDetails?.customer_uid}`,
       data
     )
       .then(() => {

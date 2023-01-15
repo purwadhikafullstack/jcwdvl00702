@@ -192,7 +192,7 @@ export default function DetailUser() {
                 variant="contained"
                 onClick={editHandler}
                 className="detailuser-banner-edit"
-                disabled={user?.approle?.role.includes("admin")}
+                // disabled={user?.approle?.role.includes("admin")}
                 >
                 Edit
               </Button>

@@ -90,12 +90,12 @@ export default function AddUser() {
           var credential = err.credential;
         })
         .then((data) => {
-          Axios.post('http://localhost:3300/api/customer/approle',{
+          Axios.post(`${process.env.REACT_APP_API_BASE_URL}/customer/approle`,{
             customer_uid:data.customer_uid,
             role:"adminTBA"
           })
           .then(res=>{
-            Axios.post('http://localhost:3300/api/customer/register', {
+            Axios.post(`${process.env.REACT_APP_API_BASE_URL}/customer/register`, {
               email: data.email,
               fullname: data.fullname,
               password: data.password,

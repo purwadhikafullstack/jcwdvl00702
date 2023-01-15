@@ -33,7 +33,7 @@ router.post('/add-category', upload.single('image'), async (req, res) => {
       res.status(500).json(err);
     } else {
       let picPathArray = req.file.path.split('\\');
-      let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
+      let picPath = 'http://localhost:8000/' + picPathArray[1] + '/' + picPathArray[2];
 
       const newCategory = await Category.create({
         name: req.body.name,
@@ -60,7 +60,7 @@ router.get('/get-category', async (req, res) => {
 
     // for (let i = 0; i < result.length; i++) {
     //   let picPathArray = result[i].picture.split('\\');
-    //   let picPath = 'http://localhost:3300//' + picPathArray[1] + '/' + picPathArray[2];
+    //   let picPath = 'http://localhost:8000//' + picPathArray[1] + '/' + picPathArray[2];
     //   result[i].picture = picPath;
     res.status(200).json(result);
     // }
@@ -205,7 +205,7 @@ router.get('/home-product/', async (req, res) => {
 
     for (let i = 0; i < getProduct.length; i++) {
       let picPathArray = getProduct[i].picture.split('\\');
-      let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
+      let picPath = 'http://localhost:8000/' + picPathArray[1] + '/' + picPathArray[2];
       getProduct[i].picture = picPath;
     }
     console.log('url check', getProduct[0].picture);
@@ -271,7 +271,7 @@ router.get('/get-product/:id', async (req, res) => {
       },
     });
     let picPathArray = getProduct.picture.split('\\');
-    let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
+    let picPath = 'http://localhost:8000/' + picPathArray[1] + '/' + picPathArray[2];
     getProduct.picture = picPath;
 
     const getStock = await Stock.findAll({
@@ -868,7 +868,7 @@ router.get('/product-stock-history/:id', async (req, res) => {
 
   try {
     let picPathArray = getProduct.picture.split('/');
-    let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
+    let picPath = 'http://localhost:8000/' + picPathArray[1] + '/' + picPathArray[2];
     getProduct.picture = picPath;
 
     const getHistory = await Stockhistory.findAll({
@@ -1375,7 +1375,7 @@ router.get('/product-stock-history/:id', async (req, res) => {
 
   try {
     let picPathArray = getProduct.picture.split('/');
-    let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
+    let picPath = 'http://localhost:8000/' + picPathArray[1] + '/' + picPathArray[2];
     getProduct.picture = picPath;
 
     const getHistory = await Stockhistory.findAll({

@@ -135,7 +135,7 @@ export default function ProductDetailAdmin() {
 
   const changeStock = (name, count, number, requester) => {
     if (number >= 1) {
-      Axios.patch(`http://localhost:3300/api/product/update-stock/${id}`, {
+      Axios.patch(`${process.env.REACT_APP_API_BASE_URL}/product/update-stock/${id}`, {
         wh_id: name,
         count: count,
         number: number,
@@ -156,7 +156,7 @@ export default function ProductDetailAdmin() {
 
   // GET WH
   const getWh = () => {
-    Axios.get('http://localhost:3300/api/product/get-wh')
+    Axios.get(`${process.env.REACT_APP_API_BASE_URL}/product/get-wh`)
       .then((result) => {
         setWhList(result.data);
       })

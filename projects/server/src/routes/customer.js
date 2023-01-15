@@ -116,9 +116,9 @@ router.get('/profile/:customer_uid', async (req, res) => {
     });
 
     let picPathArray = response.picture.split('\\');
-    let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
+    let picPath = 'http://localhost:8000/' + picPathArray[1] + '/' + picPathArray[2];
     response.picture = picPath;
-    // localhost:3300/profileimages/newzealand.jpg
+    // localhost:8000/profileimages/newzealand.jpg
     res.json(response);
   } catch (error) {
     console.log(error);
@@ -209,9 +209,9 @@ router.get('/user/:customer_uid', async (req, res) => {
     });
 
     let picPathArray = response.picture.split('\\');
-    let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
+    let picPath = 'http://localhost:8000/' + picPathArray[1] + '/' + picPathArray[2];
     response.picture = picPath;
-    // localhost:3300/profileimages/newzealand.jpg
+    // localhost:8000/profileimages/newzealand.jpg
     res.json(response);
   } catch (error) {
     console.log(error);

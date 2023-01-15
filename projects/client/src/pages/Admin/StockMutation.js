@@ -102,7 +102,7 @@ class StockMutation extends React.Component {
 
   userCheck = () => {
     const userUID = this.props.user_id;
-    Axios.get(`http://localhost:3300/api/customer/profile/${userUID}`)
+    Axios.get(`${process.env.REACT_APP_API_BASE_URL}/customer/profile/${userUID}`)
       .then((res) => {
         this.setState({ ...this.state, isrole: res.data });
         if (res.data.approle.role === 'superadmin') {
@@ -119,7 +119,7 @@ class StockMutation extends React.Component {
 
   // GET WH
   getWh = () => {
-    Axios.get('http://localhost:3300/api/product/get-wh')
+    Axios.get(`${process.env.REACT_APP_API_BASE_URL}/product/get-wh`)
       .then((result) => {
         this.setState({ ...this.state, whList: result.data });
       })
@@ -248,9 +248,9 @@ class StockMutation extends React.Component {
 
   mutationCard = () => {
     return this.state.mutationList.map((val, index) => {
-      let picPathArray = val.product_picture.split("/");
+      let picPathArray = val.product_picture.split("\\");
       let picPath =
-        "http://localhost:3300/" + picPathArray[1] + "/" + picPathArray[2];
+        "http://localhost:8000/" + picPathArray[1] + "/" + picPathArray[2];
       let productPicture = picPath;
       return (
         <div className="mutation-main">

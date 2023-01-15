@@ -189,6 +189,7 @@ function DetailWarehouse() {
         }
       );
       alert("Berhasil");
+      console.log(formData)
     } catch (error) {
       console.log(error);
     }

@@ -65,7 +65,7 @@ export default function Cart() {
   const deleteBtnHandler = (productId) => {
     const confirmDelete = window.confirm("Delete Product?");
     if (confirmDelete) {
-      Axios.delete(`http://localhost:3300/api/cart/delete-cart-customer/${productId}`)
+      Axios.delete(`${process.env.REACT_APP_API_BASE_URL}/cart/delete-cart-customer/${productId}`)
         .then(() => {
           cartProduct();
           getTotalPrice();
@@ -110,7 +110,7 @@ export default function Cart() {
     if (val.quantity < 1) {
       const confirmDelete = window.confirm("Delete Product?");
       if (confirmDelete) {
-        Axios.delete(`http://localhost:3300/api/cart/delete-cart-customer/${val.id}`)
+        Axios.delete(`${process.env.REACT_APP_API_BASE_URL}/cart/delete-cart-customer/${val.id}`)
           .then(() => {
             cartProduct();
             getTotalPrice();

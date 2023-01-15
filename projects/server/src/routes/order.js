@@ -240,13 +240,13 @@ router.get("/get-order-cart-product/:customer_uid", async (req, res) => {
 
     let picPathArray = getOrder.payment_picture.split("\\");
     let picPath =
-      "http://localhost:3300/" + picPathArray[1] + "/" + picPathArray[2];
+      "http://localhost:8000/" + picPathArray[1] + "/" + picPathArray[2];
     getOrder.payment_picture = picPath;
 
     for (let j = 0; j < getOrder.orderitems.length; j++) {
       let picPathArrayJ = getOrder.orderitems[j].product.picture.split("\\");
       let picPathJ =
-        "http://localhost:3300/" + picPathArrayJ[1] + "/" + picPathArrayJ[2];
+        "http://localhost:8000/" + picPathArrayJ[1] + "/" + picPathArrayJ[2];
       getOrder.orderitems[j].product.picture = picPathJ;
     }
 
@@ -278,14 +278,14 @@ router.get("/get-order-cart-product", async (req, res) => {
     for (let i = 0; i < getOrder.length; i++) {
       let picPathArray = getOrder[i].payment_picture.split("\\");
       let picPath =
-        "http://localhost:3300/" + picPathArray[1] + "/" + picPathArray[2];
+        "http://localhost:8000/" + picPathArray[1] + "/" + picPathArray[2];
       getOrder[i].payment_picture = picPath;
 
       for (let j = 0; j < getOrder[i].orderitems.length; j++) {
         let picPathArrayJ =
           getOrder[i].orderitems[j].product.picture.split("\\");
         let picPathJ =
-          "http://localhost:3300/" + picPathArrayJ[1] + "/" + picPathArrayJ[2];
+          "http://localhost:8000/" + picPathArrayJ[1] + "/" + picPathArrayJ[2];
         getOrder[i].orderitems[j].product.picture = picPathJ;
       }
     }
@@ -321,14 +321,14 @@ router.get("/get-order-cart-user-product/:customer_uid", async (req, res) => {
     for (let i = 0; i < getOrder.length; i++) {
       let picPathArray = getOrder[i].payment_picture.split("\\");
       let picPath =
-        "http://localhost:3300/" + picPathArray[1] + "/" + picPathArray[2];
+        "http://localhost:8000/" + picPathArray[1] + "/" + picPathArray[2];
       getOrder[i].payment_picture = picPath;
 
       for (let j = 0; j < getOrder[i].orderitems.length; j++) {
         let picPathArrayJ =
           getOrder[i].orderitems[j].product.picture.split("\\");
         let picPathJ =
-          "http://localhost:3300/" + picPathArrayJ[1] + "/" + picPathArrayJ[2];
+          "http://localhost:8000/" + picPathArrayJ[1] + "/" + picPathArrayJ[2];
         getOrder[i].orderitems[j].product.picture = picPathJ;
       }
     }

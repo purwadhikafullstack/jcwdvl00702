@@ -71,7 +71,7 @@ export default function ProductAdd() {
 
       // Axios.post('http://localhost:3300/api/product/add-product', { ...data, quantity: qtyWh })
 
-      Axios.post('http://localhost:3300/api/product/add-product', data)
+      Axios.post(`${process.env.REACT_APP_API_BASE_URL}/product/add-product`, data)
         .then(() => {
           alert('Product Added!');
         })
@@ -83,7 +83,7 @@ export default function ProductAdd() {
 
   // GET WH
   const getWh = () => {
-    Axios.get('http://localhost:3300/api/product/get-wh')
+    Axios.get(`${process.env.REACT_APP_API_BASE_URL}/product/get-wh`)
       .then((result) => {
         setWhList(result.data);
         console.log(result.data);
@@ -131,7 +131,7 @@ export default function ProductAdd() {
   };
 
   const fetchCategories = () => {
-    Axios.get('http://localhost:3300/api/product/get-category')
+    Axios.get(`${process.env.REACT_APP_API_BASE_URL}/product/get-category`)
       .then((result) => {
         setCategoryList(result.data);
       })

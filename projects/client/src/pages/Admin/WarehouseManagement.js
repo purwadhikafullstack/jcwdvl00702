@@ -29,7 +29,7 @@ function WarehouseManagement() {
   const [adminData,setAdminData] = useState()
 
   const userCheck=()=>{
-    Axios.get(`http://localhost:3300/api/customer/profile/${user?.customer_uid}`)
+    Axios.get(`${process.env.REACT_APP_API_BASE_URL}/customer/profile/${user?.customer_uid}`)
     .then(res=>{
       setAdminRole(res.data.approle.role)
       setAdminData(res.data)
@@ -49,14 +49,14 @@ function WarehouseManagement() {
 
   const getWarehouseList = async () => {
     const response = await Axios.get(
-      `http://localhost:3300/api/warehouse/warehouse-list`
+      `${process.env.REACT_APP_API_BASE_URL}/warehouse/warehouse-list`
     );
     console.log(response.data);
     setWarehouseDetails(response.data);
   };
 
   const deleteWarehouse = (id) => {
-    Axios.delete(`http://localhost:3300/api/warehouse/delete-warehouse/${id}`)
+    Axios.delete(`${process.env.REACT_APP_API_BASE_URL}/warehouse/delete-warehouse/${id}`)
       .then(() => {
         alert("Warehouse Deleted");
         getWarehouseList();

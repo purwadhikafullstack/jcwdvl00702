@@ -95,13 +95,13 @@ function SignUp() {
           // ...
         })
         .then((data) => {
-          Axios.post('http://localhost:3300/api/customer/approle', {
+          Axios.post(`${process.env.REACT_APP_API_BASE_URL}/customer/approle`, {
             customer_uid: data.customer_uid,
             role: 'user',
             warehouse_id: 0,
           })
             .then((res) => {
-              Axios.post('http://localhost:3300/api/customer/register', {
+              Axios.post(`${process.env.REACT_APP_API_BASE_URL}/customer/register`, {
                 email: data.email,
                 fullname: data.fullname,
                 password: data.password,
@@ -158,13 +158,13 @@ function SignUp() {
       })
       .then((data) => {
         console.log(data,'login social')
-        Axios.post('http://localhost:3300/api/customer/approle', {
+        Axios.post(`${process.env.REACT_APP_API_BASE_URL}/customer/approle`, {
           customer_uid: data.customer_uid,
           role: 'user',
           warehouse_id: 0,
         })
           .then(() => {
-            Axios.post('http://localhost:3300/api/customer/register-social',data)
+            Axios.post(`${process.env.REACT_APP_API_BASE_URL}/customer/register-social`,data)
               .then(() => {
                 history.push('/');
               })
@@ -212,7 +212,7 @@ function SignUp() {
       .then((data) => {
         console.log('here', data);
 
-        Axios.post('http://localhost:3300/api/customer/register-social', data)
+        Axios.post(`${process.env.REACT_APP_API_BASE_URL}/customer/register-social`, data)
           .then(() => {
             history.push('/');
           })

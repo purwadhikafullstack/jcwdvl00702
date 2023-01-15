@@ -43,7 +43,7 @@ export default function UserList() {
   const adminSup = user?.approle?.role
 
   const processUsers = () => {
-    Axios.get(`http://localhost:3300/api/admin/get-user`).then((res) => {
+    Axios.get(`${process.env.REACT_APP_API_BASE_URL}/admin/get-user`).then((res) => {
       const getRes = res.data.allUser;
       setUserBox(getRes);
       const newMaxPage = Math.ceil(getRes.length/itemsPerPage)
