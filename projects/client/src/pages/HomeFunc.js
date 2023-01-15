@@ -30,8 +30,9 @@ import Axios from "axios";
 
 export default function HomeFunc() {
   const [productShow, setProductShow] = useState([]);
-  const [userRole, setUserRole] = useState()
-  const [fullUserData, setFullUserData] = useState()
+  const [page,setPage]=useState(1)
+  const [maxPage,setMaxPage]=useState(0)
+  const [itemsPerPage,setItemsPerPage]=useState(2)
   const dispatch = useDispatch();
   let history = useHistory();
   const verifiedCheck = firebaseAuthentication.currentUser?.emailVerified
@@ -41,17 +42,6 @@ export default function HomeFunc() {
     user: state.auth.user,
   }));
   const userUID = user?.customer_uid;
-
-  const getUser=()=>{
-    Axios.get(`http://localhost:3300/api/customer/profile/${userUID}`)
-    .then(res=>{
-      setFullUserData(res.data)
-      setUserRole(res.data.approle.role)
-    })
-    .catch(err=>{
-      console.log(err)
-    })
-  }
 
   const verifyCheck=()=>{
     if(isLoggedIn){
@@ -90,9 +80,22 @@ export default function HomeFunc() {
     Axios.get(`http://localhost:3300/api/product/home-product`).then((res) => {
       let homeProducts = res.data;
       setProductShow(homeProducts);
-      console.log(homeProducts);
+      const newMaxPage = Math.ceil(homeProducts.length/itemsPerPage)
+      setMaxPage(newMaxPage)
     });
   };
+
+  const nextPageHandler=()=>{
+    if(page<maxPage){
+      setPage(page+1)
+    }
+  }
+
+  const prevPageHandler=()=>{
+    if(page>1){
+      setPage(page-1)
+    }
+  }
 
   const cartBtnHandler = (id) => {
     if (id) {
@@ -104,9 +107,28 @@ export default function HomeFunc() {
 
 
   useEffect(() => {
-    getUser()
+    // getUser()
     showProducts()
   }, []);
+
+  const renderProducts=()=>{
+    const beginningIndex = (page-1)*itemsPerPage
+    const slicedData = productShow.slice(beginningIndex,beginningIndex+itemsPerPage)
+
+    return slicedData.map(val=>{
+      return(
+        <div>
+          <button onClick={() => detailHandler(val.id)}>
+            <div className="product-list">
+              <img src={val.picture} />
+              <div>{val.name}</div>
+              <div>IDR {val.price}</div>
+            </div>
+          </button>
+        </div>
+      )
+    })
+  }
 
   return (
     <>
@@ -221,7 +243,7 @@ export default function HomeFunc() {
               ))}
             </Slide>
           </div>
-          <div className="button-category">
+          {/* <div className="button-category">
             <div className="button-category2">
               <button className="button-categories">
                 <SportsSoccerOutlinedIcon />
@@ -252,22 +274,19 @@ export default function HomeFunc() {
               </button>
               <div>Accessories</div>
             </div>
-          </div>
+          </div> */}
+          {/* <div className="app-name">LE SPORTY ! Good Gears Equal Healthy Body !</div> */}
           <div className="product-card">
-            {productShow
-              ? productShow.map((items) => (
-                  <div>
-                    <button onClick={() => detailHandler(items.id)}>
-                      <div className="product-list">
-                        <img src={items.picture} />
-                        <div>{items.product_detail}</div>
-                        <div>{items.price}</div>
-                      </div>
-                    </button>
-                  </div>
-                ))
-              : null}
-
+            {renderProducts()}
+          </div>
+          <div className='pagination-wrapper'>
+              <button className='button-page' onClick={prevPageHandler}>
+                {"<"}
+              </button>
+              <div className='page-numbering'>{page} of {maxPage}</div>
+              <button className='button-page' onClick={nextPageHandler}>
+                {">"}
+              </button>
           </div>
         </div>
       </Container>

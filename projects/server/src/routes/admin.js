@@ -48,25 +48,24 @@ router.put('/update/:customer_uid', async (req, res) => {
 });
 
 //UPDATE DETAIL USER
-router.put('/update-detail/:customer_uid', async (req, res) => {
-  const customer_uid = req.params.customer_uid;
-  try {
-    let dataUpdate = await Customer.update(
-      {
-        email: req.body.email,
-        fullname: req.body.fullname,
-        password: req.body.password,
-      },
-      {
-        where: { customer_uid },
-      }
-    );
-    const customer = await Customer.findOne({ customer_uid });
-    return res.status(200).send({ message: 'updated', data: dataUpdate });
-  } catch (err) {
-    return res.status(500).json({ message: err.toString() });
-  }
-});
+router.put("/update-detail/:customer_uid", async (req, res)=>{
+    const customer_uid=req.params.customer_uid
+    try{
+        let dataUpdate = await Customer.update({
+            email:req.body.email,
+            fullname:req.body.fullname,
+            // password:req.body.password,
+        },
+        {
+            where:{customer_uid}
+        }
+        )
+        const customer = await Customer.findOne({customer_uid})
+        return res.status(200).send({message:"updated",data:dataUpdate})
+    } catch(err){
+        return res.status(500).json({message:err.toString()})
+    }
+})
 
 //GET USER WITH PAGINATION
 router.get('/pagination-user', async (req, res) => {
@@ -102,30 +101,10 @@ router.get('/pagination-user', async (req, res) => {
     });
     const pages = Math.ceil(resultCount.length / limit);
 
-    res.status(200).json('sukses');
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-// //DELETE USER (is_banned)
-// router.put("/:customer_uid", async (req, res)=>{
-//     if(req.body.role === "admin"){
-//         await Customer.findOne({
-//             where:{customer_uid:req.params.customer_uid}
-//         })
-//         try{
-//             await Customer.update(
-//                 {is_banned:req.body.is_banned},
-//                 {
-//                     where:{customer_uid:req.params.customer_uid}
-//                 }
-//             )
-//             res.status(201).json({message:"Account Banned"})
-//         } catch(error){
-//             console.log(error.message)
-//         }
-//     }
-// })
+        res.status(200).json('sukses')
+    } catch(err){
+        res.status(500).json(err)
+    }
+})
 
 module.exports = router;

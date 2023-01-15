@@ -5,7 +5,6 @@ import { Email, Person } from "@mui/icons-material";
 import Container from "@mui/material/Container";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
-import { AuthContext } from "../context/AuthProvider";
 import { useParams, useHistory } from "react-router-dom";
 import Axios from "axios";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";

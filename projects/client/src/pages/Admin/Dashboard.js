@@ -76,7 +76,7 @@ export default function Dashboard() {
             </button>
             <Menu {...bindMenu(popupState)}>
               <MenuItem>
-                <Link to="/dashboard" className="userlist-banner-menu-link">
+                <Link to="/" className="userlist-banner-menu-link">
                   Dashboard
                 </Link>
               </MenuItem>
@@ -143,10 +143,10 @@ export default function Dashboard() {
                     </IconButton>
                   </button>
                   <Menu {...bindMenu(popupState)}>
-                    <MenuItem onClick={popupState.close}>
+                    {/* <MenuItem onClick={popupState.close}>
                       <AccountBox />
                       Profile
-                    </MenuItem>
+                    </MenuItem> */}
                     <MenuItem onClick={popupState.close}>
                     <button className="logout-btn" onClick={handleLogout}>
                             <div className="logout-wrapper">

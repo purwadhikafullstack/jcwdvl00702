@@ -53,7 +53,7 @@ export default function Cart() {
         console.log("ini get order", result.data);
       })
       .catch(() => {
-        alert("Terjadi kesalahan di server");
+        // alert("Terjadi kesalahan di server");
       });
   };
 

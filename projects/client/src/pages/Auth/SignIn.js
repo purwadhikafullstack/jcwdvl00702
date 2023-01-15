@@ -60,14 +60,14 @@ export default function SignIn() {
               user: res.data,
               id: res.data.customer_uid,
             }
-            if(globalData.user.approle.role == 'adminTBA'){
-              //logout
-              alert(`Account not ready yet`)
+            if(globalData.user.is_banned === true){
+              alert(`Account not found`)
               firebaseAuthentication.signOut()
               dispatch(logoutUser())
+              window.location.reload()
             } else {
               dispatch(loginUser(globalData))
-            history.push('/')
+              history.push('/')
             }
           })
         })
@@ -138,6 +138,7 @@ export default function SignIn() {
                   placeholder="Email"
                 />
               </FormControl>
+              {formik.errors.email ? <div className="alert-danger">{formik.errors.email}</div> : null}
 
               <FormControl variant="standard" className="sign-in-form-input">
                 <Input
@@ -165,6 +166,7 @@ export default function SignIn() {
                   placeholder="Password"
                 />
               </FormControl>
+              {formik.errors.password ? <div className="alert-danger">{formik.errors.password}</div> : null}
 
               <div className="sign-in-form-check">
                 <FormControlLabel control={<Checkbox />} sx={{ marginRight: '0px' }} />

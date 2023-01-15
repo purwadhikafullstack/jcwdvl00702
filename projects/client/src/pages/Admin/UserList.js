@@ -65,7 +65,6 @@ export default function UserList() {
 
   useEffect(() => {
     processUsers();
-    // renderCard()
   }, []);
 
   const isSearchHandle = () => {
@@ -105,7 +104,7 @@ export default function UserList() {
             </button>
             <Menu {...bindMenu(popupState)}>
               <MenuItem>
-                <Link to="/dashboard" className="userlist-banner-menu-link">
+                <Link to="/" className="userlist-banner-menu-link">
                   Dashboard
                 </Link>
               </MenuItem>
@@ -221,10 +220,6 @@ export default function UserList() {
       );
     })
   }
-
-  const userlistCard = (abc) => {}
-    
-  
 
   return (
     <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>

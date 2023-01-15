@@ -339,8 +339,11 @@ function MyOrder() {
                   </div>
                 </>
                 <div className="olistc-detail-bottom">
-                  {orderDetail?.status_detail === 4 ||
-                  orderDetail?.status_detail === 6 ? null : (
+                  {orderDetail?.status_detail === 2 ||
+                  orderDetail?.status_detail === 3 ||
+                  orderDetail?.status_detail === 4 ||
+                  orderDetail?.status_detail === 6
+                  ? null : (
                     <>
                       <Button
                         sx={{

@@ -69,50 +69,31 @@ export default function DetailUser() {
   YupPassword(Yup);
   const formik = useFormik({
     initialValues: {
-      email: '',
+      email: currentEmail,
       newEmail: '',
-      fullname: '',
+      fullname: editDetail.fullname,
       oldPass: '',
       newPass: '',
     },
     validationSchema: Yup.object().shape({
       email: Yup.string()
-      .required('No email entered').email('Not an email format'),
+      .email('Not an email format'),
       newEmail: Yup.string()
       .email('Not an email format'),
-      fullname: Yup.string(),
-      //   .matches(/^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi, 'Name can only contain Latin letters.')
-      //   .matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms, 'Please enter your full name.'),
+      fullname: Yup.string()
+        .matches(/^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi, 'Name can only contain Latin letters.')
+        .matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms, 'Please enter your full name.'),
       oldPass: Yup.string().required('Please Enter your password'),
-      newPass: Yup.string()
     }),
     validateOnChange: false,
+    enableReinitialize: true,
     onSubmit: async (values) => {
       firebaseAuthentication
         .signInWithEmailAndPassword(values.email, values.oldPass)
         .then((res)=>{
-          // console.log(res.user.providerData[0],'habis login')
-          // if(!values.fullname){ 
-          //   setDataFullname(editDetail.fullname) 
-          // } else {
-          //   setDataFullname(values.fullname) 
-          // }
-
-          // if(!values.newEmail){
-          //   setCurrentEmail(editDetail.email)
-          // } else{
-          //   setCurrentEmail(values.newEmail)
-          // }
-
-          // if(!values.newPass){
-          //   setCurrentPass(values.oldPass)
-          // } else{
-          //   setCurrentPass(values.newPass)
-          // }
           const newData = {
             email:values.newEmail,
             fullname:values.fullname,
-            password:values.oldPass,
           }
           
           firebaseAuthentication.currentUser.updateEmail(newData.email)
@@ -120,8 +101,10 @@ export default function DetailUser() {
             Axios.put(`http://localhost:3300/api/admin/update-detail/${editDetail.customer_uid}`,newData)
                 .then((res) => {
                   console.log(res.data)
-                  // firebaseAuthentication.signOut()
-                  // dispatch(logoutUser())
+                  alert(`Relog Superadmin Credentials to Continue Use Dashboard`)
+                  firebaseAuthentication.signOut()
+                  dispatch(logoutUser())
+                  history.push('/sign-in')
                 })
                 .catch((error) => {
                   console.log(error);
@@ -211,14 +194,14 @@ export default function DetailUser() {
         <div className="detailuser-content">
           {isEdit ? (
             <>
-              <IconButton
+              {/* <IconButton
                 color="primary"
                 aria-label="upload picture"
                 component="label"
                 sx={{ marginLeft: '250px', width: '40px', marginBottom: '-30px' }}>
                 <input hidden accept="image/*" type="file" />
                 <PhotoCamera />
-              </IconButton>
+              </IconButton> */}
               <div className="detailuser-content-avatar-edit">
                 <img
                   className="profileUserImg"
@@ -256,9 +239,10 @@ export default function DetailUser() {
                       placeholder={editDetail.fullname}
                       className="du-c-d-item-2-input"
                       onChange={(e) => formik.setFieldValue('fullname', e.target.value)}
-                      // value={editDetail.fullname}
-                    />
+                  />
                   </li>
+                  {formik.errors.fullname ? <div className="alert-danger">{formik.errors.fullname}</div> : null}
+
                   <li className="du-c-d-item">
                     <Email className="profileIcon" />
                     <span className="du-c-d-item-1">Old Email</span>
@@ -267,9 +251,10 @@ export default function DetailUser() {
                       placeholder={editDetail.email}
                       className="du-c-d-item-2-input"
                       onChange={(e) => formik.setFieldValue('email', e.target.value)}
-                      // value={editDetail.email}
                     />
                   </li>
+                  {formik.errors.email ? <div className="alert-danger">{formik.errors.email}</div> : null}
+
                   <li className="du-c-d-item">
                     <Email className="profileIcon" />
                     <span className="du-c-d-item-1">New Email</span>
@@ -279,6 +264,8 @@ export default function DetailUser() {
                       onChange={(e) => formik.setFieldValue('newEmail', e.target.value)} //values.newemail bisa kepanggil
                     />
                   </li>
+                  {formik.errors.newEmail ? <div className="alert-danger">{formik.errors.newEmail}</div> : null}
+
                   <li className="du-c-d-item">
                     <Password className="profileIcon" />
                     <span className="du-c-d-item-1">Old Password</span>
@@ -289,6 +276,8 @@ export default function DetailUser() {
                       onChange={(e) => formik.setFieldValue('oldPass', e.target.value)}
                     />
                   </li>
+                  {formik.errors.oldPass ? <div className="alert-danger">{formik.errors.oldPass}</div> : null}
+
                   {/* <li className="du-c-d-item">
                     <Password className="profileIcon" />
                     <span className="du-c-d-item-1">New Password</span>
@@ -325,7 +314,7 @@ export default function DetailUser() {
                 <span className="du-c-d-item-2">{editDetail?.is_verified ? 'Verifed' : 'Not Verified'}</span>
               </li>
               <li className="du-c-d-item">
-                {isEdit ? (
+                {/* {isEdit ? (
                   <>
                     <Lock className="profileIcon" />
                     <span className="du-c-d-item-1">Security</span>
@@ -349,9 +338,28 @@ export default function DetailUser() {
                     <span className="du-c-d-item-1">Security</span>
                     <span className="du-c-d-item-2">Banned</span>
                   </>
-                )}
+                )} */}
               </li>
-              {isEdit ? <button type="submit" onClick={formik.handleSubmit}>Submit Changes</button> : null}
+              {isEdit ?
+              
+              <Button
+                  sx={{
+                    borderRadius: '20px',
+                    backgroundColor: 'rgb(153,255,255,0.9)',
+                    fontSize: '8px',
+                    fontFamily: 'Lora',
+                    color: 'black',
+                  }}
+                  variant="contained"
+                  onClick={formik.handleSubmit}
+                  type="submit"
+                  className="detailuser-banner-edit">
+                  Submit Changes
+                </Button>
+              
+              :
+                null
+              }
             </ul>
           </div>
           {/* <div className="detailuser-content-option">

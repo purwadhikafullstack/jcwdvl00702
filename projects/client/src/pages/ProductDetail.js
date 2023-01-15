@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import { ArrowBack, FavoriteBorder, StarHalf } from "@mui/icons-material";
 import { Link, useParams, useHistory } from "react-router-dom";
 import { Container } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function ProductDetail() {
   const { user } = useSelector((state) => ({
@@ -18,6 +18,7 @@ export default function ProductDetail() {
   const [state, setState] = useState([]);
   const [cart, setCart] = useState([]);
   const [qtyProduct, setQtyProduct] = useState(0);
+
 
   // Mengambil data product berdasarkan ID dari backend
   const fetchProducts = () => {
@@ -90,7 +91,8 @@ export default function ProductDetail() {
           Axios.post("http://localhost:3300/api/cart/add-to-cart", data)
             .then(() => {
               alert("Product Added!");
-              history.push(`/product-list`);
+              // history.push(`/product-list`);
+              history.push('/')
             })
             .catch((error) => {
               alert("Server Error");
@@ -194,10 +196,14 @@ export default function ProductDetail() {
               </div>
             </div>
             <div className="spec-qty">
-              <div className="spec-qty-title">Quantity</div>
+              
               {state.getProduct?.quantity_total == 0 ? (
-                <div>Out of stock, please wait for our restock! </div>
+                <>
+                  <div>Out of stock, please wait for our restock! </div>
+                </>
               ) : (
+                <>
+                <div className="spec-qty-title">Quantity</div>
                 <div className="spec-qty-selector">
                   <span className="sub-qty-select" onClick={minQtyHandler}>
                     -
@@ -207,6 +213,7 @@ export default function ProductDetail() {
                     +
                   </span>
                 </div>
+                </>
               )}
             </div>
           </div>

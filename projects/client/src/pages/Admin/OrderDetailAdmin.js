@@ -28,10 +28,11 @@ export default function OrderDetailAdmin() {
   const [userId, setUserId] = useState();
   const [destination, setDestination] = useState()
 
-  const [allWH,setAllWH]=useState("")
+  const [allWH,setAllWH]=useState()
   const [homeLat,setHomeLat]=useState()
   const [homeLon,setHomeLon]=useState()
-  const [homeId,setHomeId]=useState()
+  console.log("all wh setelah dirutkan", allWH)
+
 
   const goBack = () => {
     history.goBack();
@@ -53,45 +54,59 @@ export default function OrderDetailAdmin() {
 
   useEffect(() => {
     getOrderList();
-    fetchWH()
-    fetchHome()
-    // homeCoordinate()
-    // distanceCheck()
   }, []);
 
-  const getDistance=(lat1,lon1,lat2,lon2)=>{
-    let R = 6371 //in km
-    let dLat = toRad(lat2-lat1);
-    let dLon = toRad(lon2-lon1);
-    lat1 = toRad(lat1);
-    lat2 = toRad(lat2);
 
-    let a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-        Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
-    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    let d = R * c;
-    return d;
+const getOrderList = async () => {
+  const response = await Axios.get(`http://localhost:3300/api/order/get-order-cart-product/${userCalledId}`);
+  console.log("ini data order",response?.data);
+  console.log(response?.data.orderitems, 'ini orderitems');
+  setOrderDetails(response?.data);
+  setOrderitemDet(response?.data.orderitems);
+  setActiveStep(response?.data.status_detail)
+  setDestination(response?.data.shipping_address)
+ 
+  // Mengambil data WH untuk dirutkan 
+  Axios.get(`http://localhost:3300/api/warehouse/warehouse-list-stock`)
+  .then(res=>{
+    console.log("ini WH DATA", res.data)
+      setAllWH(res.data)
+  })
+  
+  // get home lat & long
+  Axios.get(`http://localhost:3300/api/address/address-city-id-order/${userCalledId}/${response.data.shipping_address}`)
+  .then(res=>{
+    console.log("ini Homeid", res.data)
+        // setHomeId(res.data.city_id)
+        Axios.get(`http://localhost:3300/api/address/address-city-id/${res.data.city_id}`)
+        .then(res=>{
+            setHomeLat(res.data.latitude)
+            setHomeLon(res.data.longitude)
+        })
+      })
+
+      // mengecek jarak ke wh terdekat
+      distanceCheck()
+};
+
+
+
+const getDistance=(lat1,lon1,lat2,lon2)=>{
+  let R = 6371 //in km
+  let dLat = toRad(lat2-lat1);
+  let dLon = toRad(lon2-lon1);
+  lat1 = toRad(lat1);
+  lat2 = toRad(lat2);
+
+  let a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+  let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  let d = R * c;
+  return d;
 }
 const toRad=(val)=>{
-    return val * Math.PI / 180
+  return val * Math.PI / 180
 }
-
-const fetchWH=()=>{
-    Axios.get(`http://localhost:3300/api/warehouse/warehouse-list`)
-    .then(res=>{
-        setAllWH(res.data)
-        console.log("ini uid", userUID)
-        console.log("ini destinasi", destination)
-    })
-}
-const fetchHome=()=>{
-    Axios.get(`http://localhost:3300/api/address/address-city-id-order/${userUID}/${destination}`)
-    .then(res=>{
-          setHomeId(res.data.city_id)
-          console.log("ini home id", homeId)
-        })
-}
-
 const compareDist=(a,b)=>{
     if(a.totalDistance < b.totalDistance){
         return -1
@@ -102,13 +117,6 @@ const compareDist=(a,b)=>{
     return 0
 }
 
-const homeCoordinate=()=>{
-    Axios.get(`http://localhost:3300/api/address/address-city-id/${homeId}`)
-    .then(res=>{
-        setHomeLat(res.data.latitude)
-        setHomeLon(res.data.longitude)
-    })
-}
 
 const distanceCheck=()=>{
     let mathDist=[]
@@ -120,44 +128,46 @@ const distanceCheck=()=>{
     console.log("ini wh terdekat", allWH)
 }
 
-  const getOrderList = async () => {
-    const response = await Axios.get(`http://localhost:3300/api/order/get-order-cart-product/${userCalledId}`);
-    console.log("ini data order",response?.data);
-    console.log(response?.data.orderitems, 'ini orderitems');
-    setOrderDetails(response?.data);
-    setOrderitemDet(response?.data.orderitems);
-    setActiveStep(response?.data.status_detail)
-    setDestination(response?.data.shipping_address)
-  };
 
   const handleApprove = () => {
-    const data = {
-      status_detail: 2
-    }
-    console.log("ini user:", user)
-    Axios.put(`http://localhost:3300/api/order/approve-reject-send/${user.customer_uid}`, data)
-    .then(() => {
-      alert("approved!");
-      getOrderList()
-    })
-    .catch((error) => {
-      console.log(error);
-      alert(error);
-    });
 
+   for(let i = 0 ; i < orderitemDet.length; i++){
     const stockData = {
       whList: allWH,
-      // to: allWH[0].id,
-
+      orderitem: orderitemDet[i]
     }
-
+     
+    console.log("stock data", stockData)
     Axios.post('http://localhost:3300/api/product/qty-handler', stockData)
-    .then(() => {
-      // alert('Product Added!');
+    .then((res) => {
+      console.log("ini res data stock mut", res.data)
+      const stockDataHistory = {
+        stockmutation_id: res.data.id,
+        respond: `accept`,
+      }
+      Axios.post('http://localhost:3300/api/product/qty-handler-history', stockDataHistory)
+      .then(() => {
+      })
+      .catch((error) => {
+      });
     })
     .catch((error) => {
-      // alert('Nama Sudah Terpakai Atau Server Error');
     });
+   }
+
+   const data = {
+    status_detail: 2
+  }
+  console.log("ini user:", orderDetails?.customer_uid)
+  Axios.put(`http://localhost:3300/api/order/approve-reject-send/${orderDetails?.customer_uid}`, data)
+  .then(() => {
+    alert("approved!");
+    getOrderList()
+  })
+  .catch((error) => {
+    console.log(error);
+    alert(error);
+  });
 
 
   };
@@ -166,30 +176,36 @@ const distanceCheck=()=>{
     const data = {
       status_detail: 0
     }
-    Axios.put(`http://localhost:3300/api/order/approve-reject-send/${user.customer_uid}`, data)
-    .then(() => {
-      alert("rejected!");
-      getOrderList()
-    })
-    .catch((error) => {
-      console.log(error);
-      alert(error);
-    });
+    Axios.put(
+      `http://localhost:3300/api/order/approve-reject-send/${orderDetails?.customer_uid}`,
+      data
+    )
+      .then(() => {
+        alert("rejected!");
+        getOrderList();
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      });
   };
 
   const handleSendOrder = () => {
     const data = {
       status_detail: 3
     }
-    Axios.put(`http://localhost:3300/api/order/approve-reject-send/${user.customer_uid}`, data)
-    .then(() => {
-      alert("send product!");
-      getOrderList()
-    })
-    .catch((error) => {
-      console.log(error);
-      alert(error);
-    });
+    Axios.put(
+      `http://localhost:3300/api/order/approve-reject-send/${orderDetails?.customer_uid}`,
+      data
+    )
+      .then(() => {
+        alert("send product!");
+        getOrderList();
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      });
   };
 
 
