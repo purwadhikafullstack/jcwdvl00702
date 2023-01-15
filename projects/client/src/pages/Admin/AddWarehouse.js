@@ -22,6 +22,8 @@ import GoogleMaps from "../../components/GoogleMaps";
 import Axios from "axios";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import "../../assets/styles/AddWarehouse.css";
+import { useHistory } from 'react-router-dom';
+
 function AddWarehouse() {
   const [provinces, setProvinces] = useState();
   const [cities, setCities] = useState();
@@ -42,6 +44,7 @@ function AddWarehouse() {
   const [userStore,setUserStore] = useState()
   const [adminStore,setAdminStore] = useState()
 
+  let history = useHistory();
 
   const { isLoggedIn, user } = useSelector((state) => ({
     isLoggedIn: state.auth.isLoggedIn,
@@ -194,6 +197,7 @@ function AddWarehouse() {
       })
       console.log(adminWH.data)
       alert("Berhasil");
+      history.push("/")
     } catch (error) {
       console.log(error);
     }

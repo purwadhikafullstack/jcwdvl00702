@@ -83,7 +83,7 @@ function WarehouseManagement() {
             </button>
             <Menu {...bindMenu(popupState)}>
               <MenuItem>
-                <Link to="/dashboard" className="whmanagement-banner-menu-link">
+                <Link to="/" className="whmanagement-banner-menu-link">
                   Dashboard
                 </Link>
               </MenuItem>
