@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Container, FormControl, Input, Button } from "@mui/material";
 import "../assets/styles/NewAddress.css";
-import { AuthContext } from "../context/AuthProvider";
 import Axios from "axios";
 import { useParams, useHistory } from "react-router-dom";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";

@@ -166,3 +166,11 @@ body {
   border: 1px solid gray;
   font-size: 13px;
 }
+
+.alert-danger {
+  color: rgba(114, 28, 36,1);
+  font-size: 12px;
+  font-weight: 600;
+  align-self:center;
+  margin-top: -5px;
+}

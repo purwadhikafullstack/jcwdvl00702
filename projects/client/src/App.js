@@ -69,7 +69,6 @@ export default function App() {
           console.log(error);
           alert(error);
         });
-      dispatch(loginUser(data));
     });
   }, []);
 
