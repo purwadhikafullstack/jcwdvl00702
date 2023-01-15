@@ -158,8 +158,8 @@ const distanceCheck=()=>{
    const data = {
     status_detail: 2
   }
-  console.log("ini user:", user)
-  Axios.put(`http://localhost:3300/api/order/approve-reject-send/${user.customer_uid}`, data)
+  console.log("ini user:", orderDetails?.customer_uid)
+  Axios.put(`http://localhost:3300/api/order/approve-reject-send/${orderDetails?.customer_uid}`, data)
   .then(() => {
     alert("approved!");
     getOrderList()
@@ -176,30 +176,36 @@ const distanceCheck=()=>{
     const data = {
       status_detail: 0
     }
-    Axios.put(`http://localhost:3300/api/order/approve-reject-send/${user.customer_uid}`, data)
-    .then(() => {
-      alert("rejected!");
-      getOrderList()
-    })
-    .catch((error) => {
-      console.log(error);
-      alert(error);
-    });
+    Axios.put(
+      `http://localhost:3300/api/order/approve-reject-send/${orderDetails?.customer_uid}`,
+      data
+    )
+      .then(() => {
+        alert("rejected!");
+        getOrderList();
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      });
   };
 
   const handleSendOrder = () => {
     const data = {
       status_detail: 3
     }
-    Axios.put(`http://localhost:3300/api/order/approve-reject-send/${user.customer_uid}`, data)
-    .then(() => {
-      alert("send product!");
-      getOrderList()
-    })
-    .catch((error) => {
-      console.log(error);
-      alert(error);
-    });
+    Axios.put(
+      `http://localhost:3300/api/order/approve-reject-send/${orderDetails?.customer_uid}`,
+      data
+    )
+      .then(() => {
+        alert("send product!");
+        getOrderList();
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      });
   };
 
 
