@@ -104,7 +104,6 @@ class StockMutation extends React.Component {
         } else if (res.data.approle.warehouse_id) {
           this.setState({ ...this.state, myWarehouse: res.data.approle.warehouse_id.toString() });
         }
-        console.log('wg', this.state.myWarehouse);
         this.fetchMutation(0, '', '', this.state.value, this.state.myWarehouse);
       })
       .catch((err) => {
@@ -143,12 +142,10 @@ class StockMutation extends React.Component {
 
   handleAskFromChange = (event) => {
     this.setState({ ...this.state, askFrom: event.target.value });
-    console.log('fro', this.state.askFrom);
   };
 
   handleAskToChange = (event) => {
     this.setState({ ...this.state, askTo: event.target.value });
-    console.log('to', this.state.askTo);
   };
 
   handleClickOpenAccept = () => {
@@ -229,7 +226,6 @@ class StockMutation extends React.Component {
   };
 
   mutationCard = () => {
-    console.log('mutlist', this.state.mutationList);
     return this.state.mutationList.map((val, index) => {
       let picPathArray = val.product_picture.split('/');
       let picPath = 'http://localhost:3300/' + picPathArray[1] + '/' + picPathArray[2];
