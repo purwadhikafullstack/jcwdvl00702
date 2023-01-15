@@ -1,5 +1,5 @@
 const {
-  models: { Warehouse },
+  models: { Warehouse,Stock },
 } = require("../models");
 const router = require("express").Router();
 const request = require("request");
@@ -241,12 +241,12 @@ router.post("/lat-long", async (req, res) => {
 router.get("/warehouse-list-stock", async (req, res) => {
   try {
     const response = await Warehouse.findAll({
-      include: [
-        {
-          model: Stock,
-          required: true,
-        }
-      ]
+      // include: [
+      //   {
+      //     model: Stock,
+      //     required: true,
+      //   }
+      // ]
     });
 
     console.log("ini test", response.length)

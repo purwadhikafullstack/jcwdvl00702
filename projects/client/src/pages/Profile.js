@@ -10,7 +10,6 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Container from "@mui/material/Container";
 import { Link, useHistory } from "react-router-dom";
-import { AuthContext } from "../context/AuthProvider";
 import Axios from "axios";
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
