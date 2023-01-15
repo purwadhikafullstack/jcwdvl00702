@@ -115,7 +115,6 @@ class StockMutation extends React.Component {
   getWh = () => {
     Axios.get('http://localhost:3300/api/product/get-wh')
       .then((result) => {
-        // setWhList(result.data);
         this.setState({ ...this.state, whList: result.data });
       })
       .catch((err) => {
@@ -325,7 +324,6 @@ class StockMutation extends React.Component {
           </div>
         </div>
       );
-      // }
     });
   };
 
@@ -523,22 +521,6 @@ class StockMutation extends React.Component {
                             <MenuItem value={this.state.whList[index]}>Warehouse {this.state.whList[index]}</MenuItem>
                           );
                         })}
-
-                        {/* {this.state.myWarehouse === '' ? (
-                          <>
-                            {this.state.whList.map((val, index) => {
-                              return (
-                                <MenuItem value={this.state.whList[index]}>
-                                  Warehouse {this.state.whList[index]}
-                                </MenuItem>
-                              );
-                            })}
-                          </>
-                        ) : (
-                          <>
-                            <MenuItem value={this.state.myWarehouse}>Warehouse {this.state.myWarehouse}</MenuItem>
-                          </>
-                        )} */}
                       </Select>
                     </FormControl>
                     <InputBase
