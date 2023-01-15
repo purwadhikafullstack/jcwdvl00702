@@ -563,16 +563,12 @@ class StockMutation extends React.Component {
                       className="apc-card-edit"
                       onClick={() => {
                         if (this.state.askFrom !== this.state.askTo) {
-                          if (this.state.myWarehouse == this.state.askTo) {
                             this.askMutation(
                               this.state.askFrom,
                               this.state.askTo,
                               this.state.productValue,
                               this.state.quantityValue
                             );
-                          } else {
-                            alert('Warehouse To dan Warehouse Admin harus sama!');
-                          }
                         } else {
                           alert('Warehouse From dan Warehouse To tidak boleh sama!');
                         }
