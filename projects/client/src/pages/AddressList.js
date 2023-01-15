@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 function AddressList() {
-  let history = useHistory()
+  let history = useHistory();
   const { isLoggedIn, user } = useSelector((state) => ({
     isLoggedIn: state.auth.isLoggedIn,
     user: state.auth.user,

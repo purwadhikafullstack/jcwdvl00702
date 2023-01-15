@@ -53,7 +53,7 @@ function DetailWarehouse() {
     if (userUID) {
       const getWarehouseById = async () => {
         const getWarehouse = await Axios.get(
-          `http://localhost:3300/api/warehouse/warehouse-list/${id}`
+          `${process.env.REACT_APP_API_BASE_URL}/warehouse/warehouse-list/${id}`
         );
         console.log(getWarehouse);
         setWarehouse_name(getWarehouse.data.warehouse_name);
@@ -64,7 +64,7 @@ function DetailWarehouse() {
         setLatitude(getWarehouse.data.latitude);
         setLongitude(getWarehouse.data.longitude);
         setPicture(getWarehouse.data.picture);
-        setAdmin(getWarehouse.data.admin)
+        setAdmin(getWarehouse.data.admin);
       };
       getWarehouseById();
     }

@@ -44,7 +44,7 @@ export default function DetailUser() {
   const adminSup = user?.approle?.role
 
   const detailListing=()=>{
-    Axios.get(`http://localhost:3300/api/customer/profile/${id}`) //fetch user detail
+    Axios.get(`${process.env.REACT_APP_API_BASE_URL}/customer/profile/${id}`) //fetch user detail
     .then(res=>{
       setEditDetail(res.data)
       setCurrentEmail(res.data.email)
@@ -104,7 +104,7 @@ export default function DetailUser() {
           
           firebaseAuthentication.currentUser.updateEmail(newData.email)
           .then((res)=>{
-            Axios.put(`http://localhost:3300/api/admin/update-detail/${editDetail.customer_uid}`,newData)
+            Axios.put(`${process.env.REACT_APP_API_BASE_URL}/admin/update-detail/${editDetail.customer_uid}`,newData)
                 .then((res) => {
                   console.log(res.data)
                   alert(`Relog Superadmin Credentials to Continue Use Dashboard`)

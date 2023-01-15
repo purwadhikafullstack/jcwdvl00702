@@ -1,10 +1,10 @@
-import Axios from 'axios';
-import { useState, useEffect } from 'react';
-import { ArrowBack, Search } from '@mui/icons-material';
-import { useHistory, useParams } from 'react-router-dom';
-import { Container, IconButton, Select, MenuItem } from '@mui/material';
+import Axios from "axios";
+import { useState, useEffect } from "react";
+import { ArrowBack, Search } from "@mui/icons-material";
+import { useHistory, useParams } from "react-router-dom";
+import { Container, IconButton, Select, MenuItem } from "@mui/material";
 
-import '../../assets/styles/ProductStockHistory.css';
+import "../../assets/styles/ProductStockHistory.css";
 
 export default function ProductStockHistory() {
   const history = useHistory();
@@ -15,8 +15,8 @@ export default function ProductStockHistory() {
     history.goBack();
   };
 
-  const [month, setMonth] = useState('month');
-  const [year, setYear] = useState('year');
+  const [month, setMonth] = useState("month");
+  const [year, setYear] = useState("year");
   const [admin, isAdmin] = useState(true);
   const [warehouse, setWarehouse] = useState(0);
 
@@ -37,7 +37,9 @@ export default function ProductStockHistory() {
   }, []);
 
   const fetchProducts = (year, month) => {
-    Axios.get(`http://localhost:3300/api/product/product-stock-history/${id}?year=${year}&month=${month}`)
+    Axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/product/product-stock-history/${id}?year=${year}&month=${month}`
+    )
       .then((result) => {
         setGetProduct(result.data.getProduct);
         setStateCategory(result.data.getProduct.category);
@@ -50,9 +52,11 @@ export default function ProductStockHistory() {
         const endArray = [];
         for (let i = 0; i < result.data.getHistory.length; i++) {
           if (parseInt(result.data.getHistory[i].warehouse_id) === warehouse) {
-            if (result.data.getHistory[i].math === '+') {
+            if (result.data.getHistory[i].math === "+") {
               incrementArray.push(parseInt(result.data.getHistory[i].quantity));
-            } else if (parseInt(result.data.getHistory[i].warehouse_id) === warehouse) {
+            } else if (
+              parseInt(result.data.getHistory[i].warehouse_id) === warehouse
+            ) {
               decrementArray.push(parseInt(result.data.getHistory[i].quantity));
             }
             startArray.push(parseInt(result.data.getHistory[i].start));
@@ -70,14 +74,31 @@ export default function ProductStockHistory() {
           final = endArray[endArray.length - 1];
         }
 
-        const increment = incrementArray.reduce((partialSum, a) => partialSum + a, 0);
-        const decrement = decrementArray.reduce((partialSum, a) => partialSum + a, 0);
+        const increment = incrementArray.reduce(
+          (partialSum, a) => partialSum + a,
+          0
+        );
+        const decrement = decrementArray.reduce(
+          (partialSum, a) => partialSum + a,
+          0
+        );
 
         setStockInitial(initial);
         setIncrement(increment);
         setReduction(decrement);
         setStockFinal(final);
         setRefreshHistory(getHistory);
+      })
+      .catch((err) => {
+        alert("Terjadi kesalahan di server");
+      });
+  };
+
+  // GET WH
+  const getWh = () => {
+    Axios.get('http://localhost:3300/api/product/get-wh')
+      .then((result) => {
+        setWhList(result.data);
       })
       .catch((err) => {
         alert('Terjadi kesalahan di server');
@@ -144,11 +165,15 @@ export default function ProductStockHistory() {
                   <div className="mhistory-detail-name">Warehouse {val.warehouse_id}</div>
                   {val.requester !== 'superadmin' ? (
                     <>
-                      <div className="mhistory-detail-name">Warehouse {val.requester}</div>
+                      <div className="mhistory-detail-name">
+                        Warehouse {val.requester}
+                      </div>
                     </>
                   ) : (
                     <>
-                      <div className="mhistory-detail-name">{val.requester}</div>
+                      <div className="mhistory-detail-name">
+                        {val.requester}
+                      </div>
                     </>
                   )}
                   <div className="mhistory-detail-subname">
@@ -170,7 +195,7 @@ export default function ProductStockHistory() {
   };
 
   return (
-    <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
+    <Container maxWidth="xs" sx={{ backgroundColor: "white" }}>
       <div className="prodsh-main">
         <div className="prodsh-banner">
           <IconButton onClick={goBack}>
@@ -185,7 +210,9 @@ export default function ProductStockHistory() {
             <div className="prodsh-desc-title-1">
               <span className="prodsh-desc-name">{getProduct.name}</span>
             </div>
-            <div className="prodsh-desc-title-4">Product ID: {getProduct.id}</div>
+            <div className="prodsh-desc-title-4">
+              Product ID: {getProduct.id}
+            </div>
             <div className="prodsh-desc-title-2">
               <img src={stateCategory.picture} />
               <div className="prodsh-desc-title-3">{stateCategory.name}</div>
@@ -197,69 +224,81 @@ export default function ProductStockHistory() {
             <div className="prodsh-desc-1">
               <div className="prodsh-desc-1-select">
                 <Select
-                  sx={{ width: '100%', height: '38px', fontSize: '12px', padding: '0px' }}
+                  sx={{
+                    width: "100%",
+                    height: "38px",
+                    fontSize: "12px",
+                    padding: "0px",
+                  }}
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={year}
-                  onChange={(e) => setYear(e.target.value)}>
-                  <MenuItem value={'year'}>
+                  onChange={(e) => setYear(e.target.value)}
+                >
+                  <MenuItem value={"year"}>
                     <em>Year</em>
                   </MenuItem>
-                  <MenuItem value={'2021'}>
+                  <MenuItem value={"2021"}>
                     <span>2021</span>
                   </MenuItem>
-                  <MenuItem value={'2022'}>
+                  <MenuItem value={"2022"}>
                     <span>2022</span>
                   </MenuItem>
-                  <MenuItem value={'2023'}>
+                  <MenuItem value={"2023"}>
                     <span>2023</span>
                   </MenuItem>
                 </Select>
               </div>
               <div className="prodsh-desc-1-select">
                 <Select
-                  sx={{ width: '100%', height: '38px', fontSize: '12px', padding: '0px' }}
+                  sx={{
+                    width: "100%",
+                    height: "38px",
+                    fontSize: "12px",
+                    padding: "0px",
+                  }}
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={month}
-                  onChange={(e) => setMonth(e.target.value)}>
-                  <MenuItem value={'month'}>
+                  onChange={(e) => setMonth(e.target.value)}
+                >
+                  <MenuItem value={"month"}>
                     <em>Month</em>
                   </MenuItem>
-                  <MenuItem value={'1'}>
+                  <MenuItem value={"1"}>
                     <span>1</span>
                   </MenuItem>
-                  <MenuItem value={'2'}>
+                  <MenuItem value={"2"}>
                     <span>2</span>
                   </MenuItem>
-                  <MenuItem value={'3'}>
+                  <MenuItem value={"3"}>
                     <span>3</span>
                   </MenuItem>
-                  <MenuItem value={'4'}>
+                  <MenuItem value={"4"}>
                     <span>4</span>
                   </MenuItem>
-                  <MenuItem value={'5'}>
+                  <MenuItem value={"5"}>
                     <span>5</span>
                   </MenuItem>
-                  <MenuItem value={'6'}>
+                  <MenuItem value={"6"}>
                     <span>6</span>
                   </MenuItem>
-                  <MenuItem value={'7'}>
+                  <MenuItem value={"7"}>
                     <span>7</span>
                   </MenuItem>
-                  <MenuItem value={'8'}>
+                  <MenuItem value={"8"}>
                     <span>8</span>
                   </MenuItem>
-                  <MenuItem value={'9'}>
+                  <MenuItem value={"9"}>
                     <span>9</span>
                   </MenuItem>
-                  <MenuItem value={'10'}>
+                  <MenuItem value={"10"}>
                     <span>10</span>
                   </MenuItem>
-                  <MenuItem value={'11'}>
+                  <MenuItem value={"11"}>
                     <span>11</span>
                   </MenuItem>
-                  <MenuItem value={'12'}>
+                  <MenuItem value={"12"}>
                     <span>12</span>
                   </MenuItem>
                 </Select>
@@ -270,11 +309,17 @@ export default function ProductStockHistory() {
                 {admin ? (
                   <>
                     <Select
-                      sx={{ width: '140px', height: '38px', fontSize: '12px', padding: '0px' }}
+                      sx={{
+                        width: "140px",
+                        height: "38px",
+                        fontSize: "12px",
+                        padding: "0px",
+                      }}
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={warehouse}
-                      onChange={(e) => setWarehouse(e.target.value)}>
+                      onChange={(e) => setWarehouse(e.target.value)}
+                    >
                       <MenuItem value={0}>
                         <em>Location</em>
                       </MenuItem>
@@ -285,7 +330,15 @@ export default function ProductStockHistory() {
                   </>
                 ) : (
                   <>
-                    <div style={{ marginLeft: '220px', fontWeight: 'bolder', fontSize: 'large' }}>Warehouse A</div>
+                    <div
+                      style={{
+                        marginLeft: "220px",
+                        fontWeight: "bolder",
+                        fontSize: "large",
+                      }}
+                    >
+                      Warehouse A
+                    </div>
                   </>
                 )}
               </div>

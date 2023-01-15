@@ -11,7 +11,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Container from "@mui/material/Container";
 import { Link, useHistory } from "react-router-dom";
 import Axios from "axios";
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 function Profile() {
   const { isLoggedIn, user } = useSelector(
@@ -33,7 +33,7 @@ function Profile() {
     if (userUID) {
       const getUserById = async (userUID) => {
         const response = await Axios.get(
-          `http://localhost:3300/api/customer/profile/${userUID}`
+          `${process.env.REACT_APP_API_BASE_URL}/customer/profile/${userUID}`
         );
         console.log(JSON.stringify(response));
         setPicture(response.data.picture);

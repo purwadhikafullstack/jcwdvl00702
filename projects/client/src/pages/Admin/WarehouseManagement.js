@@ -67,7 +67,6 @@ function WarehouseManagement() {
   };
 
   const menuHandler = () => {
-    
     return (
       <PopupState variant="popover" popupId="demo-popup-menu">
         {(popupState) => (

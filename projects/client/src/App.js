@@ -83,19 +83,31 @@ export default function App() {
       <Switch>
         <Route component={SignUp} path="/sign-up" />
         <Route component={SignIn} path="/sign-in" />
-        <Route path="/sign-up">{mainUser ? <Redirect to="/" /> : <SignUp />}</Route>
-        <Route path="/sign-in">{mainUser ? <Redirect to="/" /> : <SignIn />}</Route>
+        <Route path="/sign-up">
+          {mainUser ? <Redirect to="/" /> : <SignUp />}
+        </Route>
+        <Route path="/sign-in">
+          {mainUser ? <Redirect to="/" /> : <SignIn />}
+        </Route>
         <Route component={CreatePassword} path="/create-password" />
         <Route component={MyOrder} path="/my-order/:userUID" />
         <Route component={MyOrderDetail} path="/my-order-detail/:userUID" />
-        <Route path="/dashboard">{mainUser?.role == 'user' ? <Redirect to="/" /> : <Dashboard />}</Route>
+        <Route path="/dashboard">
+          {mainUser?.role == "user" ? <Redirect to="/" /> : <Dashboard />}
+        </Route>
         <Route component={Dashboard} path="/dashboard" />
         <Route component={UserList} path="/user-list" />
         <Route component={DetailUser} path="/detail-user/:id" />
         <Route component={AddUser} path="/add-user" />
-        <Route component={ProductCategory} path="/products-management-category" />
+        <Route
+          component={ProductCategory}
+          path="/products-management-category"
+        />
         <Route component={ProductListAdmin} path="/products-management-list" />
-        <Route component={ProductDetailAdmin} path="/products-management-detail/:id" />
+        <Route
+          component={ProductDetailAdmin}
+          path="/products-management-detail/:id"
+        />
         <Route component={ProductAdd} path="/products-management-add" />
         <Route component={WarehouseManagement} path="/warehouse-management" />
         <Route component={AddWarehouse} path="/add-warehouse" />
@@ -103,9 +115,15 @@ export default function App() {
         <Route component={EditWarehouse} path="/edit-warehouse/:id" />
         <Route component={StockMutation} path="/stock-mutation" />
         <Route component={OrderList} path="/order-list" />
-        <Route component={OrderDetailAdmin} path="/order-detail-admin/:userUID" />
+        <Route
+          component={OrderDetailAdmin}
+          path="/order-detail-admin/:userUID"
+        />
         <Route component={StockHistory} path="/stock-history" />
-        <Route component={ProductStockHistory} path="/product-stock-history/:id" />
+        <Route
+          component={ProductStockHistory}
+          path="/product-stock-history/:id"
+        />
         <Route component={SalesReport} path="/sales-report" />
         <Route component={ProductDetail} path="/product-detail/:id" />
         <Route component={ProductLists} path="/product-list" />

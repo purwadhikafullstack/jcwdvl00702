@@ -22,7 +22,7 @@ export default function ProductDetail() {
 
   // Mengambil data product berdasarkan ID dari backend
   const fetchProducts = () => {
-    Axios.get(`http://localhost:3300/api/product/get-product/${id}`)
+    Axios.get(`${process.env.REACT_APP_API_BASE_URL}/product/get-product/${id}`)
       .then((result) => {
         setState(result.data);
         console.log("ini result data", result.data);
@@ -44,7 +44,9 @@ export default function ProductDetail() {
   // mengambil data untuk bikin kondisi add cart
 
   const getCart = () => {
-    Axios.get(`http://localhost:3300/api/cart/get-cart/${user?.customer_uid}`)
+    Axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/cart/get-cart/${user?.customer_uid}`
+    )
       .then((result) => {
         setCart(result.data);
         console.log("ini result data", result.data);
@@ -88,7 +90,10 @@ export default function ProductDetail() {
         if (qtyProduct <= 0) {
           alert("Quantity tidak boleh 0 atau kurang");
         } else {
-          Axios.post("http://localhost:3300/api/cart/add-to-cart", data)
+          Axios.post(
+            `${process.env.REACT_APP_API_BASE_URL}/cart/add-to-cart`,
+            data
+          )
             .then(() => {
               alert("Product Added!");
               // history.push(`/product-list`);
@@ -107,7 +112,10 @@ export default function ProductDetail() {
         if (qtyProduct <= 0) {
           alert("Quantity tidak boleh 0 atau kurang");
         } else {
-          Axios.put(`http://localhost:3300/api/cart/edit-cart/${id}`, data)
+          Axios.put(
+            `${process.env.REACT_APP_API_BASE_URL}/cart/edit-cart/${id}`,
+            data
+          )
             .then(() => {
               alert("Quantity Added");
               history.push(`/product-list`);
@@ -131,7 +139,6 @@ export default function ProductDetail() {
 
   return (
     <div className="pd-wrap">
-
       {console.log(state, "render data")}
 
       <Container maxWidth="xs" className="container-product-detail">
@@ -141,7 +148,6 @@ export default function ProductDetail() {
           </Link>
 
           <img className="detail-img" src={state.getProduct?.picture} />
-
         </div>
         <div className="product-spec">
           <div className="product-title">

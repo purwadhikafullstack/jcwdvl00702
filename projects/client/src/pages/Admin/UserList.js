@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Button,
   InputAdornment,
@@ -79,7 +79,7 @@ export default function UserList() {
     const data = {
       is_banned: true,
     };
-    Axios.put(`http://localhost:3300/api/admin/update/${id}`, data)
+    Axios.put(`${process.env.REACT_APP_API_BASE_URL}/admin/update/${id}`, data)
       .then(() => {
         processUsers();
       })
@@ -97,7 +97,11 @@ export default function UserList() {
       <PopupState variant="popover" popupId="demo-popup-menu">
         {(popupState) => (
           <React.Fragment>
-            <button className="account-button" variant="contained" {...bindTrigger(popupState)}>
+            <button
+              className="account-button"
+              variant="contained"
+              {...bindTrigger(popupState)}
+            >
               <IconButton>
                 <MoreHoriz />
               </IconButton>
@@ -114,22 +118,34 @@ export default function UserList() {
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/warehouse-management" className="userlist-banner-menu-link">
+                <Link
+                  to="/warehouse-management"
+                  className="userlist-banner-menu-link"
+                >
                   Warehouse Mng.
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/products-management-list" className="userlist-banner-menu-link">
+                <Link
+                  to="/products-management-list"
+                  className="userlist-banner-menu-link"
+                >
                   Product List
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/products-management-category" className="userlist-banner-menu-link">
+                <Link
+                  to="/products-management-category"
+                  className="userlist-banner-menu-link"
+                >
                   Product Category
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/stock-mutation" className="userlist-banner-menu-link">
+                <Link
+                  to="/stock-mutation"
+                  className="userlist-banner-menu-link"
+                >
                   Stock Mutation
                 </Link>
               </MenuItem>
@@ -237,9 +253,9 @@ export default function UserList() {
             <>
               <ClickAwayListener onClickAway={isSearchHandleClose}>
                 <InputBase
-                  sx={{ ml: 1, flex: 1, fontFamily: 'Lora' }}
+                  sx={{ ml: 1, flex: 1, fontFamily: "Lora" }}
                   placeholder="Search"
-                  inputProps={{ 'aria-label': 'Search' }}
+                  inputProps={{ "aria-label": "Search" }}
                   className="userlist-search"
                   endAdornment={
                     <InputAdornment position="end">
