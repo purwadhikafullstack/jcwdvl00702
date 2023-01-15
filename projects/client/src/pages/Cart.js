@@ -179,7 +179,7 @@ export default function Cart() {
             </div>
             <div className="card-detail-bottom">
               <div className="card-detail-bottom-price">
-                $ {val.product.price}
+                Rp. {val.product.price}
               </div>
               {/* <div className="card-detail-bottom-qty">{val.quantity} pcs on Cart</div> */}
             </div>
@@ -244,7 +244,7 @@ export default function Cart() {
           <div className="footer">
             <div className="priceContainer">
               <div className="priceTitle">Total Price</div>
-              <div className="totalPrice">$ {totalPrice}</div>
+              <div className="totalPrice">Rp. {totalPrice}</div>
             </div>
             <div className="checkoutBtn" onClick={() => checkoutHandler(id)}>
               Checkout
