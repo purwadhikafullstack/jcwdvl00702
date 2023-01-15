@@ -389,7 +389,7 @@ export default function ProductDetailAdmin() {
               </div>
               <div className="pdadmin-pricing">
                 <div className="pdadmin-price-title">Price</div>
-                <div className="pdadmin-price">${state.price}</div>
+                <div className="pdadmin-price">Rp. {state.price}</div>
               </div>
               <hr className="splitter" />
             </div>
