@@ -227,7 +227,6 @@ export default function UserList() {
     <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
       {adminSup !== 'superadmin' ? <Redirect to="/"/> : null}
       <div className="userlist-main">
-        {console.log('userbox',userBox)}
         <div className="userlist-banner">
           <div className="userlist-banner-logo">
             <IconButton disabled>
