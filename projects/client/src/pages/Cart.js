@@ -57,7 +57,7 @@ export default function Cart() {
         console.log("ini get order", result.data);
       })
       .catch(() => {
-        alert("Terjadi kesalahan di server");
+        // alert("Terjadi kesalahan di server");
       });
   };
 
@@ -65,9 +65,7 @@ export default function Cart() {
   const deleteBtnHandler = (productId) => {
     const confirmDelete = window.confirm("Delete Product?");
     if (confirmDelete) {
-      Axios.delete(
-        `${process.env.REACT_APP_API_BASE_URL}/cart/delete-cart/${productId}`
-      )
+      Axios.delete(`${process.env.REACT_APP_API_BASE_URL}/cart/delete-cart-customer/${productId}`)
         .then(() => {
           cartProduct();
           getTotalPrice();
@@ -109,12 +107,10 @@ export default function Cart() {
       customer_uid: id,
       action: "min",
     };
-    if (val.quantity <= 0) {
+    if (val.quantity < 1) {
       const confirmDelete = window.confirm("Delete Product?");
       if (confirmDelete) {
-        Axios.delete(
-          `${process.env.REACT_APP_API_BASE_URL}/cart/delete-cart/${val.id}`
-        )
+        Axios.delete(`${process.env.REACT_APP_API_BASE_URL}/cart/delete-cart-customer/${val.id}`)
           .then(() => {
             cartProduct();
             getTotalPrice();
@@ -192,7 +188,7 @@ export default function Cart() {
             </div>
             <div className="card-detail-bottom">
               <div className="card-detail-bottom-price">
-                $ {val.product.price}
+                Rp. {val.product.price}
               </div>
               {/* <div className="card-detail-bottom-qty">{val.quantity} pcs on Cart</div> */}
             </div>
@@ -257,7 +253,7 @@ export default function Cart() {
           <div className="footer">
             <div className="priceContainer">
               <div className="priceTitle">Total Price</div>
-              <div className="totalPrice">$ {totalPrice}</div>
+              <div className="totalPrice">Rp. {totalPrice}</div>
             </div>
             <div className="checkoutBtn" onClick={() => checkoutHandler(id)}>
               Checkout

@@ -1,30 +1,11 @@
-import Axios from "axios";
-import { useEffect, useState } from "react";
-import {
-  Add,
-  ArrowBack,
-  Remove,
-  SportsSoccerOutlined,
-  BusinessCenterOutlined,
-  DirectionsBikeOutlined,
-  HikingOutlined,
-  HandymanOutlined,
-  MonitorHeartOutlined,
-  FitnessCenterOutlined,
-} from "@mui/icons-material";
-import { useHistory, useParams } from "react-router-dom";
-import {
-  Container,
-  Button,
-  IconButton,
-  InputBase,
-  Select,
-  MenuItem,
-  TextField,
-} from "@mui/material";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import YupPassword from "yup-password";
+import Axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Add, ArrowBack, Remove } from '@mui/icons-material';
+import { useHistory, useParams } from 'react-router-dom';
+import { Container, Button, IconButton, InputBase, Select, MenuItem, TextField } from '@mui/material';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import YupPassword from 'yup-password';
 
 import "../../assets/styles/ProductDetailAdmin.css";
 import { useSelector } from "react-redux";
@@ -51,6 +32,7 @@ export default function ProductDetailAdmin() {
   const [categoryList, setCategoryList] = useState([]);
   const [resStock, setResStock] = useState([]);
   const [refreshStock, setRefreshStock] = useState([]);
+  const [whList, setWhList] = useState([]);
   const [stockChange, SetStockChange] = useState({
     wh_id: "",
     count: "",
@@ -66,6 +48,7 @@ export default function ProductDetailAdmin() {
   useEffect(() => {
     fetchProducts();
     fetchCategories();
+    getWh();
   }, [refreshStock]);
 
   // Mengambil data product berdasarkan ID dari backend
@@ -152,15 +135,12 @@ export default function ProductDetailAdmin() {
 
   const changeStock = (name, count, number, requester) => {
     if (number >= 1) {
-      Axios.patch(
-        `${process.env.REACT_APP_API_BASE_URL}/product/update-stock/${id}`,
-        {
-          wh_id: name + 1,
-          count: count,
-          number: number,
-          requester: stateUsername.user.fullname,
-        }
-      )
+      Axios.patch(`${process.env.REACT_APP_API_BASE_URL}/product/update-stock/${id}`, {
+        wh_id: name,
+        count: count,
+        number: number,
+        requester: stateUsername.user.fullname,
+      })
         .then((data) => {
           resStock[name] = data.data;
           setRefreshStock(resStock);
@@ -174,53 +154,64 @@ export default function ProductDetailAdmin() {
     }
   };
 
-  const warehouseStock = (index, number) => {
-    return (
-      <div className="pdadmin-stock-wh">
-        <div className="pdadmin-stock-name">Warehouse {index + 1}</div>
-        <div className="pdadmin-stock-qty">{resStock[index]} pcs</div>
-        {isSuperAdmin ? (
-          <>
-            <div className="pdadmin-stock-edit">
-              <InputBase
-                sx={{ fontFamily: "Lora" }}
-                placeholder="0"
-                className="pdadmin-stock-text"
-                onChange={(e) => {
-                  number = e.target.value;
-                }}
-              />
-              <IconButton
-                className="pdadmin-stock-add"
-                onClick={() => {
-                  changeStock(index, "add", number);
-                }}
-              >
-                <Add />
-              </IconButton>
-            </div>
-            <div className="pdadmin-stock-edit">
-              <InputBase
-                sx={{ fontFamily: "Lora" }}
-                placeholder="0"
-                className="pdadmin-stock-text"
-                onChange={(e) => {
-                  number = e.target.value;
-                }}
-              />
-              <IconButton
-                className="pdadmin-stock-decrease"
-                onClick={() => {
-                  changeStock(index, "reduce", number);
-                }}
-              >
-                <Remove />
-              </IconButton>
-            </div>
-          </>
-        ) : null}
-      </div>
-    );
+  // GET WH
+  const getWh = () => {
+    Axios.get(`${process.env.REACT_APP_API_BASE_URL}/product/get-wh`)
+      .then((result) => {
+        setWhList(result.data);
+      })
+      .catch((err) => {
+        alert('Terjadi kesalahan di server');
+      });
+  };
+
+  const warehouseStock = (number) => {
+    return whList.map((val, idx) => {
+      return (
+        <div className="pdadmin-stock-wh">
+          <div className="pdadmin-stock-name">Warehouse {val}</div>
+          <div className="pdadmin-stock-qty">{resStock[idx]} pcs</div>
+          {isSuperAdmin ? (
+            <>
+              <div className="pdadmin-stock-edit">
+                <InputBase
+                  sx={{ fontFamily: 'Lora' }}
+                  placeholder="0"
+                  className="pdadmin-stock-text"
+                  onChange={(e) => {
+                    number = e.target.value;
+                  }}
+                />
+                <IconButton
+                  className="pdadmin-stock-add"
+                  onClick={() => {
+                    changeStock(val, 'add', number);
+                  }}>
+                  <Add />
+                </IconButton>
+              </div>
+              <div className="pdadmin-stock-edit">
+                <InputBase
+                  sx={{ fontFamily: 'Lora' }}
+                  placeholder="0"
+                  className="pdadmin-stock-text"
+                  onChange={(e) => {
+                    number = e.target.value;
+                  }}
+                />
+                <IconButton
+                  className="pdadmin-stock-decrease"
+                  onClick={() => {
+                    changeStock(val, 'reduce', number);
+                  }}>
+                  <Remove />
+                </IconButton>
+              </div>
+            </>
+          ) : null}
+        </div>
+      );
+    });
   };
 
   return (
@@ -436,16 +427,14 @@ export default function ProductDetailAdmin() {
               </div>
               <div className="pdadmin-pricing">
                 <div className="pdadmin-price-title">Price</div>
-                <div className="pdadmin-price">${state.price}</div>
+                <div className="pdadmin-price">Rp. {state.price}</div>
               </div>
               <hr className="splitter" />
             </div>
           </>
         )}
 
-        <div className="pdadmin-stock">
-          {resStock.map((item, index) => warehouseStock(index))}
-        </div>
+        <div className="pdadmin-stock">{warehouseStock()}</div>
       </div>
     </Container>
   );

@@ -32,6 +32,7 @@ class ProductLists extends React.Component {
 
   componentDidMount() {
     this.getDataProduct(0);
+    this.fetchCategories();
   }
 
   filterHandler = () => {
@@ -57,6 +58,16 @@ class ProductLists extends React.Component {
   // product detail
   detailBtnHandler = (id) => {
     this.props.history.push(`/product-detail/${id}`);
+  };
+
+  fetchCategories = () => {
+    Axios.get(`${process.env.REACT_APP_API_BASE_URL}/product/get-category`)
+      .then((result) => {
+        this.setState({ ...this.state, categoryList: result.data });
+      })
+      .catch((err) => {
+        alert('Terjadi kesalahan di server');
+      });
   };
 
   getDataProduct = (page, sort, search) => {
@@ -107,13 +118,10 @@ class ProductLists extends React.Component {
   };
 
   renderProduct = () => {
-    const beginningIndex = (this.state.page - 1) * this.state.itemPerPage;
-    const currentData = this.state.productList.slice(
-      beginningIndex,
-      beginningIndex + this.state.itemPerPage
-    );
+    // const beginningIndex = (this.state.page - 1) * this.state.itemPerPage;
+    // const currentData = this.state.productList.slice(beginningIndex, beginningIndex + this.state.itemPerPage);
 
-    return currentData.map((val) => {
+    return this.state.dataProduct.map((val, index) => {
       return (
         <div className="plc-main">
           <div className="plc-image">
@@ -127,9 +135,9 @@ class ProductLists extends React.Component {
             <div className="plc-detail-name">{val.name}</div>
             <div className="plc-detail-subname">
               <div className="plc-detail-subname-1">
-                <SportsSoccerOutlined />
+                <img src={val.category?.picture} />
               </div>
-              <div className="plc-detail-subname-2">{val.category}</div>
+              <div className="plc-detail-subname-2">{val.category?.name}</div>
             </div>
             <div className="plc-detail-bottom">
               <Button

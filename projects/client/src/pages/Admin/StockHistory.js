@@ -189,10 +189,7 @@ class StockHistory extends React.Component {
             </div>
 
             <div className="shc-detail-bottom">
-              <Link
-                to="/product-stock-history"
-                className="pladmin-banner-menu-link"
-              >
+              {/* <Link to="/product-stock-history" className="pladmin-banner-menu-link"> */}
                 <Button
                   sx={{
                     borderRadius: "20px",
@@ -207,7 +204,7 @@ class StockHistory extends React.Component {
                 >
                   Detail
                 </Button>
-              </Link>
+              {/* </Link> */}
             </div>
           </div>
         </div>

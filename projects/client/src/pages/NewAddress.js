@@ -91,8 +91,7 @@ function NewAddress() {
       for (let x = 0; x < splitCity.length - 1; x++) {
         cityName = cityName + splitCity[x] + " ";
       }
-      setCity(cityName);
-      console.log(city);
+      setCity(cityName)
     } else {
       setCity(splitCity[0]);
     }

@@ -8,31 +8,20 @@ import {
   FormControl,
   IconButton,
   Container,
-} from "@mui/material";
-import { Email, Lock, Visibility, VisibilityOff } from "@mui/icons-material";
-import {
-  FacebookLoginButton,
-  TwitterLoginButton,
-  GoogleLoginButton,
-} from "react-social-login-buttons";
-import { Link } from "react-router-dom";
-import {
-  firebaseAuthentication,
-  googleProvider,
-  facebookProvider,
-} from "../../config/firebase.js";
-import Axios from "axios";
-import "../../assets/styles/SignIn.css";
-import { useHistory } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
-import { useFormik, yupToFormErrors } from "formik";
-import * as Yup from "yup";
-import YupPassword from "yup-password";
-import { useDispatch } from "react-redux";
-import {
-  loginUser,
-  logoutUser,
-} from "../../redux/actionCreators/authActionCreators.js";
+} from '@mui/material';
+import { Email, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
+import { FacebookLoginButton, TwitterLoginButton, GoogleLoginButton } from 'react-social-login-buttons';
+import { Link } from 'react-router-dom';
+import { firebaseAuthentication, googleProvider, facebookProvider } from '../../config/firebase.js';
+import Axios from 'axios';
+import '../../assets/styles/SignIn.css';
+import { useHistory } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import YupPassword from 'yup-password';
+import { useDispatch } from 'react-redux';
+import { loginUser, logoutUser } from '../../redux/actionCreators/authActionCreators.js';
 
 export default function SignIn() {
   const [withPassword, setWithPassword] = useState(false);
@@ -51,10 +40,9 @@ export default function SignIn() {
       password: "",
     },
     validationSchema: Yup.object().shape({
-      email: Yup.string()
-        .required("Email Invalid")
-        .email("Format is not Email"),
-      // password: Yup.string().required('Please Enter your password').matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,"Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"),
+      email: Yup.string().required('Email Invalid').email('Format is not Email'),
+      password: Yup.string().required('Please Enter your password')
+      // .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,"Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"),
     }),
     validateOnChange: false,
     onSubmit: async (values) => {
@@ -66,18 +54,23 @@ export default function SignIn() {
             user: res.user.providerData[0],
             id: res.user.uid,
           };
-          dispatch(loginUser(data));
-          // Axios.get(`${process.env.REACT_APP_API_BASE_URL}/admin/get-user-one/${data.id}`).then((res) => {
-          //   const getRes = res.data.result;
-          //   return getRes
-          // });
-          if (res.user.emailVerified) {
-            history.push("/");
-          } else {
-            alert("Please Verify your Email First!");
-            firebaseAuthentication.signOut();
-            dispatch(logoutUser());
-          }
+          Axios.get(`${process.env.REACT_APP_API_BASE_URL}/customer/profile/${data.id}`)
+          .then(res=>{
+            console.log('data axios setelah firebase login',res.data)
+            const globalData = {
+              user: res.data,
+              id: res.data.customer_uid,
+            }
+            if(globalData.user.is_banned === true){
+              alert(`Account not found`)
+              firebaseAuthentication.signOut()
+              dispatch(logoutUser())
+              window.location.reload()
+            } else {
+              dispatch(loginUser(globalData))
+              history.push('/')
+            }
+          })
         })
         .catch((err) => {
           alert("Error Submitting Data");
@@ -148,6 +141,7 @@ export default function SignIn() {
                   placeholder="Email"
                 />
               </FormControl>
+              {formik.errors.email ? <div className="alert-danger">{formik.errors.email}</div> : null}
 
               <FormControl variant="standard" className="sign-in-form-input">
                 <Input
@@ -178,6 +172,7 @@ export default function SignIn() {
                   placeholder="Password"
                 />
               </FormControl>
+              {formik.errors.password ? <div className="alert-danger">{formik.errors.password}</div> : null}
 
               <div className="sign-in-form-check">
                 <FormControlLabel
