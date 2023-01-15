@@ -22,7 +22,7 @@ import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import { firebaseAuthentication } from '../../config/firebase';
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch ,useSelector} from 'react-redux';
 import { logoutUser } from '../../redux/actionCreators/authActionCreators';
 
 export default function DetailUser() {
@@ -36,6 +36,12 @@ export default function DetailUser() {
   const [currentEmail, setCurrentEmail] = useState()
   const [dataFullname,setDataFullname] = useState()
   const [currentPass, setCurrentPass] = useState()
+
+  const { isLoggedIn, user } = useSelector((state) => ({
+    isLoggedIn: state.auth.isLoggedIn,
+    user: state.auth.user,
+  }));
+  const adminSup = user?.approle?.role
 
   const detailListing=()=>{
     Axios.get(`http://localhost:3300/api/customer/profile/${id}`) //fetch user detail
@@ -185,7 +191,9 @@ export default function DetailUser() {
                 }}
                 variant="contained"
                 onClick={editHandler}
-                className="detailuser-banner-edit">
+                className="detailuser-banner-edit"
+                disabled={user?.approle?.role.includes("admin")}
+                >
                 Edit
               </Button>
             </>
@@ -310,8 +318,8 @@ export default function DetailUser() {
               </li>
               <li className="du-c-d-item">
                 <VerifiedUser className="profileIcon" />
-                <span className="du-c-d-item-1">Status</span>
-                <span className="du-c-d-item-2">{editDetail?.is_verified ? 'Verifed' : 'Not Verified'}</span>
+                <span className="du-c-d-item-1">Role</span>
+                <span className="du-c-d-item-2">{editDetail?.approle?.role}</span>
               </li>
               <li className="du-c-d-item">
                 {/* {isEdit ? (

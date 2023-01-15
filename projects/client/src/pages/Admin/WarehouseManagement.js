@@ -83,7 +83,7 @@ function WarehouseManagement() {
             </button>
             <Menu {...bindMenu(popupState)}>
               <MenuItem>
-                <Link to="/dashboard" className="whmanagement-banner-menu-link">
+                <Link to="/" className="whmanagement-banner-menu-link">
                   Dashboard
                 </Link>
               </MenuItem>
@@ -159,7 +159,6 @@ function WarehouseManagement() {
     <>
       {user?.approle?.role !== "user" ? (
         <Container maxWidth="xs" sx={{ backgroundColor: "white" }}>
-          {console.log(WarehouseDetails)}
           <div className="whmanagement-main">
             <div className="whmanagement-banner">
               <div className="whmanagement-banner-logo">
@@ -203,14 +202,14 @@ function WarehouseManagement() {
               </div>
 
               <div className="whmanagement-banner-add">
-                {adminRole === "superadmin" ? (
+                {adminData?.approle?.role === "superadmin" ? (
                   <Link to="/add-warehouse">
                     <IconButton>
                       <AddBusiness />
                     </IconButton>
                   </Link>
                 ) : (
-                  <IconButton disabled={adminRole !== "superadmin"}>
+                  <IconButton disabled>
                     <AddBusiness />
                   </IconButton>
                 )}

@@ -10,9 +10,12 @@ import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import { firebaseAuthentication } from '../../config/firebase';
 import { useState } from 'react';
+import { useDispatch } from "react-redux";
+import { logoutUser } from '../../redux/actionCreators/authActionCreators';
 
 export default function AddUser() {
   let history = useHistory();
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [showRepassword, setShowRepassword] = useState(false);
   const [roleSelect,setRoleSelect] = useState("")
@@ -101,7 +104,10 @@ export default function AddUser() {
             })
               .then(()=>{
                 console.log(res,': user register response')
-                history.push('/reconfirm-admin')
+                alert('New admin created, please relog to continue managing dashboard')
+                firebaseAuthentication.signOut()
+                dispatch(logoutUser());
+                history.push('/sign-in')
             })
               .catch((error) => {
               console.log(error);
@@ -137,9 +143,9 @@ export default function AddUser() {
             src="https://media.istockphoto.com/id/1309328823/photo/headshot-portrait-of-smiling-male-employee-in-office.jpg?b=1&s=170667a&w=0&k=20&c=MRMqc79PuLmQfxJ99fTfGqHL07EDHqHLWg0Tb4rPXQc="
             alt=""
           />
-          <button className="adduser-avatar-icon">
+          {/* <button className="adduser-avatar-icon">
             <AddAPhoto />
-          </button>
+          </button> */}
         </div>
         <div className="adduser-form">
           <FormControl variant="standard" className="adduser-form-input">
@@ -156,6 +162,7 @@ export default function AddUser() {
               placeholder="Fullname"
             />
           </FormControl>
+          {formik.errors.fullname ? <div className="alert-danger">{formik.errors.fullname}</div> : null}
 
           <FormControl variant="standard" className="adduser-form-input">
             <Input
@@ -171,6 +178,7 @@ export default function AddUser() {
               placeholder="Email"
             />
           </FormControl>
+          {formik.errors.email ? <div className="alert-danger">{formik.errors.email}</div> : null}
 
           <FormControl variant="standard" className="adduser-form-input">
             <Input
@@ -198,6 +206,7 @@ export default function AddUser() {
               placeholder="Password"
             />
           </FormControl>
+          {formik.errors.password ? <div className="alert-danger">{formik.errors.password}</div> : null}
 
           <FormControl variant="standard" className="adduser-form-input">
             <Input
@@ -225,19 +234,8 @@ export default function AddUser() {
               placeholder="Re-enter Password"
             />
           </FormControl>
+          {formik.errors.repassword ? <div className="alert-danger">{formik.errors.repassword}</div> : null}
         </div>
-        {/* <div>
-          <span className='role-span'>Select Role :</span>
-          <Select 
-            className='role-selector' 
-            value={roleSelect} 
-            onChange={e=>setRoleSelect(e.target.value)}
-          >
-            <MenuItem value={`Admin Warehouse A`}>Admin Warehouse A</MenuItem>
-            <MenuItem value={`Admin Warehouse B`}>Admin Warehouse B</MenuItem>
-            <MenuItem value={`Admin Warehouse C`}>Admin Warehouse C</MenuItem>
-          </Select>
-        </div> */}
         <div className="adduser-button">
           <button class="adduser-button-2" onClick={formik.handleSubmit}>
             Add User

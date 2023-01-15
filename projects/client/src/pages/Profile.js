@@ -14,11 +14,6 @@ import Axios from "axios";
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 function Profile() {
-  // const { user: currentUser } = useContext(AuthContext);
-  //  console.log(currentUser);
-  // const user = currentUser?.uid;
-  // console.log(user);
-
   const { isLoggedIn, user } = useSelector(
     (state) => ({
       isLoggedIn: state.auth.isLoggedIn,
@@ -26,7 +21,7 @@ function Profile() {
     }),
   );
   const userUID = user?.customer_uid
-  console.log(user)
+  const profileData = user
 
   const [fullname, setFullname] = useState("");
   const [picture, setPicture] = useState("");
@@ -48,6 +43,10 @@ function Profile() {
       getUserById(userUID);
     }
   }, [userUID]);
+
+  const btnHandler=()=>{
+    history.push('/change-password')
+  }
 
   const goBack = () => {
     history.goBack();
@@ -77,30 +76,21 @@ function Profile() {
           </div>
         </div>
         <div className="profileOption">
-          <Link to={`/edit-profile/${userUID}`}>
+          <Link to={`/edit-profile/${userUID}`} style={{ textDecoration: 'none' }}>
             <button className="optionBtn">
               <EditIcon />
               <span className="optionBtnText">Edit Profile</span>
               <ArrowForwardIosIcon />
             </button>
           </Link>
-          <Link to="/change-password">
-            <button className="optionBtn">
+          
+          <Link to="/change-password" style={{ textDecoration: 'none' }}>
+            <button className="optionBtn" disabled={profileData?.social_login==true} onClick={btnHandler}>
               <EditIcon />
               <span className="optionBtnText">Edit Password</span>
               <ArrowForwardIosIcon />
             </button>
           </Link>
-          <button className="optionBtn">
-            <ShoppingCartIcon />
-            <span className="optionBtnText">Your Cart</span>
-            <ArrowForwardIosIcon />
-          </button>
-          <button className="optionBtn">
-            <LocationOnIcon />
-            <span className="optionBtnText">address List</span>
-            <ArrowForwardIosIcon />
-          </button>
         </div>
       </div>
     </Container>

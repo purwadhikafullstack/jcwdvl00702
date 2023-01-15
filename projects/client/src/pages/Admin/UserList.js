@@ -178,7 +178,7 @@ export default function UserList() {
                 Banned
               </div>
             ) : (
-              <div className="ulc-detail-subname">Safe User</div>
+              <div className="ulc-detail-subname">Safe Account</div>
             )}
             <div className="ulc-detail-subname">{val?.createdAt}</div>
             <div className="ulc-detail-bottom">
@@ -192,7 +192,9 @@ export default function UserList() {
                   color: 'black',
                 }}
                 variant="contained"
-                className="ulc-detail-bottom-delete">
+                className="ulc-detail-bottom-delete"
+                disabled={val?.approle?.role.includes('admin')}
+                >
                 Delete
               </Button>
               {/* <Link to="/detail-user" className="userlist-banner-menu-link"> */}
@@ -208,7 +210,7 @@ export default function UserList() {
                   }}
                   variant="contained"
                   className="ulc-detail-bottom-detail"
-                  disabled={val?.approle?.role === 'user'}
+                  // disabled={val?.approle?.role === 'user'}
                 >
                   Detail
                 </Button>
@@ -225,7 +227,6 @@ export default function UserList() {
     <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
       {adminSup !== 'superadmin' ? <Redirect to="/"/> : null}
       <div className="userlist-main">
-        {console.log('userbox',userBox)}
         <div className="userlist-banner">
           <div className="userlist-banner-logo">
             <IconButton disabled>
