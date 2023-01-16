@@ -21,10 +21,17 @@ import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import YupPassword from "yup-password";
+import { useSelector } from "react-redux";
 
 import "../../assets/styles/ProductCategory.css";
 
 export default function ProductCategory() {
+  const { isLoggedIn, user } = useSelector((state) => ({
+    isLoggedIn: state.auth.isLoggedIn,
+    user: state.auth.user,
+  }));
+  const userUID = user?.customer_uid;
+
   const history = useHistory();
 
   useEffect(() => {
@@ -278,6 +285,7 @@ export default function ProductCategory() {
                   onClick={() => isDel(index)}
                   variant="contained"
                   className="apc-card-delete"
+                  disabled={user?.approle?.role !== "superadmin"}
                 >
                   Delete
                 </Button>
@@ -320,6 +328,7 @@ export default function ProductCategory() {
                   variant="contained"
                   className="apc-card-edit"
                   onClick={() => isEditHandle(index)}
+                  disabled={user?.approle?.role !== "superadmin"}
                 >
                   Edit
                 </Button>
@@ -343,7 +352,7 @@ export default function ProductCategory() {
         </div>
         <div className="apc-content">{categoryCard()}</div>
 
-        <button className="apc-add" onClick={() => setSetAdd(true)}>
+        <button className="apc-add" disabled={user?.approle?.role !== "superadmin"} onClick={() => setSetAdd(true)}>
           Add New Category
         </button>
         <Modal

@@ -11,11 +11,12 @@ import {
 
 import Axios from "axios";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { Link, useParams, useHistory} from "react-router-dom";
 import "../assets/styles/payment.css";
 
 function Payment() {
   const { id, orderId } = useParams();
+  const history = useHistory();
 
   const [order, setOrder] = useState([]);
   const [picture, setPicture] = useState("");
@@ -23,6 +24,8 @@ function Payment() {
   const [bank, setBank] = useState();
   const [cartPrice, setCartPrice] = useState(0);
   const [cart, setCart] = useState([]);
+
+
 
   // mengambil data order
   const getOrder = () => {
@@ -72,7 +75,13 @@ function Payment() {
 
   // finish submit
   const uploadPicture = () => {
-    // Upload bukti pembayaran ke tabel order
+    if(!bank){
+      alert("mohon pilih bank terlebih dahulu")
+    } else {
+      if(!picture){
+        alert("mohon upload bukti pembayaran")
+      } else {
+        // Upload bukti pembayaran ke tabel order
     const data = new FormData();
     data.append("payment_picture", picture);
 
@@ -94,7 +103,7 @@ function Payment() {
       const cartData = {
         order_id: order.id,
         product_id: cart[i].product_id,
-        warehouse_id: "A",
+        warehouse_id: order.warehouse_id,
         quantity: cart[i].quantity,
       };
       Axios.post(
@@ -103,6 +112,17 @@ function Payment() {
       )
         .then((response) => console.log(response.data))
         .catch((error) => console.error(error));
+    }
+
+        // delete semua cart agar user bisa order kembali
+        Axios.delete(`${process.env.REACT_APP_API_BASE_URL}/cart/delete-all-cart/${id}`)
+        .then(() => {
+          history.push(`/`);
+        })
+        .catch(() => {
+          alert("Server Error!");
+        });
+      }
     }
   };
 

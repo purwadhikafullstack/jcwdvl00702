@@ -1,5 +1,6 @@
-import React from "react";
-import Axios from "axios";
+import React from 'react';
+import { connect } from 'react-redux';
+import Axios from 'axios';
 import {
   IconButton,
   Box,
@@ -42,7 +43,7 @@ class StockMutation extends React.Component {
     value: "auto",
     status: "",
     isSearch: false,
-    isAdmin: true,
+    isrole: {},
     setAdd: false,
     askFrom: 0,
     askTo: 0,
@@ -51,16 +52,24 @@ class StockMutation extends React.Component {
     setOpenA: false,
     setOpenR: false,
     mutationList: [],
+    whList: [],
     page: 0,
     pages: 0,
-    sort: "",
-    search: "",
-    filter: "manual",
-    myWarehouse: "3",
+    sort: '',
+    search: '',
+    filter: 'manual',
+    myWarehouse: '',
   };
 
   componentDidMount() {
-    this.fetchMutation(0, "", "", this.state.value);
+    this.getWh();
+    this.userCheck();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.user_id === null && this.props.user_id) {
+      this.userCheck();
+    }
   }
 
   inputHandler = (event) => {
@@ -72,7 +81,7 @@ class StockMutation extends React.Component {
 
   handleChange = (event, value) => {
     this.setState({ ...this.state, value });
-    this.fetchMutation(0, "", "", value);
+    this.fetchMutation(0, '', '', value, this.state.myWarehouse);
   };
 
   isSearchHandle = () => {
@@ -91,6 +100,34 @@ class StockMutation extends React.Component {
     this.setState({ ...this.state, setAdd: false });
   };
 
+  userCheck = () => {
+    const userUID = this.props.user_id;
+    Axios.get(`${process.env.REACT_APP_API_BASE_URL}/customer/profile/${userUID}`)
+      .then((res) => {
+        this.setState({ ...this.state, isrole: res.data });
+        if (res.data.approle.role === 'superadmin') {
+          this.setState({ ...this.state, myWarehouse: '' });
+        } else if (res.data.approle.warehouse_id) {
+          this.setState({ ...this.state, myWarehouse: res.data.approle.warehouse_id.toString() });
+        }
+        this.fetchMutation(0, '', '', this.state.value, this.state.myWarehouse);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // GET WH
+  getWh = () => {
+    Axios.get(`${process.env.REACT_APP_API_BASE_URL}/product/get-wh`)
+      .then((result) => {
+        this.setState({ ...this.state, whList: result.data });
+      })
+      .catch((err) => {
+        alert('Terjadi kesalahan di server');
+      });
+  };
+
   askMutation = (from, to, product, quantity) => {
     Axios.post(`${process.env.REACT_APP_API_BASE_URL}/product/stock-mutation`, {
       from,
@@ -101,7 +138,7 @@ class StockMutation extends React.Component {
       .then((data) => {
         alert("Permintaan mutasi stok berhasil dibuat");
         this.setState({ ...this.state, setAdd: false });
-        this.fetchMutation(0, "", "", this.state.value);
+        this.fetchMutation(0, '', '', this.state.value, this.state.myWarehouse);
       })
       .catch((error) => {
         alert("gagal");
@@ -147,7 +184,7 @@ class StockMutation extends React.Component {
         } else {
           alert(data.data.message);
         }
-        this.fetchMutation(0, "", "", this.state.value);
+        this.fetchMutation(0, '', '', this.state.value, this.state.myWarehouse);
       })
       .catch((error) => {
         alert("Mutasi gagal!");
@@ -211,140 +248,105 @@ class StockMutation extends React.Component {
 
   mutationCard = () => {
     return this.state.mutationList.map((val, index) => {
-      let picPathArray = val.product_picture.split("/");
+      let picPathArray = val.product_picture.split("\\");
       let picPath =
-        "http://localhost:3300/" + picPathArray[1] + "/" + picPathArray[2];
+        "http://localhost:8000/" + picPathArray[1] + "/" + picPathArray[2];
       let productPicture = picPath;
-      if (
-        this.state.myWarehouse !== val.warehouse_id &&
-        this.state.myWarehouse !== val.requester
-      ) {
-        return null;
-      } else {
-        return (
-          <div className="mutation-main">
-            <div className="mutation-image">
-              <img
-                src={productPicture}
-                className="mutation-product"
-                alt="Product"
-              />
-            </div>
-            <div className="mutation-detail">
-              <div className="mutation-detail-name">{val.product_name}</div>
-              <div className="mutation-detail-subname">
-                Product ID: {val.product_id}
-              </div>
-              <div className="mutation-detail-subname">
-                From: WH00{val.warehouse_id}
-              </div>
-              <div className="mutation-detail-subname">
-                Qty: {val.quantity} pcs
-              </div>
-              <div className="mutation-detail-subname">
-                To: WH00{val.requester}
-              </div>
-              {this.mutationDetailStatus(val.status)}
-
-              {this.state.value === "auto" ||
-              this.state.myWarehouse === val.requester ||
-              val.status === "done" ||
-              val.status === "canceled" ? null : (
-                <>
-                  <div className="mutation-detail-bottom">
-                    <div>
-                      <Button
-                        sx={{
-                          borderRadius: "20px",
-                          backgroundColor: "rgba(127, 255, 212, 0.4)",
-                          fontSize: "8px",
-                          fontFamily: "Lora",
-                          color: "black",
-                        }}
-                        onClick={this.handleClickOpenAccept}
-                        variant="contained"
-                        className="mutation-detail-bottom-track"
-                      >
-                        Accept
-                      </Button>
-                      <Dialog
-                        open={this.state.setOpenA}
-                        onClose={this.handleCloseAccept}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                      >
-                        <DialogTitle id="alert-dialog-title">
-                          {"Accept mutation request"}
-                        </DialogTitle>
-                        <DialogContent>
-                          <DialogContentText id="alert-dialog-description">
-                            Are you sure ?
-                          </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                          <Button onClick={this.handleCloseAccept}>No</Button>
-                          <Button
-                            onClick={() => {
-                              console.log("val id", val.id);
-                              this.respondMutation(val.id, "accept");
-                            }}
-                            autoFocus
-                          >
-                            Yes
-                          </Button>
-                        </DialogActions>
-                      </Dialog>
-                    </div>
-                    <div>
-                      <Button
-                        sx={{
-                          borderRadius: "20px",
-                          backgroundColor: "rgb(220,20,60,0.4)",
-                          fontSize: "8px",
-                          fontFamily: "Lora",
-                          color: "black",
-                        }}
-                        onClick={this.handleClickOpenReject}
-                        variant="contained"
-                        className="mutation-detail-bottom-track"
-                      >
-                        Reject
-                      </Button>
-                      <Dialog
-                        open={this.state.setOpenR}
-                        onClose={this.handleCloseReject}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                      >
-                        <DialogTitle id="alert-dialog-title">
-                          {"Reject mutation request"}
-                        </DialogTitle>
-                        <DialogContent>
-                          <DialogContentText id="alert-dialog-description">
-                            Are you sure ?
-                          </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                          <Button onClick={this.handleCloseReject}>No</Button>
-                          <Button
-                            onClick={() => {
-                              console.log("val id", val.id);
-                              this.respondMutation(val.id, "reject");
-                            }}
-                            autoFocus
-                          >
-                            Yes
-                          </Button>
-                        </DialogActions>
-                      </Dialog>
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
+      return (
+        <div className="mutation-main">
+          <div className="mutation-image">
+            <img src={productPicture} className="mutation-product" alt="Product" />
           </div>
-        );
-      }
+          <div className="mutation-detail">
+            <div className="mutation-detail-name">{val.product_name}</div>
+            <div className="mutation-detail-subname">Product ID: {val.product_id}</div>
+            <div className="mutation-detail-subname">From: WH00{val.warehouse_id}</div>
+            <div className="mutation-detail-subname">Qty: {val.quantity} pcs</div>
+            <div className="mutation-detail-subname">To: WH00{val.requester}</div>
+            {this.mutationDetailStatus(val.status)}
+
+            {this.state.value === 'auto' ||
+            this.state.myWarehouse === val.requester ||
+            val.status === 'done' ||
+            val.status === 'canceled' ? null : (
+              <>
+                <div className="mutation-detail-bottom">
+                  <div>
+                    <Button
+                      sx={{
+                        borderRadius: '20px',
+                        backgroundColor: 'rgba(127, 255, 212, 0.4)',
+                        fontSize: '8px',
+                        fontFamily: 'Lora',
+                        color: 'black',
+                      }}
+                      onClick={this.handleClickOpenAccept}
+                      variant="contained"
+                      className="mutation-detail-bottom-track">
+                      Accept
+                    </Button>
+                    <Dialog
+                      open={this.state.setOpenA}
+                      onClose={this.handleCloseAccept}
+                      aria-labelledby="alert-dialog-title"
+                      aria-describedby="alert-dialog-description">
+                      <DialogTitle id="alert-dialog-title">{'Accept mutation request'}</DialogTitle>
+                      <DialogContent>
+                        <DialogContentText id="alert-dialog-description">Are you sure ?</DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={this.handleCloseAccept}>No</Button>
+                        <Button
+                          onClick={() => {
+                            this.respondMutation(val.id, 'accept');
+                          }}
+                          autoFocus>
+                          Yes
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
+                  </div>
+                  <div>
+                    <Button
+                      sx={{
+                        borderRadius: '20px',
+                        backgroundColor: 'rgb(220,20,60,0.4)',
+                        fontSize: '8px',
+                        fontFamily: 'Lora',
+                        color: 'black',
+                      }}
+                      onClick={this.handleClickOpenReject}
+                      variant="contained"
+                      className="mutation-detail-bottom-track">
+                      Reject
+                    </Button>
+                    <Dialog
+                      open={this.state.setOpenR}
+                      onClose={this.handleCloseReject}
+                      aria-labelledby="alert-dialog-title"
+                      aria-describedby="alert-dialog-description">
+                      <DialogTitle id="alert-dialog-title">{'Reject mutation request'}</DialogTitle>
+                      <DialogContent>
+                        <DialogContentText id="alert-dialog-description">Are you sure ?</DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={this.handleCloseReject}>No</Button>
+                        <Button
+                          onClick={() => {
+                            this.respondMutation(val.id, 'reject');
+                          }}
+                          autoFocus>
+                          Yes
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      );
     });
   };
 
@@ -559,9 +561,11 @@ class StockMutation extends React.Component {
                         <MenuItem value={0}>
                           <em>From</em>
                         </MenuItem>
-                        <MenuItem value={1}>Warehouse 1</MenuItem>
-                        <MenuItem value={2}>Warehouse 2</MenuItem>
-                        <MenuItem value={3}>Warehouse 3</MenuItem>
+                        {this.state.whList.map((val, index) => {
+                          return (
+                            <MenuItem value={this.state.whList[index]}>Warehouse {this.state.whList[index]}</MenuItem>
+                          );
+                        })}
                       </Select>
                     </FormControl>
                     <FormControl sx={{ width: "200px" }}>
@@ -576,12 +580,11 @@ class StockMutation extends React.Component {
                         <MenuItem value={0}>
                           <em>To</em>
                         </MenuItem>
-                        {/* THE RIGHT */}
-                        {/* <MenuItem value={this.state.myWarehouse}>Warehouse {this.state.myWarehouse}</MenuItem> */}
-                        {/* THE TEST */}
-                        <MenuItem value={1}>Warehouse 1</MenuItem>
-                        <MenuItem value={2}>Warehouse 2</MenuItem>
-                        <MenuItem value={3}>Warehouse 3</MenuItem>
+                        {this.state.whList.map((val, index) => {
+                          return (
+                            <MenuItem value={this.state.whList[index]}>Warehouse {this.state.whList[index]}</MenuItem>
+                          );
+                        })}
                       </Select>
                     </FormControl>
                     <InputBase
@@ -624,12 +627,12 @@ class StockMutation extends React.Component {
                       className="apc-card-edit"
                       onClick={() => {
                         if (this.state.askFrom !== this.state.askTo) {
-                          this.askMutation(
-                            this.state.askFrom,
-                            this.state.askTo,
-                            this.state.productValue,
-                            this.state.quantityValue
-                          );
+                            this.askMutation(
+                              this.state.askFrom,
+                              this.state.askTo,
+                              this.state.productValue,
+                              this.state.quantityValue
+                            );
                         } else {
                           alert(
                             "Warehouse From dan Warehouse To tidak boleh sama!"
@@ -701,4 +704,12 @@ class StockMutation extends React.Component {
   }
 }
 
-export default StockMutation;
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: state.auth.isLoggedIn,
+    user: state.auth.user,
+    user_id: state.auth.user_id,
+  };
+};
+
+export default connect(mapStateToProps)(StockMutation);

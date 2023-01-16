@@ -1,17 +1,10 @@
-import React from "react";
-import {
-  Button,
-  IconButton,
-  Container,
-  Select,
-  MenuItem,
-  InputBase,
-} from "@mui/material";
+import React from 'react';
+import { Button, IconButton, Container, Select, MenuItem, InputBase } from '@mui/material';
 import {
   ArrowBack,
   Person,
   Email,
-  Edit,
+  Password,
   ArrowForwardIos,
   Badge,
   Schedule,
@@ -19,36 +12,47 @@ import {
   Lock,
   PhotoCamera,
   Work,
-} from "@mui/icons-material";
-import { Link } from "react-router-dom";
-import "../../assets/styles/DetailUser.css";
-import Axios from "axios";
-import { useHistory } from "react-router-dom";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import YupPassword from "yup-password";
-import { firebaseAuthentication } from "../../config/firebase";
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+} from '@mui/icons-material';
+import { Link , useParams } from 'react-router-dom';
+import '../../assets/styles/DetailUser.css';
+import Axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import YupPassword from 'yup-password';
+import { firebaseAuthentication } from '../../config/firebase';
+import { useState, useEffect } from 'react';
+import { useDispatch ,useSelector} from 'react-redux';
+import { logoutUser } from '../../redux/actionCreators/authActionCreators';
 
 export default function DetailUser() {
+  const dispatch = useDispatch()
   let history = useHistory();
+  const{id} = useParams()
 
   const [isEdit, setIsEdit] = useState(false);
   const [securityValue, setSecurityValue] = useState(0);
   const [editDetail, setEditDetail] = useState([]);
+  const [currentEmail, setCurrentEmail] = useState()
+  const [dataFullname,setDataFullname] = useState()
+  const [currentPass, setCurrentPass] = useState()
 
-  const { detailUser } = useSelector((state) => ({
-    detailUser: state.userDetail.detailData,
+  const { isLoggedIn, user } = useSelector((state) => ({
+    isLoggedIn: state.auth.isLoggedIn,
+    user: state.auth.user,
   }));
-  console.log(`detail user`, editDetail);
+  const adminSup = user?.approle?.role
 
-  const fetchDetail = () => {
-    setEditDetail(detailUser);
-  };
+  const detailListing=()=>{
+    Axios.get(`${process.env.REACT_APP_API_BASE_URL}/customer/profile/${id}`) //fetch user detail
+    .then(res=>{
+      setEditDetail(res.data)
+      setCurrentEmail(res.data.email)
+    })
+  }
 
   useEffect(() => {
-    fetchDetail();
+    detailListing();
   }, []);
 
   const editHandler = () => {
@@ -57,6 +61,7 @@ export default function DetailUser() {
 
   const saveHandler = () => {
     setIsEdit(false);
+    window.location.reload()
   };
 
   const handleSecurityChange = (event) => {
@@ -70,43 +75,60 @@ export default function DetailUser() {
   YupPassword(Yup);
   const formik = useFormik({
     initialValues: {
-      email: "",
-      fullname: "",
+      email: currentEmail,
+      newEmail: '',
+      fullname: editDetail.fullname,
+      oldPass: '',
+      newPass: '',
     },
     validationSchema: Yup.object().shape({
       email: Yup.string()
-        .required("No email entered")
-        .email("Not an email format"),
+      .email('Not an email format'),
+      newEmail: Yup.string()
+      .email('Not an email format'),
       fullname: Yup.string()
-        .required("No fullname entered")
-        .matches(
-          /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-          "Name can only contain Latin letters."
-        )
-        .matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms, "Please enter your full name."),
+        .matches(/^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi, 'Name can only contain Latin letters.')
+        .matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms, 'Please enter your full name.'),
+      oldPass: Yup.string().required('Please Enter your password'),
     }),
     validateOnChange: false,
+    enableReinitialize: true,
     onSubmit: async (values) => {
-      const data = {
-        email: values.email,
-        fullname: values.fullname,
-      };
-      Axios.put(
-        `${process.env.REACT_APP_API_BASE_URL}/admin/update/${detailUser.customer_uid}`,
-        data
-      )
-        .then(() => {
-          fetchDetail();
-          history.push("/user-list");
+      firebaseAuthentication
+        .signInWithEmailAndPassword(values.email, values.oldPass)
+        .then((res)=>{
+          const newData = {
+            email:values.newEmail,
+            fullname:values.fullname,
+          }
+          
+          firebaseAuthentication.currentUser.updateEmail(newData.email)
+          .then((res)=>{
+            Axios.put(`${process.env.REACT_APP_API_BASE_URL}/admin/update-detail/${editDetail.customer_uid}`,newData)
+                .then((res) => {
+                  console.log(res.data)
+                  alert(`Relog Superadmin Credentials to Continue Use Dashboard`)
+                  firebaseAuthentication.signOut()
+                  dispatch(logoutUser())
+                  history.push('/sign-in')
+                })
+                .catch((error) => {
+                  console.log(error);
+            });
+          })
+          .catch(err=>{
+            alert(err)
+          })
+
+        }) 
+        .catch((err)=>{
+          alert(err)
         })
-        .catch((error) => {
-          console.log(error);
-        });
     },
   });
 
   return (
-    <Container maxWidth="xs" sx={{ backgroundColor: "white" }}>
+    <Container maxWidth="xs" sx={{ backgroundColor: 'white' }}>
       <div className="detailuser-main">
         <div className="detailuser-banner">
           <IconButton onClick={goBack}>
@@ -116,64 +138,62 @@ export default function DetailUser() {
 
           {isEdit ? (
             <>
-              <Button
+              {/* <Button
                 disabled
                 sx={{
-                  borderRadius: "20px",
-                  backgroundColor: "rgb(255,153,153,0.9)",
-                  fontSize: "8px",
-                  fontFamily: "Lora",
-                  color: "black",
-                  marginRight: "5px",
+                  borderRadius: '20px',
+                  backgroundColor: 'rgb(255,153,153,0.9)',
+                  fontSize: '8px',
+                  fontFamily: 'Lora',
+                  color: 'black',
+                  marginRight: '5px',
                 }}
                 variant="contained"
-                className="detailuser-banner-delete"
-              >
+                className="detailuser-banner-delete">
                 Delete
-              </Button>
+              </Button> */}
               <Button
                 sx={{
-                  borderRadius: "20px",
-                  backgroundColor: "rgb(153,255,255,0.9)",
-                  fontSize: "8px",
-                  fontFamily: "Lora",
-                  color: "black",
+                  borderRadius: '20px',
+                  backgroundColor: 'rgb(153,255,255,0.9)',
+                  fontSize: '8px',
+                  fontFamily: 'Lora',
+                  color: 'black',
                 }}
                 variant="contained"
                 onClick={saveHandler}
-                className="detailuser-banner-edit"
-              >
-                Save
+                className="detailuser-banner-edit">
+                Exit Edit
               </Button>
             </>
           ) : (
             <>
-              <Button
+              {/* <Button
                 sx={{
-                  borderRadius: "20px",
-                  backgroundColor: "rgb(255,153,153,0.9)",
-                  fontSize: "8px",
-                  fontFamily: "Lora",
-                  color: "black",
-                  marginRight: "5px",
+                  borderRadius: '20px',
+                  backgroundColor: 'rgb(255,153,153,0.9)',
+                  fontSize: '8px',
+                  fontFamily: 'Lora',
+                  color: 'black',
+                  marginRight: '5px',
                 }}
                 variant="contained"
-                className="detailuser-banner-delete"
-              >
+                className="detailuser-banner-delete">
                 Delete
-              </Button>
+              </Button> */}
               <Button
                 sx={{
-                  borderRadius: "20px",
-                  backgroundColor: "rgb(255,204,153,0.9)",
-                  fontSize: "8px",
-                  fontFamily: "Lora",
-                  color: "black",
+                  borderRadius: '20px',
+                  backgroundColor: 'rgb(255,204,153,0.9)',
+                  fontSize: '8px',
+                  fontFamily: 'Lora',
+                  color: 'black',
                 }}
                 variant="contained"
                 onClick={editHandler}
                 className="detailuser-banner-edit"
-              >
+                // disabled={user?.approle?.role.includes("admin")}
+                >
                 Edit
               </Button>
             </>
@@ -182,19 +202,14 @@ export default function DetailUser() {
         <div className="detailuser-content">
           {isEdit ? (
             <>
-              <IconButton
+              {/* <IconButton
                 color="primary"
                 aria-label="upload picture"
                 component="label"
-                sx={{
-                  marginLeft: "250px",
-                  width: "40px",
-                  marginBottom: "-30px",
-                }}
-              >
+                sx={{ marginLeft: '250px', width: '40px', marginBottom: '-30px' }}>
                 <input hidden accept="image/*" type="file" />
                 <PhotoCamera />
-              </IconButton>
+              </IconButton> */}
               <div className="detailuser-content-avatar-edit">
                 <img
                   className="profileUserImg"
@@ -219,51 +234,79 @@ export default function DetailUser() {
               <li className="du-c-d-item">
                 <Badge className="profileIcon" />
                 <span className="du-c-d-item-1">ID User</span>
-                <span className="du-c-d-item-2">
-                  {detailUser?.customer_uid}
-                </span>
+                <span className="du-c-d-item-2">{editDetail?.customer_uid}</span>
               </li>
 
               {isEdit ? (
                 <>
                   <li className="du-c-d-item">
                     <Person className="profileIcon" />
-                    <span className="du-c-d-item-1">Username</span>
+                    <span className="du-c-d-item-1">Fullname</span>
                     <InputBase
-                      sx={{ fontFamily: "Lora", fontSize: "12px" }}
-                      placeholder={detailUser.fullname}
+                      sx={{ fontFamily: 'Lora', fontSize: '12px' }}
+                      placeholder={editDetail.fullname}
                       className="du-c-d-item-2-input"
-                      onChange={(e) =>
-                        formik.setFieldValue("fullname", e.target.value)
-                      }
-                    />
+                      onChange={(e) => formik.setFieldValue('fullname', e.target.value)}
+                  />
                   </li>
+                  {formik.errors.fullname ? <div className="alert-danger">{formik.errors.fullname}</div> : null}
+
                   <li className="du-c-d-item">
                     <Email className="profileIcon" />
-                    <span className="du-c-d-item-1">Email</span>
+                    <span className="du-c-d-item-1">Old Email</span>
                     <InputBase
-                      sx={{ fontFamily: "Lora", fontSize: "12px" }}
-                      placeholder={detailUser.email}
+                      sx={{ fontFamily: 'Lora', fontSize: '12px' }}
+                      placeholder={editDetail.email}
                       className="du-c-d-item-2-input"
-                      onChange={(e) =>
-                        formik.setFieldValue("email", e.target.value)
-                      }
+                      onChange={(e) => formik.setFieldValue('email', e.target.value)}
                     />
                   </li>
+                  {formik.errors.email ? <div className="alert-danger">{formik.errors.email}</div> : null}
+
+                  <li className="du-c-d-item">
+                    <Email className="profileIcon" />
+                    <span className="du-c-d-item-1">New Email</span>
+                    <InputBase
+                      sx={{ fontFamily: 'Lora', fontSize: '12px' }}
+                      className="du-c-d-item-2-input"
+                      onChange={(e) => formik.setFieldValue('newEmail', e.target.value)} //values.newemail bisa kepanggil
+                    />
+                  </li>
+                  {formik.errors.newEmail ? <div className="alert-danger">{formik.errors.newEmail}</div> : null}
+
+                  <li className="du-c-d-item">
+                    <Password className="profileIcon" />
+                    <span className="du-c-d-item-1">Old Password</span>
+                    <InputBase
+                      sx={{ fontFamily: 'Lora', fontSize: '12px' }}
+                      className="du-c-d-item-2-input"
+                      placeholder={`Old password must be filled`}
+                      onChange={(e) => formik.setFieldValue('oldPass', e.target.value)}
+                    />
+                  </li>
+                  {formik.errors.oldPass ? <div className="alert-danger">{formik.errors.oldPass}</div> : null}
+
+                  {/* <li className="du-c-d-item">
+                    <Password className="profileIcon" />
+                    <span className="du-c-d-item-1">New Password</span>
+                    <InputBase
+                      sx={{ fontFamily: 'Lora', fontSize: '12px' }}
+                      className="du-c-d-item-2-input"
+                      onChange={(e) => formik.setFieldValue('newPass', e.target.value)}
+                    />
+                  </li> */}
                 </>
               ) : (
                 <>
                   <li className="du-c-d-item">
                     <Person className="profileIcon" />
                     <span className="du-c-d-item-1">Fullname</span>
-                    <span className="du-c-d-item-2">
-                      {detailUser?.fullname}
-                    </span>
+                    <span className="du-c-d-item-2">{editDetail?.fullname}</span>
                   </li>
                   <li className="du-c-d-item">
                     <Email className="profileIcon" />
                     <span className="du-c-d-item-1">Email</span>
-                    <span className="du-c-d-item-2">{detailUser?.email}</span>
+                    <span className="du-c-d-item-2">{editDetail?.email}</span>
                   </li>
                 </>
               )}
@@ -271,28 +314,25 @@ export default function DetailUser() {
               <li className="du-c-d-item">
                 <Schedule className="profileIcon" />
                 <span className="du-c-d-item-1">Member since</span>
-                <span className="du-c-d-item-2">{detailUser?.createdAt}</span>
+                <span className="du-c-d-item-2">{editDetail?.createdAt}</span>
               </li>
               <li className="du-c-d-item">
                 <VerifiedUser className="profileIcon" />
-                <span className="du-c-d-item-1">Status</span>
-                <span className="du-c-d-item-2">
-                  {detailUser?.is_verified ? "Verifed" : "Not Verified"}
-                </span>
+                <span className="du-c-d-item-1">Role</span>
+                <span className="du-c-d-item-2">{editDetail?.approle?.role}</span>
               </li>
               <li className="du-c-d-item">
-                {isEdit ? (
+                {/* {isEdit ? (
                   <>
                     <Lock className="profileIcon" />
                     <span className="du-c-d-item-1">Security</span>
                     <Select
-                      sx={{ fontSize: "10px" }}
+                      sx={{ fontSize: '10px' }}
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={securityValue}
                       className="du-c-d-item-2-select"
-                      onChange={handleSecurityChange}
-                    >
+                      onChange={handleSecurityChange}>
                       <MenuItem value={0}>
                         <em>Security Status</em>
                       </MenuItem>
@@ -306,14 +346,31 @@ export default function DetailUser() {
                     <span className="du-c-d-item-1">Security</span>
                     <span className="du-c-d-item-2">Banned</span>
                   </>
-                )}
+                )} */}
               </li>
-              {isEdit ? (
-                <button onClick={formik.handleSubmit}>Submit Changes</button>
-              ) : null}
+              {isEdit ?
+              
+              <Button
+                  sx={{
+                    borderRadius: '20px',
+                    backgroundColor: 'rgb(153,255,255,0.9)',
+                    fontSize: '8px',
+                    fontFamily: 'Lora',
+                    color: 'black',
+                  }}
+                  variant="contained"
+                  onClick={formik.handleSubmit}
+                  type="submit"
+                  className="detailuser-banner-edit">
+                  Submit Changes
+                </Button>
+              
+              :
+                null
+              }
             </ul>
           </div>
-          <div className="detailuser-content-option">
+          {/* <div className="detailuser-content-option">
             <Link to="/address-list" className="du-c-o-button">
               <button className="du-c-o">
                 <Edit />
@@ -328,7 +385,7 @@ export default function DetailUser() {
                 <ArrowForwardIos />
               </button>
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </Container>

@@ -40,16 +40,10 @@ function CreatePassword() {
       if (user.emailVerified === true) {
         firebaseAuthentication
           .sendPasswordResetEmail(values.email)
-          .then(() => {
-            alert("Silahkan periksa email anda untuk mengubah password");
+          .then((res) => {
+            alert('Silahkan periksa email anda untuk mengubah password');
             firebaseAuthentication.signOut();
-            //  history.push('/sign-in')
-
-            const data = {
-              is_verified: user.emailVerified,
-            };
-            console.log(data);
-            return data;
+            history.push('/sign-in')
           })
           .catch((error) => {
             alert(error.message);

@@ -21,7 +21,7 @@ import GoogleMaps from "../../components/GoogleMaps";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import "../../assets/styles/DetailWarehouse.css";
 import Axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 
 function DetailWarehouse() {
   const [warehouse_name, setWarehouse_name] = useState();
@@ -33,7 +33,8 @@ function DetailWarehouse() {
   const [postal_code, setPostal_code] = useState();
   const [picture, setPicture] = useState();
   const [admin, setAdmin] = useState();
-  const { id } = useParams();
+  const {id} = useParams();
+  const history = useHistory()
 
   const { isLoggedIn, user } = useSelector((state) => ({
     isLoggedIn: state.auth.isLoggedIn,
@@ -43,6 +44,10 @@ function DetailWarehouse() {
   console.log(user);
   const userData = user?.role;
   console.log(userData);
+
+  const goBack = () => {
+    history.goBack();
+  };
 
   useEffect(() => {
     if (userUID) {
@@ -96,8 +101,7 @@ function DetailWarehouse() {
     <Container maxWidth="xs" sx={{ backgroundColor: "white" }}>
       <div className="detailwh-main">
         <div className="detailwh-banner">
-          <IconButton>
-            {/* onClick={this.goBack} */}
+          <IconButton onClick={goBack}>
             <ArrowBack />
           </IconButton>
           <div className="detailwh-banner-text">Warehouse Detail</div>

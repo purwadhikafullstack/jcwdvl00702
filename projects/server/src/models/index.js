@@ -35,12 +35,23 @@ db.models.Orderitem = require("./orderitem")(sequelize, Sequelize.DataTypes);
 db.models.Role = require("./role")(sequelize, Sequelize.DataTypes);
 db.models.Stock = require("./stock")(sequelize, Sequelize.DataTypes);
 db.models.Category = require("./category")(sequelize, Sequelize.DataTypes);
+db.models.Approle = require("./approle")(sequelize, Sequelize.DataTypes);
 
-//close
+db.models.Customer.hasOne(db.models.Approle, {
+  foreignKey: "customer_uid",
+  sourceKey: "customer_uid",
+});
+db.models.Approle.belongsTo(db.models.Customer, {
+  foreignKey: "customer_uid",
+});
 
-// db.models.Product.hasMany(db.models.Warehouse, {
-//   foreignKey: 'warehouse_id',
-// });
+db.models.Customer.hasMany(db.models.Address, {
+  foreignKey: "customer_uid",
+  sourceKey: "customer_uid",
+});
+db.models.Address.belongsTo(db.models.Customer, {
+  foreignKey: "customer_uid",
+});
 
 db.models.Product.hasMany(db.models.Stock, {
   foreignKey: "product_id",
@@ -52,16 +63,6 @@ db.models.Stock.hasMany(db.models.Stockmutation, {
 db.models.Stockmutation.belongsTo(db.models.Stock, {
   foreignKey: "stock_id",
 });
-
-//close
-
-// db.models.Customer.hasMany(db.models.Warehouse, {
-//   foreignKey: 'customer_uid',
-//   sourceKey: 'customer_uid',
-// });
-// db.models.Warehouse.belongsTo(db.models.Customer, {
-//   foreignKey: 'customer_uid',
-// });
 
 db.models.Customer.hasMany(db.models.Address, {
   foreignKey: "customer_uid",
