@@ -1,15 +1,15 @@
 const {
   models: { Category, Product, Stock, Stockmutation, Stockhistory, Warehouse },
-} = require('../models');
-const router = require('express').Router();
-const multer = require('multer');
-const { where, Op } = require('sequelize');
-const stock = require('../models/stock');
+} = require("../models");
+const router = require("express").Router();
+const multer = require("multer");
+const { where, Op } = require("sequelize");
+const stock = require("../models/stock");
 // const stockhistory = require('../models/stockhistory');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './public/productimages/');
+    cb(null, "./public/productimages/");
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // ADD CATEGORY
-router.post('/add-category', upload.single('image'), async (req, res) => {
+router.post("/add-category", upload.single("image"), async (req, res) => {
   try {
     let categoryName = await Category.findAll();
     let checkBox = false;
@@ -32,8 +32,13 @@ router.post('/add-category', upload.single('image'), async (req, res) => {
     if (checkBox === true) {
       res.status(500).json(err);
     } else {
-      let picPathArray = req.file.path.split('\\');
-      let picPath = 'http://localhost:8000/' + picPathArray[1] + '/' + picPathArray[2];
+      let picPathArray = req.file.path.split("\\");
+      let picPath =
+        process.env.REACT_APP_BASE_URL +
+        "/" +
+        picPathArray[1] +
+        "/" +
+        picPathArray[2];
 
       const newCategory = await Category.create({
         name: req.body.name,
@@ -54,7 +59,7 @@ router.post('/add-category', upload.single('image'), async (req, res) => {
 });
 
 // GET CATEGORY LIST
-router.get('/get-category', async (req, res) => {
+router.get("/get-category", async (req, res) => {
   try {
     const result = await Category.findAll();
 
@@ -70,7 +75,7 @@ router.get('/get-category', async (req, res) => {
 });
 
 // DELETE CATEGORY
-router.delete('/delete-category/:id', async (req, res) => {
+router.delete("/delete-category/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const deleteCategory = await Category.destroy({
@@ -85,9 +90,9 @@ router.delete('/delete-category/:id', async (req, res) => {
 });
 
 // EDIT CATEGORY
-router.patch('/edit-category/:id', async (req, res) => {
+router.patch("/edit-category/:id", async (req, res) => {
   try {
-    console.log('id', req.params.id);
+    console.log("id", req.params.id);
     let categoryName = await Category.findAll();
     let checkBox = false;
 
@@ -115,7 +120,7 @@ router.patch('/edit-category/:id', async (req, res) => {
         }
       );
       res.status(201).json({
-        message: 'Success',
+        message: "Success",
         data: updateCategory,
       });
     }
@@ -125,12 +130,12 @@ router.patch('/edit-category/:id', async (req, res) => {
 });
 
 // GET WH FOR ADD PRODUCT
-router.get('/get-wh', async (req, res) => {
+router.get("/get-wh", async (req, res) => {
   try {
     const findWh = await Warehouse.findAll({
-      attributes: ['id'],
+      attributes: ["id"],
     });
-    const allWh = findWh.map((u) => u.get('id'));
+    const allWh = findWh.map((u) => u.get("id"));
 
     res.status(200).json(allWh);
   } catch (err) {
@@ -139,17 +144,19 @@ router.get('/get-wh', async (req, res) => {
 });
 
 // ADD PRODUCT
-router.post('/add-product', upload.single('picture'), async (req, res) => {
+router.post("/add-product", upload.single("picture"), async (req, res) => {
   const findWh = await Warehouse.findAll({
-    attributes: ['id'],
+    attributes: ["id"],
   });
-  const allWh = findWh.map((u) => u.get('id'));
+  const allWh = findWh.map((u) => u.get("id"));
   try {
     let getProductName = await Product.findAll();
     let checkBox = false;
 
     for (let i = 0; i < getProductName.length; i++) {
-      if (req.body.name.toLowerCase() === getProductName[i].name.toLowerCase()) {
+      if (
+        req.body.name.toLowerCase() === getProductName[i].name.toLowerCase()
+      ) {
         checkBox = true;
         break;
       }
@@ -177,7 +184,7 @@ router.post('/add-product', upload.single('picture'), async (req, res) => {
         let wrapper = {};
         wrapper.warehouse_id = allWh[i].toString();
         wrapper.product_id = productId.id;
-        wrapper.quantity = req.body['wh' + (i + 1)];
+        wrapper.quantity = req.body["wh" + (i + 1)];
         stockData.push(wrapper);
         wrapper = {};
       }
@@ -191,24 +198,29 @@ router.post('/add-product', upload.single('picture'), async (req, res) => {
 });
 
 // Show Product @Homepage
-router.get('/home-product/', async (req, res) => {
+router.get("/home-product/", async (req, res) => {
   try {
-    let searchQuery = req.query.searchQuery || '';
-    console.log('req query ges', req.query.searchQuery);
+    let searchQuery = req.query.searchQuery || "";
+    console.log("req query ges", req.query.searchQuery);
     let getProduct = await Product.findAll({
       where: {
-        name: { [Op.like]: '%' + searchQuery + '%' },
+        name: { [Op.like]: "%" + searchQuery + "%" },
       },
     });
 
-    console.log('ini get Product', getProduct[0].picture);
+    console.log("ini get Product", getProduct[0].picture);
 
     for (let i = 0; i < getProduct.length; i++) {
-      let picPathArray = getProduct[i].picture.split('\\');
-      let picPath = 'http://localhost:8000/' + picPathArray[1] + '/' + picPathArray[2];
+      let picPathArray = getProduct[i].picture.split("\\");
+      let picPath =
+        process.env.REACT_APP_BASE_URL +
+        "/" +
+        picPathArray[1] +
+        "/" +
+        picPathArray[2];
       getProduct[i].picture = picPath;
     }
-    console.log('url check', getProduct[0].picture);
+    console.log("url check", getProduct[0].picture);
     res.status(200).json(getProduct);
   } catch (err) {
     res.status(500).json(err);
@@ -216,20 +228,20 @@ router.get('/home-product/', async (req, res) => {
 });
 
 // GET PRODUCT LIST
-router.get('/get-product', async (req, res) => {
+router.get("/get-product", async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 0;
     const limit = 3;
-    const search = req.query.search || '';
+    const search = req.query.search || "";
     const offset = limit * page;
     const productLength = await Product.findAll({});
-    const sort = req.query.sort || 'id';
+    const sort = req.query.sort || "id";
 
     const result = await Product.findAll({
       include: [Category],
       limit: limit,
       offset: page * limit,
-      order: [[sort, 'ASC']],
+      order: [[sort, "ASC"]],
       ...(req.query.search && {
         where: {
           name: {
@@ -262,7 +274,7 @@ router.get('/get-product', async (req, res) => {
 });
 
 // GET PRODUCT DETAIL BY ID
-router.get('/get-product/:id', async (req, res) => {
+router.get("/get-product/:id", async (req, res) => {
   try {
     const getProduct = await Product.findOne({
       include: [Category],
@@ -270,8 +282,13 @@ router.get('/get-product/:id', async (req, res) => {
         id: req.params.id,
       },
     });
-    let picPathArray = getProduct.picture.split('\\');
-    let picPath = 'http://localhost:8000/' + picPathArray[1] + '/' + picPathArray[2];
+    let picPathArray = getProduct.picture.split("\\");
+    let picPath =
+      process.env.REACT_APP_BASE_URL +
+      "/" +
+      picPathArray[1] +
+      "/" +
+      picPathArray[2];
     getProduct.picture = picPath;
 
     const getStock = await Stock.findAll({
@@ -293,7 +310,7 @@ router.get('/get-product/:id', async (req, res) => {
 });
 
 // DELETE PRODUCT
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const deleteProduct = await Product.destroy({
@@ -308,7 +325,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 // EDIT PRODUCT
-router.put('/edit-product/:id', upload.single('picture'), async (req, res) => {
+router.put("/edit-product/:id", upload.single("picture"), async (req, res) => {
   await Product.findOne({
     where: {
       id: req.params.id,
@@ -331,14 +348,14 @@ router.put('/edit-product/:id', upload.single('picture'), async (req, res) => {
       }
     );
     res.status(201).json({
-      message: 'Success',
+      message: "Success",
       data: updateProduct,
     });
   } catch (error) {}
 });
 
 // UPDATE STOCK
-router.patch('/update-stock/:id', async (req, res) => {
+router.patch("/update-stock/:id", async (req, res) => {
   const theProduct = await Product.findOne({
     where: {
       id: req.params.id,
@@ -353,7 +370,7 @@ router.patch('/update-stock/:id', async (req, res) => {
   const theDate = new Date();
 
   try {
-    if (req.body.count === 'add') {
+    if (req.body.count === "add") {
       const updateStock = await Product.update(
         {
           quantity_total: theProduct.quantity_total + parseInt(req.body.number),
@@ -381,16 +398,16 @@ router.patch('/update-stock/:id', async (req, res) => {
       );
       const newMutation = await Stockhistory.create({
         stock_id: theStock.id,
-        stockmutation_id: 'update_stock',
+        stockmutation_id: "update_stock",
         warehouse_id: theStock.warehouse_id,
         product_id: theStock.product_id,
         product_name: theProduct.name,
         product_picture: theProduct.picture,
-        math: '+',
+        math: "+",
         quantity: parseInt(req.body.number),
         start: theStock.quantity,
         end: parseInt(theStock.quantity) + parseInt(req.body.number),
-        requester: 'super_admin',
+        requester: "super_admin",
         year: theDate.getFullYear(),
         month: theDate.getMonth() + 1,
       });
@@ -423,16 +440,16 @@ router.patch('/update-stock/:id', async (req, res) => {
 
       const newMutation = await Stockhistory.create({
         stock_id: theStock.id,
-        stockmutation_id: 'update_stock',
+        stockmutation_id: "update_stock",
         warehouse_id: theStock.warehouse_id,
         product_id: theStock.product_id,
         product_name: theProduct.name,
         product_picture: theProduct.picture,
-        math: '-',
+        math: "-",
         quantity: parseInt(req.body.number),
         start: theStock.quantity,
         end: parseInt(theStock.quantity) - parseInt(req.body.number),
-        requester: 'super_admin',
+        requester: "super_admin",
         year: theDate.getFullYear(),
         month: theDate.getMonth() + 1,
       });
@@ -451,18 +468,18 @@ router.patch('/update-stock/:id', async (req, res) => {
 });
 
 // GET STOCK MUTATION LIST
-router.get('/get-mutation', async (req, res) => {
+router.get("/get-mutation", async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 0;
     const limit = 3;
-    const search = req.query.search || '';
+    const search = req.query.search || "";
     const offset = limit * page;
     const productLength = await Stockmutation.findAll({});
-    const sort = req.query.sort || 'DESC';
-    const filter = req.query.filter || '';
-    const myWh = req.query.mywh || '';
+    const sort = req.query.sort || "DESC";
+    const filter = req.query.filter || "";
+    const myWh = req.query.mywh || "";
 
-    if (myWh === '') {
+    if (myWh === "") {
       const resultCount = await Stockmutation.findAll({
         where: {
           move_type: filter,
@@ -481,7 +498,7 @@ router.get('/get-mutation', async (req, res) => {
         },
         limit: limit,
         offset: page * limit,
-        order: [['createdAt', sort]],
+        order: [["createdAt", sort]],
         ...(req.query.search && {
           where: {
             product_id: {
@@ -520,7 +537,7 @@ router.get('/get-mutation', async (req, res) => {
         },
         limit: limit,
         offset: page * limit,
-        order: [['createdAt', sort]],
+        order: [["createdAt", sort]],
         ...(req.query.search && {
           where: {
             product_id: {
@@ -546,7 +563,7 @@ router.get('/get-mutation', async (req, res) => {
 });
 
 // STOCK MUTATION
-router.post('/stock-mutation', async (req, res) => {
+router.post("/stock-mutation", async (req, res) => {
   const stockFrom = await Stock.findOne({
     where: {
       warehouse_id: req.body.from,
@@ -572,8 +589,8 @@ router.post('/stock-mutation', async (req, res) => {
     product_picture: theProduct.picture,
     quantity: parseInt(req.body.quantity),
     requester: req.body.to,
-    status: 'waiting',
-    move_type: 'manual',
+    status: "waiting",
+    move_type: "manual",
   };
 
   try {
@@ -585,7 +602,7 @@ router.post('/stock-mutation', async (req, res) => {
 });
 
 // RESPOND MUTATION - MANUAL
-router.patch('/stock-mutation', async (req, res) => {
+router.patch("/stock-mutation", async (req, res) => {
   const theMutation = await Stockmutation.findOne({
     where: {
       id: req.body.mutation,
@@ -617,7 +634,7 @@ router.patch('/stock-mutation', async (req, res) => {
       product_id: theMutation.product_id,
       product_name: theMutation.product_name,
       product_picture: theMutation.product_picture,
-      math: '-',
+      math: "-",
       quantity: theMutation.quantity,
       start: theStockFrom.quantity,
       end: theStockFrom.quantity - parseInt(theMutation.quantity),
@@ -632,7 +649,7 @@ router.patch('/stock-mutation', async (req, res) => {
       product_id: theMutation.product_id,
       product_name: theMutation.product_name,
       product_picture: theMutation.product_picture,
-      math: '+',
+      math: "+",
       quantity: theMutation.quantity,
       start: theStockTo.quantity,
       end: theStockTo.quantity + parseInt(theMutation.quantity),
@@ -649,7 +666,7 @@ router.patch('/stock-mutation', async (req, res) => {
       product_id: theMutation.product_id,
       product_name: theMutation.product_name,
       product_picture: theMutation.product_picture,
-      math: '-',
+      math: "-",
       quantity: theStockFrom.quantity,
       start: theStockFrom.quantity,
       end: theStockFrom.quantity - parseInt(theStockFrom.quantity),
@@ -664,7 +681,7 @@ router.patch('/stock-mutation', async (req, res) => {
       product_id: theMutation.product_id,
       product_name: theMutation.product_name,
       product_picture: theMutation.product_picture,
-      math: '+',
+      math: "+",
       quantity: theStockFrom.quantity,
       start: theStockTo.quantity,
       end: theStockTo.quantity + parseInt(theStockFrom.quantity),
@@ -674,11 +691,11 @@ router.patch('/stock-mutation', async (req, res) => {
     },
   ];
 
-  if (req.body.respond === 'reject') {
+  if (req.body.respond === "reject") {
     try {
       const changeMutation = await Stockmutation.update(
         {
-          status: 'canceled',
+          status: "canceled",
         },
         {
           where: {
@@ -692,12 +709,12 @@ router.patch('/stock-mutation', async (req, res) => {
     } catch (err) {
       res.status(500).json(err);
     }
-  } else if (req.body.respond === 'accept') {
+  } else if (req.body.respond === "accept") {
     if (theStockFrom.quantity >= theMutation.quantity) {
       try {
         const changeMutation = await Stockmutation.update(
           {
-            status: 'done',
+            status: "done",
           },
           {
             where: {
@@ -731,7 +748,9 @@ router.patch('/stock-mutation', async (req, res) => {
             plain: true,
           }
         );
-        const newHistory = await Stockhistory.bulkCreate(historyData, { returning: true });
+        const newHistory = await Stockhistory.bulkCreate(historyData, {
+          returning: true,
+        });
         res.status(200).json({ historyData });
       } catch (err) {
         res.status(500).json(err);
@@ -740,7 +759,7 @@ router.patch('/stock-mutation', async (req, res) => {
       try {
         const changeMutation = await Stockmutation.update(
           {
-            status: 'done',
+            status: "done",
             quantity: theStockFrom.quantity,
           },
           {
@@ -776,8 +795,13 @@ router.patch('/stock-mutation', async (req, res) => {
           }
         );
 
-        const newHistory = await Stockhistory.bulkCreate(historyDataAlternate, { returning: true });
-        const message = `Mutation success but amount available is only ` + theStockFrom.quantity + ` pcs.`;
+        const newHistory = await Stockhistory.bulkCreate(historyDataAlternate, {
+          returning: true,
+        });
+        const message =
+          `Mutation success but amount available is only ` +
+          theStockFrom.quantity +
+          ` pcs.`;
         res.status(200).json({ historyDataAlternate, message });
       } catch (err) {
         res.status(500).json(err);
@@ -787,14 +811,14 @@ router.patch('/stock-mutation', async (req, res) => {
 });
 
 // GET STOCK HISTORY LIST
-router.get('/get-stock-history', async (req, res) => {
+router.get("/get-stock-history", async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 0;
     const limit = 3;
-    const search = req.query.search || '';
+    const search = req.query.search || "";
     const offset = limit * page;
     const productLength = await Product.findAll({});
-    const sort = req.query.sort || 'id';
+    const sort = req.query.sort || "id";
 
     const resultCount = await Product.findAll({
       ...(req.query.search && {
@@ -818,7 +842,7 @@ router.get('/get-stock-history', async (req, res) => {
       include: [Category],
       limit: limit,
       offset: page * limit,
-      order: [[sort, 'ASC']],
+      order: [[sort, "ASC"]],
       ...(req.query.search && {
         where: {
           [Op.or]: [
@@ -851,7 +875,7 @@ router.get('/get-stock-history', async (req, res) => {
 });
 
 // GET STOCK HISTORY DETAIL BY ID
-router.get('/product-stock-history/:id', async (req, res) => {
+router.get("/product-stock-history/:id", async (req, res) => {
   const theHistory = await Stockhistory.findAll({
     where: {
       product_id: req.params.id,
@@ -867,8 +891,13 @@ router.get('/product-stock-history/:id', async (req, res) => {
   const theMonth = req.query.month;
 
   try {
-    let picPathArray = getProduct.picture.split('/');
-    let picPath = 'http://localhost:8000/' + picPathArray[1] + '/' + picPathArray[2];
+    let picPathArray = getProduct.picture.split("/");
+    let picPath =
+      process.env.REACT_APP_BASE_URL +
+      "/" +
+      picPathArray[1] +
+      "/" +
+      picPathArray[2];
     getProduct.picture = picPath;
 
     const getHistory = await Stockhistory.findAll({
@@ -886,7 +915,7 @@ router.get('/product-stock-history/:id', async (req, res) => {
 });
 
 // UPDATE STOCK
-router.patch('/update-stock/:id', async (req, res) => {
+router.patch("/update-stock/:id", async (req, res) => {
   const theProduct = await Product.findOne({
     where: {
       id: req.params.id,
@@ -901,7 +930,7 @@ router.patch('/update-stock/:id', async (req, res) => {
   const theDate = new Date();
 
   try {
-    if (req.body.count === 'add') {
+    if (req.body.count === "add") {
       const updateStock = await Product.update(
         {
           quantity_total: theProduct.quantity_total + parseInt(req.body.number),
@@ -929,16 +958,16 @@ router.patch('/update-stock/:id', async (req, res) => {
       );
       const newMutation = await Stockhistory.create({
         stock_id: theStock.id,
-        stockmutation_id: 'update_stock',
+        stockmutation_id: "update_stock",
         warehouse_id: theStock.warehouse_id,
         product_id: theStock.product_id,
         product_name: theProduct.name,
         product_picture: theProduct.picture,
-        math: '+',
+        math: "+",
         quantity: parseInt(req.body.number),
         start: theStock.quantity,
         end: parseInt(theStock.quantity) + parseInt(req.body.number),
-        requester: 'super_admin',
+        requester: "super_admin",
         year: theDate.getFullYear(),
         month: theDate.getMonth() + 1,
       });
@@ -971,16 +1000,16 @@ router.patch('/update-stock/:id', async (req, res) => {
 
       const newMutation = await Stockhistory.create({
         stock_id: theStock.id,
-        stockmutation_id: 'update_stock',
+        stockmutation_id: "update_stock",
         warehouse_id: theStock.warehouse_id,
         product_id: theStock.product_id,
         product_name: theProduct.name,
         product_picture: theProduct.picture,
-        math: '-',
+        math: "-",
         quantity: parseInt(req.body.number),
         start: theStock.quantity,
         end: parseInt(theStock.quantity) - parseInt(req.body.number),
-        requester: 'super_admin',
+        requester: "super_admin",
         year: theDate.getFullYear(),
         month: theDate.getMonth() + 1,
       });
@@ -999,15 +1028,15 @@ router.patch('/update-stock/:id', async (req, res) => {
 });
 
 // GET STOCK MUTATION LIST
-router.get('/get-mutation', async (req, res) => {
+router.get("/get-mutation", async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 0;
     const limit = 3;
-    const search = req.query.search || '';
+    const search = req.query.search || "";
     const offset = limit * page;
     const productLength = await Stockmutation.findAll({});
-    const sort = req.query.sort || 'DESC';
-    const filter = req.query.filter || '';
+    const sort = req.query.sort || "DESC";
+    const filter = req.query.filter || "";
     const myWh = req.query.mywh;
 
     const resultCount = await Stockmutation.findAll({
@@ -1030,7 +1059,7 @@ router.get('/get-mutation', async (req, res) => {
       },
       limit: limit,
       offset: page * limit,
-      order: [['createdAt', sort]],
+      order: [["createdAt", sort]],
       ...(req.query.search && {
         where: {
           product_id: {
@@ -1055,7 +1084,7 @@ router.get('/get-mutation', async (req, res) => {
 });
 
 // STOCK MUTATION
-router.post('/stock-mutation', async (req, res) => {
+router.post("/stock-mutation", async (req, res) => {
   const stockFrom = await Stock.findOne({
     where: {
       warehouse_id: req.body.from,
@@ -1081,8 +1110,8 @@ router.post('/stock-mutation', async (req, res) => {
     product_picture: theProduct.picture,
     quantity: parseInt(req.body.quantity),
     requester: req.body.to,
-    status: 'waiting',
-    move_type: 'manual',
+    status: "waiting",
+    move_type: "manual",
   };
 
   try {
@@ -1094,7 +1123,7 @@ router.post('/stock-mutation', async (req, res) => {
 });
 
 // RESPOND MUTATION - MANUAL
-router.patch('/stock-mutation', async (req, res) => {
+router.patch("/stock-mutation", async (req, res) => {
   const theMutation = await Stockmutation.findOne({
     where: {
       id: req.body.mutation,
@@ -1126,7 +1155,7 @@ router.patch('/stock-mutation', async (req, res) => {
       product_id: theMutation.product_id,
       product_name: theMutation.product_name,
       product_picture: theMutation.product_picture,
-      math: '-',
+      math: "-",
       quantity: theMutation.quantity,
       start: theStockFrom.quantity,
       end: theStockFrom.quantity - parseInt(theMutation.quantity),
@@ -1141,7 +1170,7 @@ router.patch('/stock-mutation', async (req, res) => {
       product_id: theMutation.product_id,
       product_name: theMutation.product_name,
       product_picture: theMutation.product_picture,
-      math: '+',
+      math: "+",
       quantity: theMutation.quantity,
       start: theStockTo.quantity,
       end: theStockTo.quantity + parseInt(theMutation.quantity),
@@ -1158,7 +1187,7 @@ router.patch('/stock-mutation', async (req, res) => {
       product_id: theMutation.product_id,
       product_name: theMutation.product_name,
       product_picture: theMutation.product_picture,
-      math: '-',
+      math: "-",
       quantity: theStockFrom.quantity,
       start: theStockFrom.quantity,
       end: theStockFrom.quantity - parseInt(theStockFrom.quantity),
@@ -1173,7 +1202,7 @@ router.patch('/stock-mutation', async (req, res) => {
       product_id: theMutation.product_id,
       product_name: theMutation.product_name,
       product_picture: theMutation.product_picture,
-      math: '+',
+      math: "+",
       quantity: theStockFrom.quantity,
       start: theStockTo.quantity,
       end: theStockTo.quantity + parseInt(theStockFrom.quantity),
@@ -1183,11 +1212,11 @@ router.patch('/stock-mutation', async (req, res) => {
     },
   ];
 
-  if (req.body.respond === 'reject') {
+  if (req.body.respond === "reject") {
     try {
       const changeMutation = await Stockmutation.update(
         {
-          status: 'canceled',
+          status: "canceled",
         },
         {
           where: {
@@ -1201,12 +1230,12 @@ router.patch('/stock-mutation', async (req, res) => {
     } catch (err) {
       res.status(500).json(err);
     }
-  } else if (req.body.respond === 'accept') {
+  } else if (req.body.respond === "accept") {
     if (theStockFrom.quantity >= theMutation.quantity) {
       try {
         const changeMutation = await Stockmutation.update(
           {
-            status: 'done',
+            status: "done",
           },
           {
             where: {
@@ -1240,7 +1269,9 @@ router.patch('/stock-mutation', async (req, res) => {
             plain: true,
           }
         );
-        const newHistory = await Stockhistory.bulkCreate(historyData, { returning: true });
+        const newHistory = await Stockhistory.bulkCreate(historyData, {
+          returning: true,
+        });
         res.status(200).json({ historyData });
       } catch (err) {
         res.status(500).json(err);
@@ -1249,7 +1280,7 @@ router.patch('/stock-mutation', async (req, res) => {
       try {
         const changeMutation = await Stockmutation.update(
           {
-            status: 'done',
+            status: "done",
             quantity: theStockFrom.quantity,
           },
           {
@@ -1285,8 +1316,13 @@ router.patch('/stock-mutation', async (req, res) => {
           }
         );
 
-        const newHistory = await Stockhistory.bulkCreate(historyDataAlternate, { returning: true });
-        const message = `Mutation success but amount available is only ` + theStockFrom.quantity + ` pcs.`;
+        const newHistory = await Stockhistory.bulkCreate(historyDataAlternate, {
+          returning: true,
+        });
+        const message =
+          `Mutation success but amount available is only ` +
+          theStockFrom.quantity +
+          ` pcs.`;
         res.status(200).json({ historyDataAlternate, message });
       } catch (err) {
         res.status(500).json(err);
@@ -1296,14 +1332,14 @@ router.patch('/stock-mutation', async (req, res) => {
 });
 
 // GET STOCK HISTORY LIST
-router.get('/get-stock-history', async (req, res) => {
+router.get("/get-stock-history", async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 0;
     const limit = 3;
-    const search = req.query.search || '';
+    const search = req.query.search || "";
     const offset = limit * page;
     const productLength = await Product.findAll({});
-    const sort = req.query.sort || 'id';
+    const sort = req.query.sort || "id";
 
     const resultCount = await Product.findAll({
       ...(req.query.search && {
@@ -1326,7 +1362,7 @@ router.get('/get-stock-history', async (req, res) => {
     const result = await Product.findAll({
       limit: limit,
       offset: page * limit,
-      order: [[sort, 'ASC']],
+      order: [[sort, "ASC"]],
       ...(req.query.search && {
         where: {
           [Op.or]: [
@@ -1359,7 +1395,7 @@ router.get('/get-stock-history', async (req, res) => {
 });
 
 // GET STOCK HISTORY DETAIL BY ID
-router.get('/product-stock-history/:id', async (req, res) => {
+router.get("/product-stock-history/:id", async (req, res) => {
   const theHistory = await Stockhistory.findAll({
     where: {
       product_id: req.params.id,
@@ -1374,8 +1410,13 @@ router.get('/product-stock-history/:id', async (req, res) => {
   const theMonth = req.query.month;
 
   try {
-    let picPathArray = getProduct.picture.split('/');
-    let picPath = 'http://localhost:8000/' + picPathArray[1] + '/' + picPathArray[2];
+    let picPathArray = getProduct.picture.split("/");
+    let picPath =
+      process.env.REACT_APP_BASE_URL +
+      "/" +
+      picPathArray[1] +
+      "/" +
+      picPathArray[2];
     getProduct.picture = picPath;
 
     const getHistory = await Stockhistory.findAll({
@@ -1392,11 +1433,10 @@ router.get('/product-stock-history/:id', async (req, res) => {
   }
 });
 
-
 // STOCK MUTATION OTOMATIS
-router.post('/qty-handler', async (req, res) => {
-  console.log("ini re body", req.body)
-  
+router.post("/qty-handler", async (req, res) => {
+  console.log("ini re body", req.body);
+
   const stockFrom = await Stock.findOne({
     where: {
       warehouse_id: req.body.whList[1].id,
@@ -1411,7 +1451,6 @@ router.post('/qty-handler', async (req, res) => {
     },
   });
 
-
   const stockTo = await Stock.findOne({
     where: {
       warehouse_id: req.body.whList[0].id,
@@ -1419,19 +1458,20 @@ router.post('/qty-handler', async (req, res) => {
     },
   });
 
-  const needQty = req.body.orderitem.quantity - stockTo.quantity
+  const needQty = req.body.orderitem.quantity - stockTo.quantity;
 
   const theProduct = await Product.findOne({
     where: {
-      id: req.body.orderitem.product_id
+      id: req.body.orderitem.product_id,
     },
   });
 
-  if(stockTo.quantity >= req.body.orderitem.quantity){
+  if (stockTo.quantity >= req.body.orderitem.quantity) {
     try {
       const updateStock = await Product.update(
         {
-          quantity_total: theProduct.quantity_total - req.body.orderitem.quantity,
+          quantity_total:
+            theProduct.quantity_total - req.body.orderitem.quantity,
         },
         {
           where: {
@@ -1443,12 +1483,12 @@ router.post('/qty-handler', async (req, res) => {
       );
       const changeStock = await Stock.update(
         {
-          quantity: stockTo.quantity - req.body.orderitem.quantity ,
+          quantity: stockTo.quantity - req.body.orderitem.quantity,
         },
         {
           where: {
             warehouse_id: req.body.whList[0].id,
-            product_id: req.body.orderitem.product_id
+            product_id: req.body.orderitem.product_id,
           },
           returning: true,
           plain: true,
@@ -1463,18 +1503,18 @@ router.post('/qty-handler', async (req, res) => {
         product_picture: theProduct.picture,
         quantity: req.body.orderitem.quantity,
         requester: req.body.whList[0].id,
-        status: 'done',
-        move_type: 'auto',
-      }
+        status: "done",
+        move_type: "auto",
+      };
 
       const newMutation = await Stockmutation.create(mutationData);
 
       res.status(201).json(newMutation);
-    } catch (err){
+    } catch (err) {
       res.status(500).json(err);
     }
-  } else if (stockTo.quantity < req.body.orderitem.quantity){
-    if (stockFrom.quantity >= needQty){
+  } else if (stockTo.quantity < req.body.orderitem.quantity) {
+    if (stockFrom.quantity >= needQty) {
       const mutationData = {
         stock_id: stockFrom.id,
         warehouse_id: req.body.whList[1].id,
@@ -1483,15 +1523,15 @@ router.post('/qty-handler', async (req, res) => {
         product_picture: theProduct.picture,
         quantity: needQty,
         requester: req.body.whList[0].id,
-        status: 'done',
-        move_type: 'auto',
-      }
+        status: "done",
+        move_type: "auto",
+      };
 
-    
       try {
         const updateStock = await Product.update(
           {
-            quantity_total: theProduct.quantity_total - req.body.orderitem.quantity,
+            quantity_total:
+              theProduct.quantity_total - req.body.orderitem.quantity,
           },
           {
             where: {
@@ -1504,12 +1544,12 @@ router.post('/qty-handler', async (req, res) => {
 
         const changeStock = await Stock.update(
           {
-            quantity: (stockTo.quantity + needQty ) - req.body.orderitem.quantity ,
+            quantity: stockTo.quantity + needQty - req.body.orderitem.quantity,
           },
           {
             where: {
               warehouse_id: req.body.whList[0].id,
-              product_id: req.body.orderitem.product_id
+              product_id: req.body.orderitem.product_id,
             },
             returning: true,
             plain: true,
@@ -1518,27 +1558,25 @@ router.post('/qty-handler', async (req, res) => {
 
         const changeStockFrom = await Stock.update(
           {
-            quantity: stockFrom.quantity - needQty ,
+            quantity: stockFrom.quantity - needQty,
           },
           {
             where: {
               warehouse_id: req.body.whList[1].id,
-              product_id: req.body.orderitem.product_id
+              product_id: req.body.orderitem.product_id,
             },
             returning: true,
             plain: true,
           }
         );
 
-
-  
         const newMutation = await Stockmutation.create(mutationData);
 
         res.status(200).json(newMutation);
       } catch (err) {
         res.status(500).json(err);
       }
-    } else if (stockFrom.quantity < needQty){
+    } else if (stockFrom.quantity < needQty) {
       const mutationData = {
         stock_id: secStockFrom.id,
         warehouse_id: req.body.whList[2].id,
@@ -1547,15 +1585,15 @@ router.post('/qty-handler', async (req, res) => {
         product_picture: theProduct.picture,
         quantity: needQty,
         requester: req.body.whList[0].id,
-        status: 'done',
-        move_type: 'auto',
-      }
+        status: "done",
+        move_type: "auto",
+      };
 
-    
       try {
         const updateStock = await Product.update(
           {
-            quantity_total: theProduct.quantity_total - req.body.orderitem.quantity,
+            quantity_total:
+              theProduct.quantity_total - req.body.orderitem.quantity,
           },
           {
             where: {
@@ -1568,12 +1606,12 @@ router.post('/qty-handler', async (req, res) => {
 
         const changeStock = await Stock.update(
           {
-            quantity: (stockTo.quantity + needQty ) - req.body.orderitem.quantity ,
+            quantity: stockTo.quantity + needQty - req.body.orderitem.quantity,
           },
           {
             where: {
               warehouse_id: req.body.whList[0].id,
-              product_id: req.body.orderitem.product_id
+              product_id: req.body.orderitem.product_id,
             },
             returning: true,
             plain: true,
@@ -1582,35 +1620,30 @@ router.post('/qty-handler', async (req, res) => {
 
         const changeStockFrom = await Stock.update(
           {
-            quantity: stockFrom.quantity - needQty ,
+            quantity: stockFrom.quantity - needQty,
           },
           {
             where: {
               warehouse_id: req.body.whList[2].id,
-              product_id: req.body.orderitem.product_id
+              product_id: req.body.orderitem.product_id,
             },
             returning: true,
             plain: true,
           }
         );
 
-
-  
         const newMutation = await Stockmutation.create(mutationData);
 
         res.status(200).json(newMutation);
       } catch (err) {
         res.status(500).json(err);
-      } 
+      }
     }
   }
-
 });
 
-
-
 // RESPOND MUTATION - AUTO
-router.post('/qty-handler-history', async (req, res) => {
+router.post("/qty-handler-history", async (req, res) => {
   const theMutation = await Stockmutation.findOne({
     where: {
       id: req.body.stockmutation_id,
@@ -1642,7 +1675,7 @@ router.post('/qty-handler-history', async (req, res) => {
       product_id: theMutation.product_id,
       product_name: theMutation.product_name,
       product_picture: theMutation.product_picture,
-      math: '-',
+      math: "-",
       quantity: theMutation.quantity,
       start: theStockFrom.quantity,
       end: theStockFrom.quantity - parseInt(theMutation.quantity),
@@ -1657,7 +1690,7 @@ router.post('/qty-handler-history', async (req, res) => {
       product_id: theMutation.product_id,
       product_name: theMutation.product_name,
       product_picture: theMutation.product_picture,
-      math: '+',
+      math: "+",
       quantity: theMutation.quantity,
       start: theStockTo.quantity,
       end: theStockTo.quantity + parseInt(theMutation.quantity),
@@ -1674,7 +1707,7 @@ router.post('/qty-handler-history', async (req, res) => {
       product_id: theMutation.product_id,
       product_name: theMutation.product_name,
       product_picture: theMutation.product_picture,
-      math: '-',
+      math: "-",
       quantity: theStockFrom.quantity,
       start: theStockFrom.quantity,
       end: theStockFrom.quantity - parseInt(theStockFrom.quantity),
@@ -1689,7 +1722,7 @@ router.post('/qty-handler-history', async (req, res) => {
       product_id: theMutation.product_id,
       product_name: theMutation.product_name,
       product_picture: theMutation.product_picture,
-      math: '+',
+      math: "+",
       quantity: theStockFrom.quantity,
       start: theStockTo.quantity,
       end: theStockTo.quantity + parseInt(theStockFrom.quantity),
@@ -1699,14 +1732,15 @@ router.post('/qty-handler-history', async (req, res) => {
     },
   ];
 
-  
-      try{
-        const newHistory = await Stockhistory.bulkCreate(historyDataAlternate, { returning: true });
-        // const message = `Mutation success but amount available is only ` + theStockFrom.quantity + ` pcs.`;
-        
-        res.status(200).json( newHistory );
-      } catch (err) {
-        res.status(500).json(err);
-      }
+  try {
+    const newHistory = await Stockhistory.bulkCreate(historyDataAlternate, {
+      returning: true,
+    });
+    // const message = `Mutation success but amount available is only ` + theStockFrom.quantity + ` pcs.`;
+
+    res.status(200).json(newHistory);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 module.exports = router;

@@ -20,7 +20,15 @@ dotenv.config();
 const PORT = process.env.PORT || 8000;
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      process.env.WHITELISTED_DOMAIN &&
+        process.env.WHITELISTED_DOMAIN.split(","),
+    ],
+  })
+);
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));

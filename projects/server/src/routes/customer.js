@@ -1,15 +1,15 @@
 const {
   models: { Customer, Address, Approle },
-} = require('../models');
-const router = require('express').Router();
-const bcrypt = require('bcrypt');
-const multer = require('multer');
-const customer = require('../models/customer');
+} = require("../models");
+const router = require("express").Router();
+const bcrypt = require("bcrypt");
+const multer = require("multer");
+const customer = require("../models/customer");
 // const upload = multer({dest: "../public/profileimages"})
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './public/profileimages/');
+    cb(null, "./public/profileimages/");
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 //REGISTER
-router.post('/register', async (req, res) => {
+router.post("/register", async (req, res) => {
   try {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
@@ -29,7 +29,7 @@ router.post('/register', async (req, res) => {
       is_verified: req.body.is_verified,
       is_banned: false,
       fullname: req.body.fullname,
-      picture: '',
+      picture: "",
       social_login: false,
       customer_uid: req.body.customer_uid,
     });
@@ -40,7 +40,7 @@ router.post('/register', async (req, res) => {
     res.status(500).json(err);
   }
 });
-router.post('/approle', async (req, res) => {
+router.post("/approle", async (req, res) => {
   try {
     const newRole = new Approle({
       customer_uid: req.body.customer_uid,
@@ -56,29 +56,29 @@ router.post('/approle', async (req, res) => {
 });
 
 //UPDATE APPROLE
-router.put('/update-role/:id', async (req, res) => {
+router.put("/update-role/:id", async (req, res) => {
   const customer_uid = req.params.id;
   try {
     await Approle.update(req.body, { where: { customer_uid } });
-    return res.status(200).send({ message: 'updated' });
+    return res.status(200).send({ message: "updated" });
   } catch (err) {
     return res.status(500).json({ message: err.toString() });
   }
 });
 
 //REGISTER VIA SOCIAL
-router.post('/register-social', async (req, res) => {
+router.post("/register-social", async (req, res) => {
   try {
     const newCustomer = new Customer({
       email: req.body.email,
-      password: '',
+      password: "",
       is_verified: req.body.is_verified,
       is_banned: false,
-      role: 'user',
+      role: "user",
       fullname: req.body.fullname,
-      token: '',
+      token: "",
       expired_time: 0,
-      picture: '',
+      picture: "",
       social_login: true,
       customer_uid: req.body.customer_uid,
     });
@@ -91,13 +91,16 @@ router.post('/register-social', async (req, res) => {
 });
 
 //LOGINå
-router.post('/login', async (req, res) => {
+router.post("/login", async (req, res) => {
   try {
     const customer = await Customer.findOne({ email: req.body.email });
-    !customer && res.status(404).json('customer not found');
+    !customer && res.status(404).json("customer not found");
 
-    const validPassword = await bcrypt.compare(req.body.password, customer.password);
-    !validPassword && res.status(400).json('wrong password');
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      customer.password
+    );
+    !validPassword && res.status(400).json("wrong password");
 
     res.status(200).json(customer);
   } catch (err) {
@@ -106,7 +109,7 @@ router.post('/login', async (req, res) => {
 });
 
 // GET PROFILE BY ID
-router.get('/profile/:customer_uid', async (req, res) => {
+router.get("/profile/:customer_uid", async (req, res) => {
   try {
     const response = await Customer.findOne({
       include: [Approle],
@@ -115,8 +118,13 @@ router.get('/profile/:customer_uid', async (req, res) => {
       },
     });
 
-    let picPathArray = response.picture.split('\\');
-    let picPath = 'http://localhost:8000/' + picPathArray[1] + '/' + picPathArray[2];
+    let picPathArray = response.picture.split("\\");
+    let picPath =
+      process.env.REACT_APP_BASE_URL +
+      "/" +
+      picPathArray[1] +
+      "/" +
+      picPathArray[2];
     response.picture = picPath;
     // localhost:8000/profileimages/newzealand.jpg
     res.json(response);
@@ -126,7 +134,7 @@ router.get('/profile/:customer_uid', async (req, res) => {
 });
 
 // GET ROLE BY ID
-router.get('/get-role/:customer_uid', async (req, res) => {
+router.get("/get-role/:customer_uid", async (req, res) => {
   try {
     const response = await Approle.findOne({
       where: {
@@ -140,36 +148,40 @@ router.get('/get-role/:customer_uid', async (req, res) => {
 });
 
 // UPDATE PROFILE
-router.put('/edit-profile/:customer_uid', upload.single('picture'), async (req, res) => {
-  console.log(req.file);
-  await Customer.findOne({
-    where: {
-      customer_uid: req.params.customer_uid,
-    },
-  });
-  try {
-    let updateProfile = await Customer.update(
-      {
-        fullname: req.body.fullname,
-        picture: req.file.path,
+router.put(
+  "/edit-profile/:customer_uid",
+  upload.single("picture"),
+  async (req, res) => {
+    console.log(req.file);
+    await Customer.findOne({
+      where: {
+        customer_uid: req.params.customer_uid,
       },
-      {
-        where: {
-          customer_uid: req.params.customer_uid,
-        },
-      }
-    );
-    res.status(201).json({
-      message: 'Success',
-      data: updateProfile,
     });
-  } catch (error) {
-    console.log(error.message);
+    try {
+      let updateProfile = await Customer.update(
+        {
+          fullname: req.body.fullname,
+          picture: req.file.path,
+        },
+        {
+          where: {
+            customer_uid: req.params.customer_uid,
+          },
+        }
+      );
+      res.status(201).json({
+        message: "Success",
+        data: updateProfile,
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
   }
-});
+);
 
 // UPDATE VERIFIED
-router.put('/verify/:customer_uid', async (req, res) => {
+router.put("/verify/:customer_uid", async (req, res) => {
   await Customer.findOne({
     where: {
       customer_uid: req.params.customer_uid,
@@ -187,14 +199,14 @@ router.put('/verify/:customer_uid', async (req, res) => {
         },
       }
     );
-    res.status(201).json({ message: 'Success' });
+    res.status(201).json({ message: "Success" });
   } catch (error) {
     console.log(error.message);
   }
 });
 
 // get user only
-router.get('/user/:customer_uid', async (req, res) => {
+router.get("/user/:customer_uid", async (req, res) => {
   try {
     const response = await Customer.findOne({
       where: {
@@ -208,8 +220,13 @@ router.get('/user/:customer_uid', async (req, res) => {
       ],
     });
 
-    let picPathArray = response.picture.split('\\');
-    let picPath = 'http://localhost:8000/' + picPathArray[1] + '/' + picPathArray[2];
+    let picPathArray = response.picture.split("\\");
+    let picPath =
+      process.env.REACT_APP_BASE_URL +
+      "/" +
+      picPathArray[1] +
+      "/" +
+      picPathArray[2];
     response.picture = picPath;
     // localhost:8000/profileimages/newzealand.jpg
     res.json(response);
@@ -219,32 +236,36 @@ router.get('/user/:customer_uid', async (req, res) => {
 });
 
 // UPDATE PROFILE
-router.put('/edit-profile/:customer_uid', upload.single('picture'), async (req, res) => {
-  console.log(req.file);
-  await Customer.findOne({
-    where: {
-      customer_uid: req.params.customer_uid,
-    },
-  });
-  try {
-    let updateProfile = await Customer.update(
-      {
-        fullname: req.body.fullname,
-        picture: req.file.path,
+router.put(
+  "/edit-profile/:customer_uid",
+  upload.single("picture"),
+  async (req, res) => {
+    console.log(req.file);
+    await Customer.findOne({
+      where: {
+        customer_uid: req.params.customer_uid,
       },
-      {
-        where: {
-          customer_uid: req.params.customer_uid,
-        },
-      }
-    );
-    res.status(201).json({
-      message: 'Success',
-      data: updateProfile,
     });
-  } catch (error) {
-    console.log(error.message);
+    try {
+      let updateProfile = await Customer.update(
+        {
+          fullname: req.body.fullname,
+          picture: req.file.path,
+        },
+        {
+          where: {
+            customer_uid: req.params.customer_uid,
+          },
+        }
+      );
+      res.status(201).json({
+        message: "Success",
+        data: updateProfile,
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
   }
-});
+);
 
 module.exports = router;

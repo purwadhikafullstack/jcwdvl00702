@@ -70,39 +70,46 @@ router.get("/postal-code", async (req, res) => {
 });
 
 // add warehouse
-router.post("/add-new-warehouse", upload.single('picture'), async (req, res) => {
-  try {
-    const newWarehouse = new Warehouse({
-      warehouse_name: req.body.warehouse_name,
-      warehouse_address: req.body.warehouse_address,
-      province: req.body.province,
-      city: req.body.city,
-      postal_code: req.body.postal_code,
-      is_primary: false,
-      latitude: req.body.latitude,
-      longitude: req.body.longitude,
-      picture: req.file.path,
-      admin: req.body.admin,
-      city_id: req.body.city_id,
-    });
-    const warehouse = await newWarehouse.save();
-    res.status(200).json(warehouse);
-  } catch (error) {
-    res.status(500).json(error);
+router.post(
+  "/add-new-warehouse",
+  upload.single("picture"),
+  async (req, res) => {
+    try {
+      const newWarehouse = new Warehouse({
+        warehouse_name: req.body.warehouse_name,
+        warehouse_address: req.body.warehouse_address,
+        province: req.body.province,
+        city: req.body.city,
+        postal_code: req.body.postal_code,
+        is_primary: false,
+        latitude: req.body.latitude,
+        longitude: req.body.longitude,
+        picture: req.file.path,
+        admin: req.body.admin,
+        city_id: req.body.city_id,
+      });
+      const warehouse = await newWarehouse.save();
+      res.status(200).json(warehouse);
+    } catch (error) {
+      res.status(500).json(error);
+    }
   }
-});
+);
 
 // get warehouse list
 router.get("/warehouse-list", async (req, res) => {
   try {
     const response = await Warehouse.findAll();
 
-    console.log("ini test", response.length)
-    for(let i = 0; i<response.length; i++)
-    {
+    console.log("ini test", response.length);
+    for (let i = 0; i < response.length; i++) {
       let picPathArray = response[i].picture.split("\\");
       let picPath =
-        "http://localhost:8000/" + picPathArray[1] + "/" + picPathArray[2];
+        process.env.REACT_APP_BASE_URL +
+        "/" +
+        picPathArray[1] +
+        "/" +
+        picPathArray[2];
       response[i].picture = picPath;
     }
     //  let picPathArray = response.picture.split("\\");
@@ -118,21 +125,21 @@ router.get("/warehouse-list", async (req, res) => {
 });
 
 // Get All WH Locations for choose address
-router.get("/wh-all",async(req,res)=>{
-  try{
-    const result = await Warehouse.findAll()
-    return res.status(200).send(result)
-  } catch(err){
-    return res.status(500).json({message:err.toString()})
+router.get("/wh-all", async (req, res) => {
+  try {
+    const result = await Warehouse.findAll();
+    return res.status(200).send(result);
+  } catch (err) {
+    return res.status(500).json({ message: err.toString() });
   }
-})
+});
 
 // get warehouse by city id
-router.get('/wh-city-id', async (req, res) => {
+router.get("/wh-city-id", async (req, res) => {
   try {
     const response = await Warehouse.findOne({
       where: {
-        city_id: req.body.city_id
+        city_id: req.body.city_id,
       },
     });
     res.json(response);
@@ -149,10 +156,14 @@ router.get("/warehouse-list/:id", async (req, res) => {
         id: req.params.id,
       },
     });
-       let picPathArray = response.picture.split("\\");
-       let picPath =
-         "http://localhost:8000/" + picPathArray[1] + "/" + picPathArray[2];
-       response.picture = picPath;
+    let picPathArray = response.picture.split("\\");
+    let picPath =
+      process.env.REACT_APP_BASE_URL +
+      "/" +
+      picPathArray[1] +
+      "/" +
+      picPathArray[2];
+    response.picture = picPath;
     res.json(response);
   } catch (error) {
     console.log(error);
@@ -160,53 +171,57 @@ router.get("/warehouse-list/:id", async (req, res) => {
 });
 
 // update warehouse
-router.put("/edit-warehouse/:id", upload.single('picture'), async (req, res) => {
-  await Warehouse.findOne({
-    where: {
-      id: req.params.id,
-    },
-  });
-  try {
-    let updateWarehouse = await Warehouse.update(
-      {
-        warehouse_name: req.body.warehouse_name,
-        warehouse_address: req.body.warehouse_address,
-        province: req.body.province,
-        city: req.body.city,
-        postal_code: req.body.postal_code,
-        latitude: req.body.latitude,
-        longitude: req.body.longitude,
-        picture: req.file.path,
-        city_id: req.body.city_id,
+router.put(
+  "/edit-warehouse/:id",
+  upload.single("picture"),
+  async (req, res) => {
+    await Warehouse.findOne({
+      where: {
+        id: req.params.id,
       },
-      {
-        where: {
-          id: req.params.id,
-        },
-      }
-    );
-    res.status(201).json({
-      message: "Success",
-      data: updateWarehouse,
     });
-  } catch (error) {
-    console.log(error);
+    try {
+      let updateWarehouse = await Warehouse.update(
+        {
+          warehouse_name: req.body.warehouse_name,
+          warehouse_address: req.body.warehouse_address,
+          province: req.body.province,
+          city: req.body.city,
+          postal_code: req.body.postal_code,
+          latitude: req.body.latitude,
+          longitude: req.body.longitude,
+          picture: req.file.path,
+          city_id: req.body.city_id,
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+        }
+      );
+      res.status(201).json({
+        message: "Success",
+        data: updateWarehouse,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
-});
+);
 
 // delete warehouse
-router.delete('/delete-warehouse/:id', async(req,res) => {
+router.delete("/delete-warehouse/:id", async (req, res) => {
   try {
     const deleteWarehouse = await Warehouse.destroy({
       where: {
-        id: req.params.id
-      }
-    })
-    res.status(200).json({message:"Warehouse Deleted", deleteWarehouse})
+        id: req.params.id,
+      },
+    });
+    res.status(200).json({ message: "Warehouse Deleted", deleteWarehouse });
   } catch (error) {
-    res.status(500).json(error)
+    res.status(500).json(error);
   }
-})
+});
 
 // post latitude longitude from city
 router.post("/lat-long", async (req, res) => {
@@ -249,12 +264,15 @@ router.get("/warehouse-list-stock", async (req, res) => {
       // ]
     });
 
-    console.log("ini test", response.length)
-    for(let i = 0; i<response.length; i++)
-    {
+    console.log("ini test", response.length);
+    for (let i = 0; i < response.length; i++) {
       let picPathArray = response[i].picture.split("\\");
       let picPath =
-        "http://localhost:8000/" + picPathArray[1] + "/" + picPathArray[2];
+        process.env.REACT_APP_BASE_URL +
+        "/" +
+        picPathArray[1] +
+        "/" +
+        picPathArray[2];
       response[i].picture = picPath;
     }
     //  let picPathArray = response.picture.split("\\");
