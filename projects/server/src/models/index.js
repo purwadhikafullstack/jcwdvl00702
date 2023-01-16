@@ -9,41 +9,49 @@ const sequelize = new Sequelize(env.database, env.username, env.password, {
 const db = {};
 db.sequelize = sequelize;
 db.models = {};
-db.models.Customer = require('./customer')(sequelize, Sequelize.DataTypes);
-db.models.Address = require('./address')(sequelize, Sequelize.DataTypes);
-db.models.Cart = require('./cart')(sequelize, Sequelize.DataTypes);
-db.models.Order = require('./order')(sequelize, Sequelize.DataTypes);
-db.models.Shipping = require('./shipping')(sequelize, Sequelize.DataTypes);
-db.models.Sales = require('./sales')(sequelize, Sequelize.DataTypes);
-db.models.Warehouse = require('./warehouse')(sequelize, Sequelize.DataTypes);
-db.models.Admin = require('./admin')(sequelize, Sequelize.DataTypes);
-db.models.Stockmutation = require('./stockmutation')(sequelize, Sequelize.DataTypes);
-db.models.Stockhistory = require('./stockhistory')(sequelize, Sequelize.DataTypes);
-db.models.Product = require('./product')(sequelize, Sequelize.DataTypes);
-db.models.Transaction = require('./transaction')(sequelize, Sequelize.DataTypes);
-db.models.History = require('./history')(sequelize, Sequelize.DataTypes);
-db.models.Orderitem = require('./orderitem')(sequelize, Sequelize.DataTypes);
-db.models.Role = require('./role')(sequelize, Sequelize.DataTypes);
-db.models.Stock = require('./stock')(sequelize, Sequelize.DataTypes);
-db.models.Category = require('./category')(sequelize, Sequelize.DataTypes);
-db.models.Approle = require('./approle')(sequelize, Sequelize.DataTypes);
+db.models.Customer = require("./customer")(sequelize, Sequelize.DataTypes);
+db.models.Address = require("./address")(sequelize, Sequelize.DataTypes);
+db.models.Cart = require("./cart")(sequelize, Sequelize.DataTypes);
+db.models.Order = require("./order")(sequelize, Sequelize.DataTypes);
+db.models.Shipping = require("./shipping")(sequelize, Sequelize.DataTypes);
+db.models.Sales = require("./sales")(sequelize, Sequelize.DataTypes);
+db.models.Warehouse = require("./warehouse")(sequelize, Sequelize.DataTypes);
+db.models.Admin = require("./admin")(sequelize, Sequelize.DataTypes);
+db.models.Stockmutation = require("./stockmutation")(
+  sequelize,
+  Sequelize.DataTypes
+);
+db.models.Stockhistory = require("./stockhistory")(
+  sequelize,
+  Sequelize.DataTypes
+);
+db.models.Product = require("./product")(sequelize, Sequelize.DataTypes);
+db.models.Transaction = require("./transaction")(
+  sequelize,
+  Sequelize.DataTypes
+);
+db.models.History = require("./history")(sequelize, Sequelize.DataTypes);
+db.models.Orderitem = require("./orderitem")(sequelize, Sequelize.DataTypes);
+db.models.Role = require("./role")(sequelize, Sequelize.DataTypes);
+db.models.Stock = require("./stock")(sequelize, Sequelize.DataTypes);
+db.models.Category = require("./category")(sequelize, Sequelize.DataTypes);
+db.models.Approle = require("./approle")(sequelize, Sequelize.DataTypes);
 
 db.models.Customer.hasOne(db.models.Approle, {
-  foreignKey: 'customer_uid',
-  sourceKey: 'customer_uid',
+  foreignKey: "customer_uid",
+  sourceKey: "customer_uid",
 });
 db.models.Approle.belongsTo(db.models.Customer, {
-  foreignKey: 'customer_uid',
+  foreignKey: "customer_uid",
 });
 
 db.models.Customer.hasMany(db.models.Address, {
-  foreignKey: 'customer_uid',
-  sourceKey: 'customer_uid',
+  foreignKey: "customer_uid",
+  sourceKey: "customer_uid",
 });
 db.models.Address.belongsTo(db.models.Customer, {
-  foreignKey: 'customer_uid',
+  foreignKey: "customer_uid",
 });
-
 
 db.models.Product.hasMany(db.models.Stock, {
   foreignKey: "product_id",
@@ -55,7 +63,6 @@ db.models.Stock.hasMany(db.models.Stockmutation, {
 db.models.Stockmutation.belongsTo(db.models.Stock, {
   foreignKey: "stock_id",
 });
-
 
 db.models.Customer.hasMany(db.models.Address, {
   foreignKey: "customer_uid",
