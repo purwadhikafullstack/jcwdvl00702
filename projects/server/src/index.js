@@ -15,6 +15,7 @@ const orderItemRoute = require("./routes/orderitem");
 
 const bodyParser = require("body-parser");
 const path = require("path");
+const { join } = require("path");
 
 dotenv.config();
 const PORT = process.env.PORT || 8000;
@@ -64,5 +65,39 @@ app.use("/api/warehouse", warehouseRoute);
 app.use("/api/cart", cartRoute);
 app.use("/api/order", orderRoute);
 app.use("/api/orderitem", orderItemRoute);
+
+// ===========================
+
+// not found
+app.use((req, res, next) => {
+  if (req.path.includes("/api/")) {
+    res.status(404).send("Not found !");
+  } else {
+    next();
+  }
+});
+
+// error
+app.use((err, req, res, next) => {
+  if (req.path.includes("/api/")) {
+    console.error("Error : ", err.stack);
+    res.status(500).send("Error !");
+  } else {
+    next();
+  }
+});
+
+//#endregion
+
+//#region CLIENT
+const clientPath = "../../client/build";
+app.use(express.static(join(__dirname, clientPath)));
+
+// Serve the HTML page
+app.get("*", (req, res) => {
+  res.sendFile(join(__dirname, clientPath, "index.html"));
+});
+
+//#endregion
 
 app.listen(PORT, () => console.log(`API running:`, PORT));
