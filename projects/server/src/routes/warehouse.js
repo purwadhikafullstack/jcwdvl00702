@@ -7,13 +7,16 @@ const multer = require("multer");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./public/warehouseimages/");
+    cb(null, require.main?.path + "/../public/warehouseimages");
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
   },
 });
+
 const upload = multer({ storage: storage });
+
+const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
 
 // get provinsi
 router.get("/provinces", async (req, res) => {
@@ -84,7 +87,7 @@ router.post(
         is_primary: false,
         latitude: req.body.latitude,
         longitude: req.body.longitude,
-        picture: req.file.path,
+        picture: req.file ? `/warehouseimages/${req.file.filename}` : "",
         admin: req.body.admin,
         city_id: req.body.city_id,
       });
@@ -103,13 +106,10 @@ router.get("/warehouse-list", async (req, res) => {
 
     console.log("ini test", response.length);
     for (let i = 0; i < response.length; i++) {
-      let picPathArray = response[i].picture.split("\\");
-      let picPath =
-        process.env.REACT_APP_BASE_URL +
-        "/" +
-        picPathArray[1] +
-        "/" +
-        picPathArray[2];
+      const picPath = protocol
+        .concat("://")
+        .concat(req.get("host"))
+        .concat(response[i].picture);
       response[i].picture = picPath;
     }
     //  let picPathArray = response.picture.split("\\");
@@ -156,13 +156,10 @@ router.get("/warehouse-list/:id", async (req, res) => {
         id: req.params.id,
       },
     });
-    let picPathArray = response.picture.split("\\");
-    let picPath =
-      process.env.REACT_APP_BASE_URL +
-      "/" +
-      picPathArray[1] +
-      "/" +
-      picPathArray[2];
+    const picPath = protocol
+      .concat("://")
+      .concat(req.get("host"))
+      .concat(response.picture);
     response.picture = picPath;
     res.json(response);
   } catch (error) {
@@ -190,7 +187,7 @@ router.put(
           postal_code: req.body.postal_code,
           latitude: req.body.latitude,
           longitude: req.body.longitude,
-          picture: req.file.path,
+          picture: req.file ? `/warehouseimages/${req.file.filename}` : "",
           city_id: req.body.city_id,
         },
         {
@@ -266,13 +263,10 @@ router.get("/warehouse-list-stock", async (req, res) => {
 
     console.log("ini test", response.length);
     for (let i = 0; i < response.length; i++) {
-      let picPathArray = response[i].picture.split("\\");
-      let picPath =
-        process.env.REACT_APP_BASE_URL +
-        "/" +
-        picPathArray[1] +
-        "/" +
-        picPathArray[2];
+      const picPath = protocol
+        .concat("://")
+        .concat(req.get("host"))
+        .concat(response[i].picture);
       response[i].picture = picPath;
     }
     //  let picPathArray = response.picture.split("\\");

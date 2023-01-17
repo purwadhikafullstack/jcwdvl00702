@@ -9,13 +9,16 @@ const orderitem = require("../models/orderitem");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./public/productimages/");
+    cb(null, require.main?.path + "/../public/orderimages");
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
   },
 });
+
 const upload = multer({ storage: storage });
+
+const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
 
 // ADD ORDER
 
@@ -196,7 +199,7 @@ router.put(
     try {
       let updateOrder = await Order.update(
         {
-          payment_picture: req.file.path,
+          payment_picture: req.file ? `/orderimages/${req.file.filename}` : "",
           status_detail: 1,
         },
         {
@@ -238,23 +241,17 @@ router.get("/get-order-cart-product/:customer_uid", async (req, res) => {
       ],
     });
 
-    let picPathArray = getOrder.payment_picture.split("\\");
-    let picPath =
-      process.env.REACT_APP_BASE_URL +
-      "/" +
-      picPathArray[1] +
-      "/" +
-      picPathArray[2];
+    const picPath = protocol
+      .concat("://")
+      .concat(req.get("host"))
+      .concat(getOrder.payment_picture);
     getOrder.payment_picture = picPath;
 
     for (let j = 0; j < getOrder.orderitems.length; j++) {
-      let picPathArrayJ = getOrder.orderitems[j].product.picture.split("\\");
-      let picPathJ =
-        process.env.REACT_APP_BASE_URL +
-        "/" +
-        picPathArrayJ[1] +
-        "/" +
-        picPathArrayJ[2];
+      const picPathJ = protocol
+        .concat("://")
+        .concat(req.get("host"))
+        .concat(getOrder.orderitems[j].product.picture);
       getOrder.orderitems[j].product.picture = picPathJ;
     }
 
@@ -284,24 +281,17 @@ router.get("/get-order-cart-product", async (req, res) => {
     });
 
     for (let i = 0; i < getOrder.length; i++) {
-      let picPathArray = getOrder[i].payment_picture.split("\\");
-      let picPath =
-        process.env.REACT_APP_BASE_URL +
-        "/" +
-        picPathArray[1] +
-        "/" +
-        picPathArray[2];
+      const picPath = protocol
+        .concat("://")
+        .concat(req.get("host"))
+        .concat(getOrder[i].payment_picture);
       getOrder[i].payment_picture = picPath;
 
       for (let j = 0; j < getOrder[i].orderitems.length; j++) {
-        let picPathArrayJ =
-          getOrder[i].orderitems[j].product.picture.split("\\");
-        let picPathJ =
-          process.env.REACT_APP_BASE_URL +
-          "/" +
-          picPathArrayJ[1] +
-          "/" +
-          picPathArrayJ[2];
+        const picPathJ = protocol
+          .concat("://")
+          .concat(req.get("host"))
+          .concat(getOrder[i].orderitems[j].product.picture);
         getOrder[i].orderitems[j].product.picture = picPathJ;
       }
     }
@@ -335,24 +325,17 @@ router.get("/get-order-cart-user-product/:customer_uid", async (req, res) => {
     });
 
     for (let i = 0; i < getOrder.length; i++) {
-      let picPathArray = getOrder[i].payment_picture.split("\\");
-      let picPath =
-        process.env.REACT_APP_BASE_URL +
-        "/" +
-        picPathArray[1] +
-        "/" +
-        picPathArray[2];
+      const picPath = protocol
+        .concat("://")
+        .concat(req.get("host"))
+        .concat(getOrder[i].payment_picture);
       getOrder[i].payment_picture = picPath;
 
       for (let j = 0; j < getOrder[i].orderitems.length; j++) {
-        let picPathArrayJ =
-          getOrder[i].orderitems[j].product.picture.split("\\");
-        let picPathJ =
-          process.env.REACT_APP_BASE_URL +
-          "/" +
-          picPathArrayJ[1] +
-          "/" +
-          picPathArrayJ[2];
+        const picPathJ = protocol
+          .concat("://")
+          .concat(req.get("host"))
+          .concat(getOrder[i].orderitems[j].product.picture);
         getOrder[i].orderitems[j].product.picture = picPathJ;
       }
     }
