@@ -34,6 +34,21 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+(async () => {
+  await db.sequelize.sync();
+})();
+
+// db.sequelize.sync();
+
+app.use("/api/customer", customerRoute);
+app.use("/api/admin", adminRoute);
+app.use("/api/product", productRoute);
+app.use("/api/address", addressRoute);
+app.use("/api/warehouse", warehouseRoute);
+app.use("/api/cart", cartRoute);
+app.use("/api/order", orderRoute);
+app.use("/api/orderitem", orderItemRoute);
+
 app.use(
   "/profileimages",
   express.static(path.join(__dirname, "../public/profileimages"))
@@ -50,21 +65,6 @@ app.use(
   "/orderimages",
   express.static(path.join(__dirname, "../public/orderimages"))
 );
-
-(async () => {
-  await db.sequelize.sync();
-})();
-
-// db.sequelize.sync();
-
-app.use("/api/customer", customerRoute);
-app.use("/api/admin", adminRoute);
-app.use("/api/product", productRoute);
-app.use("/api/address", addressRoute);
-app.use("/api/warehouse", warehouseRoute);
-app.use("/api/cart", cartRoute);
-app.use("/api/order", orderRoute);
-app.use("/api/orderitem", orderItemRoute);
 
 // ===========================
 

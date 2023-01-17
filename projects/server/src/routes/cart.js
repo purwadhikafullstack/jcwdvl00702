@@ -6,6 +6,8 @@ const { where, Op } = require("sequelize");
 const router = require("express").Router();
 const cart = require(`../models/cart`);
 
+const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+
 // ADD Cart
 
 router.post(`/add-to-cart`, async (req, res) => {
@@ -133,13 +135,10 @@ router.get("/get-cart-product/:id", async (req, res) => {
     });
 
     for (let i = 0; i < getProduct.length; i++) {
-      let picPathArray = getProduct[i].product.picture.split("\\");
-      let picPath =
-        process.env.REACT_APP_BASE_URL +
-        "/" +
-        picPathArray[1] +
-        "/" +
-        picPathArray[2];
+      const picPath = protocol
+        .concat("://")
+        .concat(req.get("host"))
+        .concat(getProduct[i].product.picture);
       getProduct[i].product.picture = picPath;
     }
 

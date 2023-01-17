@@ -253,13 +253,7 @@ class StockMutation extends React.Component {
 
   mutationCard = () => {
     return this.state.mutationList.map((val, index) => {
-      let picPathArray = val.product_picture.split("\\");
-      let picPath =
-        process.env.REACT_APP_BASE_URL +
-        "/" +
-        picPathArray[1] +
-        "/" +
-        picPathArray[2];
+      let picPath = process.env.REACT_APP_BASE_URL + val.product_picture;
       let productPicture = picPath;
       return (
         <div className="mutation-main">

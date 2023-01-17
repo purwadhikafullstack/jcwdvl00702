@@ -9,13 +9,16 @@ const customer = require("../models/customer");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./public/profileimages/");
+    cb(null, require.main?.path + "/../public/profileimages");
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
   },
 });
+
 const upload = multer({ storage: storage });
+
+const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
 
 //REGISTER
 router.post("/register", async (req, res) => {
@@ -118,15 +121,12 @@ router.get("/profile/:customer_uid", async (req, res) => {
       },
     });
 
-    let picPathArray = response.picture.split("\\");
-    let picPath =
-      process.env.REACT_APP_BASE_URL +
-      "/" +
-      picPathArray[1] +
-      "/" +
-      picPathArray[2];
+    const picPath = protocol
+      .concat("://")
+      .concat(req.get("host"))
+      .concat(response.picture);
     response.picture = picPath;
-    // localhost:8000/profileimages/newzealand.jpg
+
     res.json(response);
   } catch (error) {
     console.log(error);
@@ -152,7 +152,6 @@ router.put(
   "/edit-profile/:customer_uid",
   upload.single("picture"),
   async (req, res) => {
-    console.log(req.file);
     await Customer.findOne({
       where: {
         customer_uid: req.params.customer_uid,
@@ -162,7 +161,7 @@ router.put(
       let updateProfile = await Customer.update(
         {
           fullname: req.body.fullname,
-          picture: req.file.path,
+          picture: req.file ? `/profileimages/${req.file.filename}` : "",
         },
         {
           where: {
@@ -234,38 +233,5 @@ router.get("/user/:customer_uid", async (req, res) => {
     console.log(error);
   }
 });
-
-// UPDATE PROFILE
-router.put(
-  "/edit-profile/:customer_uid",
-  upload.single("picture"),
-  async (req, res) => {
-    console.log(req.file);
-    await Customer.findOne({
-      where: {
-        customer_uid: req.params.customer_uid,
-      },
-    });
-    try {
-      let updateProfile = await Customer.update(
-        {
-          fullname: req.body.fullname,
-          picture: req.file.path,
-        },
-        {
-          where: {
-            customer_uid: req.params.customer_uid,
-          },
-        }
-      );
-      res.status(201).json({
-        message: "Success",
-        data: updateProfile,
-      });
-    } catch (error) {
-      console.log(error.message);
-    }
-  }
-);
 
 module.exports = router;

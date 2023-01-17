@@ -9,13 +9,16 @@ const stock = require("../models/stock");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./public/productimages/");
+    cb(null, require.main?.path + "/../public/productimages");
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
   },
 });
+
 const upload = multer({ storage: storage });
+
+const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
 
 // ADD CATEGORY
 router.post("/add-category", upload.single("image"), async (req, res) => {
@@ -32,19 +35,23 @@ router.post("/add-category", upload.single("image"), async (req, res) => {
     if (checkBox === true) {
       res.status(500).json(err);
     } else {
-      let picPathArray = req.file.path.split("\\");
-      let picPath =
-        process.env.REACT_APP_BASE_URL +
-        "/" +
-        picPathArray[1] +
-        "/" +
-        picPathArray[2];
+      // let picPathArray = req.file.path.split("\\");
+      // let picPath =
+      //   process.env.REACT_APP_BASE_URL +
+      //   "/" +
+      //   picPathArray[1] +
+      //   "/" +
+      //   picPathArray[2];
+
+      const picPath = protocol
+        .concat("://")
+        .concat(req.get("host"))
+        .concat(`/productimages/${req.file.filename}`);
 
       const newCategory = await Category.create({
         name: req.body.name,
         alt_name: req.body.name.toLowerCase(),
         picture: picPath,
-        // picture: req.file.path,
       });
       const categoryId = await Category.findOne({
         where: {
@@ -171,7 +178,7 @@ router.post("/add-product", upload.single("picture"), async (req, res) => {
         quantity_total: req.body.quantity_total,
         product_detail: req.body.product_detail,
         category_id: req.body.category_id,
-        picture: req.file.path,
+        picture: req.file ? `/productimages/${req.file.filename}` : "",
       });
       const productId = await Product.findOne({
         where: {
@@ -211,13 +218,10 @@ router.get("/home-product/", async (req, res) => {
     console.log("ini get Product", getProduct[0].picture);
 
     for (let i = 0; i < getProduct.length; i++) {
-      let picPathArray = getProduct[i].picture.split("\\");
-      let picPath =
-        process.env.REACT_APP_BASE_URL +
-        "/" +
-        picPathArray[1] +
-        "/" +
-        picPathArray[2];
+      const picPath = protocol
+        .concat("://")
+        .concat(req.get("host"))
+        .concat(getProduct[i].picture);
       getProduct[i].picture = picPath;
     }
     console.log("url check", getProduct[0].picture);
@@ -282,13 +286,11 @@ router.get("/get-product/:id", async (req, res) => {
         id: req.params.id,
       },
     });
-    let picPathArray = getProduct.picture.split("\\");
-    let picPath =
-      process.env.REACT_APP_BASE_URL +
-      "/" +
-      picPathArray[1] +
-      "/" +
-      picPathArray[2];
+
+    const picPath = protocol
+      .concat("://")
+      .concat(req.get("host"))
+      .concat(getProduct.picture);
     getProduct.picture = picPath;
 
     const getStock = await Stock.findAll({
@@ -339,7 +341,7 @@ router.put("/edit-product/:id", upload.single("picture"), async (req, res) => {
         price: req.body.price,
         product_detail: req.body.product_detail,
         category_id: req.body.category,
-        picture: req.file.path,
+        picture: req.file ? `/productimages/${req.file.filename}` : "",
       },
       {
         where: {
@@ -891,13 +893,10 @@ router.get("/product-stock-history/:id", async (req, res) => {
   const theMonth = req.query.month;
 
   try {
-    let picPathArray = getProduct.picture.split("/");
-    let picPath =
-      process.env.REACT_APP_BASE_URL +
-      "/" +
-      picPathArray[1] +
-      "/" +
-      picPathArray[2];
+    const picPath = protocol
+      .concat("://")
+      .concat(req.get("host"))
+      .concat(getProduct.picture);
     getProduct.picture = picPath;
 
     const getHistory = await Stockhistory.findAll({
@@ -1410,13 +1409,10 @@ router.get("/product-stock-history/:id", async (req, res) => {
   const theMonth = req.query.month;
 
   try {
-    let picPathArray = getProduct.picture.split("/");
-    let picPath =
-      process.env.REACT_APP_BASE_URL +
-      "/" +
-      picPathArray[1] +
-      "/" +
-      picPathArray[2];
+    const picPath = protocol
+      .concat("://")
+      .concat(req.get("host"))
+      .concat(getProduct.picture);
     getProduct.picture = picPath;
 
     const getHistory = await Stockhistory.findAll({
