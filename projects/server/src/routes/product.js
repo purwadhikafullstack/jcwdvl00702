@@ -1616,7 +1616,7 @@ router.post("/qty-handler", async (req, res) => {
 
         const changeStockFrom = await Stock.update(
           {
-            quantity: stockFrom.quantity - needQty,
+            quantity: secStockFrom.quantity - needQty,
           },
           {
             where: {
